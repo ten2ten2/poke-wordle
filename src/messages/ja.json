@@ -1,0 +1,130 @@
+{
+  "title": "ポケワードル",
+  "description": "タイプ、種族値、特性、進化などの手がかりからポケモンを当てよう！",
+  "game": {
+    "inputPlaceholder": "ポケモン名を入力...",
+    "submit": "決定",
+    "randomStart": "ランダム推測",
+    "giveUp": "ギブアップ",
+    "restart": "リスタート",
+    "guessCount": "推測回数: {current}/{max}",
+    "pokemonNotFound": "ポケモンが見つかりません",
+    "gameWon": "おめでとう！正解です！",
+    "gameOver": "ゲームオーバー",
+    "gameLost": "ゲームオーバー！答えは {pokemon} でした",
+    "congratulations": "おめでとう！",
+    "betterLuckNextTime": "次回頑張って！",
+    "guessedIn": "{count}回で正解しました",
+    "usedAllGuesses": "{max}回の推測をすべて使いました",
+    "close": "閉じる",
+    "playAgain": "もう一度",
+    "startPrompt": "ポケモン名を入力するか「ランダム推測」をクリックしてゲームを始めよう！",
+    "languageChanged": "言語が変更されました",
+    "languageChangedDesc": "言語が変更されました。ポケモンデータが新しい言語に更新されました。ゲームを続けるには新しいゲームを開始してください。",
+    "generationChanged": "世代設定が変更されました",
+    "generationChangedDesc": "世代設定が変更されました。現在のゲームは新しい設定に合わせてリセットされました。ゲームを続けるには新しいゲームを開始してください。",
+    "settingsChanged": "設定が変更されました",
+    "settingsChangedDesc": "ゲーム設定が変更されました。現在のゲームは新しい設定に合わせてリセットされました。ゲームを続けるには新しいゲームを開始してください。",
+    "columns": {
+      "profile": "プロフィール",
+      "name": "名前",
+      "type": "タイプ",
+      "baseStats": "種族値",
+      "generation": "世代",
+      "abilities": "特性",
+      "evolution": "進化",
+      "tags": "タグ"
+    }
+  },
+  "settings": {
+    "title": "設定",
+    "maxGuesses": "最大推測回数",
+    "generations": "世代選択",
+    "prankster": "いたずらモード",
+    "pranksterDesc": "推測ごとにランダムで一つの属性を隠す",
+    "genArrow": "世代矢印",
+    "genArrowDesc": "世代の高低を示す矢印を表示",
+    "guessOrder": "推測表示順序",
+    "guessOrderNormal": "正順（古い順）",
+    "guessOrderReverse": "逆順（新しい順）",
+    "apply": "設定を適用",
+    "reset": "デフォルトに戻す",
+    "resetConfirm": "すべての設定をデフォルト値にリセットしてもよろしいですか？",
+    "cancel": "キャンセル",
+    "confirm": "リセット"
+  },
+  "about": {
+    "title": "について",
+    "description": "ポケワードルは、タイプ、特性、種族値、進化などの様々な手がかりを基にポケモンを特定する推理ゲームです。",
+    "howToPlay": "遊び方",
+    "rules": [
+      "入力欄にポケモン名を入力してください",
+      "各推測で、あなたの推測がターゲットにどれだけ近いかが表示されます",
+      "緑は完全一致、黄色は近い、灰色は一致しないことを意味します",
+      "手がかりを使って推測を絞り込んでください",
+      "制限回数内にポケモンを当ててください！"
+    ]
+  },
+  "navbar": {
+    "settings": "設定",
+    "language": "言語"
+  },
+  "footer": {
+    "copyright": "© 2024 ポケワードル。全著作権所有。",
+    "privacyAndTerms": "プライバシーと利用規約"
+  },
+  "generation": {
+    "Gen1": "第1世代",
+    "Gen2": "第2世代",
+    "Gen3": "第3世代",
+    "Gen4": "第4世代",
+    "Gen5": "第5世代",
+    "Gen6": "第6世代",
+    "Gen7": "第7世代",
+    "Gen8": "第8世代",
+    "Gen9": "第9世代"
+  },
+  "evolution": {
+    "stage1": "進化しない/第1段階",
+    "stage2": "第2段階",
+    "stage3": "第3段階"
+  },
+  "evolutionMethods": {
+    "level-normal": "通常のレベルアップ",
+    "level-friendship": "なつき度でレベルアップ",
+    "level-move": "技を覚えてレベルアップ",
+    "level-location": "特定の場所でレベルアップ",
+    "level-time": "特定の時間にレベルアップ",
+    "level-holding-item": "アイテムを持ってレベルアップ",
+    "level-gender": "特定の性別でレベルアップ",
+    "level-version": "特定のゲームバージョンでレベルアップ",
+    "level-unique": "特殊な条件でレベルアップ",
+    "item-stone-fire": "かえんだまを使用",
+    "item-stone-water": "みずのいしを使用",
+    "item-stone-thunder": "かみなりのいしを使用",
+    "item-stone-leaf": "リーフのいしを使用",
+    "item-stone-moon": "つきのいしを使用",
+    "item-stone-shiny": "ひかりのいしを使用",
+    "item-stone-dusk": "やみのいしを使用",
+    "item-stone-dawn-male": "オスがめざめいしを使用",
+    "item-stone-dawn-female": "メスがめざめいしを使用",
+    "item-stone-ice": "こおりのいしを使用",
+    "item-unique": "特殊なアイテムを使用",
+    "trade-normal": "通信交換",
+    "trade-item": "アイテムを持って交換",
+    "trade-certain": "特定のポケモンと交換",
+    "unique": "特殊な進化方法"
+  },
+  "tags": {
+    "starter": "御三家",
+    "legendary": "伝説のポケモン",
+    "mythical": "幻のポケモン",
+    "fossil": "化石ポケモン",
+    "regional": "リージョンフォーム",
+    "has-mega": "メガ進化あり",
+    "has-gmax": "キョダイマックスあり",
+    "ultra": "ウルトラビースト",
+    "paradox": "パラドックスポケモン",
+    "late": "大器晩成のポケモン"
+  }
+} 

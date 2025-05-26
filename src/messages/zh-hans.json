@@ -1,0 +1,130 @@
+{
+  "title": "宝可梦猜猜乐",
+  "description": "根据宝可梦的属性、数值、特性、进化等信息来猜测宝可梦！",
+  "game": {
+    "inputPlaceholder": "输入宝可梦名称...",
+    "submit": "提交",
+    "randomStart": "随机开局",
+    "giveUp": "放弃",
+    "restart": "重新开始",
+    "guessCount": "猜测次数：{current}/{max}",
+    "pokemonNotFound": "未找到该宝可梦",
+    "gameWon": "恭喜！你猜对了！",
+    "gameOver": "游戏结束",
+    "gameLost": "游戏结束！答案是 {pokemon}",
+    "congratulations": "恭喜！",
+    "betterLuckNextTime": "下次加油！",
+    "guessedIn": "你用了 {count} 次猜测",
+    "usedAllGuesses": "你已用完所有 {max} 次猜测机会",
+    "close": "关闭",
+    "playAgain": "再来一局",
+    "startPrompt": "输入宝可梦名称或点击\"随机开局\"来开始游戏！",
+    "languageChanged": "语言已更改",
+    "languageChangedDesc": "语言已更改。宝可梦数据已更新为新语言。请开始新游戏以继续游玩。",
+    "generationChanged": "世代设置已更改",
+    "generationChangedDesc": "世代设置已更改。当前游戏已重置以匹配新设置。请开始新游戏以继续游玩。",
+    "settingsChanged": "设置已更改",
+    "settingsChangedDesc": "游戏设置已更改。当前游戏已重置以匹配新设置。请开始新游戏以继续游玩。",
+    "columns": {
+      "profile": "样子",
+      "name": "名称",
+      "type": "属性",
+      "baseStats": "种族值",
+      "generation": "世代",
+      "abilities": "特性",
+      "evolution": "进化",
+      "tags": "其它标签"
+    }
+  },
+  "settings": {
+    "title": "设置",
+    "maxGuesses": "最大猜测次数",
+    "generations": "世代",
+    "prankster": "恶作剧模式",
+    "pranksterDesc": "每次猜测随机隐藏一个属性",
+    "genArrow": "世代箭头",
+    "genArrowDesc": "显示世代提示箭头",
+    "guessOrder": "猜测顺序",
+    "guessOrderNormal": "正常（最旧的在前）",
+    "guessOrderReverse": "反向（最新的在前）",
+    "apply": "应用设置",
+    "reset": "重置为默认值",
+    "resetConfirm": "您确定要将所有设置重置为默认值吗？",
+    "cancel": "取消",
+    "confirm": "重置"
+  },
+  "about": {
+    "title": "关于",
+    "description": "宝可梦猜猜乐是一个猜谜游戏，你需要根据各种线索（包括属性、特性、数值、进化等）来识别宝可梦。",
+    "howToPlay": "游戏玩法",
+    "rules": [
+      "在输入框中输入宝可梦名称",
+      "每次猜测都会显示你的猜测与目标的接近程度",
+      "绿色表示完全匹配，黄色表示接近，灰色表示不匹配",
+      "利用线索来缩小猜测范围",
+      "尝试在允许的次数内猜出宝可梦！"
+    ]
+  },
+  "navbar": {
+    "settings": "设置",
+    "language": "语言"
+  },
+  "footer": {
+    "copyright": "© 2024 宝可梦猜猜乐。保留所有权利。",
+    "privacyAndTerms": "隐私与条款"
+  },
+  "generation": {
+    "Gen1": "第一世代",
+    "Gen2": "第二世代",
+    "Gen3": "第三世代",
+    "Gen4": "第四世代",
+    "Gen5": "第五世代",
+    "Gen6": "第六世代",
+    "Gen7": "第七世代",
+    "Gen8": "第八世代",
+    "Gen9": "第九世代"
+  },
+  "evolution": {
+    "stage1": "不进化/第一阶段",
+    "stage2": "第二阶段",
+    "stage3": "第三阶段"
+  },
+  "evolutionMethods": {
+    "level-normal": "普通提升等级",
+    "level-friendship": "达到亲密度要求提升等级",
+    "level-move": "学会招式提升等级",
+    "level-location": "特定地点提升等级",
+    "level-time": "特定时间提升等级",
+    "level-holding-item": "持有道具提升等级",
+    "level-gender": "特定性别提升等级",
+    "level-version": "特定游戏版本提升等级",
+    "level-unique": "满足特殊条件提升等级",
+    "item-stone-fire": "使用火之石",
+    "item-stone-water": "使用水之石",
+    "item-stone-thunder": "使用雷之石",
+    "item-stone-leaf": "使用叶之石",
+    "item-stone-moon": "使用太阳石",
+    "item-stone-shiny": "使用光之石",
+    "item-stone-dusk": "使用暗之石",
+    "item-stone-dawn-male": "雄性使用觉醒石",
+    "item-stone-dawn-female": "雌性使用觉醒石",
+    "item-stone-ice": "使用冰之石",
+    "item-unique": "使用特殊道具",
+    "trade-normal": "通信交换",
+    "trade-item": "携带道具交换",
+    "trade-certain": "指定宝可梦交换",
+    "unique": "特殊方式进化"
+  },
+  "tags": {
+    "starter": "御三家",
+    "legendary": "传说中的宝可梦",
+    "mythical": "幻之宝可梦",
+    "fossil": "化石宝可梦",
+    "regional": "有地区形态",
+    "has-mega": "有超级进化",
+    "has-gmax": "有超极巨化",
+    "ultra": "究极异兽",
+    "paradox": "悖谬宝可梦",
+    "late": "大器晚成的宝可梦"
+  }
+} 

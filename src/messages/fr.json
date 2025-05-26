@@ -1,0 +1,130 @@
+{
+  "title": "Poke Wordle",
+  "description": "Devinez le Pokémon basé sur ses attributs, statistiques, capacités, évolution et plus !",
+  "game": {
+    "inputPlaceholder": "Entrez le nom du Pokémon...",
+    "submit": "Soumettre",
+    "randomStart": "Supposition Aléatoire",
+    "giveUp": "Abandonner",
+    "restart": "Redémarrer",
+    "guessCount": "Tentatives : {current}/{max}",
+    "pokemonNotFound": "Pokémon non trouvé",
+    "gameWon": "Félicitations ! Vous avez deviné !",
+    "gameOver": "Jeu terminé",
+    "gameLost": "Jeu terminé ! La réponse était {pokemon}",
+    "congratulations": "Félicitations !",
+    "betterLuckNextTime": "Bonne chance la prochaine fois !",
+    "guessedIn": "Vous avez trouvé en {count} essais",
+    "usedAllGuesses": "Vous avez utilisé tous les {max} essais",
+    "close": "Fermer",
+    "playAgain": "Rejouer",
+    "startPrompt": "Entrez un nom de Pokémon ou cliquez sur \"Supposition Aléatoire\" pour commencer !",
+    "languageChanged": "Langue Modifiée",
+    "languageChangedDesc": "La langue a été modifiée. Les données Pokémon ont été mises à jour vers la nouvelle langue. Veuillez commencer un nouveau jeu pour continuer à jouer.",
+    "generationChanged": "Paramètres de Génération Modifiés",
+    "generationChangedDesc": "Les paramètres de génération ont été modifiés. Le jeu actuel a été réinitialisé pour correspondre aux nouveaux paramètres. Veuillez commencer un nouveau jeu pour continuer à jouer.",
+    "settingsChanged": "Paramètres Modifiés",
+    "settingsChangedDesc": "Les paramètres du jeu ont été modifiés. Le jeu actuel a été réinitialisé pour correspondre aux nouveaux paramètres. Veuillez commencer un nouveau jeu pour continuer à jouer.",
+    "columns": {
+      "profile": "Profil",
+      "name": "Nom",
+      "type": "Type",
+      "baseStats": "Statistiques de Base",
+      "generation": "Génération",
+      "abilities": "Capacités",
+      "evolution": "Évolution",
+      "tags": "Étiquettes"
+    }
+  },
+  "settings": {
+    "title": "Paramètres",
+    "maxGuesses": "Tentatives Maximum",
+    "generations": "Générations",
+    "prankster": "Mode Farceur",
+    "pranksterDesc": "Cacher aléatoirement un attribut par supposition",
+    "genArrow": "Flèches de Génération",
+    "genArrowDesc": "Afficher les flèches pour les indices de génération",
+    "guessOrder": "Ordre des Suppositions",
+    "guessOrderNormal": "Normal (plus ancien en premier)",
+    "guessOrderReverse": "Inverse (plus récent en premier)",
+    "apply": "Appliquer les Paramètres",
+    "reset": "Réinitialiser aux Valeurs par Défaut",
+    "resetConfirm": "Êtes-vous sûr de vouloir réinitialiser tous les paramètres à leurs valeurs par défaut ?",
+    "cancel": "Annuler",
+    "confirm": "Réinitialiser"
+  },
+  "about": {
+    "title": "À Propos",
+    "description": "Poke Wordle est un jeu de devinettes où vous essayez d'identifier un Pokémon basé sur divers indices incluant les types, capacités, statistiques, évolution et plus.",
+    "howToPlay": "Comment Jouer",
+    "rules": [
+      "Entrez un nom de Pokémon dans le champ de saisie",
+      "Chaque supposition vous montrera à quel point votre supposition est proche de la cible",
+      "Vert signifie correspondance exacte, jaune signifie proche, gris signifie aucune correspondance",
+      "Utilisez les indices pour affiner vos suppositions",
+      "Essayez de deviner le Pokémon dans le nombre de tentatives autorisé !"
+    ]
+  },
+  "navbar": {
+    "settings": "Paramètres",
+    "language": "Langue"
+  },
+  "footer": {
+    "copyright": "© 2024 Poke Wordle. Tous droits réservés.",
+    "privacyAndTerms": "Confidentialité et Conditions"
+  },
+  "generation": {
+    "Gen1": "Génération 1",
+    "Gen2": "Génération 2",
+    "Gen3": "Génération 3",
+    "Gen4": "Génération 4",
+    "Gen5": "Génération 5",
+    "Gen6": "Génération 6",
+    "Gen7": "Génération 7",
+    "Gen8": "Génération 8",
+    "Gen9": "Génération 9"
+  },
+  "evolution": {
+    "stage1": "Pas d'évolution/Premier stade",
+    "stage2": "Deuxième stade",
+    "stage3": "Troisième stade"
+  },
+  "evolutionMethods": {
+    "level-normal": "Montée de niveau normale",
+    "level-friendship": "Montée de niveau avec amitié élevée",
+    "level-move": "Montée de niveau en connaissant une attaque",
+    "level-location": "Montée de niveau dans un lieu spécifique",
+    "level-time": "Montée de niveau à un moment spécifique",
+    "level-holding-item": "Montée de niveau en tenant un objet",
+    "level-gender": "Montée de niveau avec un genre spécifique",
+    "level-version": "Montée de niveau dans une version spécifique",
+    "level-unique": "Montée de niveau avec conditions spéciales",
+    "item-stone-fire": "Utiliser Pierre Feu",
+    "item-stone-water": "Utiliser Pierre Eau",
+    "item-stone-thunder": "Utiliser Pierre Foudre",
+    "item-stone-leaf": "Utiliser Pierre Plante",
+    "item-stone-moon": "Utiliser Pierre Lune",
+    "item-stone-shiny": "Utiliser Pierre Éclat",
+    "item-stone-dusk": "Utiliser Pierre Nuit",
+    "item-stone-dawn-male": "Mâle utilise Pierre Aube",
+    "item-stone-dawn-female": "Femelle utilise Pierre Aube",
+    "item-stone-ice": "Utiliser Pierre Glace",
+    "item-unique": "Utiliser objet spécial",
+    "trade-normal": "Échange",
+    "trade-item": "Échange en tenant un objet",
+    "trade-certain": "Échange contre un Pokémon spécifique",
+    "unique": "Méthode d'évolution spéciale"
+  },
+  "tags": {
+    "starter": "Starter",
+    "legendary": "Légendaire",
+    "mythical": "Mythique",
+    "fossil": "Fossile",
+    "regional": "Forme Régionale",
+    "has-mega": "A une Méga-Évolution",
+    "has-gmax": "A un Gigantamax",
+    "ultra": "Ultra-Chimère",
+    "paradox": "Pokémon Paradoxe",
+    "late": "Pokémon à Évolution Tardive"
+  }
+} 

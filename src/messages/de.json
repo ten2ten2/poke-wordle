@@ -1,0 +1,130 @@
+{
+  "title": "Poke Wordle",
+  "description": "Errate das Pokémon basierend auf seinen Attributen, Werten, Fähigkeiten, Evolution und mehr!",
+  "game": {
+    "inputPlaceholder": "Pokémon-Name eingeben...",
+    "submit": "Bestätigen",
+    "randomStart": "Zufälliger Tipp",
+    "giveUp": "Aufgeben",
+    "restart": "Neustart",
+    "guessCount": "Versuche: {current}/{max}",
+    "pokemonNotFound": "Pokémon nicht gefunden",
+    "gameWon": "Glückwunsch! Du hast es erraten!",
+    "gameOver": "Spiel beendet",
+    "gameLost": "Spiel beendet! Die Antwort war {pokemon}",
+    "congratulations": "Glückwunsch!",
+    "betterLuckNextTime": "Viel Glück beim nächsten Mal!",
+    "guessedIn": "Du hast es in {count} Versuchen erraten",
+    "usedAllGuesses": "Du hast alle {max} Versuche verbraucht",
+    "close": "Schließen",
+    "playAgain": "Nochmal spielen",
+    "startPrompt": "Gib einen Pokémon-Namen ein oder klicke auf \"Zufälliger Tipp\" um zu starten!",
+    "languageChanged": "Sprache geändert",
+    "languageChangedDesc": "Die Sprache wurde geändert. Pokémon-Daten wurden auf die neue Sprache aktualisiert. Bitte starte ein neues Spiel, um weiterzuspielen.",
+    "generationChanged": "Generationseinstellungen geändert",
+    "generationChangedDesc": "Die Generationseinstellungen wurden geändert. Das aktuelle Spiel wurde zurückgesetzt, um den neuen Einstellungen zu entsprechen. Bitte starte ein neues Spiel, um weiterzuspielen.",
+    "settingsChanged": "Einstellungen geändert",
+    "settingsChangedDesc": "Spieleinstellungen wurden geändert. Das aktuelle Spiel wurde zurückgesetzt, um den neuen Einstellungen zu entsprechen. Bitte starte ein neues Spiel, um weiterzuspielen.",
+    "columns": {
+      "profile": "Profil",
+      "name": "Name",
+      "type": "Typ",
+      "baseStats": "Basiswerte",
+      "generation": "Generation",
+      "abilities": "Fähigkeiten",
+      "evolution": "Evolution",
+      "tags": "Tags"
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "maxGuesses": "Max. Versuche",
+    "generations": "Generationen",
+    "prankster": "Schabernack-Modus",
+    "pranksterDesc": "Zufällig ein Attribut pro Versuch verstecken",
+    "genArrow": "Generationspfeile",
+    "genArrowDesc": "Pfeile für Generationshinweise anzeigen",
+    "guessOrder": "Reihenfolge der Versuche",
+    "guessOrderNormal": "Normal (älteste zuerst)",
+    "guessOrderReverse": "Umgekehrt (neueste zuerst)",
+    "apply": "Einstellungen anwenden",
+    "reset": "Auf Standard zurücksetzen",
+    "resetConfirm": "Bist du sicher, dass du alle Einstellungen auf ihre Standardwerte zurücksetzen möchtest?",
+    "cancel": "Abbrechen",
+    "confirm": "Zurücksetzen"
+  },
+  "about": {
+    "title": "Über",
+    "description": "Poke Wordle ist ein Ratespiel, bei dem du versuchst, ein Pokémon basierend auf verschiedenen Hinweisen wie Typen, Fähigkeiten, Werten, Evolution und mehr zu identifizieren.",
+    "howToPlay": "Wie man spielt",
+    "rules": [
+      "Gib einen Pokémon-Namen in das Eingabefeld ein",
+      "Jeder Versuch zeigt dir, wie nah dein Tipp dem Ziel ist",
+      "Grün bedeutet exakte Übereinstimmung, gelb bedeutet nah, grau bedeutet keine Übereinstimmung",
+      "Nutze die Hinweise, um deine Versuche einzugrenzen",
+      "Versuche das Pokémon innerhalb der erlaubten Anzahl von Versuchen zu erraten!"
+    ]
+  },
+  "navbar": {
+    "settings": "Einstellungen",
+    "language": "Sprache"
+  },
+  "footer": {
+    "copyright": "© 2024 Poke Wordle. Alle Rechte vorbehalten.",
+    "privacyAndTerms": "Datenschutz & Bedingungen"
+  },
+  "generation": {
+    "Gen1": "Generation 1",
+    "Gen2": "Generation 2",
+    "Gen3": "Generation 3",
+    "Gen4": "Generation 4",
+    "Gen5": "Generation 5",
+    "Gen6": "Generation 6",
+    "Gen7": "Generation 7",
+    "Gen8": "Generation 8",
+    "Gen9": "Generation 9"
+  },
+  "evolution": {
+    "stage1": "Keine Evolution/Erste Stufe",
+    "stage2": "Zweite Stufe",
+    "stage3": "Dritte Stufe"
+  },
+  "evolutionMethods": {
+    "level-normal": "Normal aufleveln",
+    "level-friendship": "Mit hoher Freundschaft aufleveln",
+    "level-move": "Mit bestimmter Attacke aufleveln",
+    "level-location": "An bestimmtem Ort aufleveln",
+    "level-time": "Zu bestimmter Zeit aufleveln",
+    "level-holding-item": "Mit Item aufleveln",
+    "level-gender": "Mit bestimmtem Geschlecht aufleveln",
+    "level-version": "In bestimmter Spielversion aufleveln",
+    "level-unique": "Mit besonderen Bedingungen aufleveln",
+    "item-stone-fire": "Feuerstein verwenden",
+    "item-stone-water": "Wasserstein verwenden",
+    "item-stone-thunder": "Donnerstein verwenden",
+    "item-stone-leaf": "Blattstein verwenden",
+    "item-stone-moon": "Mondstein verwenden",
+    "item-stone-shiny": "Leuchtstein verwenden",
+    "item-stone-dusk": "Finsterstein verwenden",
+    "item-stone-dawn-male": "Männchen verwendet Weckstein",
+    "item-stone-dawn-female": "Weibchen verwendet Weckstein",
+    "item-stone-ice": "Eisstein verwenden",
+    "item-unique": "Besonderes Item verwenden",
+    "trade-normal": "Tausch",
+    "trade-item": "Tausch mit Item",
+    "trade-certain": "Tausch gegen bestimmtes Pokémon",
+    "unique": "Besondere Evolutionsmethode"
+  },
+  "tags": {
+    "starter": "Starter",
+    "legendary": "Legendär",
+    "mythical": "Mystisch",
+    "fossil": "Fossil",
+    "regional": "Regionalform",
+    "has-mega": "Hat Mega-Evolution",
+    "has-gmax": "Hat Gigadynamax",
+    "ultra": "Ultrabestie",
+    "paradox": "Paradox-Pokémon",
+    "late": "Spätentwickler-Pokémon"
+  }
+} 

@@ -1,0 +1,130 @@
+{
+  "title": "Poke Wordle",
+  "description": "Guess the Pokémon based on its attributes, stats, abilities, evolution, and more!",
+  "game": {
+    "inputPlaceholder": "Enter Pokémon name...",
+    "submit": "Submit",
+    "randomStart": "Random Guess",
+    "giveUp": "Give Up",
+    "restart": "Restart",
+    "guessCount": "Guesses: {current}/{max}",
+    "pokemonNotFound": "Pokémon not found",
+    "gameWon": "Congratulations! You guessed it!",
+    "gameOver": "Game Over",
+    "gameLost": "Game Over! The answer was {pokemon}",
+    "congratulations": "Congratulations!",
+    "betterLuckNextTime": "Better luck next time!",
+    "guessedIn": "You guessed it in {count} tries",
+    "usedAllGuesses": "You used all {max} guesses",
+    "close": "Close",
+    "playAgain": "Play Again",
+    "startPrompt": "Enter a Pokémon name or click \"Random Guess\" to start!",
+    "languageChanged": "Language Changed",
+    "languageChangedDesc": "The language has been changed. Pokémon data has been updated to the new language. Please start a new game to continue playing.",
+    "generationChanged": "Generation Settings Changed",
+    "generationChangedDesc": "The generation settings have been changed. The current game has been reset to match the new settings. Please start a new game to continue playing.",
+    "settingsChanged": "Settings Changed",
+    "settingsChangedDesc": "Game settings have been changed. The current game has been reset to match the new settings. Please start a new game to continue playing.",
+    "columns": {
+      "profile": "Profile",
+      "name": "Name",
+      "type": "Type",
+      "baseStats": "Base Stats",
+      "generation": "Generation",
+      "abilities": "Abilities",
+      "evolution": "Evolution",
+      "tags": "Tags"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "maxGuesses": "Max Guesses",
+    "generations": "Generations",
+    "prankster": "Prankster Mode",
+    "pranksterDesc": "Randomly hide one attribute per guess",
+    "genArrow": "Generation Arrows",
+    "genArrowDesc": "Show arrows for generation hints",
+    "guessOrder": "Guess Order",
+    "guessOrderNormal": "Normal (oldest first)",
+    "guessOrderReverse": "Reverse (newest first)",
+    "apply": "Apply Settings",
+    "reset": "Reset to Defaults",
+    "resetConfirm": "Are you sure you want to reset all settings to their default values?",
+    "cancel": "Cancel",
+    "confirm": "Reset"
+  },
+  "about": {
+    "title": "About",
+    "description": "Poke Wordle is a guessing game where you try to identify a Pokémon based on various clues including types, abilities, stats, evolution, and more.",
+    "howToPlay": "How to Play",
+    "rules": [
+      "Enter a Pokémon name in the input field",
+      "Each guess will show you how close your guess is to the target",
+      "Green means exact match, yellow means close, gray means no match",
+      "Use the clues to narrow down your guesses",
+      "Try to guess the Pokémon within the allowed number of attempts!"
+    ]
+  },
+  "navbar": {
+    "settings": "Settings",
+    "language": "Language"
+  },
+  "footer": {
+    "copyright": "© 2024 Poke Wordle. All rights reserved.",
+    "privacyAndTerms": "Privacy & Terms"
+  },
+  "generation": {
+    "Gen1": "Generation 1",
+    "Gen2": "Generation 2",
+    "Gen3": "Generation 3",
+    "Gen4": "Generation 4",
+    "Gen5": "Generation 5",
+    "Gen6": "Generation 6",
+    "Gen7": "Generation 7",
+    "Gen8": "Generation 8",
+    "Gen9": "Generation 9"
+  },
+  "evolution": {
+    "stage1": "No Evolution/First Stage",
+    "stage2": "Second Stage",
+    "stage3": "Third Stage"
+  },
+  "evolutionMethods": {
+    "level-normal": "Level up normally",
+    "level-friendship": "Level up with high friendship",
+    "level-move": "Level up knowing a move",
+    "level-location": "Level up at specific location",
+    "level-time": "Level up at specific time",
+    "level-holding-item": "Level up holding an item",
+    "level-gender": "Level up with specific gender",
+    "level-version": "Level up in specific game version",
+    "level-unique": "Level up with special conditions",
+    "item-stone-fire": "Use Fire Stone",
+    "item-stone-water": "Use Water Stone",
+    "item-stone-thunder": "Use Thunder Stone",
+    "item-stone-leaf": "Use Leaf Stone",
+    "item-stone-moon": "Use Moon Stone",
+    "item-stone-shiny": "Use Shiny Stone",
+    "item-stone-dusk": "Use Dusk Stone",
+    "item-stone-dawn-male": "Male use Dawn Stone",
+    "item-stone-dawn-female": "Female use Dawn Stone",
+    "item-stone-ice": "Use Ice Stone",
+    "item-unique": "Use special item",
+    "trade-normal": "Trade",
+    "trade-item": "Trade holding item",
+    "trade-certain": "Trade for specific Pokémon",
+    "unique": "Special evolution method"
+  },
+  "tags": {
+    "starter": "Starter",
+    "legendary": "Legendary",
+    "mythical": "Mythical",
+    "fossil": "Fossil",
+    "regional": "Regional Form",
+    "has-mega": "Has Mega Evolution",
+    "has-gmax": "Has Gigantamax",
+    "ultra": "Ultra Beast",
+    "paradox": "Paradox Pokémon",
+    "late": "Late Bloomer Pokémon"
+  }
+} 

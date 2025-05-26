@@ -1,0 +1,130 @@
+{
+  "title": "寶可夢猜猜樂",
+  "description": "根據寶可夢的屬性、數值、特性、進化等資訊來猜測寶可夢！",
+  "game": {
+    "inputPlaceholder": "輸入寶可夢名稱...",
+    "submit": "提交",
+    "randomStart": "隨機開局",
+    "giveUp": "放棄",
+    "restart": "重新開始",
+    "guessCount": "猜測次數：{current}/{max}",
+    "pokemonNotFound": "未找到該寶可夢",
+    "gameWon": "恭喜！你猜對了！",
+    "gameOver": "遊戲結束",
+    "gameLost": "遊戲結束！答案是 {pokemon}",
+    "congratulations": "恭喜！",
+    "betterLuckNextTime": "下次加油！",
+    "guessedIn": "你用了 {count} 次猜測",
+    "usedAllGuesses": "你已用完所有 {max} 次猜測機會",
+    "close": "關閉",
+    "playAgain": "再來一局",
+    "startPrompt": "輸入寶可夢名稱或點擊\"隨機開局\"來開始遊戲！",
+    "languageChanged": "語言已更改",
+    "languageChangedDesc": "語言已更改。寶可夢資料已更新為新語言。請開始新遊戲以繼續遊玩。",
+    "generationChanged": "世代設定已更改",
+    "generationChangedDesc": "世代設定已更改。當前遊戲已重置以匹配新設定。請開始新遊戲以繼續遊玩。",
+    "settingsChanged": "設定已更改",
+    "settingsChangedDesc": "遊戲設定已更改。當前遊戲已重置以匹配新設定。請開始新遊戲以繼續遊玩。",
+    "columns": {
+      "profile": "樣子",
+      "name": "名稱",
+      "type": "屬性",
+      "baseStats": "種族值",
+      "generation": "世代",
+      "abilities": "特性",
+      "evolution": "進化",
+      "tags": "其它標籤"
+    }
+  },
+  "settings": {
+    "title": "設定",
+    "maxGuesses": "最大猜測次數",
+    "generations": "世代",
+    "prankster": "惡作劇模式",
+    "pranksterDesc": "每次猜測隨機隱藏一個屬性",
+    "genArrow": "世代箭頭",
+    "genArrowDesc": "顯示世代提示箭頭",
+    "guessOrder": "猜測順序",
+    "guessOrderNormal": "正常（最舊的在前）",
+    "guessOrderReverse": "反向（最新的在前）",
+    "apply": "應用設定",
+    "reset": "重置為預設值",
+    "resetConfirm": "您確定要將所有設定重置為預設值嗎？",
+    "cancel": "取消",
+    "confirm": "重置"
+  },
+  "about": {
+    "title": "關於",
+    "description": "寶可夢猜猜樂是一個猜謎遊戲，你需要根據各種線索（包括屬性、特性、數值、進化等）來識別寶可夢。",
+    "howToPlay": "遊戲玩法",
+    "rules": [
+      "在輸入框中輸入寶可夢名稱",
+      "每次猜測都會顯示你的猜測與目標的接近程度",
+      "綠色表示完全匹配，黃色表示接近，灰色表示不匹配",
+      "利用線索來縮小猜測範圍",
+      "嘗試在允許的次數內猜出寶可夢！"
+    ]
+  },
+  "navbar": {
+    "settings": "設定",
+    "language": "語言"
+  },
+  "footer": {
+    "copyright": "© 2024 寶可夢猜猜樂。保留所有權利。",
+    "privacyAndTerms": "隱私與條款"
+  },
+  "generation": {
+    "Gen1": "第一世代",
+    "Gen2": "第二世代",
+    "Gen3": "第三世代",
+    "Gen4": "第四世代",
+    "Gen5": "第五世代",
+    "Gen6": "第六世代",
+    "Gen7": "第七世代",
+    "Gen8": "第八世代",
+    "Gen9": "第九世代"
+  },
+  "evolution": {
+    "stage1": "不進化/第一階段",
+    "stage2": "第二階段",
+    "stage3": "第三階段"
+  },
+  "evolutionMethods": {
+    "level-normal": "普通提升等級",
+    "level-friendship": "達到親密度要求提升等級",
+    "level-move": "學會招式提升等級",
+    "level-location": "特定地點提升等級",
+    "level-time": "特定時間提升等級",
+    "level-holding-item": "持有道具提升等級",
+    "level-gender": "特定性別提升等級",
+    "level-version": "特定遊戲版本提升等級",
+    "level-unique": "滿足特殊條件提升等級",
+    "item-stone-fire": "使用火之石",
+    "item-stone-water": "使用水之石",
+    "item-stone-thunder": "使用雷之石",
+    "item-stone-leaf": "使用葉之石",
+    "item-stone-moon": "使用月之石",
+    "item-stone-shiny": "使用光之石",
+    "item-stone-dusk": "使用暗之石",
+    "item-stone-dawn-male": "雄性使用覺醒石",
+    "item-stone-dawn-female": "雌性使用覺醒石",
+    "item-stone-ice": "使用冰之石",
+    "item-unique": "使用特殊道具",
+    "trade-normal": "通信交換",
+    "trade-item": "攜帶道具交換",
+    "trade-certain": "指定寶可夢交換",
+    "unique": "特殊方式進化"
+  },
+  "tags": {
+    "starter": "御三家",
+    "legendary": "傳說中的寶可夢",
+    "mythical": "幻之寶可夢",
+    "fossil": "化石寶可夢",
+    "regional": "有地區形態",
+    "has-mega": "有超級進化",
+    "has-gmax": "有超極巨化",
+    "ultra": "究極異獸",
+    "paradox": "悖謬寶可夢",
+    "late": "大器晚成的寶可夢"
+  }
+} 

@@ -1,0 +1,130 @@
+{
+  "title": "포케 워들",
+  "description": "포켓몬의 속성, 스탯, 특성, 진화 등을 바탕으로 포켓몬을 맞춰보세요!",
+  "game": {
+    "inputPlaceholder": "포켓몬 이름을 입력하세요...",
+    "submit": "제출",
+    "randomStart": "랜덤 추측",
+    "giveUp": "포기",
+    "restart": "다시 시작",
+    "guessCount": "추측 횟수: {current}/{max}",
+    "pokemonNotFound": "포켓몬을 찾을 수 없습니다",
+    "gameWon": "축하합니다! 맞추셨습니다!",
+    "gameOver": "게임 종료",
+    "gameLost": "게임 종료! 정답은 {pokemon}였습니다",
+    "congratulations": "축하합니다!",
+    "betterLuckNextTime": "다음에 더 잘하세요!",
+    "guessedIn": "{count}번 만에 맞추셨습니다",
+    "usedAllGuesses": "모든 {max}번의 기회를 사용했습니다",
+    "close": "닫기",
+    "playAgain": "다시 하기",
+    "startPrompt": "포켓몬 이름을 입력하거나 \"랜덤 추측\"을 클릭하여 시작하세요!",
+    "languageChanged": "언어 변경됨",
+    "languageChangedDesc": "언어가 변경되었습니다. 포켓몬 데이터가 새 언어로 업데이트되었습니다. 게임을 계속하려면 새 게임을 시작해주세요.",
+    "generationChanged": "세대 설정 변경됨",
+    "generationChangedDesc": "세대 설정이 변경되었습니다. 현재 게임이 새 설정에 맞게 재설정되었습니다. 게임을 계속하려면 새 게임을 시작해주세요.",
+    "settingsChanged": "설정 변경됨",
+    "settingsChangedDesc": "게임 설정이 변경되었습니다. 현재 게임이 새 설정에 맞게 재설정되었습니다. 게임을 계속하려면 새 게임을 시작해주세요.",
+    "columns": {
+      "profile": "프로필",
+      "name": "이름",
+      "type": "타입",
+      "baseStats": "기본 스탯",
+      "generation": "세대",
+      "abilities": "특성",
+      "evolution": "진화",
+      "tags": "태그"
+    }
+  },
+  "settings": {
+    "title": "설정",
+    "maxGuesses": "최대 추측 횟수",
+    "generations": "세대",
+    "prankster": "장난꾸러기 모드",
+    "pranksterDesc": "추측마다 무작위로 하나의 속성 숨기기",
+    "genArrow": "세대 화살표",
+    "genArrowDesc": "세대 힌트용 화살표 표시",
+    "guessOrder": "추측 순서",
+    "guessOrderNormal": "일반 (오래된 것 먼저)",
+    "guessOrderReverse": "역순 (새로운 것 먼저)",
+    "apply": "설정 적용",
+    "reset": "기본값으로 재설정",
+    "resetConfirm": "모든 설정을 기본값으로 재설정하시겠습니까?",
+    "cancel": "취소",
+    "confirm": "재설정"
+  },
+  "about": {
+    "title": "정보",
+    "description": "포케 워들은 타입, 특성, 스탯, 진화 등 다양한 단서를 바탕으로 포켓몬을 식별하는 추측 게임입니다.",
+    "howToPlay": "게임 방법",
+    "rules": [
+      "입력 필드에 포켓몬 이름을 입력하세요",
+      "각 추측은 당신의 추측이 목표에 얼마나 가까운지 보여줍니다",
+      "초록색은 정확한 일치, 노란색은 가까움, 회색은 일치하지 않음을 의미합니다",
+      "단서를 사용하여 추측 범위를 좁혀나가세요",
+      "허용된 횟수 내에 포켓몬을 맞춰보세요!"
+    ]
+  },
+  "navbar": {
+    "settings": "설정",
+    "language": "언어"
+  },
+  "footer": {
+    "copyright": "© 2024 포케 워들. 모든 권리 보유.",
+    "privacyAndTerms": "개인정보 및 약관"
+  },
+  "generation": {
+    "Gen1": "1세대",
+    "Gen2": "2세대",
+    "Gen3": "3세대",
+    "Gen4": "4세대",
+    "Gen5": "5세대",
+    "Gen6": "6세대",
+    "Gen7": "7세대",
+    "Gen8": "8세대",
+    "Gen9": "9세대"
+  },
+  "evolution": {
+    "stage1": "진화 안함/1단계",
+    "stage2": "2단계",
+    "stage3": "3단계"
+  },
+  "evolutionMethods": {
+    "level-normal": "일반 레벨업",
+    "level-friendship": "친밀도 레벨업",
+    "level-move": "기술을 배우고 레벨업",
+    "level-location": "특정 장소에서 레벨업",
+    "level-time": "특정 시간에 레벨업",
+    "level-holding-item": "아이템을 지니고 레벨업",
+    "level-gender": "특정 성별로 레벨업",
+    "level-version": "특정 게임 버전에서 레벨업",
+    "level-unique": "특수 조건으로 레벨업",
+    "item-stone-fire": "불꽃의돌 사용",
+    "item-stone-water": "물의돌 사용",
+    "item-stone-thunder": "천둥의돌 사용",
+    "item-stone-leaf": "리프의돌 사용",
+    "item-stone-moon": "달의돌 사용",
+    "item-stone-shiny": "빛의돌 사용",
+    "item-stone-dusk": "어둠의돌 사용",
+    "item-stone-dawn-male": "수컷이 각성의돌 사용",
+    "item-stone-dawn-female": "암컷이 각성의돌 사용",
+    "item-stone-ice": "얼음의돌 사용",
+    "item-unique": "특수 아이템 사용",
+    "trade-normal": "통신교환",
+    "trade-item": "아이템을 지니고 교환",
+    "trade-certain": "특정 포켓몬과 교환",
+    "unique": "특수 진화 방법"
+  },
+  "tags": {
+    "starter": "스타터",
+    "legendary": "전설의 포켓몬",
+    "mythical": "환상의 포켓몬",
+    "fossil": "화석 포켓몬",
+    "regional": "지역 폼",
+    "has-mega": "메가진화 있음",
+    "has-gmax": "다이맥스 있음",
+    "ultra": "울트라비스트",
+    "paradox": "패러독스 포켓몬",
+    "late": "대기만성 포켓몬"
+  }
+} 

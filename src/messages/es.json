@@ -1,0 +1,130 @@
+{
+  "title": "Poke Wordle",
+  "description": "¡Adivina el Pokémon basándote en sus atributos, estadísticas, habilidades, evolución y más!",
+  "game": {
+    "inputPlaceholder": "Ingresa el nombre del Pokémon...",
+    "submit": "Enviar",
+    "randomStart": "Intento Aleatorio",
+    "giveUp": "Rendirse",
+    "restart": "Reiniciar",
+    "guessCount": "Intentos: {current}/{max}",
+    "pokemonNotFound": "Pokémon no encontrado",
+    "gameWon": "¡Felicidades! ¡Lo adivinaste!",
+    "gameOver": "Juego terminado",
+    "gameLost": "¡Juego terminado! La respuesta era {pokemon}",
+    "congratulations": "¡Felicidades!",
+    "betterLuckNextTime": "¡Mejor suerte la próxima vez!",
+    "guessedIn": "Lo adivinaste en {count} intentos",
+    "usedAllGuesses": "Usaste todos los {max} intentos",
+    "close": "Cerrar",
+    "playAgain": "Jugar de nuevo",
+    "startPrompt": "¡Ingresa un nombre de Pokémon o haz clic en \"Intento Aleatorio\" para comenzar!",
+    "languageChanged": "Idioma Cambiado",
+    "languageChangedDesc": "El idioma ha sido cambiado. Los datos de Pokémon han sido actualizados al nuevo idioma. Por favor inicia un nuevo juego para continuar jugando.",
+    "generationChanged": "Configuración de Generación Cambiada",
+    "generationChangedDesc": "La configuración de generación ha sido cambiada. El juego actual ha sido reiniciado para coincidir con la nueva configuración. Por favor inicia un nuevo juego para continuar jugando.",
+    "settingsChanged": "Configuración Cambiada",
+    "settingsChangedDesc": "La configuración del juego ha sido cambiada. El juego actual ha sido reiniciado para coincidir con la nueva configuración. Por favor inicia un nuevo juego para continuar jugando.",
+    "columns": {
+      "profile": "Perfil",
+      "name": "Nombre",
+      "type": "Tipo",
+      "baseStats": "Estadísticas Base",
+      "generation": "Generación",
+      "abilities": "Habilidades",
+      "evolution": "Evolución",
+      "tags": "Etiquetas"
+    }
+  },
+  "settings": {
+    "title": "Configuración",
+    "maxGuesses": "Intentos Máximos",
+    "generations": "Generaciones",
+    "prankster": "Modo Bromista",
+    "pranksterDesc": "Ocultar aleatoriamente un atributo por intento",
+    "genArrow": "Flechas de Generación",
+    "genArrowDesc": "Mostrar flechas para pistas de generación",
+    "guessOrder": "Orden de Intentos",
+    "guessOrderNormal": "Normal (más antiguo primero)",
+    "guessOrderReverse": "Inverso (más nuevo primero)",
+    "apply": "Aplicar Configuración",
+    "reset": "Restablecer a Valores Predeterminados",
+    "resetConfirm": "¿Está seguro de que desea restablecer toda la configuración a sus valores predeterminados?",
+    "cancel": "Cancelar",
+    "confirm": "Restablecer"
+  },
+  "about": {
+    "title": "Acerca de",
+    "description": "Poke Wordle es un juego de adivinanzas donde intentas identificar un Pokémon basándote en varias pistas incluyendo tipos, habilidades, estadísticas, evolución y más.",
+    "howToPlay": "Cómo Jugar",
+    "rules": [
+      "Ingresa un nombre de Pokémon en el campo de entrada",
+      "Cada intento te mostrará qué tan cerca está tu intento del objetivo",
+      "Verde significa coincidencia exacta, amarillo significa cerca, gris significa sin coincidencia",
+      "Usa las pistas para reducir tus intentos",
+      "¡Trata de adivinar el Pokémon dentro del número de intentos permitido!"
+    ]
+  },
+  "navbar": {
+    "settings": "Configuración",
+    "language": "Idioma"
+  },
+  "footer": {
+    "copyright": "© 2024 Poke Wordle. Todos los derechos reservados.",
+    "privacyAndTerms": "Privacidad y Términos"
+  },
+  "generation": {
+    "Gen1": "Generación 1",
+    "Gen2": "Generación 2",
+    "Gen3": "Generación 3",
+    "Gen4": "Generación 4",
+    "Gen5": "Generación 5",
+    "Gen6": "Generación 6",
+    "Gen7": "Generación 7",
+    "Gen8": "Generación 8",
+    "Gen9": "Generación 9"
+  },
+  "evolution": {
+    "stage1": "Sin evolución/Primera etapa",
+    "stage2": "Segunda etapa",
+    "stage3": "Tercera etapa"
+  },
+  "evolutionMethods": {
+    "level-normal": "Subir nivel normalmente",
+    "level-friendship": "Subir nivel con alta amistad",
+    "level-move": "Subir nivel conociendo un movimiento",
+    "level-location": "Subir nivel en ubicación específica",
+    "level-time": "Subir nivel en momento específico",
+    "level-holding-item": "Subir nivel sosteniendo un objeto",
+    "level-gender": "Subir nivel con género específico",
+    "level-version": "Subir nivel en versión específica del juego",
+    "level-unique": "Subir nivel con condiciones especiales",
+    "item-stone-fire": "Usar Piedra Fuego",
+    "item-stone-water": "Usar Piedra Agua",
+    "item-stone-thunder": "Usar Piedra Trueno",
+    "item-stone-leaf": "Usar Piedra Hoja",
+    "item-stone-moon": "Usar Piedra Luna",
+    "item-stone-shiny": "Usar Piedra Día",
+    "item-stone-dusk": "Usar Piedra Noche",
+    "item-stone-dawn-male": "Macho usa Piedra Alba",
+    "item-stone-dawn-female": "Hembra usa Piedra Alba",
+    "item-stone-ice": "Usar Piedra Hielo",
+    "item-unique": "Usar objeto especial",
+    "trade-normal": "Intercambio",
+    "trade-item": "Intercambio sosteniendo objeto",
+    "trade-certain": "Intercambio por Pokémon específico",
+    "unique": "Método de evolución especial"
+  },
+  "tags": {
+    "starter": "Inicial",
+    "legendary": "Legendario",
+    "mythical": "Mítico",
+    "fossil": "Fósil",
+    "regional": "Forma Regional",
+    "has-mega": "Tiene Mega Evolución",
+    "has-gmax": "Tiene Gigantamax",
+    "ultra": "Ultraente",
+    "paradox": "Pokémon Paradoja",
+    "late": "Pokémon de Florecimiento Tardío"
+  }
+} 
