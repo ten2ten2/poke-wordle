@@ -9,7 +9,7 @@ export interface SEOConfig {
   canonicalUrl?: string;
   ogImage?: string;
   twitterImage?: string;
-  structuredData?: Record<string, any>;
+  structuredData?: Record<string, unknown>;
 }
 
 export function generateSEOMetadata(config: SEOConfig): Metadata {
@@ -67,17 +67,6 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
 }
 
 export function generateGameStructuredData(locale: string) {
-  const localeNames = {
-    en: 'English',
-    ja: '日本語',
-    fr: 'Français',
-    de: 'Deutsch',
-    it: 'Italiano',
-    es: 'Español',
-    ko: '한국어',
-    'zh-hans': '简体中文',
-    'zh-hant': '繁體中文',
-  };
 
   return {
     "@context": "https://schema.org",

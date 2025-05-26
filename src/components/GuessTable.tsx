@@ -17,7 +17,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
   // Generate consistent prankster images for each guess
   const pranksterImages = useMemo(() => {
     return guesses.map(() => getRandomPranksterImage());
-  }, [guesses.length]);
+  }, [guesses]);
 
   if (guesses.length === 0) {
     return (
@@ -146,7 +146,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                 <td className="table-cell-responsive whitespace-nowrap gradient-divider">
                   <div className="flex-shrink-0 h-16 w-16 sm:h-20 sm:w-20 lg:h-24 lg:w-24">
                     <Image
-                      src={guess.profile}
+                      src={guess.profile || '/images/pokemon-placeholder.png'}
                       alt={guess.name}
                       width={256}
                       height={256}

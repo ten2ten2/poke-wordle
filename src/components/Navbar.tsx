@@ -5,10 +5,11 @@ import { useTranslations } from 'next-intl';
 import { Cog6ToothIcon, LanguageIcon } from '@heroicons/react/24/outline';
 import Settings from './Settings';
 import LanguageSwitcher from './LanguageSwitcher';
+import { GameSettings } from '@/types/pokemon';
 
 interface NavbarProps {
-  onSettingsChange: (settings: any) => void;
-  currentSettings: any;
+  onSettingsChange: (settings: GameSettings) => void;
+  currentSettings: GameSettings;
 }
 
 export default function Navbar({ onSettingsChange, currentSettings }: NavbarProps) {

@@ -4,6 +4,7 @@
   "game": {
     "inputPlaceholder": "输入宝可梦名称...",
     "submit": "提交",
+    "submitting": "提交中...",
     "randomStart": "随机开局",
     "giveUp": "放弃",
     "restart": "重新开始",
@@ -25,6 +26,16 @@
     "generationChangedDesc": "世代设置已更改。当前游戏已重置以匹配新设置。请开始新游戏以继续游玩。",
     "settingsChanged": "设置已更改",
     "settingsChangedDesc": "游戏设置已更改。当前游戏已重置以匹配新设置。请开始新游戏以继续游玩。",
+    "inputSection": "游戏输入区域",
+    "statusSection": "游戏状态区域",
+    "resultsSection": "游戏结果区域",
+    "noGuessesYet": "还没有猜测记录",
+    "correctAnswer": "正确答案",
+    "scrollHint": "滚动查看更多信息",
+    "guessesUsed": "已使用猜测次数",
+    "result": "结果",
+    "defeat": "失败",
+    "viewResults": "查看结果",
     "columns": {
       "profile": "样子",
       "name": "名称",
@@ -34,17 +45,40 @@
       "abilities": "特性",
       "evolution": "进化",
       "tags": "其它标签"
+    },
+    "evolutionMethod": "进化方式",
+    "detailedStats": "详细种族值",
+    "stats": {
+      "hp": "HP",
+      "attack": "攻击",
+      "defense": "防御",
+      "spAttack": "特攻",
+      "spDefense": "特防",
+      "speed": "速度"
     }
   },
   "settings": {
     "title": "设置",
-    "maxGuesses": "最大猜测次数",
+    "settingsTab": "设置",
+    "aboutTab": "关于",
+    "maxGuesses": "本轮可猜测次数",
+    "times": "次",
+    "generationSelection": "世代选择",
+    "selectAll": "全选",
+    "deselectAll": "全不选",
+    "generationRequired": "至少需要选择一个世代",
     "generations": "世代",
     "prankster": "恶作剧模式",
     "pranksterDesc": "每次猜测随机隐藏一个属性",
-    "genArrow": "世代箭头",
-    "genArrowDesc": "显示世代提示箭头",
-    "guessOrder": "猜测顺序",
+    "pranksterMode": "恶作剧开关",
+    "pranksterModeDesc": "开启后每次猜测会随机遮盖一项宝可梦数据",
+    "genArrow": "世代箭头开关",
+    "genArrowDesc": "开启后每次猜测会提示世代高低",
+    "guessOrder": "猜测显示顺序",
+    "reverseOrder": "反向显示",
+    "reverseOrderDesc": "新的猜测出现在最上方",
+    "normalOrder": "正向显示",
+    "normalOrderDesc": "新的猜测出现在最下方",
     "guessOrderNormal": "正常（最旧的在前）",
     "guessOrderReverse": "反向（最新的在前）",
     "apply": "应用设置",
@@ -52,6 +86,11 @@
     "resetConfirm": "您确定要将所有设置重置为默认值吗？",
     "cancel": "取消",
     "confirm": "重置"
+  },
+  "common": {
+    "close": "关闭",
+    "cancel": "取消",
+    "save": "保存"
   },
   "about": {
     "title": "关于",
@@ -71,7 +110,12 @@
   },
   "footer": {
     "copyright": "© 2024 宝可梦猜猜乐。保留所有权利。",
-    "privacyAndTerms": "隐私与条款"
+    "privacyAndTerms": "隐私与条款",
+    "allRightsReserved": "保留所有权利。",
+    "github": "GitHub",
+    "privacy": "隐私政策",
+    "terms": "使用条款",
+    "pokemonAttribution": "宝可梦相关内容归任天堂、Game Freak 和 Creatures Inc. 所有。"
   },
   "generation": {
     "Gen1": "第一世代",
@@ -103,7 +147,8 @@
     "item-stone-water": "使用水之石",
     "item-stone-thunder": "使用雷之石",
     "item-stone-leaf": "使用叶之石",
-    "item-stone-moon": "使用太阳石",
+    "item-stone-sun": "使用太阳石",
+    "item-stone-moon": "使用月之石",
     "item-stone-shiny": "使用光之石",
     "item-stone-dusk": "使用暗之石",
     "item-stone-dawn-male": "雄性使用觉醒石",

@@ -4,6 +4,7 @@
   "game": {
     "inputPlaceholder": "Inserisci il nome del Pokémon...",
     "submit": "Invia",
+    "submitting": "Invio in corso...",
     "randomStart": "Tentativo Casuale",
     "giveUp": "Arrenditi",
     "restart": "Riavvia",
@@ -25,6 +26,16 @@
     "generationChangedDesc": "Le impostazioni di generazione sono state cambiate. Il gioco attuale è stato resettato per corrispondere alle nuove impostazioni. Inizia un nuovo gioco per continuare a giocare.",
     "settingsChanged": "Impostazioni Cambiate",
     "settingsChangedDesc": "Le impostazioni del gioco sono state cambiate. Il gioco attuale è stato resettato per corrispondere alle nuove impostazioni. Inizia un nuovo gioco per continuare a giocare.",
+    "inputSection": "Sezione input del gioco",
+    "statusSection": "Sezione stato del gioco",
+    "resultsSection": "Sezione risultati del gioco",
+    "noGuessesYet": "Nessun tentativo ancora",
+    "correctAnswer": "Risposta corretta",
+    "scrollHint": "Scorri per vedere più informazioni",
+    "guessesUsed": "Tentativi utilizzati",
+    "result": "Risultato",
+    "defeat": "Sconfitta",
+    "viewResults": "Visualizza risultati",
     "columns": {
       "profile": "Profilo",
       "name": "Nome",
@@ -34,17 +45,40 @@
       "abilities": "Abilità",
       "evolution": "Evoluzione",
       "tags": "Tag"
+    },
+    "evolutionMethod": "Metodo di Evoluzione",
+    "detailedStats": "Statistiche Dettagliate",
+    "stats": {
+      "hp": "PS",
+      "attack": "Attacco",
+      "defense": "Difesa",
+      "spAttack": "Att. Sp.",
+      "spDefense": "Dif. Sp.",
+      "speed": "Velocità"
     }
   },
   "settings": {
     "title": "Impostazioni",
+    "settingsTab": "Impostazioni",
+    "aboutTab": "Informazioni",
     "maxGuesses": "Tentativi Massimi",
+    "times": "volte",
+    "generationSelection": "Selezione Generazione",
+    "selectAll": "Seleziona Tutto",
+    "deselectAll": "Deseleziona Tutto",
+    "generationRequired": "Almeno una generazione deve essere selezionata",
     "generations": "Generazioni",
     "prankster": "Modalità Burlone",
     "pranksterDesc": "Nascondi casualmente un attributo per tentativo",
+    "pranksterMode": "Modalità Burlone",
+    "pranksterModeDesc": "Nascondi casualmente un attributo per tentativo",
     "genArrow": "Frecce Generazione",
     "genArrowDesc": "Mostra frecce per suggerimenti di generazione",
     "guessOrder": "Ordine Tentativi",
+    "reverseOrder": "Ordine Inverso",
+    "reverseOrderDesc": "I nuovi tentativi appaiono in alto",
+    "normalOrder": "Ordine Normale",
+    "normalOrderDesc": "I nuovi tentativi appaiono in basso",
     "guessOrderNormal": "Normale (più vecchio prima)",
     "guessOrderReverse": "Inverso (più nuovo prima)",
     "apply": "Applica Impostazioni",
@@ -52,6 +86,11 @@
     "resetConfirm": "Sei sicuro di voler ripristinare tutte le impostazioni ai loro valori predefiniti?",
     "cancel": "Annulla",
     "confirm": "Ripristina"
+  },
+  "common": {
+    "close": "Chiudi",
+    "cancel": "Annulla",
+    "save": "Salva"
   },
   "about": {
     "title": "Informazioni",
@@ -71,7 +110,12 @@
   },
   "footer": {
     "copyright": "© 2024 Poke Wordle. Tutti i diritti riservati.",
-    "privacyAndTerms": "Privacy e Termini"
+    "privacyAndTerms": "Privacy e Termini",
+    "allRightsReserved": "Tutti i diritti riservati.",
+    "github": "GitHub",
+    "privacy": "Informativa sulla Privacy",
+    "terms": "Termini di Servizio",
+    "pokemonAttribution": "I contenuti relativi ai Pokémon sono di proprietà di Nintendo, Game Freak e Creatures Inc."
   },
   "generation": {
     "Gen1": "Generazione 1",
@@ -103,6 +147,7 @@
     "item-stone-water": "Usa Pietraidrica",
     "item-stone-thunder": "Usa Pietratuono",
     "item-stone-leaf": "Usa Pietrafoglia",
+    "item-stone-sun": "Usa Pietrasole",
     "item-stone-moon": "Usa Pietralunare",
     "item-stone-shiny": "Usa Pietraluce",
     "item-stone-dusk": "Usa Pietranotte",

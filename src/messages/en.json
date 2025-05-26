@@ -4,6 +4,7 @@
   "game": {
     "inputPlaceholder": "Enter Pokémon name...",
     "submit": "Submit",
+    "submitting": "Submitting...",
     "randomStart": "Random Guess",
     "giveUp": "Give Up",
     "restart": "Restart",
@@ -25,6 +26,16 @@
     "generationChangedDesc": "The generation settings have been changed. The current game has been reset to match the new settings. Please start a new game to continue playing.",
     "settingsChanged": "Settings Changed",
     "settingsChangedDesc": "Game settings have been changed. The current game has been reset to match the new settings. Please start a new game to continue playing.",
+    "inputSection": "Game input section",
+    "statusSection": "Game status section",
+    "resultsSection": "Game results section",
+    "noGuessesYet": "No guesses yet",
+    "correctAnswer": "Correct answer",
+    "scrollHint": "Scroll to see more information",
+    "guessesUsed": "Guesses used",
+    "result": "Result",
+    "defeat": "Defeat",
+    "viewResults": "View results",
     "columns": {
       "profile": "Profile",
       "name": "Name",
@@ -34,17 +45,40 @@
       "abilities": "Abilities",
       "evolution": "Evolution",
       "tags": "Tags"
+    },
+    "evolutionMethod": "Evolution Method",
+    "detailedStats": "Detailed Stats",
+    "stats": {
+      "hp": "HP",
+      "attack": "Attack",
+      "defense": "Defense",
+      "spAttack": "Sp. Attack",
+      "spDefense": "Sp. Defense",
+      "speed": "Speed"
     }
   },
   "settings": {
     "title": "Settings",
-    "maxGuesses": "Max Guesses",
+    "settingsTab": "Settings",
+    "aboutTab": "About",
+    "maxGuesses": "Max Guesses per Round",
+    "times": "times",
+    "generationSelection": "Generation Selection",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All",
+    "generationRequired": "At least one generation must be selected",
     "generations": "Generations",
     "prankster": "Prankster Mode",
     "pranksterDesc": "Randomly hide one attribute per guess",
-    "genArrow": "Generation Arrows",
-    "genArrowDesc": "Show arrows for generation hints",
-    "guessOrder": "Guess Order",
+    "pranksterMode": "Prankster Mode",
+    "pranksterModeDesc": "When enabled, randomly hides one Pokémon attribute per guess",
+    "genArrow": "Generation Arrow",
+    "genArrowDesc": "When enabled, shows generation hints with arrows",
+    "guessOrder": "Guess Display Order",
+    "reverseOrder": "Reverse Order",
+    "reverseOrderDesc": "New guesses appear at the top",
+    "normalOrder": "Normal Order",
+    "normalOrderDesc": "New guesses appear at the bottom",
     "guessOrderNormal": "Normal (oldest first)",
     "guessOrderReverse": "Reverse (newest first)",
     "apply": "Apply Settings",
@@ -52,6 +86,11 @@
     "resetConfirm": "Are you sure you want to reset all settings to their default values?",
     "cancel": "Cancel",
     "confirm": "Reset"
+  },
+  "common": {
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save"
   },
   "about": {
     "title": "About",
@@ -71,7 +110,12 @@
   },
   "footer": {
     "copyright": "© 2024 Poke Wordle. All rights reserved.",
-    "privacyAndTerms": "Privacy & Terms"
+    "privacyAndTerms": "Privacy & Terms",
+    "allRightsReserved": "All rights reserved.",
+    "github": "GitHub",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "pokemonAttribution": "Pokémon-related content is owned by Nintendo, Game Freak, and Creatures Inc."
   },
   "generation": {
     "Gen1": "Generation 1",

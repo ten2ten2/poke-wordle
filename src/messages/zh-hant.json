@@ -4,6 +4,7 @@
   "game": {
     "inputPlaceholder": "輸入寶可夢名稱...",
     "submit": "提交",
+    "submitting": "提交中...",
     "randomStart": "隨機開局",
     "giveUp": "放棄",
     "restart": "重新開始",
@@ -25,6 +26,16 @@
     "generationChangedDesc": "世代設定已更改。當前遊戲已重置以匹配新設定。請開始新遊戲以繼續遊玩。",
     "settingsChanged": "設定已更改",
     "settingsChangedDesc": "遊戲設定已更改。當前遊戲已重置以匹配新設定。請開始新遊戲以繼續遊玩。",
+    "inputSection": "遊戲輸入區域",
+    "statusSection": "遊戲狀態區域",
+    "resultsSection": "遊戲結果區域",
+    "noGuessesYet": "還沒有猜測記錄",
+    "correctAnswer": "正確答案",
+    "scrollHint": "滾動查看更多資訊",
+    "guessesUsed": "已使用猜測次數",
+    "result": "結果",
+    "defeat": "失敗",
+    "viewResults": "查看結果",
     "columns": {
       "profile": "樣子",
       "name": "名稱",
@@ -34,17 +45,40 @@
       "abilities": "特性",
       "evolution": "進化",
       "tags": "其它標籤"
+    },
+    "evolutionMethod": "進化方式",
+    "detailedStats": "詳細種族值",
+    "stats": {
+      "hp": "HP",
+      "attack": "攻擊",
+      "defense": "防禦",
+      "spAttack": "特攻",
+      "spDefense": "特防",
+      "speed": "速度"
     }
   },
   "settings": {
     "title": "設定",
-    "maxGuesses": "最大猜測次數",
+    "settingsTab": "設定",
+    "aboutTab": "關於",
+    "maxGuesses": "本輪可猜測次數",
+    "times": "次",
+    "generationSelection": "世代選擇",
+    "selectAll": "全選",
+    "deselectAll": "全不選",
+    "generationRequired": "至少需要選擇一個世代",
     "generations": "世代",
     "prankster": "惡作劇模式",
     "pranksterDesc": "每次猜測隨機隱藏一個屬性",
-    "genArrow": "世代箭頭",
-    "genArrowDesc": "顯示世代提示箭頭",
-    "guessOrder": "猜測順序",
+    "pranksterMode": "惡作劇開關",
+    "pranksterModeDesc": "開啟後每次猜測會隨機遮蓋一項寶可夢資料",
+    "genArrow": "世代箭頭開關",
+    "genArrowDesc": "開啟後每次猜測會提示世代高低",
+    "guessOrder": "猜測顯示順序",
+    "reverseOrder": "反向顯示",
+    "reverseOrderDesc": "新的猜測出現在最上方",
+    "normalOrder": "正向顯示",
+    "normalOrderDesc": "新的猜測出現在最下方",
     "guessOrderNormal": "正常（最舊的在前）",
     "guessOrderReverse": "反向（最新的在前）",
     "apply": "應用設定",
@@ -52,6 +86,11 @@
     "resetConfirm": "您確定要將所有設定重置為預設值嗎？",
     "cancel": "取消",
     "confirm": "重置"
+  },
+  "common": {
+    "close": "關閉",
+    "cancel": "取消",
+    "save": "儲存"
   },
   "about": {
     "title": "關於",
@@ -71,7 +110,12 @@
   },
   "footer": {
     "copyright": "© 2024 寶可夢猜猜樂。保留所有權利。",
-    "privacyAndTerms": "隱私與條款"
+    "privacyAndTerms": "隱私與條款",
+    "allRightsReserved": "保留所有權利。",
+    "github": "GitHub",
+    "privacy": "隱私政策",
+    "terms": "使用條款",
+    "pokemonAttribution": "寶可夢相關內容歸任天堂、Game Freak 和 Creatures Inc. 所有。"
   },
   "generation": {
     "Gen1": "第一世代",
@@ -103,6 +147,7 @@
     "item-stone-water": "使用水之石",
     "item-stone-thunder": "使用雷之石",
     "item-stone-leaf": "使用葉之石",
+    "item-stone-sun": "使用太陽石",
     "item-stone-moon": "使用月之石",
     "item-stone-shiny": "使用光之石",
     "item-stone-dusk": "使用暗之石",

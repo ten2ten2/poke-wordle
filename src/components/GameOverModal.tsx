@@ -288,16 +288,100 @@ export default function GameOverModal({
                       {targetPokemon.name}
                     </h4>
                     
-                                         <div className="flex flex-wrap justify-center gap-2 mb-4">
-                       {targetPokemon.types.map((type, index) => (
-                         <span
-                           key={index}
-                           className="tag tag-exact"
-                         >
-                           {type}
-                         </span>
-                       ))}
-                     </div>
+                    {/* Types with colors */}
+                    <div className="flex flex-wrap justify-center gap-2 mb-4">
+                      {targetPokemon.types.map((type, index) => (
+                        <span
+                          key={index}
+                          className={`px-3 py-1 rounded-full text-white text-sm font-medium ${getTypeColor(type)}`}
+                        >
+                          {type}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Pokemon Details */}
+                    <div className="bg-gray-50 rounded-lg p-4 mb-4 text-left">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {/* Generation */}
+                        <div>
+                          <div className="text-sm font-medium text-gray-500 mb-1">
+                            {t('game.columns.generation')}
+                          </div>
+                          <div className="text-base font-semibold text-gray-900">
+                            {t(`generation.Gen${targetPokemon.generation}`)}
+                          </div>
+                        </div>
+
+                        {/* Base Stats Total */}
+                        <div>
+                          <div className="text-sm font-medium text-gray-500 mb-1">
+                            {t('game.columns.baseStats')}
+                          </div>
+                          <div className="text-base font-semibold text-gray-900">
+                            {targetPokemon.base_stats_total}
+                          </div>
+                        </div>
+
+                        {/* Evolution Stage */}
+                        <div>
+                          <div className="text-sm font-medium text-gray-500 mb-1">
+                            {t('game.columns.evolution')}
+                          </div>
+                          <div className="text-base font-semibold text-gray-900">
+                            {t(`evolution.stage${targetPokemon.evolution_stage}`)}
+                          </div>
+                        </div>
+
+                        {/* Evolution Method */}
+                        {targetPokemon.evolution_method_detail && (
+                          <div>
+                            <div className="text-sm font-medium text-gray-500 mb-1">
+                              {t('game.evolutionMethod')}
+                            </div>
+                            <div className="text-base font-semibold text-gray-900">
+                              {t(`evolutionMethods.${targetPokemon.evolution_method_detail}`)}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Abilities */}
+                      <div className="mt-4">
+                        <div className="text-sm font-medium text-gray-500 mb-2">
+                          {t('game.columns.abilities')}
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {targetPokemon.abilities.map((ability, index) => (
+                            <span
+                              key={index}
+                              className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm"
+                            >
+                              {ability}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Tags */}
+                      {targetPokemon.tags && targetPokemon.tags.length > 0 && (
+                        <div className="mt-4">
+                          <div className="text-sm font-medium text-gray-500 mb-2">
+                            {t('game.columns.tags')}
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {targetPokemon.tags.map((tag, index) => (
+                              <span
+                                key={index}
+                                className="px-2 py-1 bg-purple-100 text-purple-800 rounded text-sm"
+                              >
+                                {t(`tags.${tag}`)}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   {/* Game Stats */}
@@ -318,7 +402,7 @@ export default function GameOverModal({
                         <div className={`text-responsive-lg font-bold ${
                           isWon ? 'text-green-600' : 'text-red-600'
                         }`}>
-                          {isWon ? t('game.victory') : t('game.defeat')}
+                          {isWon ? t('game.gameWon') : t('game.defeat')}
                         </div>
                       </div>
                     </div>
@@ -329,8 +413,8 @@ export default function GameOverModal({
                     {isWon ? (
                       <p className="text-responsive-base text-gray-700">
                         {guessCount === 1 
-                          ? t('game.perfectGuess')
-                          : t('game.wellDone', { count: guessCount })
+                          ? t('game.guessedIn', { count: 1 })
+                          : t('game.guessedIn', { count: guessCount })
                         }
                       </p>
                     ) : (
@@ -348,13 +432,6 @@ export default function GameOverModal({
                       className="btn-primary flex-1"
                     >
                       {t('game.playAgain')}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={onClose}
-                      className="btn-secondary flex-1"
-                    >
-                      {t('game.viewResults')}
                     </button>
                   </div>
                 </div>

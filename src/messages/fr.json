@@ -4,6 +4,7 @@
   "game": {
     "inputPlaceholder": "Entrez le nom du Pokémon...",
     "submit": "Soumettre",
+    "submitting": "Envoi en cours...",
     "randomStart": "Supposition Aléatoire",
     "giveUp": "Abandonner",
     "restart": "Redémarrer",
@@ -25,6 +26,16 @@
     "generationChangedDesc": "Les paramètres de génération ont été modifiés. Le jeu actuel a été réinitialisé pour correspondre aux nouveaux paramètres. Veuillez commencer un nouveau jeu pour continuer à jouer.",
     "settingsChanged": "Paramètres Modifiés",
     "settingsChangedDesc": "Les paramètres du jeu ont été modifiés. Le jeu actuel a été réinitialisé pour correspondre aux nouveaux paramètres. Veuillez commencer un nouveau jeu pour continuer à jouer.",
+    "inputSection": "Section de saisie du jeu",
+    "statusSection": "Section d'état du jeu",
+    "resultsSection": "Section des résultats du jeu",
+    "noGuessesYet": "Aucune supposition encore",
+    "correctAnswer": "Bonne réponse",
+    "scrollHint": "Faites défiler pour voir plus d'informations",
+    "guessesUsed": "Suppositions utilisées",
+    "result": "Résultat",
+    "defeat": "Défaite",
+    "viewResults": "Voir les résultats",
     "columns": {
       "profile": "Profil",
       "name": "Nom",
@@ -34,17 +45,40 @@
       "abilities": "Capacités",
       "evolution": "Évolution",
       "tags": "Étiquettes"
+    },
+    "evolutionMethod": "Méthode d'Évolution",
+    "detailedStats": "Statistiques Détaillées",
+    "stats": {
+      "hp": "PV",
+      "attack": "Attaque",
+      "defense": "Défense",
+      "spAttack": "Att. Spé.",
+      "spDefense": "Déf. Spé.",
+      "speed": "Vitesse"
     }
   },
   "settings": {
     "title": "Paramètres",
+    "settingsTab": "Paramètres",
+    "aboutTab": "À Propos",
     "maxGuesses": "Tentatives Maximum",
+    "times": "fois",
+    "generationSelection": "Sélection de Génération",
+    "selectAll": "Tout Sélectionner",
+    "deselectAll": "Tout Désélectionner",
+    "generationRequired": "Au moins une génération doit être sélectionnée",
     "generations": "Générations",
     "prankster": "Mode Farceur",
     "pranksterDesc": "Cacher aléatoirement un attribut par supposition",
+    "pranksterMode": "Mode Farceur",
+    "pranksterModeDesc": "Cacher aléatoirement un attribut par supposition",
     "genArrow": "Flèches de Génération",
     "genArrowDesc": "Afficher les flèches pour les indices de génération",
     "guessOrder": "Ordre des Suppositions",
+    "reverseOrder": "Ordre Inverse",
+    "reverseOrderDesc": "Les nouvelles suppositions apparaissent en haut",
+    "normalOrder": "Ordre Normal",
+    "normalOrderDesc": "Les nouvelles suppositions apparaissent en bas",
     "guessOrderNormal": "Normal (plus ancien en premier)",
     "guessOrderReverse": "Inverse (plus récent en premier)",
     "apply": "Appliquer les Paramètres",
@@ -52,6 +86,11 @@
     "resetConfirm": "Êtes-vous sûr de vouloir réinitialiser tous les paramètres à leurs valeurs par défaut ?",
     "cancel": "Annuler",
     "confirm": "Réinitialiser"
+  },
+  "common": {
+    "close": "Fermer",
+    "cancel": "Annuler",
+    "save": "Sauvegarder"
   },
   "about": {
     "title": "À Propos",
@@ -71,7 +110,12 @@
   },
   "footer": {
     "copyright": "© 2024 Poke Wordle. Tous droits réservés.",
-    "privacyAndTerms": "Confidentialité et Conditions"
+    "privacyAndTerms": "Confidentialité et Conditions",
+    "allRightsReserved": "Tous droits réservés.",
+    "github": "GitHub",
+    "privacy": "Politique de Confidentialité",
+    "terms": "Conditions d'Utilisation",
+    "pokemonAttribution": "Le contenu lié aux Pokémon appartient à Nintendo, Game Freak et Creatures Inc."
   },
   "generation": {
     "Gen1": "Génération 1",
@@ -103,6 +147,7 @@
     "item-stone-water": "Utiliser Pierre Eau",
     "item-stone-thunder": "Utiliser Pierre Foudre",
     "item-stone-leaf": "Utiliser Pierre Plante",
+    "item-stone-sun": "Utiliser Pierre Soleil",
     "item-stone-moon": "Utiliser Pierre Lune",
     "item-stone-shiny": "Utiliser Pierre Éclat",
     "item-stone-dusk": "Utiliser Pierre Nuit",

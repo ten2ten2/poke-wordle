@@ -1,5 +1,5 @@
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations } from 'next-intl/server';
+import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { generateGameStructuredData, generateBreadcrumbStructuredData, generateFAQStructuredData } from '@/utils/seo';
@@ -17,11 +17,9 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   
-  if (!locales.includes(locale as any)) {
+  if (!locales.includes(locale)) {
     return {};
   }
-
-  const t = await getTranslations({ locale });
   
   // Locale-specific metadata
   const localeMetadata = {
@@ -116,7 +114,7 @@ export default async function LocaleLayout({
   const { locale } = await params;
   
   // Validate that the incoming `locale` parameter is valid
-  if (!locales.includes(locale as any)) notFound();
+  if (!locales.includes(locale)) notFound();
 
   // Providing all messages to the client
   // side is the easiest way to get started

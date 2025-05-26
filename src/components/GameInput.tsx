@@ -36,7 +36,6 @@ export default function GameInput({
     if (input.length > 0 && shouldShowSuggestions) {
       const filtered = pokemonNames
         .filter(name => name.toLowerCase().indexOf(input.toLowerCase()) !== -1)
-        .slice(0, 8); // Limit suggestions for mobile performance
       setSuggestions(filtered);
       setShowSuggestions(filtered.length > 0);
     } else if (!shouldShowSuggestions) {

@@ -4,6 +4,7 @@
   "game": {
     "inputPlaceholder": "ポケモン名を入力...",
     "submit": "決定",
+    "submitting": "送信中...",
     "randomStart": "ランダム推測",
     "giveUp": "ギブアップ",
     "restart": "リスタート",
@@ -25,6 +26,16 @@
     "generationChangedDesc": "世代設定が変更されました。現在のゲームは新しい設定に合わせてリセットされました。ゲームを続けるには新しいゲームを開始してください。",
     "settingsChanged": "設定が変更されました",
     "settingsChangedDesc": "ゲーム設定が変更されました。現在のゲームは新しい設定に合わせてリセットされました。ゲームを続けるには新しいゲームを開始してください。",
+    "inputSection": "ゲーム入力エリア",
+    "statusSection": "ゲームステータスエリア",
+    "resultsSection": "ゲーム結果エリア",
+    "noGuessesYet": "まだ推測がありません",
+    "correctAnswer": "正解",
+    "scrollHint": "スクロールして詳細を確認",
+    "guessesUsed": "使用した推測回数",
+    "result": "結果",
+    "defeat": "敗北",
+    "viewResults": "結果を見る",
     "columns": {
       "profile": "プロフィール",
       "name": "名前",
@@ -34,17 +45,40 @@
       "abilities": "特性",
       "evolution": "進化",
       "tags": "タグ"
+    },
+    "evolutionMethod": "進化方法",
+    "detailedStats": "詳細種族値",
+    "stats": {
+      "hp": "HP",
+      "attack": "こうげき",
+      "defense": "ぼうぎょ",
+      "spAttack": "とくこう",
+      "spDefense": "とくぼう",
+      "speed": "すばやさ"
     }
   },
   "settings": {
     "title": "設定",
+    "settingsTab": "設定",
+    "aboutTab": "について",
     "maxGuesses": "最大推測回数",
+    "times": "回",
+    "generationSelection": "世代選択",
+    "selectAll": "すべて選択",
+    "deselectAll": "すべて解除",
+    "generationRequired": "少なくとも一つの世代を選択する必要があります",
     "generations": "世代選択",
     "prankster": "いたずらモード",
     "pranksterDesc": "推測ごとにランダムで一つの属性を隠す",
+    "pranksterMode": "いたずらモード",
+    "pranksterModeDesc": "推測ごとにランダムで一つの属性を隠す",
     "genArrow": "世代矢印",
     "genArrowDesc": "世代の高低を示す矢印を表示",
     "guessOrder": "推測表示順序",
+    "reverseOrder": "逆順",
+    "reverseOrderDesc": "新しい推測が上に表示されます",
+    "normalOrder": "正順",
+    "normalOrderDesc": "新しい推測が下に表示されます",
     "guessOrderNormal": "正順（古い順）",
     "guessOrderReverse": "逆順（新しい順）",
     "apply": "設定を適用",
@@ -52,6 +86,11 @@
     "resetConfirm": "すべての設定をデフォルト値にリセットしてもよろしいですか？",
     "cancel": "キャンセル",
     "confirm": "リセット"
+  },
+  "common": {
+    "close": "閉じる",
+    "cancel": "キャンセル",
+    "save": "保存"
   },
   "about": {
     "title": "について",
@@ -71,7 +110,12 @@
   },
   "footer": {
     "copyright": "© 2024 ポケワードル。全著作権所有。",
-    "privacyAndTerms": "プライバシーと利用規約"
+    "privacyAndTerms": "プライバシーと利用規約",
+    "allRightsReserved": "全著作権所有。",
+    "github": "GitHub",
+    "privacy": "プライバシーポリシー",
+    "terms": "利用規約",
+    "pokemonAttribution": "ポケモン関連コンテンツは任天堂、ゲームフリーク、クリーチャーズの所有物です。"
   },
   "generation": {
     "Gen1": "第1世代",
@@ -99,10 +143,11 @@
     "level-gender": "特定の性別でレベルアップ",
     "level-version": "特定のゲームバージョンでレベルアップ",
     "level-unique": "特殊な条件でレベルアップ",
-    "item-stone-fire": "かえんだまを使用",
+    "item-stone-fire": "ほのおのいしを使用",
     "item-stone-water": "みずのいしを使用",
     "item-stone-thunder": "かみなりのいしを使用",
     "item-stone-leaf": "リーフのいしを使用",
+    "item-stone-sun": "ひかりのいしを使用",
     "item-stone-moon": "つきのいしを使用",
     "item-stone-shiny": "ひかりのいしを使用",
     "item-stone-dusk": "やみのいしを使用",

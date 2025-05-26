@@ -4,6 +4,7 @@
   "game": {
     "inputPlaceholder": "Pokémon-Name eingeben...",
     "submit": "Bestätigen",
+    "submitting": "Wird gesendet...",
     "randomStart": "Zufälliger Tipp",
     "giveUp": "Aufgeben",
     "restart": "Neustart",
@@ -25,6 +26,16 @@
     "generationChangedDesc": "Die Generationseinstellungen wurden geändert. Das aktuelle Spiel wurde zurückgesetzt, um den neuen Einstellungen zu entsprechen. Bitte starte ein neues Spiel, um weiterzuspielen.",
     "settingsChanged": "Einstellungen geändert",
     "settingsChangedDesc": "Spieleinstellungen wurden geändert. Das aktuelle Spiel wurde zurückgesetzt, um den neuen Einstellungen zu entsprechen. Bitte starte ein neues Spiel, um weiterzuspielen.",
+    "inputSection": "Spiel-Eingabebereich",
+    "statusSection": "Spiel-Statusbereich",
+    "resultsSection": "Spiel-Ergebnisbereich",
+    "noGuessesYet": "Noch keine Versuche",
+    "correctAnswer": "Richtige Antwort",
+    "scrollHint": "Scrollen für weitere Informationen",
+    "guessesUsed": "Verwendete Versuche",
+    "result": "Ergebnis",
+    "defeat": "Niederlage",
+    "viewResults": "Ergebnisse anzeigen",
     "columns": {
       "profile": "Profil",
       "name": "Name",
@@ -34,17 +45,40 @@
       "abilities": "Fähigkeiten",
       "evolution": "Evolution",
       "tags": "Tags"
+    },
+    "evolutionMethod": "Evolutionsmethode",
+    "detailedStats": "Detaillierte Werte",
+    "stats": {
+      "hp": "KP",
+      "attack": "Angriff",
+      "defense": "Verteidigung",
+      "spAttack": "Sp.-Angriff",
+      "spDefense": "Sp.-Verteidigung",
+      "speed": "Initiative"
     }
   },
   "settings": {
     "title": "Einstellungen",
+    "settingsTab": "Einstellungen",
+    "aboutTab": "Über",
     "maxGuesses": "Max. Versuche",
+    "times": "mal",
+    "generationSelection": "Generationsauswahl",
+    "selectAll": "Alle auswählen",
+    "deselectAll": "Alle abwählen",
+    "generationRequired": "Mindestens eine Generation muss ausgewählt sein",
     "generations": "Generationen",
     "prankster": "Schabernack-Modus",
     "pranksterDesc": "Zufällig ein Attribut pro Versuch verstecken",
+    "pranksterMode": "Schabernack-Modus",
+    "pranksterModeDesc": "Zufällig ein Attribut pro Versuch verstecken",
     "genArrow": "Generationspfeile",
     "genArrowDesc": "Pfeile für Generationshinweise anzeigen",
     "guessOrder": "Reihenfolge der Versuche",
+    "reverseOrder": "Umgekehrte Reihenfolge",
+    "reverseOrderDesc": "Neue Versuche erscheinen oben",
+    "normalOrder": "Normale Reihenfolge",
+    "normalOrderDesc": "Neue Versuche erscheinen unten",
     "guessOrderNormal": "Normal (älteste zuerst)",
     "guessOrderReverse": "Umgekehrt (neueste zuerst)",
     "apply": "Einstellungen anwenden",
@@ -52,6 +86,11 @@
     "resetConfirm": "Bist du sicher, dass du alle Einstellungen auf ihre Standardwerte zurücksetzen möchtest?",
     "cancel": "Abbrechen",
     "confirm": "Zurücksetzen"
+  },
+  "common": {
+    "close": "Schließen",
+    "cancel": "Abbrechen",
+    "save": "Speichern"
   },
   "about": {
     "title": "Über",
@@ -71,7 +110,12 @@
   },
   "footer": {
     "copyright": "© 2024 Poke Wordle. Alle Rechte vorbehalten.",
-    "privacyAndTerms": "Datenschutz & Bedingungen"
+    "privacyAndTerms": "Datenschutz & Bedingungen",
+    "allRightsReserved": "Alle Rechte vorbehalten.",
+    "github": "GitHub",
+    "privacy": "Datenschutzerklärung",
+    "terms": "Nutzungsbedingungen",
+    "pokemonAttribution": "Pokémon-bezogene Inhalte gehören Nintendo, Game Freak und Creatures Inc."
   },
   "generation": {
     "Gen1": "Generation 1",
@@ -103,6 +147,7 @@
     "item-stone-water": "Wasserstein verwenden",
     "item-stone-thunder": "Donnerstein verwenden",
     "item-stone-leaf": "Blattstein verwenden",
+    "item-stone-sun": "Sonnenstein verwenden",
     "item-stone-moon": "Mondstein verwenden",
     "item-stone-shiny": "Leuchtstein verwenden",
     "item-stone-dusk": "Finsterstein verwenden",

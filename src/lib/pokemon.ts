@@ -1,31 +1,35 @@
 import { Pokemon, ComparisonStatus, GuessResult } from '@/types/pokemon';
 
+// Import all locale data files
+import pokeDataEn from '@/data/poke_data_en.json';
+import pokeDataJa from '@/data/poke_data_ja.json';
+import pokeDataFr from '@/data/poke_data_fr.json';
+import pokeDataDe from '@/data/poke_data_de.json';
+import pokeDataIt from '@/data/poke_data_it.json';
+import pokeDataEs from '@/data/poke_data_es.json';
+import pokeDataKo from '@/data/poke_data_ko.json';
+import pokeDataZhHans from '@/data/poke_data_zh-Hans.json';
+import pokeDataZhHant from '@/data/poke_data_zh-Hant.json';
+import pranksterProfileData from '@/data/prankster_profile.json';
+
+const localeDataMap: Record<string, Pokemon[]> = {
+  'en': pokeDataEn as Pokemon[],
+  'ja': pokeDataJa as Pokemon[],
+  'fr': pokeDataFr as Pokemon[],
+  'de': pokeDataDe as Pokemon[],
+  'it': pokeDataIt as Pokemon[],
+  'es': pokeDataEs as Pokemon[],
+  'ko': pokeDataKo as Pokemon[],
+  'zh-hans': pokeDataZhHans as Pokemon[],
+  'zh-hant': pokeDataZhHant as Pokemon[],
+};
+
 export function loadPokemonData(locale: string): Pokemon[] {
-  try {
-    // Handle locale name mapping for file names
-    let fileName = locale;
-    if (locale === 'zh-hans') {
-      fileName = 'zh-Hans';
-    } else if (locale === 'zh-hant') {
-      fileName = 'zh-Hant';
-    }
-    
-    const data = require(`@/data/poke_data_${fileName}.json`);
-    return data;
-  } catch (error) {
-    // Fallback to English if locale not found
-    const data = require('@/data/poke_data_en.json');
-    return data;
-  }
+  return localeDataMap[locale] || (pokeDataEn as Pokemon[]);
 }
 
 export function loadPranksterProfiles(): string[] {
-  try {
-    const data = require('@/data/prankster_profile.json');
-    return data;
-  } catch (error) {
-    return [];
-  }
+  return (pranksterProfileData as string[]) || [];
 }
 
 export function filterPokemonByGenerations(pokemon: Pokemon[], generations: number[]): Pokemon[] {
@@ -122,7 +126,6 @@ function getEvolutionStatus(guess: Pokemon, target: Pokemon): ComparisonStatus {
 }
 
 function applyPranksterEffect(result: GuessResult): void {
-  const pranksterProfiles = loadPranksterProfiles();
 
   // List of fields that can be hidden
   const hidableFields = [
