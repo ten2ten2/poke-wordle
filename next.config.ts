@@ -19,7 +19,6 @@ const nextConfig = {
   generateEtags: true,
   trailingSlash: false,
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['@heroicons/react', '@headlessui/react'],
   },
   headers: async () => {
