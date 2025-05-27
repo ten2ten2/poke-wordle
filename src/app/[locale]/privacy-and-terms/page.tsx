@@ -15,7 +15,7 @@ export default function PrivacyAndTermsPage() {
 
   // Set date on client side to avoid hydration mismatch
   useEffect(() => {
-    setCurrentDate(new Date().toLocaleDateString());
+    setCurrentDate(new Date().toLocaleDateString(locale));
   }, []);
 
   // Generate the correct href for home page
@@ -232,15 +232,6 @@ export default function PrivacyAndTermsPage() {
                   {t('privacyAndTerms.termsOfService.contact.description')}
                 </p>
               </div>
-            </div>
-          </section>
-
-          {/* Pokémon Attribution */}
-          <section className="card card-padding bg-blue-50 border border-blue-200">
-            <div className="text-center">
-              <p className="text-responsive-sm text-blue-800 font-medium">
-                {t('footer.pokemonAttribution')}
-              </p>
             </div>
           </section>
         </div>
