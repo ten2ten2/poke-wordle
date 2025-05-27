@@ -96,14 +96,47 @@
   "about": {
     "title": "Acerca de",
     "description": "Poke Wordle es un juego de adivinanzas donde intentas identificar un Pokémon basándote en varias pistas incluyendo tipos, habilidades, estadísticas, evolución y más.",
-    "howToPlay": "Cómo Jugar",
+    "howToPlay": "Cómo jugar",
     "rules": [
-      "Ingresa un nombre de Pokémon en el campo de entrada",
-      "Cada intento te mostrará qué tan cerca está tu intento del objetivo",
-      "Verde significa coincidencia exacta, amarillo significa cerca, gris significa sin coincidencia",
-      "Usa las pistas para reducir tus intentos",
-      "¡Trata de adivinar el Pokémon dentro del número de intentos permitido!"
-    ]
+      "Introduce un nombre de Pokémon en el campo de entrada.",
+      "Cada intento te mostrará qué tan cerca está tu suposición del objetivo.",
+      "Usa las pistas para reducir tus suposiciones e intenta adivinar el Pokémon dentro del número de intentos permitido!"
+    ],
+    "pokemonRange": {
+      "title": "Rango de Pokémon",
+      "description": "Este juego incluye Pokémon de los siguientes juegos principales de Pokémon:",
+      "generations": {
+        "gen1": "Generación 1: Rojo | Verde | Azul | Amarillo",
+        "gen2": "Generación 2: Oro | Plata | Cristal",
+        "gen3": "Generación 3: Rubí | Zafiro | Rojo Fuego | Verde Hoja | Esmeralda",
+        "gen4": "Generación 4: Diamante | Perla | Platino | Oro HeartGold | Plata SoulSilver",
+        "gen5": "Generación 5: Negro | Blanco | Negro 2 | Blanco 2",
+        "gen6": "Generación 6: X | Y | Rubí Omega | Zafiro Alfa",
+        "gen7": "Generación 7: Sol | Luna | Ultrasol | Ultraluna | Let's Go Pikachu | Let's Go Eevee",
+        "gen8": "Generación 8: Espada | Escudo | Diamante Brillante | Perla Reluciente | Leyendas: Arceus",
+        "gen9": "Generación 9: Escarlata | Púrpura | Leyendas: Z-A"
+      },
+      "note": "Puedes cambiar el rango de Pokémon a adivinar a través de la configuración."
+    },
+    "colorGuide": {
+      "title": "Guía de colores",
+      "greenTag": "Etiqueta verde",
+      "yellowTag": "Etiqueta amarilla",
+      "grayTag": "Etiqueta gris",
+      "green": "Indica que esta etiqueta **coincide exactamente** con la etiqueta correspondiente del Pokémon objetivo",
+      "yellow": "Indica que esta etiqueta está **cerca** de la etiqueta correspondiente del Pokémon objetivo",
+      "gray": "Indica que esta etiqueta es **diferente** de la etiqueta correspondiente del Pokémon objetivo"
+    },
+    "yellowConditions": {
+      "title": "Condiciones de etiquetas amarillas",
+      "stats": "Estadísticas base: El total de estadísticas base del Pokémon difiere del objetivo en ≤ 50",
+      "generation": "Generación: La primera generación de aparición del Pokémon es adyacente a la del Pokémon objetivo",
+      "evolution": "Evolución: Ambos Pokémon tienen métodos de evolución similares pero no idénticos (ej. ambos evolucionan por nivel, pero uno requiere aprender un movimiento y el otro alta amistad)"
+    },
+    "dataSource": {
+      "title": "Fuente de datos",
+      "description": "Los datos del juego provienen principalmente de [pokeapi.co](https://pokeapi.co/) y [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page)."
+    }
   },
   "navbar": {
     "settings": "Configuración",

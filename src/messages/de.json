@@ -98,12 +98,45 @@
     "description": "Poke Wordle ist ein Ratespiel, bei dem du versuchst, ein Pokémon basierend auf verschiedenen Hinweisen wie Typen, Fähigkeiten, Werten, Evolution und mehr zu identifizieren.",
     "howToPlay": "Wie man spielt",
     "rules": [
-      "Gib einen Pokémon-Namen in das Eingabefeld ein",
-      "Jeder Versuch zeigt dir, wie nah dein Tipp dem Ziel ist",
-      "Grün bedeutet exakte Übereinstimmung, gelb bedeutet nah, grau bedeutet keine Übereinstimmung",
-      "Nutze die Hinweise, um deine Versuche einzugrenzen",
-      "Versuche das Pokémon innerhalb der erlaubten Anzahl von Versuchen zu erraten!"
-    ]
+      "Gib einen Pokémon-Namen in das Eingabefeld ein.",
+      "Jeder Versuch zeigt dir, wie nah dein Tipp dem Ziel ist.",
+      "Nutze die Hinweise, um deine Versuche einzugrenzen und versuche das Pokémon innerhalb der erlaubten Anzahl von Versuchen zu erraten!"
+    ],
+    "pokemonRange": {
+      "title": "Pokémon-Bereich",
+      "description": "Dieses Spiel enthält Pokémon aus den folgenden Hauptserie-Pokémon-Spielen:",
+      "generations": {
+        "gen1": "Generation 1: Rot | Grün | Blau | Gelb",
+        "gen2": "Generation 2: Gold | Silber | Kristall",
+        "gen3": "Generation 3: Rubin | Saphir | Feuerrot | Blattgrün | Smaragd",
+        "gen4": "Generation 4: Diamant | Perle | Platin | Herzgold | Seelensilber",
+        "gen5": "Generation 5: Schwarz | Weiß | Schwarz 2 | Weiß 2",
+        "gen6": "Generation 6: X | Y | Omega Rubin | Alpha Saphir",
+        "gen7": "Generation 7: Sonne | Mond | Ultrasonne | Ultramond | Let's Go Pikachu | Let's Go Evoli",
+        "gen8": "Generation 8: Schwert | Schild | Strahlender Diamant | Leuchtende Perle | Legenden: Arceus",
+        "gen9": "Generation 9: Karmesin | Purpur | Legenden: Z-A"
+      },
+      "note": "Du kannst den Bereich der zu erratenden Pokémon über die Einstellungen ändern."
+    },
+    "colorGuide": {
+      "title": "Farbführer",
+      "greenTag": "Grünes Tag",
+      "yellowTag": "Gelbes Tag",
+      "grayTag": "Graues Tag",
+      "green": "Zeigt an, dass dieses Tag **exakt übereinstimmt** mit dem entsprechenden Tag des Ziel-Pokémon",
+      "yellow": "Zeigt an, dass dieses Tag **nah** am entsprechenden Tag des Ziel-Pokémon ist",
+      "gray": "Zeigt an, dass dieses Tag **unterschiedlich** vom entsprechenden Tag des Ziel-Pokémon ist"
+    },
+    "yellowConditions": {
+      "title": "Bedingungen für gelbe Tags",
+      "stats": "Basiswerte: Die Basiswertsumme des Pokémon unterscheidet sich vom Ziel um ≤ 50",
+      "generation": "Generation: Die erste Erscheinungsgeneration des Pokémon ist benachbart zur Generation des Ziels",
+      "evolution": "Evolution: Beide Pokémon haben ähnliche, aber nicht identische Evolutionsmethoden (z.B. beide leveln auf, aber eines erfordert das Erlernen einer Attacke und das andere hohe Freundschaft)"
+    },
+    "dataSource": {
+      "title": "Datenquelle",
+      "description": "Spieldaten stammen hauptsächlich von [pokeapi.co](https://pokeapi.co/) und [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page)."
+    }
   },
   "navbar": {
     "settings": "Einstellungen",

@@ -94,16 +94,49 @@
     "back": "Retour au Jeu"
   },
   "about": {
-    "title": "À Propos",
-    "description": "Poke Wordle est un jeu de devinettes où vous essayez d'identifier un Pokémon basé sur divers indices incluant les types, capacités, statistiques, évolution et plus.",
-    "howToPlay": "Comment Jouer",
+    "title": "À propos",
+    "description": "Poke Wordle est un jeu de devinettes où vous essayez d'identifier un Pokémon basé sur divers indices incluant les types, capacités, statistiques, évolution, et plus encore.",
+    "howToPlay": "Comment jouer",
     "rules": [
-      "Entrez un nom de Pokémon dans le champ de saisie",
-      "Chaque supposition vous montrera à quel point votre supposition est proche de la cible",
-      "Vert signifie correspondance exacte, jaune signifie proche, gris signifie aucune correspondance",
-      "Utilisez les indices pour affiner vos suppositions",
-      "Essayez de deviner le Pokémon dans le nombre de tentatives autorisé !"
-    ]
+      "Entrez un nom de Pokémon dans le champ de saisie.",
+      "Chaque supposition vous montrera à quel point votre supposition est proche de la cible.",
+      "Utilisez les indices pour affiner vos suppositions et essayez de deviner le Pokémon dans le nombre d'essais autorisé !"
+    ],
+    "pokemonRange": {
+      "title": "Gamme de Pokémon",
+      "description": "Ce jeu inclut des Pokémon des jeux principaux Pokémon suivants :",
+      "generations": {
+        "gen1": "Génération 1 : Rouge | Vert | Bleu | Jaune",
+        "gen2": "Génération 2 : Or | Argent | Cristal",
+        "gen3": "Génération 3 : Rubis | Saphir | Rouge Feu | Vert Feuille | Émeraude",
+        "gen4": "Génération 4 : Diamant | Perle | Platine | Or HeartGold | Argent SoulSilver",
+        "gen5": "Génération 5 : Noir | Blanc | Noir 2 | Blanc 2",
+        "gen6": "Génération 6 : X | Y | Rubis Oméga | Saphir Alpha",
+        "gen7": "Génération 7 : Soleil | Lune | Ultra-Soleil | Ultra-Lune | Let's Go Pikachu | Let's Go Évoli",
+        "gen8": "Génération 8 : Épée | Bouclier | Diamant Étincelant | Perle Scintillante | Légendes : Arceus",
+        "gen9": "Génération 9 : Écarlate | Violet | Légendes : Z-A"
+      },
+      "note": "Vous pouvez changer la gamme de Pokémon à deviner via les paramètres."
+    },
+    "colorGuide": {
+      "title": "Guide des couleurs",
+      "greenTag": "Étiquette verte",
+      "yellowTag": "Étiquette jaune",
+      "grayTag": "Étiquette grise",
+      "green": "Indique que cette étiquette **correspond exactement** à l'étiquette correspondante du Pokémon cible",
+      "yellow": "Indique que cette étiquette est **proche** de l'étiquette correspondante du Pokémon cible",
+      "gray": "Indique que cette étiquette est **différente** de l'étiquette correspondante du Pokémon cible"
+    },
+    "yellowConditions": {
+      "title": "Conditions des étiquettes jaunes",
+      "stats": "Statistiques de base : Le total des statistiques de base du Pokémon diffère de la cible de ≤ 50",
+      "generation": "Génération : La première génération d'apparition du Pokémon est adjacente à celle du Pokémon cible",
+      "evolution": "Évolution : Les deux Pokémon ont des méthodes d'évolution similaires mais non identiques (par ex. tous deux évoluent par niveau, mais l'un nécessite d'apprendre une capacité et l'autre une haute amitié)"
+    },
+    "dataSource": {
+      "title": "Source des données",
+      "description": "Les données du jeu proviennent principalement de [pokeapi.co](https://pokeapi.co/) et [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page)."
+    }
   },
   "navbar": {
     "settings": "Paramètres",

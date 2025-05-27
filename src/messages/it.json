@@ -95,15 +95,48 @@
   },
   "about": {
     "title": "Informazioni",
-    "description": "Poke Wordle è un gioco di indovinelli dove cerchi di identificare un Pokémon basandoti su vari indizi inclusi tipi, abilità, statistiche, evoluzione e altro.",
-    "howToPlay": "Come Giocare",
+    "description": "Poke Wordle è un gioco di indovinelli dove cerchi di identificare un Pokémon basandoti su vari indizi inclusi tipi, abilità, statistiche, evoluzione e altro ancora.",
+    "howToPlay": "Come giocare",
     "rules": [
-      "Inserisci un nome di Pokémon nel campo di input",
-      "Ogni tentativo ti mostrerà quanto il tuo tentativo è vicino al bersaglio",
-      "Verde significa corrispondenza esatta, giallo significa vicino, grigio significa nessuna corrispondenza",
-      "Usa gli indizi per restringere i tuoi tentativi",
-      "Cerca di indovinare il Pokémon entro il numero di tentativi consentito!"
-    ]
+      "Inserisci un nome di Pokémon nel campo di input.",
+      "Ogni tentativo ti mostrerà quanto è vicino il tuo tentativo all'obiettivo.",
+      "Usa gli indizi per restringere i tuoi tentativi e prova a indovinare il Pokémon entro il numero di tentativi consentito!"
+    ],
+    "pokemonRange": {
+      "title": "Gamma di Pokémon",
+      "description": "Questo gioco include Pokémon dai seguenti giochi principali di Pokémon:",
+      "generations": {
+        "gen1": "Generazione 1: Rosso | Verde | Blu | Giallo",
+        "gen2": "Generazione 2: Oro | Argento | Cristallo",
+        "gen3": "Generazione 3: Rubino | Zaffiro | Rosso Fuoco | Verde Foglia | Smeraldo",
+        "gen4": "Generazione 4: Diamante | Perla | Platino | Oro HeartGold | Argento SoulSilver",
+        "gen5": "Generazione 5: Nero | Bianco | Nero 2 | Bianco 2",
+        "gen6": "Generazione 6: X | Y | Rubino Omega | Zaffiro Alpha",
+        "gen7": "Generazione 7: Sole | Luna | Ultrasole | Ultraluna | Let's Go Pikachu | Let's Go Eevee",
+        "gen8": "Generazione 8: Spada | Scudo | Diamante Lucente | Perla Splendente | Leggende: Arceus",
+        "gen9": "Generazione 9: Scarlatto | Violetto | Leggende: Z-A"
+      },
+      "note": "Puoi cambiare la gamma di Pokémon da indovinare tramite le impostazioni."
+    },
+    "colorGuide": {
+      "title": "Guida ai colori",
+      "greenTag": "Tag verde",
+      "yellowTag": "Tag giallo",
+      "grayTag": "Tag grigio",
+      "green": "Indica che questo tag **corrisponde esattamente** al tag corrispondente del Pokémon obiettivo",
+      "yellow": "Indica che questo tag è **vicino** al tag corrispondente del Pokémon obiettivo",
+      "gray": "Indica che questo tag è **diverso** dal tag corrispondente del Pokémon obiettivo"
+    },
+    "yellowConditions": {
+      "title": "Condizioni per i tag gialli",
+      "stats": "Statistiche base: Il totale delle statistiche base del Pokémon differisce dall'obiettivo di ≤ 50",
+      "generation": "Generazione: La prima generazione di apparizione del Pokémon è adiacente a quella del Pokémon obiettivo",
+      "evolution": "Evoluzione: Entrambi i Pokémon hanno metodi di evoluzione simili ma non identici (es. entrambi evolvono per livello, ma uno richiede di imparare una mossa e l'altro alta amicizia)"
+    },
+    "dataSource": {
+      "title": "Fonte dei dati",
+      "description": "I dati del gioco provengono principalmente da [pokeapi.co](https://pokeapi.co/) e [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page)."
+    }
   },
   "navbar": {
     "settings": "Impostazioni",

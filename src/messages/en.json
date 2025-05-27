@@ -98,12 +98,45 @@
     "description": "Poke Wordle is a guessing game where you try to identify a Pokémon based on various clues including types, abilities, stats, evolution, and more.",
     "howToPlay": "How to Play",
     "rules": [
-      "Enter a Pokémon name in the input field",
-      "Each guess will show you how close your guess is to the target",
-      "Green means exact match, yellow means close, gray means no match",
-      "Use the clues to narrow down your guesses",
-      "Try to guess the Pokémon within the allowed number of attempts!"
-    ]
+      "Enter a Pokémon name in the input field.",
+      "Each guess will show you how close your guess is to the target.",
+      "Use the clues to narrow down your guesses and try to guess the Pokémon within the allowed number of attempts!"
+    ],
+    "pokemonRange": {
+      "title": "Pokémon Range",
+      "description": "This game includes Pokémon from the following main series Pokémon games:",
+      "generations": {
+        "gen1": "Generation 1: Red | Green | Blue | Yellow",
+        "gen2": "Generation 2: Gold | Silver | Crystal",
+        "gen3": "Generation 3: Ruby | Sapphire | FireRed | LeafGreen | Emerald",
+        "gen4": "Generation 4: Diamond | Pearl | Platinum | HeartGold | SoulSilver",
+        "gen5": "Generation 5: Black | White | Black 2 | White 2",
+        "gen6": "Generation 6: X | Y | Omega Ruby | Alpha Sapphire",
+        "gen7": "Generation 7: Sun | Moon | Ultra Sun | Ultra Moon | Let's Go Pikachu | Let's Go Eevee",
+        "gen8": "Generation 8: Sword | Shield | Brilliant Diamond | Shining Pearl | Legends: Arceus",
+        "gen9": "Generation 9: Scarlet | Violet | Legends: Z-A"
+      },
+      "note": "You can change the range of Pokémon to guess through the settings."
+    },
+    "colorGuide": {
+      "title": "Color Guide",
+      "greenTag": "Green Tag",
+      "yellowTag": "Yellow Tag",
+      "grayTag": "Gray Tag",
+      "green": "Indicates that this tag **matches exactly** with the target Pokémon's corresponding tag",
+      "yellow": "Indicates that this tag is **close** to the target Pokémon's corresponding tag",
+      "gray": "Indicates that this tag is **different** from the target Pokémon's corresponding tag"
+    },
+    "yellowConditions": {
+      "title": "Yellow Tag Conditions",
+      "stats": "Base Stats: The Pokémon's base stat total differs from the target by ≤ 50",
+      "generation": "Generation: The Pokémon's first appearance generation is adjacent to the target's generation",
+      "evolution": "Evolution: Both Pokémon have similar but not identical evolution methods (e.g., both level up, but one requires learning a move and the other requires high friendship)"
+    },
+    "dataSource": {
+      "title": "Data Source",
+      "description": "Game data is primarily sourced from [pokeapi.co](https://pokeapi.co/) and [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page)."
+    }
   },
   "navbar": {
     "settings": "Settings",

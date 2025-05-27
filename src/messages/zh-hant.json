@@ -70,10 +70,10 @@
     "generations": "世代",
     "prankster": "惡作劇模式",
     "pranksterDesc": "每次猜測隨機隱藏一個屬性",
-    "pranksterMode": "惡作劇開關",
-    "pranksterModeDesc": "開啟後每次猜測會隨機遮蓋一項寶可夢資料",
+    "pranksterMode": "惡作劇之心開關",
+    "pranksterModeDesc": "開啟後，每次猜測會有惡作劇之心的寶可夢隨機遮蓋一項資料",
     "genArrow": "世代箭頭開關",
-    "genArrowDesc": "開啟後每次猜測會提示世代高低",
+    "genArrowDesc": "開啟後，每次猜測會提示世代高低",
     "guessOrder": "猜測顯示順序",
     "reverseOrder": "反向顯示",
     "reverseOrderDesc": "新的猜測出現在最上方",
@@ -95,22 +95,55 @@
   },
   "about": {
     "title": "關於",
-    "description": "寶可夢猜猜樂是一個猜謎遊戲，你需要根據各種線索（包括屬性、特性、數值、進化等）來識別寶可夢。",
+    "description": "寶可夢猜猜樂是一個猜謎遊戲，你需要根據各種線索（包括屬性、特性、數值、進化等）來猜測寶可夢。",
     "howToPlay": "遊戲玩法",
     "rules": [
-      "在輸入框中輸入寶可夢名稱",
-      "每次猜測都會顯示你的猜測與目標的接近程度",
-      "綠色表示完全匹配，黃色表示接近，灰色表示不匹配",
-      "利用線索來縮小猜測範圍",
-      "嘗試在允許的次數內猜出寶可夢！"
-    ]
+      "在輸入框中輸入寶可夢名稱。",
+      "每次猜測都會顯示你的猜測與目標的接近程度。",
+      "利用線索來縮小猜測範圍，嘗試在允許的次數內猜出寶可夢！"
+    ],
+    "pokemonRange": {
+      "title": "寶可夢範圍",
+      "description": "本遊戲包含的寶可夢出自於如下版本的寶可夢主系列遊戲：",
+      "generations": {
+        "gen1": "第一世代：紅 ｜ 綠 ｜ 藍 ｜ 皮卡丘",
+        "gen2": "第二世代：金 ｜ 銀 ｜ 水晶",
+        "gen3": "第三世代：紅寶石 ｜ 藍寶石 ｜ 火紅 ｜ 葉綠 ｜ 綠寶石",
+        "gen4": "第四世代：珍珠 ｜ 鑽石 ｜ 白金 ｜ 心金 ｜ 魂銀",
+        "gen5": "第五世代：黑 ｜ 白 ｜ 黑2 ｜ 白2",
+        "gen6": "第六世代：X ｜ Y ｜ 歐米伽紅寶石 ｜ 阿爾法藍寶石",
+        "gen7": "第七世代：太陽 ｜ 月亮 ｜ 究極之日 ｜ 究極之月 ｜ Let's Go！皮卡丘 ｜ Let's Go！伊布",
+        "gen8": "第八世代：劍 ｜ 盾 ｜ 晶燦鑽石 ｜ 明亮珍珠 ｜ 傳說: 阿爾宙斯",
+        "gen9": "第九世代：朱 ｜ 紫 ｜ 傳說: Z-A"
+      },
+      "note": "可以透過設定更改猜測寶可夢的範圍。"
+    },
+    "colorGuide": {
+      "title": "標籤顏色說明",
+      "greenTag": "綠色標籤",
+      "yellowTag": "黃色標籤",
+      "grayTag": "灰色標籤",
+      "green": "表示該標籤與目標寶可夢的對應標籤**相同**",
+      "yellow": "表示該標籤與目標寶可夢的對應標籤**接近**",
+      "gray": "表示該標籤與目標寶可夢的對應標籤**不同**"
+    },
+    "yellowConditions": {
+      "title": "黃色標籤判斷條件",
+      "stats": "種族值：該寶可夢的種族值與目標寶可夢的種族值相差 ≤ 50",
+      "generation": "世代：該寶可夢的首次出現世代與目標寶可夢相鄰",
+      "evolution": "進化：兩隻寶可夢的進化方式相近但不相同（例如都是提升等級，但分別是學會招式提升等級和達到親密度要求提升等級）"
+    },
+    "dataSource": {
+      "title": "資料來源",
+      "description": "本遊戲資料主要來源於 [pokeapi.co](https://pokeapi.co/) 和 [Bulbagpedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page)。"
+    }
   },
   "navbar": {
     "settings": "設定",
     "language": "語言"
   },
   "footer": {
-    "copyright": "© 2024 寶可夢猜猜樂。保留所有權利。",
+    "copyright": "© 2025 寶可夢猜猜樂。保留所有權利。",
     "privacyAndTerms": "隱私與條款",
     "allRightsReserved": "保留所有權利。",
     "github": "GitHub",
