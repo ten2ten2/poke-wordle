@@ -34,11 +34,11 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://poke-wordle.vercel.app'),
+  metadataBase: new URL('https://www.pokewordle.app'),
   alternates: {
     canonical: '/',
     languages: {
-      'en': '/en',
+      'en': '/',
       'ja': '/ja',
       'fr': '/fr',
       'de': '/de',
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://poke-wordle.vercel.app',
+    url: 'https://www.pokewordle.app',
     title: 'Poke Wordle - Guess the Pokémon Game',
     description: 'Test your Pokémon knowledge with Poke Wordle! Guess the Pokémon based on its attributes, stats, abilities, evolution, and more.',
     siteName: 'Poke Wordle',
@@ -114,7 +114,7 @@ export default function RootLayout({
               "@type": "WebApplication",
               "name": "Poke Wordle",
               "description": "Test your Pokémon knowledge with Poke Wordle! Guess the Pokémon based on its attributes, stats, abilities, evolution, and more.",
-              "url": "https://poke-wordle.vercel.app",
+              "url": "https://www.pokewordle.app",
               "applicationCategory": "Game",
               "operatingSystem": "Any",
               "offers": {

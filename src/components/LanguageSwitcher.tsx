@@ -37,11 +37,25 @@ export default function LanguageSwitcher({ isOpen, onClose }: LanguageSwitcherPr
     // Navigate to the new locale
     if (newLocale === 'en') {
       // For English, use root path
-      const newPath = pathname.replace(`/${locale}`, '') || '/';
+      let newPath;
+      if (locale === 'en') {
+        // Already on English, keep current path
+        newPath = pathname;
+      } else {
+        // Remove locale prefix for English
+        newPath = pathname.replace(`/${locale}`, '') || '/';
+      }
       router.push(newPath);
     } else {
       // For other languages, use locale prefix
-      const currentPath = pathname.replace(`/${locale}`, '') || '/';
+      let currentPath;
+      if (locale === 'en') {
+        // Currently on English (root path), use current pathname
+        currentPath = pathname;
+      } else {
+        // Remove current locale prefix
+        currentPath = pathname.replace(`/${locale}`, '') || '/';
+      }
       const newPath = `/${newLocale}${currentPath === '/' ? '' : currentPath}`;
       router.push(newPath);
     }

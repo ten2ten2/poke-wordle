@@ -90,7 +90,8 @@
   "common": {
     "close": "Close",
     "cancel": "Cancel",
-    "save": "Save"
+    "save": "Save",
+    "back": "Back to Game"
   },
   "about": {
     "title": "About",
@@ -170,5 +171,80 @@
     "ultra": "Ultra Beast",
     "paradox": "Paradox Pokémon",
     "late": "Late Bloomer Pokémon"
+  },
+  "privacyAndTerms": {
+    "title": "Privacy Policy & Terms of Service",
+    "lastUpdated": "Last updated: {date}",
+    "privacyPolicy": {
+      "title": "Privacy Policy",
+      "introduction": "This Privacy Policy describes how Poke Wordle (\"we\", \"our\", or \"us\") collects, uses, and protects your information when you use our service.",
+      "informationCollection": {
+        "title": "Information We Collect",
+        "description": "We collect the following types of information:",
+        "items": [
+          "Game settings and preferences (stored locally in your browser)",
+          "Game statistics and progress (stored locally in your browser)",
+          "Language preferences (stored locally in your browser)",
+          "Basic usage analytics (anonymized)"
+        ]
+      },
+      "dataStorage": {
+        "title": "How We Store Your Data",
+        "description": "Your game data is stored locally in your browser using localStorage. This means:",
+        "items": [
+          "Your data never leaves your device",
+          "We cannot access your personal game statistics",
+          "Clearing your browser data will reset your game progress",
+          "Your data is not shared with third parties"
+        ]
+      },
+      "cookies": {
+        "title": "Cookies and Local Storage",
+        "description": "We use browser localStorage to save your game preferences and progress. No tracking cookies are used."
+      },
+      "thirdParty": {
+        "title": "Third-Party Services",
+        "description": "We may use third-party services for analytics and hosting. These services have their own privacy policies."
+      },
+      "dataRights": {
+        "title": "Your Rights",
+        "description": "You have the right to:",
+        "items": [
+          "Clear your local game data at any time",
+          "Disable JavaScript to prevent data storage",
+          "Contact us with any privacy concerns"
+        ]
+      }
+    },
+    "termsOfService": {
+      "title": "Terms of Service",
+      "introduction": "By using Poke Wordle, you agree to these terms of service.",
+      "gameContent": {
+        "title": "Game Content",
+        "description": "Poke Wordle is a fan-made game. All Pokémon-related content, including names, images, and data, are the property of Nintendo, Game Freak, and Creatures Inc. This game is not affiliated with or endorsed by these companies."
+      },
+      "userConduct": {
+        "title": "User Conduct",
+        "description": "When using our service, you agree to:",
+        "items": [
+          "Use the game for personal, non-commercial purposes only",
+          "Not attempt to reverse engineer or exploit the game",
+          "Not use automated tools or bots to play the game",
+          "Respect the intellectual property rights of Pokémon creators"
+        ]
+      },
+      "disclaimer": {
+        "title": "Disclaimer",
+        "description": "The game is provided \"as is\" without warranties of any kind. We are not responsible for any data loss or technical issues."
+      },
+      "modifications": {
+        "title": "Modifications",
+        "description": "We reserve the right to modify these terms at any time. Continued use of the service constitutes acceptance of any changes."
+      },
+      "contact": {
+        "title": "Contact",
+        "description": "If you have any questions about these terms or our privacy policy, please contact us through our GitHub repository."
+      }
+    }
   }
 } 

@@ -90,7 +90,8 @@
   "common": {
     "close": "关闭",
     "cancel": "取消",
-    "save": "保存"
+    "save": "保存",
+    "back": "返回游戏"
   },
   "about": {
     "title": "关于",
@@ -170,6 +171,81 @@
     "has-gmax": "有超极巨化",
     "ultra": "究极异兽",
     "paradox": "悖谬宝可梦",
-    "late": "大器晚成的宝可梦"
+    "late": "大器晚成宝可梦"
+  },
+  "privacyAndTerms": {
+    "title": "隐私政策与服务条款",
+    "lastUpdated": "最后更新：{date}",
+    "privacyPolicy": {
+      "title": "隐私政策",
+      "introduction": "本隐私政策描述了宝可梦猜词（\"我们\"、\"我们的\"或\"我们\"）如何收集、使用和保护您在使用我们服务时的信息。",
+      "informationCollection": {
+        "title": "我们收集的信息",
+        "description": "我们收集以下类型的信息：",
+        "items": [
+          "游戏设置和偏好（存储在您的浏览器本地）",
+          "游戏统计和进度（存储在您的浏览器本地）",
+          "语言偏好（存储在您的浏览器本地）",
+          "基本使用分析（匿名化）"
+        ]
+      },
+      "dataStorage": {
+        "title": "我们如何存储您的数据",
+        "description": "您的游戏数据使用localStorage存储在您的浏览器本地。这意味着：",
+        "items": [
+          "您的数据永远不会离开您的设备",
+          "我们无法访问您的个人游戏统计",
+          "清除浏览器数据将重置您的游戏进度",
+          "您的数据不会与第三方共享"
+        ]
+      },
+      "cookies": {
+        "title": "Cookie和本地存储",
+        "description": "我们使用浏览器localStorage来保存您的游戏偏好和进度。不使用跟踪cookie。"
+      },
+      "thirdParty": {
+        "title": "第三方服务",
+        "description": "我们可能使用第三方服务进行分析和托管。这些服务有自己的隐私政策。"
+      },
+      "dataRights": {
+        "title": "您的权利",
+        "description": "您有权：",
+        "items": [
+          "随时清除您的本地游戏数据",
+          "禁用JavaScript以防止数据存储",
+          "就任何隐私问题联系我们"
+        ]
+      }
+    },
+    "termsOfService": {
+      "title": "服务条款",
+      "introduction": "使用宝可梦猜词即表示您同意这些服务条款。",
+      "gameContent": {
+        "title": "游戏内容",
+        "description": "宝可梦猜词是一个粉丝制作的游戏。所有宝可梦相关内容，包括名称、图像和数据，均为任天堂、Game Freak和Creatures Inc.的财产。本游戏未获得这些公司的关联或认可。"
+      },
+      "userConduct": {
+        "title": "用户行为",
+        "description": "使用我们的服务时，您同意：",
+        "items": [
+          "仅将游戏用于个人、非商业目的",
+          "不尝试逆向工程或利用游戏",
+          "不使用自动化工具或机器人玩游戏",
+          "尊重宝可梦创作者的知识产权"
+        ]
+      },
+      "disclaimer": {
+        "title": "免责声明",
+        "description": "游戏按“原样”提供，不提供任何形式的保证。我们不对任何数据丢失或技术问题负责。"
+      },
+      "modifications": {
+        "title": "修改",
+        "description": "我们保留随时修改这些条款的权利。继续使用服务即表示接受任何更改。"
+      },
+      "contact": {
+        "title": "联系",
+        "description": "如果您对这些条款或我们的隐私政策有任何疑问，请通过我们的GitHub存储库联系我们。"
+      }
+    }
   }
 } 

@@ -90,7 +90,8 @@
   "common": {
     "close": "關閉",
     "cancel": "取消",
-    "save": "儲存"
+    "save": "儲存",
+    "back": "返回遊戲"
   },
   "about": {
     "title": "關於",
@@ -171,5 +172,80 @@
     "ultra": "究極異獸",
     "paradox": "悖謬寶可夢",
     "late": "大器晚成的寶可夢"
+  },
+  "privacyAndTerms": {
+    "title": "隱私政策與服務條款",
+    "lastUpdated": "最後更新：{date}",
+    "privacyPolicy": {
+      "title": "隱私政策",
+      "introduction": "本隱私政策描述了寶可夢猜詞（\"我們\"、\"我們的\"或\"我們\"）如何收集、使用和保護您在使用我們服務時的資訊。",
+      "informationCollection": {
+        "title": "我們收集的資訊",
+        "description": "我們收集以下類型的資訊：",
+        "items": [
+          "遊戲設定和偏好（儲存在您的瀏覽器本地）",
+          "遊戲統計和進度（儲存在您的瀏覽器本地）",
+          "語言偏好（儲存在您的瀏覽器本地）",
+          "基本使用分析（匿名化）"
+        ]
+      },
+      "dataStorage": {
+        "title": "我們如何儲存您的資料",
+        "description": "您的遊戲資料使用localStorage儲存在您的瀏覽器本地。這意味著：",
+        "items": [
+          "您的資料永遠不會離開您的裝置",
+          "我們無法存取您的個人遊戲統計",
+          "清除瀏覽器資料將重置您的遊戲進度",
+          "您的資料不會與第三方共享"
+        ]
+      },
+      "cookies": {
+        "title": "Cookie和本地儲存",
+        "description": "我們使用瀏覽器localStorage來儲存您的遊戲偏好和進度。不使用追蹤cookie。"
+      },
+      "thirdParty": {
+        "title": "第三方服務",
+        "description": "我們可能使用第三方服務進行分析和託管。這些服務有自己的隱私政策。"
+      },
+      "dataRights": {
+        "title": "您的權利",
+        "description": "您有權：",
+        "items": [
+          "隨時清除您的本地遊戲資料",
+          "停用JavaScript以防止資料儲存",
+          "就任何隱私問題聯絡我們"
+        ]
+      }
+    },
+    "termsOfService": {
+      "title": "服務條款",
+      "introduction": "使用寶可夢猜詞即表示您同意這些服務條款。",
+      "gameContent": {
+        "title": "遊戲內容",
+        "description": "寶可夢猜詞是一個粉絲製作的遊戲。所有寶可夢相關內容，包括名稱、圖像和資料，均為任天堂、Game Freak和Creatures Inc.的財產。本遊戲未獲得這些公司的關聯或認可。"
+      },
+      "userConduct": {
+        "title": "使用者行為",
+        "description": "使用我們的服務時，您同意：",
+        "items": [
+          "僅將遊戲用於個人、非商業目的",
+          "不嘗試逆向工程或利用遊戲",
+          "不使用自動化工具或機器人玩遊戲",
+          "尊重寶可夢創作者的智慧財產權"
+        ]
+      },
+      "disclaimer": {
+        "title": "免責聲明",
+        "description": "遊戲按\"原樣\"提供，不提供任何形式的保證。我們不對任何資料遺失或技術問題負責。"
+      },
+      "modifications": {
+        "title": "修改",
+        "description": "我們保留隨時修改這些條款的權利。繼續使用服務即表示接受任何更改。"
+      },
+      "contact": {
+        "title": "聯絡",
+        "description": "如果您對這些條款或我們的隱私政策有任何疑問，請透過我們的GitHub儲存庫聯絡我們。"
+      }
+    }
   }
 } 

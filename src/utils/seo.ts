@@ -25,7 +25,7 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
     structuredData
   } = config;
 
-  const baseUrl = 'https://poke-wordle.vercel.app';
+  const baseUrl = 'https://www.pokewordle.app';
   
   return {
     title,
@@ -67,13 +67,15 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
 }
 
 export function generateGameStructuredData(locale: string) {
+  // Generate correct URL for English vs other locales
+  const gameUrl = locale === 'en' ? 'https://www.pokewordle.app' : `https://www.pokewordle.app/${locale}`;
 
   return {
     "@context": "https://schema.org",
     "@type": "Game",
     "name": "Poke Wordle",
     "description": "Test your Pokémon knowledge with Poke Wordle! Guess the Pokémon based on its attributes, stats, abilities, evolution, and more.",
-    "url": `https://poke-wordle.vercel.app/${locale}`,
+    "url": gameUrl,
     "genre": ["Puzzle", "Educational", "Trivia"],
     "gamePlatform": "Web Browser",
     "operatingSystem": "Any",
@@ -116,6 +118,9 @@ export function generateGameStructuredData(locale: string) {
 }
 
 export function generateBreadcrumbStructuredData(locale: string) {
+  // Generate correct URL for English vs other locales
+  const gameUrl = locale === 'en' ? 'https://www.pokewordle.app' : `https://www.pokewordle.app/${locale}`;
+  
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -124,13 +129,13 @@ export function generateBreadcrumbStructuredData(locale: string) {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://poke-wordle.vercel.app"
+        "item": "https://www.pokewordle.app"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": `Game (${locale.toUpperCase()})`,
-        "item": `https://poke-wordle.vercel.app/${locale}`
+        "item": gameUrl
       }
     ]
   };
@@ -142,14 +147,14 @@ export function generateWebsiteStructuredData() {
     "@type": "WebSite",
     "name": "Poke Wordle",
     "alternateName": "Pokemon Wordle Game",
-    "url": "https://poke-wordle.vercel.app",
+    "url": "https://www.pokewordle.app",
     "description": "Test your Pokémon knowledge with Poke Wordle! Guess the Pokémon based on its attributes, stats, abilities, evolution, and more.",
     "inLanguage": ["en", "ja", "fr", "de", "it", "es", "ko", "zh-Hans", "zh-Hant"],
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "https://poke-wordle.vercel.app/{locale}",
+        "urlTemplate": "https://www.pokewordle.app/{?locale}",
         "actionPlatform": [
           "https://schema.org/DesktopWebPlatform",
           "https://schema.org/MobileWebPlatform"

@@ -8,8 +8,8 @@ import pokeDataDe from '@/data/poke_data_de.json';
 import pokeDataIt from '@/data/poke_data_it.json';
 import pokeDataEs from '@/data/poke_data_es.json';
 import pokeDataKo from '@/data/poke_data_ko.json';
-import pokeDataZhHans from '@/data/poke_data_zh-Hans.json';
-import pokeDataZhHant from '@/data/poke_data_zh-Hant.json';
+import pokeDataZhHans from '@/data/poke_data_zh-hans.json';
+import pokeDataZhHant from '@/data/poke_data_zh-hant.json';
 import pranksterProfileData from '@/data/prankster_profile.json';
 
 const localeDataMap: Record<string, Pokemon[]> = {

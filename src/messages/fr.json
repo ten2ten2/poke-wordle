@@ -90,7 +90,8 @@
   "common": {
     "close": "Fermer",
     "cancel": "Annuler",
-    "save": "Sauvegarder"
+    "save": "Sauvegarder",
+    "back": "Retour au Jeu"
   },
   "about": {
     "title": "À Propos",
@@ -171,5 +172,80 @@
     "ultra": "Ultra-Chimère",
     "paradox": "Pokémon Paradoxe",
     "late": "Pokémon à Évolution Tardive"
+  },
+  "privacyAndTerms": {
+    "title": "Politique de Confidentialité et Conditions d'Utilisation",
+    "lastUpdated": "Dernière mise à jour : {date}",
+    "privacyPolicy": {
+      "title": "Politique de Confidentialité",
+      "introduction": "Cette Politique de Confidentialité décrit comment Poke Wordle (\"nous\", \"notre\" ou \"nos\") collecte, utilise et protège vos informations lorsque vous utilisez notre service.",
+      "informationCollection": {
+        "title": "Informations que Nous Collectons",
+        "description": "Nous collectons les types d'informations suivants :",
+        "items": [
+          "Paramètres et préférences du jeu (stockés localement dans votre navigateur)",
+          "Statistiques et progression du jeu (stockées localement dans votre navigateur)",
+          "Préférences de langue (stockées localement dans votre navigateur)",
+          "Analyses d'utilisation de base (anonymisées)"
+        ]
+      },
+      "dataStorage": {
+        "title": "Comment Nous Stockons Vos Données",
+        "description": "Vos données de jeu sont stockées localement dans votre navigateur en utilisant localStorage. Cela signifie :",
+        "items": [
+          "Vos données ne quittent jamais votre appareil",
+          "Nous ne pouvons pas accéder à vos statistiques personnelles de jeu",
+          "Effacer les données de votre navigateur réinitialisera votre progression de jeu",
+          "Vos données ne sont pas partagées avec des tiers"
+        ]
+      },
+      "cookies": {
+        "title": "Cookies et Stockage Local",
+        "description": "Nous utilisons le localStorage du navigateur pour sauvegarder vos préférences et progression de jeu. Aucun cookie de suivi n'est utilisé."
+      },
+      "thirdParty": {
+        "title": "Services Tiers",
+        "description": "Nous pouvons utiliser des services tiers pour les analyses et l'hébergement. Ces services ont leurs propres politiques de confidentialité."
+      },
+      "dataRights": {
+        "title": "Vos Droits",
+        "description": "Vous avez le droit de :",
+        "items": [
+          "Effacer vos données locales de jeu à tout moment",
+          "Désactiver JavaScript pour empêcher le stockage de données",
+          "Nous contacter pour toute préoccupation de confidentialité"
+        ]
+      }
+    },
+    "termsOfService": {
+      "title": "Conditions d'Utilisation",
+      "introduction": "En utilisant Poke Wordle, vous acceptez ces conditions d'utilisation.",
+      "gameContent": {
+        "title": "Contenu du Jeu",
+        "description": "Poke Wordle est un jeu créé par des fans. Tout le contenu lié aux Pokémon, y compris les noms, images et données, appartient à Nintendo, Game Freak et Creatures Inc. Ce jeu n'est pas affilié ou approuvé par ces entreprises."
+      },
+      "userConduct": {
+        "title": "Conduite de l'Utilisateur",
+        "description": "En utilisant notre service, vous acceptez de :",
+        "items": [
+          "Utiliser le jeu uniquement à des fins personnelles et non commerciales",
+          "Ne pas tenter de faire de l'ingénierie inverse ou d'exploiter le jeu",
+          "Ne pas utiliser d'outils automatisés ou de bots pour jouer",
+          "Respecter les droits de propriété intellectuelle des créateurs de Pokémon"
+        ]
+      },
+      "disclaimer": {
+        "title": "Avertissement",
+        "description": "Le jeu est fourni \"tel quel\" sans garanties d'aucune sorte. Nous ne sommes pas responsables de toute perte de données ou problèmes techniques."
+      },
+      "modifications": {
+        "title": "Modifications",
+        "description": "Nous nous réservons le droit de modifier ces conditions à tout moment. L'utilisation continue du service constitue l'acceptation de tout changement."
+      },
+      "contact": {
+        "title": "Contact",
+        "description": "Si vous avez des questions sur ces conditions ou notre politique de confidentialité, veuillez nous contacter via notre dépôt GitHub."
+      }
+    }
   }
 } 

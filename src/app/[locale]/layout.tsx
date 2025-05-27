@@ -72,11 +72,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const currentLocaleData = localeMetadata[locale as keyof typeof localeMetadata];
   
+  // Generate correct URLs for English vs other locales
+  const canonicalUrl = locale === 'en' ? '/' : `/${locale}`;
+  const ogUrl = locale === 'en' ? 'https://www.pokewordle.app' : `https://www.pokewordle.app/${locale}`;
+  
   return {
     title: currentLocaleData.title,
     description: currentLocaleData.description,
     alternates: {
-      canonical: `/${locale}`,
+      canonical: canonicalUrl,
       languages: {
         'x-default': '/',
         'en': '/',
@@ -93,7 +97,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: currentLocaleData.title,
       description: currentLocaleData.description,
-      url: `https://poke-wordle.vercel.app/${locale}`,
+      url: ogUrl,
       locale: currentLocaleData.ogLocale,
       alternateLocale: Object.values(localeMetadata).map(data => data.ogLocale).filter(loc => loc !== currentLocaleData.ogLocale),
     },

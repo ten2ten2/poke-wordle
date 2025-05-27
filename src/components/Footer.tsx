@@ -1,10 +1,14 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 
 export default function Footer() {
   const t = useTranslations();
+  const locale = useLocale();
+
+  // Generate the correct href for privacy-and-terms page
+  const privacyHref = locale === 'en' ? '/privacy-and-terms' : `/${locale}/privacy-and-terms`;
 
   return (
     <footer className="bg-white border-t border-gray-200 mt-auto safe-bottom">
@@ -21,7 +25,7 @@ export default function Footer() {
             {/* Links */}
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
               <Link
-                href="/privacy-and-terms"
+                href={privacyHref}
                 className="text-responsive-sm text-gray-500 hover:text-gray-700 transition-colors duration-200"
               >
                 {t('footer.privacyAndTerms')}

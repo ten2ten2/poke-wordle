@@ -90,7 +90,8 @@
   "common": {
     "close": "Chiudi",
     "cancel": "Annulla",
-    "save": "Salva"
+    "save": "Salva",
+    "back": "Torna al Gioco"
   },
   "about": {
     "title": "Informazioni",
@@ -171,5 +172,80 @@
     "ultra": "Ultracreatura",
     "paradox": "Pokémon Paradosso",
     "late": "Pokémon a Fioritura Tardiva"
+  },
+  "privacyAndTerms": {
+    "title": "Informativa sulla Privacy e Termini di Servizio",
+    "lastUpdated": "Ultimo aggiornamento: {date}",
+    "privacyPolicy": {
+      "title": "Informativa sulla Privacy",
+      "introduction": "Questa Informativa sulla Privacy descrive come Poke Wordle (\"noi\", \"nostro\" o \"ci\") raccoglie, utilizza e protegge le tue informazioni quando utilizzi il nostro servizio.",
+      "informationCollection": {
+        "title": "Informazioni che Raccogliamo",
+        "description": "Raccogliamo i seguenti tipi di informazioni:",
+        "items": [
+          "Impostazioni e preferenze del gioco (memorizzate localmente nel tuo browser)",
+          "Statistiche e progressi del gioco (memorizzate localmente nel tuo browser)",
+          "Preferenze di lingua (memorizzate localmente nel tuo browser)",
+          "Analisi di utilizzo di base (anonimizzate)"
+        ]
+      },
+      "dataStorage": {
+        "title": "Come Memorizziamo i Tuoi Dati",
+        "description": "I tuoi dati di gioco sono memorizzati localmente nel tuo browser utilizzando localStorage. Questo significa:",
+        "items": [
+          "I tuoi dati non lasciano mai il tuo dispositivo",
+          "Non possiamo accedere alle tue statistiche personali di gioco",
+          "Cancellare i dati del browser resetterà il tuo progresso di gioco",
+          "I tuoi dati non sono condivisi con terze parti"
+        ]
+      },
+      "cookies": {
+        "title": "Cookie e Memorizzazione Locale",
+        "description": "Utilizziamo localStorage del browser per salvare le tue preferenze e progressi di gioco. Non vengono utilizzati cookie di tracciamento."
+      },
+      "thirdParty": {
+        "title": "Servizi di Terze Parti",
+        "description": "Potremmo utilizzare servizi di terze parti per analisi e hosting. Questi servizi hanno le loro proprie informative sulla privacy."
+      },
+      "dataRights": {
+        "title": "I Tuoi Diritti",
+        "description": "Hai il diritto di:",
+        "items": [
+          "Cancellare i tuoi dati locali di gioco in qualsiasi momento",
+          "Disabilitare JavaScript per prevenire la memorizzazione dei dati",
+          "Contattarci per qualsiasi preoccupazione sulla privacy"
+        ]
+      }
+    },
+    "termsOfService": {
+      "title": "Termini di Servizio",
+      "introduction": "Utilizzando Poke Wordle, accetti questi termini di servizio.",
+      "gameContent": {
+        "title": "Contenuto del Gioco",
+        "description": "Poke Wordle è un gioco creato da fan. Tutti i contenuti relativi ai Pokémon, inclusi nomi, immagini e dati, sono di proprietà di Nintendo, Game Freak e Creatures Inc. Questo gioco non è affiliato o approvato da queste aziende."
+      },
+      "userConduct": {
+        "title": "Condotta dell'Utente",
+        "description": "Utilizzando il nostro servizio, accetti di:",
+        "items": [
+          "Utilizzare il gioco solo per scopi personali e non commerciali",
+          "Non tentare di fare reverse engineering o sfruttare il gioco",
+          "Non utilizzare strumenti automatizzati o bot per giocare",
+          "Rispettare i diritti di proprietà intellettuale dei creatori di Pokémon"
+        ]
+      },
+      "disclaimer": {
+        "title": "Disclaimer",
+        "description": "Il gioco è fornito \"così com'è\" senza garanzie di alcun tipo. Non siamo responsabili per perdite di dati o problemi tecnici."
+      },
+      "modifications": {
+        "title": "Modifiche",
+        "description": "Ci riserviamo il diritto di modificare questi termini in qualsiasi momento. L'uso continuato del servizio costituisce accettazione di qualsiasi cambiamento."
+      },
+      "contact": {
+        "title": "Contatto",
+        "description": "Se hai domande su questi termini o sulla nostra informativa sulla privacy, contattaci tramite il nostro repository GitHub."
+      }
+    }
   }
 } 
