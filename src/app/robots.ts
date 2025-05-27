@@ -9,12 +9,71 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: '*',
         allow: '/',
         disallow: [
-          '/api/',
-          '/_next/',
+          '/api/internal/',
+          '/_next/static/chunks/',
           '/private/',
-          '*.json',
+          '*.json$',
+          '/temp/',
+          '/admin/',
+        ],
+        crawlDelay: 1,
+      },
+      // Allow specific search engine bots with optimized settings
+      {
+        userAgent: 'Googlebot',
+        allow: '/',
+        disallow: [
+          '/api/internal/',
+          '/private/',
+          '/admin/',
         ],
       },
+      {
+        userAgent: 'Bingbot',
+        allow: '/',
+        disallow: [
+          '/api/internal/',
+          '/private/',
+          '/admin/',
+        ],
+      },
+      {
+        userAgent: 'Slurp', // Yahoo
+        allow: '/',
+        disallow: [
+          '/api/internal/',
+          '/private/',
+          '/admin/',
+        ],
+      },
+      {
+        userAgent: 'DuckDuckBot',
+        allow: '/',
+        disallow: [
+          '/api/internal/',
+          '/private/',
+          '/admin/',
+        ],
+      },
+      {
+        userAgent: 'Baiduspider',
+        allow: '/',
+        disallow: [
+          '/api/internal/',
+          '/private/',
+          '/admin/',
+        ],
+      },
+      {
+        userAgent: 'YandexBot',
+        allow: '/',
+        disallow: [
+          '/api/internal/',
+          '/private/',
+          '/admin/',
+        ],
+      },
+      // Block AI training bots
       {
         userAgent: 'GPTBot',
         disallow: '/',
@@ -33,6 +92,18 @@ export default function robots(): MetadataRoute.Robots {
       },
       {
         userAgent: 'Claude-Web',
+        disallow: '/',
+      },
+      {
+        userAgent: 'PerplexityBot',
+        disallow: '/',
+      },
+      {
+        userAgent: 'Applebot-Extended',
+        disallow: '/',
+      },
+      {
+        userAgent: 'FacebookBot',
         disallow: '/',
       },
     ],
