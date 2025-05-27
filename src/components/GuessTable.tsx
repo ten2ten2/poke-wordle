@@ -109,8 +109,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
           <thead className="bg-gray-50">
             <tr>
               <th className="table-cell-responsive text-left text-xxs sm:text-xs font-medium text-gray-500 uppercase tracking-wider gradient-divider">
-                <span className="mobile-hidden">{t('game.columns.profile')}</span>
-                <span className="desktop-hidden">Pic</span>
+                {t('game.columns.profile')}
               </th>
               <th className="table-cell-responsive text-left text-xxs sm:text-xs font-medium text-gray-500 uppercase tracking-wider gradient-divider">
                 {t('game.columns.name')}
@@ -119,20 +118,17 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                 {t('game.columns.type')}
               </th>
               <th className="table-cell-responsive text-left text-xxs sm:text-xs font-medium text-gray-500 uppercase tracking-wider gradient-divider">
-                <span className="mobile-hidden">{t('game.columns.baseStats')}</span>
-                <span className="desktop-hidden">Stats</span>
+                {t('game.columns.baseStats')}
               </th>
               <th className="table-cell-responsive text-left text-xxs sm:text-xs font-medium text-gray-500 uppercase tracking-wider gradient-divider">
                 <span className="mobile-hidden">{t('game.columns.generation')}</span>
                 <span className="desktop-hidden">Gen</span>
               </th>
               <th className="table-cell-responsive text-left text-xxs sm:text-xs font-medium text-gray-500 uppercase tracking-wider gradient-divider">
-                <span className="mobile-hidden">{t('game.columns.abilities')}</span>
-                <span className="desktop-hidden">Abilities</span>
+                {t('game.columns.abilities')}
               </th>
               <th className="table-cell-responsive text-left text-xxs sm:text-xs font-medium text-gray-500 uppercase tracking-wider gradient-divider">
-                <span className="mobile-hidden">{t('game.columns.evolution')}</span>
-                <span className="desktop-hidden">Evo</span>
+                {t('game.columns.evolution')}
               </th>
               <th className="table-cell-responsive text-left text-xxs sm:text-xs font-medium text-gray-500 uppercase tracking-wider">
                 {t('game.columns.tags')}
@@ -241,14 +237,12 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                     <div className="flex flex-wrap gap-1 max-w-[100px] sm:max-w-none">
                       {guess.evolution_stage.value !== null && (
                         <span className={getTagClassName(guess.evolution_stage.status)}>
-                          <span className="mobile-hidden">{t(`evolution.stage${guess.evolution_stage.value}`)}</span>
-                          <span className="desktop-hidden">S{guess.evolution_stage.value}</span>
+                          {t(`evolution.stage${guess.evolution_stage.value}`)}
                         </span>
                       )}
                       {guess.evolution_method_detail.value && (
                         <span className={getTagClassName(guess.evolution_method_detail.status)}>
-                          <span className="mobile-hidden">{t(`evolutionMethods.${guess.evolution_method_detail.value}`)}</span>
-                          <span className="desktop-hidden text-xxs">{t(`evolutionMethods.${guess.evolution_method_detail.value}`).slice(0, 4)}</span>
+                          {t(`evolutionMethods.${guess.evolution_method_detail.value}`)}
                         </span>
                       )}
                     </div>
