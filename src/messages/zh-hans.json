@@ -110,7 +110,7 @@
     "language": "语言"
   },
   "footer": {
-    "copyright": "© 2024 宝可梦猜猜乐。保留所有权利。",
+    "copyright": "© 2025 宝可梦猜猜乐。保留所有权利。",
     "privacyAndTerms": "隐私与条款",
     "allRightsReserved": "保留所有权利。",
     "github": "GitHub",
@@ -178,7 +178,7 @@
     "lastUpdated": "最后更新：{date}",
     "privacyPolicy": {
       "title": "隐私政策",
-      "introduction": "本隐私政策描述了宝可梦猜词（\"我们\"、\"我们的\"或\"我们\"）如何收集、使用和保护您在使用我们服务时的信息。",
+      "introduction": "本隐私政策描述了宝可梦猜猜乐（“我们”或“我们的”）如何收集、使用和保护您在使用我们服务时的信息。",
       "informationCollection": {
         "title": "我们收集的信息",
         "description": "我们收集以下类型的信息：",
@@ -191,7 +191,7 @@
       },
       "dataStorage": {
         "title": "我们如何存储您的数据",
-        "description": "您的游戏数据使用localStorage存储在您的浏览器本地。这意味着：",
+        "description": "您的游戏数据使用 localStorage 存储在您的浏览器本地。这意味着：",
         "items": [
           "您的数据永远不会离开您的设备",
           "我们无法访问您的个人游戏统计",
@@ -200,8 +200,8 @@
         ]
       },
       "cookies": {
-        "title": "Cookie和本地存储",
-        "description": "我们使用浏览器localStorage来保存您的游戏偏好和进度。不使用跟踪cookie。"
+        "title": "Cookie 和本地存储",
+        "description": "我们使用浏览器 localStorage 来保存您的游戏偏好和进度。不使用跟踪 cookie。"
       },
       "thirdParty": {
         "title": "第三方服务",
@@ -212,17 +212,17 @@
         "description": "您有权：",
         "items": [
           "随时清除您的本地游戏数据",
-          "禁用JavaScript以防止数据存储",
+          "禁用 JavaScript 以防止数据存储",
           "就任何隐私问题联系我们"
         ]
       }
     },
     "termsOfService": {
       "title": "服务条款",
-      "introduction": "使用宝可梦猜词即表示您同意这些服务条款。",
+      "introduction": "使用宝可梦猜猜乐即表示您同意这些服务条款。",
       "gameContent": {
         "title": "游戏内容",
-        "description": "宝可梦猜词是一个粉丝制作的游戏。所有宝可梦相关内容，包括名称、图像和数据，均为任天堂、Game Freak和Creatures Inc.的财产。本游戏未获得这些公司的关联或认可。"
+        "description": "宝可梦猜猜乐是一个粉丝制作的游戏。所有宝可梦相关内容，包括名称、图像和数据，均为任天堂、Game Freak 和 Creatures Inc. 的财产。本游戏未获得这些公司的关联或认可。"
       },
       "userConduct": {
         "title": "用户行为",
@@ -244,7 +244,7 @@
       },
       "contact": {
         "title": "联系",
-        "description": "如果您对这些条款或我们的隐私政策有任何疑问，请通过我们的GitHub存储库联系我们。"
+        "description": "如果您对这些条款或我们的隐私政策有任何疑问，请通过我们的 GitHub 联系我们。"
       }
     }
   }

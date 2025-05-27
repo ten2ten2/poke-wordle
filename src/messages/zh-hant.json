@@ -178,7 +178,7 @@
     "lastUpdated": "最後更新：{date}",
     "privacyPolicy": {
       "title": "隱私政策",
-      "introduction": "本隱私政策描述了寶可夢猜詞（\"我們\"、\"我們的\"或\"我們\"）如何收集、使用和保護您在使用我們服務時的資訊。",
+      "introduction": "本隱私政策描述了寶可夢猜猜樂（「我們」或「我們的」）如何收集、使用和保護您在使用我們服務時的資訊。",
       "informationCollection": {
         "title": "我們收集的資訊",
         "description": "我們收集以下類型的資訊：",
@@ -200,8 +200,8 @@
         ]
       },
       "cookies": {
-        "title": "Cookie和本地儲存",
-        "description": "我們使用瀏覽器localStorage來儲存您的遊戲偏好和進度。不使用追蹤cookie。"
+        "title": "Cookie 和本地儲存",
+        "description": "我們使用瀏覽器 localStorage 來保存您的遊戲偏好和進度。不使用追蹤 cookie。"
       },
       "thirdParty": {
         "title": "第三方服務",
@@ -212,17 +212,17 @@
         "description": "您有權：",
         "items": [
           "隨時清除您的本地遊戲資料",
-          "停用JavaScript以防止資料儲存",
+          "禁用 JavaScript 以防止資料儲存",
           "就任何隱私問題聯絡我們"
         ]
       }
     },
     "termsOfService": {
       "title": "服務條款",
-      "introduction": "使用寶可夢猜詞即表示您同意這些服務條款。",
+      "introduction": "使用寶可夢猜猜樂即表示您同意這些服務條款。",
       "gameContent": {
         "title": "遊戲內容",
-        "description": "寶可夢猜詞是一個粉絲製作的遊戲。所有寶可夢相關內容，包括名稱、圖像和資料，均為任天堂、Game Freak和Creatures Inc.的財產。本遊戲未獲得這些公司的關聯或認可。"
+        "description": "寶可夢猜猜樂是一個粉絲製作的遊戲。所有寶可夢相關內容，包括名稱、圖像和資料，均為任天堂、Game Freak 和 Creatures Inc. 的財產。本遊戲未獲得這些公司的關聯或認可。"
       },
       "userConduct": {
         "title": "使用者行為",
@@ -231,12 +231,12 @@
           "僅將遊戲用於個人、非商業目的",
           "不嘗試逆向工程或利用遊戲",
           "不使用自動化工具或機器人玩遊戲",
-          "尊重寶可夢創作者的智慧財產權"
+          "尊重寶可夢創作者的知識產權"
         ]
       },
       "disclaimer": {
         "title": "免責聲明",
-        "description": "遊戲按\"原樣\"提供，不提供任何形式的保證。我們不對任何資料遺失或技術問題負責。"
+        "description": "遊戲按「原樣」提供，不提供任何形式的保證。我們不對任何資料遺失或技術問題負責。"
       },
       "modifications": {
         "title": "修改",
@@ -244,7 +244,7 @@
       },
       "contact": {
         "title": "聯絡",
-        "description": "如果您對這些條款或我們的隱私政策有任何疑問，請透過我們的GitHub儲存庫聯絡我們。"
+        "description": "如果您對這些條款或我們的隱私政策有任何疑問，請透過我們的 GitHub 聯絡我們。"
       }
     }
   }

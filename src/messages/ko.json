@@ -110,13 +110,13 @@
     "language": "언어"
   },
   "footer": {
-    "copyright": "© 2024 포케 워들. 모든 권리 보유.",
+    "copyright": "© 2025 포케 워들. 모든 권리 보유.",
     "privacyAndTerms": "개인정보 및 약관",
     "allRightsReserved": "모든 권리 보유.",
     "github": "GitHub",
     "privacy": "개인정보 처리방침",
     "terms": "이용약관",
-    "pokemonAttribution": "포켓몬 관련 콘텐츠는 닌텐도, 게임프리크, 크리처스의 소유입니다."
+    "pokemonAttribution": "포켓몬 관련 콘텐츠는 닌텐도, Game Freak 및 Creatures Inc.의 소유입니다."
   },
   "generation": {
     "Gen1": "1세대",
@@ -191,7 +191,7 @@
       },
       "dataStorage": {
         "title": "데이터 저장 방법",
-        "description": "게임 데이터는 localStorage를 사용하여 브라우저에 로컬로 저장됩니다. 이는 다음을 의미합니다:",
+        "description": "게임 데이터는 localStorage 를 사용하여 브라우저에 로컬로 저장됩니다. 이는 다음을 의미합니다:",
         "items": [
           "귀하의 데이터는 절대 기기를 떠나지 않습니다",
           "저희는 귀하의 개인 게임 통계에 접근할 수 없습니다",
@@ -201,7 +201,7 @@
       },
       "cookies": {
         "title": "쿠키 및 로컬 저장소",
-        "description": "게임 환경설정과 진행상황을 저장하기 위해 브라우저 localStorage를 사용합니다. 추적 쿠키는 사용하지 않습니다."
+        "description": "게임 환경설정과 진행상황을 저장하기 위해 브라우저 localStorage 를 사용합니다. 추적 쿠키는 사용하지 않습니다."
       },
       "thirdParty": {
         "title": "제3자 서비스",
@@ -212,7 +212,7 @@
         "description": "귀하는 다음과 같은 권리를 가집니다:",
         "items": [
           "언제든지 로컬 게임 데이터를 지울 수 있습니다",
-          "데이터 저장을 방지하기 위해 JavaScript를 비활성화할 수 있습니다",
+          "데이터 저장을 방지하기 위해 JavaScript 를 비활성화할 수 있습니다",
           "개인정보 관련 우려사항이 있을 때 저희에게 연락할 수 있습니다"
         ]
       }
@@ -222,7 +222,7 @@
       "introduction": "포케 워들을 사용함으로써 이 이용약관에 동의하게 됩니다.",
       "gameContent": {
         "title": "게임 콘텐츠",
-        "description": "포케 워들은 팬이 만든 게임입니다. 이름, 이미지, 데이터를 포함한 모든 포켓몬 관련 콘텐츠는 닌텐도, 게임프리크, 크리처스의 소유입니다. 이 게임은 이러한 회사들과 제휴하거나 승인받지 않았습니다."
+        "description": "포케 워들은 팬이 만든 게임입니다. 이름, 이미지, 데이터를 포함한 모든 포켓몬 관련 콘텐츠는 닌텐도, Game Freak 및 Creatures Inc.의 소유입니다. 이 게임은 이러한 회사들과 제휴하거나 승인받지 않았습니다."
       },
       "userConduct": {
         "title": "사용자 행동",
@@ -244,7 +244,7 @@
       },
       "contact": {
         "title": "연락처",
-        "description": "이 약관이나 개인정보 처리방침에 대한 질문이 있으시면 GitHub 저장소를 통해 연락해 주세요."
+        "description": "이 약관이나 개인정보 처리방침에 대한 질문이 있으시면 GitHub를 통해 연락해 주세요."
       }
     }
   }
