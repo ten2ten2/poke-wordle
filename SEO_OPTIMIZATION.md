@@ -43,7 +43,7 @@ This document outlines all the SEO optimizations implemented for the Poke Wordle
 #### Dynamic Robots.txt (`src/app/robots.ts`)
 - ✅ Proper crawling directives
 - ✅ Sitemap reference
-- ✅ Bot-specific rules (blocking AI crawlers)
+- ✅ Bot-specific rules (**UPDATED**: now allowing AI crawlers with controlled access)
 - ✅ Security-focused disallow rules
 
 #### Next.js Configuration (`next.config.ts`)
@@ -237,7 +237,13 @@ Each locale should target keywords in the respective language:
 1. **精细化的爬虫控制**
    - 为主要搜索引擎（Google、Bing、Yahoo、DuckDuckGo、百度、Yandex）提供专门的规则
    - 允许搜索引擎访问所有公开内容
-   - 阻止 AI 训练爬虫（GPTBot、ChatGPT-User、CCBot、anthropic-ai 等）
+   - **2025-05-27 更新**: 现在允许 AI 爬虫索引（GPTBot、ChatGPT-User、CCBot 等）
+
+2. **AI 爬虫管理**
+   - 允许主要 AI 平台进行内容索引和训练
+   - 设置 2 秒爬取延迟以控制服务器负载
+   - 保护敏感区域（/api/internal/、/private/、/admin/）
+   - ~~阻止 AI 训练爬虫（GPTBot、ChatGPT-User、CCBot、anthropic-ai 等）~~ **已更改为允许**
 
 2. **优化的 disallow 规则**
    - 只阻止真正需要保护的路径（`/api/internal/`、`/private/`、`/admin/`）

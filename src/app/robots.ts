@@ -73,35 +73,78 @@ export default function robots(): MetadataRoute.Robots {
           '/admin/',
         ],
       },
-      // Block AI training bots
+      // Allow AI bots for indexing and training
       {
         userAgent: 'GPTBot',
-        disallow: '/',
+        allow: '/',
+        disallow: [
+          '/api/internal/',
+          '/private/',
+          '/admin/',
+        ],
+        crawlDelay: 2,
       },
       {
         userAgent: 'ChatGPT-User',
-        disallow: '/',
+        allow: '/',
+        disallow: [
+          '/api/internal/',
+          '/private/',
+          '/admin/',
+        ],
+        crawlDelay: 2,
       },
       {
         userAgent: 'CCBot',
-        disallow: '/',
+        allow: '/',
+        disallow: [
+          '/api/internal/',
+          '/private/',
+          '/admin/',
+        ],
+        crawlDelay: 2,
       },
       {
         userAgent: 'anthropic-ai',
-        disallow: '/',
+        allow: '/',
+        disallow: [
+          '/api/internal/',
+          '/private/',
+          '/admin/',
+        ],
+        crawlDelay: 2,
       },
       {
         userAgent: 'Claude-Web',
-        disallow: '/',
+        allow: '/',
+        disallow: [
+          '/api/internal/',
+          '/private/',
+          '/admin/',
+        ],
+        crawlDelay: 2,
       },
       {
         userAgent: 'PerplexityBot',
-        disallow: '/',
+        allow: '/',
+        disallow: [
+          '/api/internal/',
+          '/private/',
+          '/admin/',
+        ],
+        crawlDelay: 2,
       },
       {
         userAgent: 'Applebot-Extended',
-        disallow: '/',
+        allow: '/',
+        disallow: [
+          '/api/internal/',
+          '/private/',
+          '/admin/',
+        ],
+        crawlDelay: 2,
       },
+      // Keep Facebook bot restricted for privacy
       {
         userAgent: 'FacebookBot',
         disallow: '/',
