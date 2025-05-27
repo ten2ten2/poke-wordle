@@ -206,6 +206,14 @@
     "paradox": "悖謬寶可夢",
     "late": "大器晚成的寶可夢"
   },
+  "cookieConsent": {
+    "title": "我們使用 localStorage",
+    "description": "我們使用 localStorage 和類似技術來改善您的體驗、分析網站使用情況並協助我們的行銷工作。通過繼續使用我們的網站，您同意我們使用 localStorage。",
+    "learnMore": "了解更多",
+    "accept": "接受",
+    "decline": "拒絕",
+    "close": "關閉"
+  },
   "privacyAndTerms": {
     "title": "隱私政策與服務條款",
     "lastUpdated": "最後更新：{date}",

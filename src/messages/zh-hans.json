@@ -206,6 +206,14 @@
     "paradox": "悖谬宝可梦",
     "late": "大器晚成宝可梦"
   },
+  "cookieConsent": {
+    "title": "我们使用 localStorage",
+    "description": "我们使用 localStorage 和类似技术来改善您的体验、分析网站使用情况并协助我们的营销工作。通过继续使用我们的网站，您同意我们使用 localStorage。",
+    "learnMore": "了解更多",
+    "accept": "接受",
+    "decline": "拒绝",
+    "close": "关闭"
+  },
   "privacyAndTerms": {
     "title": "隐私政策与服务条款",
     "lastUpdated": "最后更新：{date}",

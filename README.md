@@ -35,6 +35,7 @@ A Pokémon guessing game where you try to identify a Pokémon based on various c
 - **Styling**: Tailwind CSS
 - **Internationalization**: next-intl
 - **UI Components**: Headless UI, Heroicons
+- **Analytics**: Google Analytics 4
 - **Deployment**: Vercel
 
 ## Development
@@ -54,9 +55,24 @@ cd poke-wordle
 # Install dependencies
 npm install
 
+# Set up environment variables (optional)
+cp .env.local.example .env.local
+# Edit .env.local and add your Google Analytics measurement ID
+
 # Start development server
 npm run dev
 ```
+
+### Environment Variables
+
+Create a `.env.local` file in the root directory and add the following:
+
+```bash
+# Google Analytics (optional)
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+```
+
+Replace `G-XXXXXXXXXX` with your actual Google Analytics measurement ID. See [GOOGLE_ANALYTICS_SETUP.md](GOOGLE_ANALYTICS_SETUP.md) for detailed setup instructions.
 
 ### Build for Production
 

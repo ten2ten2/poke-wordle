@@ -206,6 +206,14 @@
     "paradox": "パラドックスポケモン",
     "late": "大器晩成ポケモン"
   },
+  "cookieConsent": {
+    "title": "localStorage を使用しています",
+    "description": "私たちは localStorage と類似の技術を使用して、あなたの体験を向上させ、サイトの使用状況を分析し、マーケティング活動を支援しています。サイトの使用を続けることで、localStorage の使用に同意したものとみなされます。",
+    "learnMore": "詳細を見る",
+    "accept": "同意する",
+    "decline": "拒否する",
+    "close": "閉じる"
+  },
   "privacyAndTerms": {
     "title": "プライバシーポリシーと利用規約",
     "lastUpdated": "最終更新：{date}",

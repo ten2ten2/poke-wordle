@@ -206,6 +206,14 @@
     "paradox": "Pokémon Paradosso",
     "late": "Pokémon a Fioritura Tardiva"
   },
+  "cookieConsent": {
+    "title": "Utilizziamo localStorage",
+    "description": "Utilizziamo localStorage e tecnologie simili per migliorare la tua esperienza, analizzare l'utilizzo del sito e assistere i nostri sforzi di marketing. Continuando a utilizzare il nostro sito, acconsenti al nostro utilizzo di localStorage.",
+    "learnMore": "Scopri di più",
+    "accept": "Accetta",
+    "decline": "Rifiuta",
+    "close": "Chiudi"
+  },
   "privacyAndTerms": {
     "title": "Informativa sulla Privacy e Termini di Servizio",
     "lastUpdated": "Ultimo aggiornamento: {date}",

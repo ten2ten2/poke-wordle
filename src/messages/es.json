@@ -206,6 +206,14 @@
     "paradox": "Pokémon Paradoja",
     "late": "Pokémon de Florecimiento Tardío"
   },
+  "cookieConsent": {
+    "title": "Usamos localStorage",
+    "description": "Usamos localStorage y tecnologías similares para mejorar su experiencia, analizar el uso del sitio y ayudar con nuestros esfuerzos de marketing. Al continuar usando nuestro sitio, usted consiente nuestro uso de localStorage.",
+    "learnMore": "Más información",
+    "accept": "Aceptar",
+    "decline": "Rechazar",
+    "close": "Cerrar"
+  },
   "privacyAndTerms": {
     "title": "Política de Privacidad y Términos de Servicio",
     "lastUpdated": "Última actualización: {date}",

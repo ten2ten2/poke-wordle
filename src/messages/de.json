@@ -206,6 +206,14 @@
     "paradox": "Paradox-Pokémon",
     "late": "Spätentwickler-Pokémon"
   },
+  "cookieConsent": {
+    "title": "Wir verwenden localStorage",
+    "description": "Wir verwenden localStorage und ähnliche Technologien, um Ihre Erfahrung zu verbessern, die Website-Nutzung zu analysieren und unsere Marketing-Bemühungen zu unterstützen. Durch die weitere Nutzung unserer Website stimmen Sie der Verwendung von localStorage zu.",
+    "learnMore": "Mehr erfahren",
+    "accept": "Akzeptieren",
+    "decline": "Ablehnen",
+    "close": "Schließen"
+  },
   "privacyAndTerms": {
     "title": "Datenschutzerklärung & Nutzungsbedingungen",
     "lastUpdated": "Zuletzt aktualisiert: {date}",

@@ -206,6 +206,14 @@
     "paradox": "Pokémon Paradoxe",
     "late": "Pokémon à Évolution Tardive"
   },
+  "cookieConsent": {
+    "title": "Nous utilisons localStorage",
+    "description": "Nous utilisons localStorage et des technologies similaires pour améliorer votre expérience, analyser l'utilisation du site et aider nos efforts de marketing. En continuant à utiliser notre site, vous consentez à notre utilisation de localStorage.",
+    "learnMore": "En savoir plus",
+    "accept": "Accepter",
+    "decline": "Refuser",
+    "close": "Fermer"
+  },
   "privacyAndTerms": {
     "title": "Politique de Confidentialité et Conditions d'Utilisation",
     "lastUpdated": "Dernière mise à jour : {date}",
