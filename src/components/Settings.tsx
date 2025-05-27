@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Dialog, Transition, Tab } from '@headlessui/react';
+import { Dialog, Transition, Tab, TransitionChild, DialogPanel, DialogTitle, TabPanel, TabPanels, TabGroup, TabList } from '@headlessui/react';
 import { Fragment } from 'react';
 import { useTranslations } from 'next-intl';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -18,6 +18,7 @@ interface SettingsProps {
 export default function Settings({ isOpen, onClose, onSettingsChange, currentSettings }: SettingsProps) {
   const t = useTranslations();
   const [localSettings, setLocalSettings] = useState<GameSettings>(currentSettings);
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
   useEffect(() => {
     setLocalSettings(currentSettings);
@@ -68,7 +69,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={handleCancel}>
-        <Transition.Child
+        <TransitionChild
           as={Fragment}
           enter="ease-out duration-300"
           enterFrom="opacity-0"
@@ -78,11 +79,11 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
           leaveTo="opacity-0"
         >
           <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm" />
-        </Transition.Child>
+        </TransitionChild>
 
         <div className="fixed inset-0 overflow-y-auto safe-all">
           <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child
+            <TransitionChild
               as={Fragment}
               enter="ease-out duration-300"
               enterFrom="opacity-0 scale-95"
@@ -91,13 +92,13 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="modal-content max-w-2xl">
+              <DialogPanel className="modal-content max-w-2xl">
                 <div className="card-padding">
                   {/* Header */}
                   <div className="flex items-center justify-between mb-6">
-                    <Dialog.Title as="h3" className="text-responsive-lg font-medium leading-6 text-gray-900">
-                      {t('settings.title')}
-                    </Dialog.Title>
+                    <DialogTitle as="h3" className="text-responsive-lg font-medium leading-6 text-gray-900">
+                      {selectedTabIndex === 0 ? t('settings.title') : t('about.title')}
+                    </DialogTitle>
                     <button
                       type="button"
                       className="touch-target rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -109,14 +110,14 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                   </div>
 
                   {/* Tabs */}
-                  <Tab.Group>
-                    <Tab.List className="flex space-x-1 rounded-xl bg-blue-900/20 p-1 mb-6">
+                  <TabGroup onChange={setSelectedTabIndex}>
+                    <TabList className="flex space-x-1 rounded-xl bg-gray-100 p-1 mb-6">
                       <Tab
                         className={({ selected }) =>
                           `w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-all duration-200 ${
                             selected
-                              ? 'bg-white text-blue-700 shadow'
-                              : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'
+                              ? 'bg-white text-gray-900 shadow-sm'
+                              : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                           }`
                         }
                       >
@@ -126,18 +127,18 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                         className={({ selected }) =>
                           `w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-all duration-200 ${
                             selected
-                              ? 'bg-white text-blue-700 shadow'
-                              : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'
+                              ? 'bg-white text-gray-900 shadow-sm'
+                              : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                           }`
                         }
                       >
                         {t('settings.aboutTab')}
                       </Tab>
-                    </Tab.List>
+                    </TabList>
 
-                    <Tab.Panels>
+                    <TabPanels>
                       {/* Settings Panel */}
-                      <Tab.Panel>
+                      <TabPanel>
                         <div className="form-group-mobile">
                           {/* Max Guesses */}
                           <div className="space-y-3">
@@ -152,8 +153,8 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                                   onClick={() => handleMaxGuessesChange(value)}
                                   className={`touch-target px-2 py-2 text-responsive-sm font-medium rounded-md border transition-colors duration-200 ${
                                     localSettings.maxGuesses === value
-                                      ? 'bg-blue-600 text-white border-blue-600'
-                                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                      ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
+                                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
                                   }`}
                                 >
                                   {value}
@@ -172,7 +173,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                                 <button
                                   type="button"
                                   onClick={handleSelectAllGenerations}
-                                  className="text-xs text-blue-600 hover:text-blue-800"
+                                  className="text-xs text-blue-500 hover:text-blue-700 font-medium"
                                 >
                                   {t('settings.selectAll')}
                                 </button>
@@ -180,7 +181,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                                 <button
                                   type="button"
                                   onClick={handleDeselectAllGenerations}
-                                  className="text-xs text-blue-600 hover:text-blue-800"
+                                  className="text-xs text-blue-500 hover:text-blue-700 font-medium"
                                 >
                                   {t('settings.deselectAll')}
                                 </button>
@@ -194,8 +195,8 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                                   onClick={() => handleGenerationToggle(gen)}
                                   className={`touch-target px-3 py-2 text-responsive-sm font-medium rounded-md border transition-colors duration-200 ${
                                     localSettings.selectedGenerations.includes(gen)
-                                      ? 'bg-blue-600 text-white border-blue-600'
-                                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                      ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
+                                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
                                   }`}
                                 >
                                   {t(`generation.Gen${gen}`)}
@@ -218,7 +219,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                                   type="checkbox"
                                   checked={localSettings.isPrankster}
                                   onChange={handlePranksterToggle}
-                                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                  className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
                                 />
                               </div>
                               <div className="flex-1">
@@ -241,7 +242,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                                   type="checkbox"
                                   checked={localSettings.isGenArrow}
                                   onChange={handleGenArrowToggle}
-                                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                  className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
                                 />
                               </div>
                               <div className="flex-1">
@@ -266,8 +267,8 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                                 onClick={() => setLocalSettings(prev => ({ ...prev, guessOrder: 'reverse' }))}
                                 className={`touch-target px-4 py-3 text-responsive-sm font-medium rounded-md border transition-colors duration-200 ${
                                   localSettings.guessOrder === 'reverse'
-                                    ? 'bg-blue-600 text-white border-blue-600'
-                                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                    ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
+                                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
                                 }`}
                               >
                                 <div className="text-center">
@@ -280,8 +281,8 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                                 onClick={() => setLocalSettings(prev => ({ ...prev, guessOrder: 'normal' }))}
                                 className={`touch-target px-4 py-3 text-responsive-sm font-medium rounded-md border transition-colors duration-200 ${
                                   localSettings.guessOrder === 'normal'
-                                    ? 'bg-blue-600 text-white border-blue-600'
-                                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                    ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
+                                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
                                 }`}
                               >
                                 <div className="text-center">
@@ -311,17 +312,17 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                             {t('common.save')}
                           </button>
                         </div>
-                      </Tab.Panel>
+                      </TabPanel>
 
                       {/* About Panel */}
-                      <Tab.Panel>
+                      <TabPanel>
                         <About />
-                      </Tab.Panel>
-                    </Tab.Panels>
-                  </Tab.Group>
+                      </TabPanel>
+                    </TabPanels>
+                  </TabGroup>
                 </div>
-              </Dialog.Panel>
-            </Transition.Child>
+              </DialogPanel>
+            </TransitionChild>
           </div>
         </div>
       </Dialog>
