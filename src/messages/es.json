@@ -135,7 +135,7 @@
     },
     "dataSource": {
       "title": "Fuente de datos",
-      "description": "Los datos del juego provienen principalmente de [pokeapi.co](https://pokeapi.co/) y [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page)."
+      "description": "Los datos del juego provienen principalmente de [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\") y [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")."
     }
   },
   "navbar": {

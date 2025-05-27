@@ -135,7 +135,7 @@
     },
     "dataSource": {
       "title": "資料來源",
-      "description": "本遊戲資料主要來源於 [pokeapi.co](https://pokeapi.co/) 和 [Bulbagpedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page)。"
+      "description": "本遊戲資料主要來源於 [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\") 和 [Bulbagpedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")。"
     }
   },
   "navbar": {

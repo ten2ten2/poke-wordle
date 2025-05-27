@@ -135,7 +135,7 @@
     },
     "dataSource": {
       "title": "데이터 출처",
-      "description": "게임 데이터는 주로 [pokeapi.co](https://pokeapi.co/)와 [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page)에서 가져왔습니다."
+      "description": "게임 데이터는 주로 [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\")와 [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")에서 가져왔습니다."
     }
   },
   "navbar": {
