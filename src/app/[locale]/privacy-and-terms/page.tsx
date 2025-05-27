@@ -29,7 +29,7 @@ export default function PrivacyAndTermsPage() {
           <div className="flex justify-between items-center h-14 sm:h-16">
             {/* Logo/Title */}
             <div className="flex-shrink-0">
-              <Link href={homeHref} className="hover:opacity-80 transition-opacity">
+              <Link href={homeHref} title={t('title')} className="hover:opacity-80 transition-opacity">
                 <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 truncate">
                   {t('title')}
                 </h1>
@@ -64,6 +64,7 @@ export default function PrivacyAndTermsPage() {
           <div className="mb-6">
             <Link
               href={homeHref}
+              title={t('common.back', { defaultValue: 'Back to Game' })}
               className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors duration-200"
             >
               <ArrowLeftIcon className="w-4 h-4" />
@@ -73,9 +74,9 @@ export default function PrivacyAndTermsPage() {
 
           {/* Page Header */}
           <div className="card card-padding mb-8">
-            <h1 className="text-responsive-2xl font-bold text-gray-900 mb-4">
+            <h2 className="text-responsive-2xl font-bold text-gray-900 mb-4">
               {t('privacyAndTerms.title')}
-            </h1>
+            </h2>
             {currentDate && (
               <p className="text-responsive-sm text-gray-600">
                 {t('privacyAndTerms.lastUpdated', { date: currentDate })}

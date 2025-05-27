@@ -75,9 +75,11 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    nocache: false,
     googleBot: {
       index: true,
       follow: true,
+      noimageindex: false,
       'max-video-preview': -1,
       'max-image-preview': 'large',
       'max-snippet': -1,
@@ -87,7 +89,14 @@ export const metadata: Metadata = {
     google: 'your-google-verification-code',
     yandex: 'your-yandex-verification-code',
     yahoo: 'your-yahoo-verification-code',
+    other: {
+      'msvalidate.01': 'your-bing-verification-code',
+      'baidu-site-verification': 'your-baidu-verification-code',
+    },
   },
+  category: 'games',
+  classification: 'Game',
+  referrer: 'origin-when-cross-origin',
 };
 
 export default function RootLayout({
