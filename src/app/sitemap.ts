@@ -11,19 +11,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Generate correct URL for English vs other locales
     const localeUrl = locale === 'en' ? baseUrl : `${baseUrl}/${locale}`;
     
+    // Create alternates object with x-default for English
+    const alternates: Record<string, string> = {};
+    
+    // Add x-default for the main language (English)
+    if (locale === 'en') {
+      alternates['x-default'] = baseUrl;
+    }
+    
+    // Add all language alternates
+    locales.forEach(loc => {
+      const langCode = loc === 'zh-hans' ? 'zh-Hans' : loc === 'zh-hant' ? 'zh-Hant' : loc;
+      const langUrl = loc === 'en' ? baseUrl : `${baseUrl}/${loc}`;
+      alternates[langCode] = langUrl;
+    });
+    
     return {
       url: localeUrl,
       lastModified: currentDate,
       changeFrequency: 'weekly' as const,
       priority: locale === 'en' ? 1.0 : 0.9,
       alternates: {
-        languages: Object.fromEntries(
-          locales.map(loc => {
-            const langCode = loc === 'zh-hans' ? 'zh-Hans' : loc === 'zh-hant' ? 'zh-Hant' : loc;
-            const langUrl = loc === 'en' ? baseUrl : `${baseUrl}/${loc}`;
-            return [langCode, langUrl];
-          })
-        )
+        languages: alternates
       }
     };
   });
@@ -34,41 +43,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
       ? `${baseUrl}/privacy-and-terms` 
       : `${baseUrl}/${locale}/privacy-and-terms`;
     
+    // Create alternates object with x-default for English
+    const alternates: Record<string, string> = {};
+    
+    // Add x-default for the main language (English)
+    if (locale === 'en') {
+      alternates['x-default'] = `${baseUrl}/privacy-and-terms`;
+    }
+    
+    // Add all language alternates
+    locales.forEach(loc => {
+      const langCode = loc === 'zh-hans' ? 'zh-Hans' : loc === 'zh-hant' ? 'zh-Hant' : loc;
+      const langUrl = loc === 'en' 
+        ? `${baseUrl}/privacy-and-terms` 
+        : `${baseUrl}/${loc}/privacy-and-terms`;
+      alternates[langCode] = langUrl;
+    });
+    
     return {
       url: privacyUrl,
       lastModified: currentDate,
       changeFrequency: 'monthly' as const,
       priority: 0.5,
       alternates: {
-        languages: Object.fromEntries(
-          locales.map(loc => {
-            const langCode = loc === 'zh-hans' ? 'zh-Hans' : loc === 'zh-hant' ? 'zh-Hant' : loc;
-            const langUrl = loc === 'en' 
-              ? `${baseUrl}/privacy-and-terms` 
-              : `${baseUrl}/${loc}/privacy-and-terms`;
-            return [langCode, langUrl];
-          })
-        )
+        languages: alternates
       }
     };
   });
 
-  // Add root URL that redirects to English
-  const rootEntry = {
-    url: baseUrl,
-    lastModified: currentDate,
-    changeFrequency: 'weekly' as const,
-    priority: 1.0,
-    alternates: {
-      languages: Object.fromEntries(
-        locales.map(loc => {
-          const langCode = loc === 'zh-hans' ? 'zh-Hans' : loc === 'zh-hant' ? 'zh-Hant' : loc;
-          const langUrl = loc === 'en' ? baseUrl : `${baseUrl}/${loc}`;
-          return [langCode, langUrl];
-        })
-      )
-    }
-  };
-
-  return [rootEntry, ...localeEntries, ...privacyEntries];
+  // Return only locale entries and privacy entries (no separate root entry to avoid duplication)
+  return [...localeEntries, ...privacyEntries];
 } 
