@@ -45,7 +45,8 @@ export function comparePokemon(
   guess: Pokemon,
   target: Pokemon,
   isPrankster: boolean,
-  isGenArrow: boolean
+  isGenArrow: boolean,
+  previousFieldToHide: string | null,
 ): GuessResult {
   const result: GuessResult = {
     name: guess.name,
@@ -86,7 +87,7 @@ export function comparePokemon(
 
   // Apply prankster effect
   if (isPrankster && !result.isCorrect) {
-    applyPranksterEffect(result);
+    applyPranksterEffect(result, previousFieldToHide);
   }
 
   return result;
@@ -125,8 +126,7 @@ function getEvolutionStatus(guess: Pokemon, target: Pokemon): ComparisonStatus {
   return 'nope';
 }
 
-function applyPranksterEffect(result: GuessResult): void {
-
+function applyPranksterEffect(result: GuessResult, previousFieldToHide: string | null): void {
   // List of fields that can be hidden
   const hidableFields = [
     'generation',
@@ -137,6 +137,11 @@ function applyPranksterEffect(result: GuessResult): void {
     'evolution_method_detail',
     'tags'
   ];
+
+  // If the previous field to hide is not null, then we need to remove it from the list of hidable fields
+  if (previousFieldToHide) {
+    hidableFields.splice(hidableFields.indexOf(previousFieldToHide), 1);
+  }
 
   // Hide a random column field
   const fieldToHide = hidableFields[Math.floor(Math.random() * hidableFields.length)];

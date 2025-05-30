@@ -58,6 +58,7 @@ export interface GuessResult {
   }>;
   isCorrect: boolean;
   fieldToHide: string | null;
+  pranksterPokemonProfile?: string | null;
 }
 
 export interface GameSettings {

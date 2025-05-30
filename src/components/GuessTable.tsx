@@ -2,10 +2,8 @@
 
 import { useTranslations } from 'next-intl';
 import { GuessResult } from '@/types/pokemon';
-import { getRandomPranksterImage } from '@/lib/pokemon';
 import Image from 'next/image';
 import clsx from 'clsx';
-import { useMemo } from 'react';
 
 interface GuessTableProps {
   guesses: GuessResult[];
@@ -13,11 +11,6 @@ interface GuessTableProps {
 
 export default function GuessTable({ guesses }: GuessTableProps) {
   const t = useTranslations();
-
-  // Generate consistent prankster images for each guess
-  const pranksterImages = useMemo(() => {
-    return guesses.map(() => getRandomPranksterImage());
-  }, [guesses]);
 
   if (guesses.length === 0) {
     return (
@@ -163,7 +156,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                 {/* Types */}
                 <td className="table-cell-responsive gradient-divider">
                   {guess.fieldToHide === 'types' ? (
-                    renderPranksterContent(pranksterImages[index])
+                    renderPranksterContent(guess.pranksterPokemonProfile || '')
                   ) : (
                     <div className="flex flex-wrap gap-1 max-w-[100px] sm:max-w-none">
                       {guess.types.map((type, typeIndex) => (
@@ -181,7 +174,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                 {/* Base Stats */}
                 <td className="table-cell-responsive whitespace-nowrap gradient-divider">
                   {guess.fieldToHide === 'base_stats' ? (
-                    renderPranksterContent(pranksterImages[index])
+                    renderPranksterContent(guess.pranksterPokemonProfile || '')
                   ) : (
                     <span
                       className={clsx(
@@ -197,7 +190,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                 {/* Generation */}
                 <td className="table-cell-responsive whitespace-nowrap gradient-divider">
                   {guess.fieldToHide === 'generation' ? (
-                    renderPranksterContent(pranksterImages[index])
+                    renderPranksterContent(guess.pranksterPokemonProfile || '')
                   ) : (
                     <span
                       className={clsx(
@@ -214,7 +207,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                 {/* Abilities */}
                 <td className="table-cell-responsive gradient-divider">
                   {guess.fieldToHide === 'abilities' ? (
-                    renderPranksterContent(pranksterImages[index])
+                    renderPranksterContent(guess.pranksterPokemonProfile || '')
                   ) : (
                     <div className="flex flex-wrap gap-1 max-w-[120px] sm:max-w-none">
                       {guess.abilities.map((ability, abilityIndex) => (
@@ -232,7 +225,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                 {/* Evolution */}
                 <td className="table-cell-responsive gradient-divider">
                   {guess.fieldToHide === 'evolution' ? (
-                    renderPranksterContent(pranksterImages[index])
+                    renderPranksterContent(guess.pranksterPokemonProfile || '')
                   ) : (
                     <div className="flex flex-wrap gap-1 max-w-[100px] sm:max-w-none">
                       {guess.evolution_stage.value !== null && (
@@ -252,7 +245,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                 {/* Tags */}
                 <td className="table-cell-responsive">
                   {guess.fieldToHide === 'tags' ? (
-                    renderPranksterContent(pranksterImages[index])
+                    renderPranksterContent(guess.pranksterPokemonProfile || '')
                   ) : (
                     <div className="flex flex-wrap gap-1 max-w-[120px] sm:max-w-none">
                       {guess.tags.map((tag, tagIndex) => (

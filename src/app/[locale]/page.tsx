@@ -4,12 +4,14 @@ import { useState, useCallback, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useGameState } from '@/hooks/useGameState';
+import { getRandomPranksterImage } from '@/lib/pokemon';
 import { GameSettings, GuessResult } from '@/types/pokemon';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import GameInput from '@/components/GameInput';
 import GuessTable from '@/components/GuessTable';
 import GameOverModal from '@/components/GameOverModal';
+import { resourceLimits } from 'worker_threads';
 
 export default function GamePage() {
   const locale = useLocale();
@@ -74,6 +76,7 @@ export default function GamePage() {
               is_prankster: gameState.settings.isPrankster,
               is_gen_arrow: gameState.settings.isGenArrow,
               locale,
+              previousFieldToHide: null,
             }),
           });
 
@@ -82,6 +85,10 @@ export default function GamePage() {
           }
 
           const result: GuessResult = await response.json();
+          // if the field to hide is true and the guess is incorrect, then we need to get a random prankster image
+          if (result.fieldToHide && !result.isCorrect) {
+            result.pranksterPokemonProfile = getRandomPranksterImage();
+          }
           addGuess(result);
         } catch (error) {
           console.error('Error checking guess:', error);
@@ -136,6 +143,7 @@ export default function GamePage() {
           is_prankster: gameState.settings.isPrankster,
           is_gen_arrow: gameState.settings.isGenArrow,
           locale,
+          previousFieldToHide: gameState.guesses[gameState.guesses.length - 1]?.fieldToHide || null,
         }),
       });
 
@@ -144,6 +152,10 @@ export default function GamePage() {
       }
 
       const result: GuessResult = await response.json();
+      // if the field to hide is true and the guess is incorrect, then we need to get a random prankster image
+      if (result.fieldToHide && !result.isCorrect) {
+        result.pranksterPokemonProfile = getRandomPranksterImage();
+      }
       addGuess(result);
     } catch (error) {
       console.error('Error checking guess:', error);

@@ -3,7 +3,7 @@ import { loadPokemonData, comparePokemon } from '@/lib/pokemon';
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, target_id, is_prankster, is_gen_arrow, locale = 'en' } = await request.json();
+    const { name, target_id, is_prankster, is_gen_arrow, locale = 'en', previousFieldToHide = null } = await request.json();
 
     if (!name || !target_id) {
       return NextResponse.json(
@@ -42,7 +42,8 @@ export async function POST(request: NextRequest) {
       guessPokemon,
       targetPokemon,
       is_prankster || false,
-      is_gen_arrow || false
+      is_gen_arrow || false,
+      previousFieldToHide,
     );
 
     return NextResponse.json(result);
