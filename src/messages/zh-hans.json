@@ -139,6 +139,7 @@
     }
   },
   "navbar": {
+    "about": "关于",
     "settings": "设置",
     "language": "语言"
   },

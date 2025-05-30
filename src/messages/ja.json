@@ -139,6 +139,7 @@
     }
   },
   "navbar": {
+    "about": "について",
     "settings": "設定",
     "language": "言語"
   },
