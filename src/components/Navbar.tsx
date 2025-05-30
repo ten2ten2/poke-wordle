@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Cog6ToothIcon, LanguageIcon } from '@heroicons/react/24/outline';
+import { Cog6ToothIcon, InformationCircleIcon, LanguageIcon } from '@heroicons/react/24/outline';
 import Settings from './Settings';
 import LanguageSwitcher from './LanguageSwitcher';
 import { GameSettings } from '@/types/pokemon';
+import About from './About';
 
 interface NavbarProps {
   onSettingsChange: (settings: GameSettings) => void;
@@ -16,6 +17,7 @@ export default function Navbar({ onSettingsChange, currentSettings }: NavbarProp
   const t = useTranslations();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
 
   return (
     <>
@@ -31,6 +33,16 @@ export default function Navbar({ onSettingsChange, currentSettings }: NavbarProp
             
             {/* Navigation Actions */}
             <div className="flex items-center space-x-2 sm:space-x-4">
+              {/* About Button */}
+              <button
+                onClick={() => setIsAboutOpen(true)}
+                className="touch-target p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
+                aria-label={t('navbar.about')}
+                title={t('navbar.about')}
+              >
+                <InformationCircleIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+              </button>
+              
               {/* Settings Button */}
               <button
                 onClick={() => setIsSettingsOpen(true)}
@@ -55,6 +67,12 @@ export default function Navbar({ onSettingsChange, currentSettings }: NavbarProp
         </div>
       </nav>
 
+      {/* About Modal */}
+      <About
+        isOpen={isAboutOpen}
+        onClose={() => setIsAboutOpen(false)}
+      />
+
       {/* Settings Modal */}
       <Settings
         isOpen={isSettingsOpen}
@@ -68,6 +86,7 @@ export default function Navbar({ onSettingsChange, currentSettings }: NavbarProp
         isOpen={isLanguageOpen}
         onClose={() => setIsLanguageOpen(false)}
       />
+
     </>
   );
 } 
