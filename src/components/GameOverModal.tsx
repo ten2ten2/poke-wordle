@@ -1,6 +1,6 @@
 'use client';
 
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { Fragment } from 'react';
 import { useTranslations } from 'next-intl';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -229,7 +229,7 @@ export default function GameOverModal({
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
-        <Transition.Child
+        <TransitionChild
           as={Fragment}
           enter="ease-out duration-300"
           enterFrom="opacity-0"
@@ -239,11 +239,11 @@ export default function GameOverModal({
           leaveTo="opacity-0"
         >
           <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm" />
-        </Transition.Child>
+        </TransitionChild>
 
         <div className="fixed inset-0 overflow-y-auto safe-all">
           <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child
+            <TransitionChild
               as={Fragment}
               enter="ease-out duration-300"
               enterFrom="opacity-0 scale-95"
@@ -252,13 +252,13 @@ export default function GameOverModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="modal-content">
+              <DialogPanel className="modal-content">
                 <div className="card-padding">
                   {/* Header */}
                   <div className="flex items-center justify-between mb-6">
-                    <Dialog.Title as="h3" className="text-responsive-xl font-bold text-gray-900">
+                    <DialogTitle as="h3" className="text-responsive-xl font-bold text-gray-900">
                       {isWon ? t('game.congratulations') : t('game.gameOver')}
-                    </Dialog.Title>
+                    </DialogTitle>
                     <button
                       type="button"
                       className="touch-target rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -435,8 +435,8 @@ export default function GameOverModal({
                     </button>
                   </div>
                 </div>
-              </Dialog.Panel>
-            </Transition.Child>
+              </DialogPanel>
+            </TransitionChild>
           </div>
         </div>
       </Dialog>
