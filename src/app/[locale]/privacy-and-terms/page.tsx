@@ -16,7 +16,7 @@ export default function PrivacyAndTermsPage() {
   // Set date on client side to avoid hydration mismatch
   useEffect(() => {
     setCurrentDate(new Date().toLocaleDateString(locale));
-  }, []);
+  }, [locale]);
 
   // Generate the correct href for home page
   const homeHref = locale === 'en' ? '/' : `/${locale}`;
