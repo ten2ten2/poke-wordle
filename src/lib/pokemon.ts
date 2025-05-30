@@ -141,19 +141,28 @@ function applyPranksterEffect(result: GuessResult, previousFieldToHide: string |
   // If the previous field to hide is not null, then we need to remove it from the list of hidable fields
   if (previousFieldToHide) {
     switch (previousFieldToHide) {
-      case 'base_stats_total':
-        previousFieldToHide = 'base_stats';
+      case 'generation':
+        hidableFields.splice(hidableFields.indexOf('generation'), 1);
         break;
-      case 'evolution_stage':
-        previousFieldToHide = 'evolution';
+      case 'types':
+        hidableFields.splice(hidableFields.indexOf('types'), 1);
         break;
-      case 'evolution_method_detail':
-        previousFieldToHide = 'evolution';
+      case 'abilities':
+        hidableFields.splice(hidableFields.indexOf('abilities'), 1);
+        break;
+      case 'base_stats':
+        hidableFields.splice(hidableFields.indexOf('base_stats_total'), 1);
+        break;
+      case 'evolution':
+        hidableFields.splice(hidableFields.indexOf('evolution_stage'), 1);
+        hidableFields.splice(hidableFields.indexOf('evolution_method_detail'), 1);
+        break;
+      case 'tags':
+        hidableFields.splice(hidableFields.indexOf('tags'), 1);
         break;
       default:
         break;
     }
-    hidableFields.splice(hidableFields.indexOf(previousFieldToHide), 1);
   }
 
   // Hide a random column field
