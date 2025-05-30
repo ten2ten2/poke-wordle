@@ -115,7 +115,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
               </th>
               <th className="table-cell-responsive text-left text-xxs sm:text-xs font-medium text-gray-500 uppercase tracking-wider gradient-divider">
                 <span className="mobile-hidden">{t('game.columns.generation')}</span>
-                <span className="desktop-hidden">Gen</span>
+                <span className="desktop-hidden tablet-hidden">Gen</span>
               </th>
               <th className="table-cell-responsive text-left text-xxs sm:text-xs font-medium text-gray-500 uppercase tracking-wider gradient-divider">
                 {t('game.columns.abilities')}
@@ -199,7 +199,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                       )}
                     >
                       <span className="mobile-hidden">{t(`generation.Gen${guess.generation.value}`)}</span>
-                      <span className="desktop-hidden">{guess.generation.value}</span>
+                      <span className="desktop-hidden tablet-hidden">{guess.generation.value}</span>
                     </span>
                   )}
                 </td>
