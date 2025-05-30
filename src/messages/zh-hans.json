@@ -141,7 +141,8 @@
   "navbar": {
     "about": "关于",
     "settings": "设置",
-    "language": "语言"
+    "language": "语言",
+    "main_navigation": "主导航"
   },
   "footer": {
     "copyright": "© 2025 宝可梦猜猜乐。保留所有权利。",

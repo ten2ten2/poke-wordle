@@ -141,7 +141,8 @@
   "navbar": {
     "about": "정보",
     "settings": "설정",
-    "language": "언어"
+    "language": "언어",
+    "main_navigation": "메인 네비게이션"
   },
   "footer": {
     "copyright": "© 2025 포케 워들. 모든 권리 보유.",

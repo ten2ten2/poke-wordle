@@ -141,7 +141,8 @@
   "navbar": {
     "about": "について",
     "settings": "設定",
-    "language": "言語"
+    "language": "言語",
+    "main_navigation": "メインナビゲーション"
   },
   "footer": {
     "copyright": "© 2025 ポケワードル。全著作権所有。",

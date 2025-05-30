@@ -141,7 +141,8 @@
   "navbar": {
     "about": "關於",
     "settings": "設定",
-    "language": "語言"
+    "language": "語言",
+    "main_navigation": "主導航"
   },
   "footer": {
     "copyright": "© 2025 寶可夢猜猜樂。保留所有權利。",

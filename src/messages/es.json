@@ -141,7 +141,8 @@
   "navbar": {
     "about": "Acerca de",
     "settings": "Configuración",
-    "language": "Idioma"
+    "language": "Idioma",
+    "main_navigation": "Navegación Principal"
   },
   "footer": {
     "copyright": "© 2025 Poke Wordle. Todos los derechos reservados.",
