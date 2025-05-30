@@ -140,6 +140,19 @@ function applyPranksterEffect(result: GuessResult, previousFieldToHide: string |
 
   // If the previous field to hide is not null, then we need to remove it from the list of hidable fields
   if (previousFieldToHide) {
+    switch (previousFieldToHide) {
+      case 'base_stats_total':
+        previousFieldToHide = 'base_stats';
+        break;
+      case 'evolution_stage':
+        previousFieldToHide = 'evolution';
+        break;
+      case 'evolution_method_detail':
+        previousFieldToHide = 'evolution';
+        break;
+      default:
+        break;
+    }
     hidableFields.splice(hidableFields.indexOf(previousFieldToHide), 1);
   }
 
