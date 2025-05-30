@@ -96,7 +96,7 @@ export function generateGameStructuredData(locale: string) {
       "@type": "Organization",
       "name": "Poke Wordle"
     },
-    "datePublished": "2024-01-01",
+    "datePublished": "2025-01-01",
     "dateModified": new Date().toISOString().split('T')[0],
     "keywords": "pokemon, wordle, game, puzzle, guess, pokemon game, pokemon quiz, nintendo, gamefreak",
     "audience": {
