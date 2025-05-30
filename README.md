@@ -10,6 +10,7 @@ A Pokémon guessing game where you try to identify a Pokémon based on various c
 - 🎭 **Prankster Mode**: Randomly hide one attribute per guess for extra challenge
 - 📱 **Responsive Design**: Works perfectly on desktop and mobile devices
 - 🎯 **Smart Hints**: Color-coded feedback and directional arrows for stats
+- 🔒 **Privacy-First**: Cookie consent integration with Google Analytics and AdSense
 
 ## How to Play
 
@@ -36,6 +37,7 @@ A Pokémon guessing game where you try to identify a Pokémon based on various c
 - **Internationalization**: next-intl
 - **UI Components**: Headless UI, Heroicons
 - **Analytics**: Google Analytics 4
+- **Monetization**: Google AdSense (with privacy controls)
 - **Deployment**: Vercel
 
 ## Development
@@ -70,9 +72,18 @@ Create a `.env.local` file in the root directory and add the following:
 ```bash
 # Google Analytics (optional)
 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+
+# Google AdSense (optional)
+NEXT_PUBLIC_ADSENSE_PUBLISHER_ID=ca-pub-XXXXXXXXXXXXXXXXX
+NEXT_PUBLIC_ADSENSE_HEADER_SLOT=1234567890
+NEXT_PUBLIC_ADSENSE_CONTENT_SLOT=1234567891
+NEXT_PUBLIC_ADSENSE_FOOTER_SLOT=1234567892
 ```
 
-Replace `G-XXXXXXXXXX` with your actual Google Analytics measurement ID. See [GOOGLE_ANALYTICS_SETUP.md](GOOGLE_ANALYTICS_SETUP.md) for detailed setup instructions.
+For detailed setup instructions:
+- **Google Analytics**: See [GOOGLE_ANALYTICS_SETUP.md](GOOGLE_ANALYTICS_SETUP.md)
+- **Google AdSense**: See [GOOGLE_ADSENSE_SETUP.md](GOOGLE_ADSENSE_SETUP.md)
+- **Environment Variables**: See [ENVIRONMENT_SETUP.md](ENVIRONMENT_SETUP.md)
 
 ### Build for Production
 
@@ -122,4 +133,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Pokémon data sourced from various public APIs and databases
 - Icons by Heroicons
 - UI components by Headless UI
-- Styling by Tailwind CSS 
+- Styling by Tailwind CSS

@@ -11,6 +11,7 @@ import Footer from '@/components/Footer';
 import GameInput from '@/components/GameInput';
 import GuessTable from '@/components/GuessTable';
 import GameOverModal from '@/components/GameOverModal';
+// import { HeaderAdBanner, InContentAdBanner, FooterAdBanner } from '@/components/GoogleAdSense';
 
 export default function GamePage() {
   const locale = useLocale();
@@ -213,6 +214,13 @@ export default function GamePage() {
         currentSettings={gameState.settings}
       />
 
+      {/* Header Ad Banner - placed after navbar */}
+      {/* {process.env.NEXT_PUBLIC_ADSENSE_HEADER_SLOT && (
+        <div className="container-responsive px-4 pt-2">
+          <HeaderAdBanner adSlot={process.env.NEXT_PUBLIC_ADSENSE_HEADER_SLOT} />
+        </div>
+      )} */}
+
       <main className="flex-1 container-responsive section-padding">
         <div className="space-y-4 sm:space-y-6">
           {/* Language Change Notice */}
@@ -306,6 +314,15 @@ export default function GamePage() {
             )}
           </section>
 
+          {/* In-Content Ad Banner - only show when game is active and user has made at least 2 guesses */}
+          {/* {process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT && 
+           gameState.targetPokemon && 
+           gameState.guesses.length >= 2 && (
+            <div className="flex justify-center">
+              <InContentAdBanner adSlot={process.env.NEXT_PUBLIC_ADSENSE_CONTENT_SLOT} />
+            </div>
+          )} */}
+
           {/* Game Status Section */}
           <section className="text-center" aria-labelledby="game-status-heading">
             <h2 id="game-status-heading" className="sr-only">
@@ -364,6 +381,13 @@ export default function GamePage() {
           </section>
         </div>
       </main>
+
+      {/* Footer Ad Banner - placed before footer */}
+      {/* {process.env.NEXT_PUBLIC_ADSENSE_FOOTER_SLOT && (
+        <div className="container-responsive px-4 pb-2">
+          <FooterAdBanner adSlot={process.env.NEXT_PUBLIC_ADSENSE_FOOTER_SLOT} />
+        </div>
+      )} */}
 
       <Footer />
 

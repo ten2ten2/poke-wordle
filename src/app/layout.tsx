@@ -2,6 +2,7 @@ import { Inter } from 'next/font/google';
 import '@/styles/globals.css';
 import type { Metadata } from 'next';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
+// import GoogleAdSense from '@/components/GoogleAdSense';
 import CookieConsentWrapper from '@/components/CookieConsentWrapper';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -140,6 +141,16 @@ export default function RootLayout({
             />
           </>
         )}
+
+        {/* Google AdSense */}
+        {process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID && (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID}`}
+            crossOrigin="anonymous"
+          />
+        )}
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -178,6 +189,9 @@ export default function RootLayout({
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         )}
+        {/* {process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID && (
+          <GoogleAdSense publisherId={process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID} />
+        )} */}
         {children}
         <CookieConsentWrapper />
       </body>
