@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { hasUserDeclinedCookies } from './CookieConsent';
 
 // Declare global adsbygoogle
@@ -15,7 +15,17 @@ interface GoogleAdSenseProps {
 }
 
 export default function GoogleAdSense({ publisherId }: GoogleAdSenseProps) {
+  const [isClientSide, setIsClientSide] = useState(false);
+
   useEffect(() => {
+    // Ensure we're on the client side to prevent hydration mismatch
+    setIsClientSide(true);
+  }, []);
+
+  useEffect(() => {
+    // Only initialize AdSense on client side after hydration
+    if (!isClientSide) return;
+
     // 默认初始化 Google AdSense，只有用户明确拒绝时才不初始化
     // if (!hasUserDeclinedCookies()) {
       // Initialize adsbygoogle array if it doesn't exist
@@ -23,7 +33,7 @@ export default function GoogleAdSense({ publisherId }: GoogleAdSenseProps) {
         window.adsbygoogle = window.adsbygoogle || [];
       }
     // }
-  }, [publisherId]);
+  }, [publisherId, isClientSide]);
 
   return null;
 }
@@ -44,7 +54,17 @@ export function AdBanner({
   className = '',
   style = {}
 }: AdBannerProps) {
+  const [isClientSide, setIsClientSide] = useState(false);
+
   useEffect(() => {
+    // Ensure we're on the client side to prevent hydration mismatch
+    setIsClientSide(true);
+  }, []);
+
+  useEffect(() => {
+    // Only push ads on client side after hydration
+    if (!isClientSide) return;
+
     // 只有在用户没有明确拒绝的情况下才显示广告
     // if (!hasUserDeclinedCookies() && typeof window !== 'undefined') {
       try {
@@ -53,7 +73,7 @@ export function AdBanner({
         console.error('AdSense error:', err);
       }
     // }
-  }, []);
+  }, [isClientSide]);
 
   // 如果用户拒绝了 Cookie，不渲染广告
   // if (hasUserDeclinedCookies()) {
@@ -65,6 +85,11 @@ export function AdBanner({
   if (!publisherId) {
     console.warn('AdSense Publisher ID not found. Please set NEXT_PUBLIC_ADSENSE_PUBLISHER_ID environment variable.');
     return null;
+  }
+
+  // Don't render anything on server side to prevent hydration mismatch
+  if (!isClientSide) {
+    return <div className={`adsbygoogle ${className}`} style={{ display: 'block', ...style }} />;
   }
 
   return (

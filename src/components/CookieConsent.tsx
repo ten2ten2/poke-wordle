@@ -111,16 +111,21 @@ const messages: Record<string, CookieConsentMessages> = {
   }
 };
 
-// 从 URL 路径检测当前语言
+// 从 URL 路径检测当前语言 - 仅客户端安全版本
 function detectCurrentLocale(): string {
   if (typeof window === 'undefined') return 'en';
   
-  const pathname = window.location.pathname;
-  const segments = pathname.split('/').filter(Boolean);
-  
-  // 如果第一个段是已知的语言代码，则使用它
-  if (segments.length > 0 && messages[segments[0]]) {
-    return segments[0];
+  try {
+    const pathname = window.location.pathname;
+    const segments = pathname.split('/').filter(Boolean);
+    
+    // 如果第一个段是已知的语言代码，则使用它
+    if (segments.length > 0 && messages[segments[0]]) {
+      return segments[0];
+    }
+  } catch (error) {
+    // Fallback in case of any errors
+    console.warn('Error detecting locale:', error);
   }
   
   // 否则默认为英语
@@ -128,19 +133,35 @@ function detectCurrentLocale(): string {
 }
 
 export default function CookieConsent({ onAccept, onDecline }: CookieConsentProps) {
+  // Initialize with false to prevent hydration mismatch
   const [isVisible, setIsVisible] = useState(false);
   const [locale, setLocale] = useState('en');
+  const [isClientSide, setIsClientSide] = useState(false);
 
   useEffect(() => {
+    // Ensure we're on the client side to prevent hydration mismatch
+    setIsClientSide(true);
+    
     // 检测当前语言
     const currentLocale = detectCurrentLocale();
     setLocale(currentLocale);
 
-    // 检查用户是否已经做出选择
-    const consent = localStorage.getItem('cookie-consent');
-    if (!consent) {
+    // 检查用户是否已经做出选择 - 只在客户端执行
+    try {
+      const consent = localStorage.getItem('cookie-consent');
+      if (!consent) {
+        setIsVisible(true);
+      }
+    } catch (error) {
+      // In case localStorage is not available, default to showing consent
+      console.warn('localStorage not available:', error);
       setIsVisible(true);
     }
+  }, []);
+
+  useEffect(() => {
+    // Only set up route change detection after client-side hydration
+    if (!isClientSide) return;
 
     // 简单的路由变化检测 - 使用定时器定期检查 URL 变化
     const checkForRouteChange = () => {
@@ -160,29 +181,41 @@ export default function CookieConsent({ onAccept, onDecline }: CookieConsentProp
       window.removeEventListener('popstate', checkForRouteChange);
       clearInterval(intervalId);
     };
-  }, [locale]);
+  }, [locale, isClientSide]);
 
   const handleAccept = () => {
-    localStorage.setItem('cookie-consent', 'accepted');
-    setIsVisible(false);
-    onAccept?.();
+    try {
+      localStorage.setItem('cookie-consent', 'accepted');
+      setIsVisible(false);
+      onAccept?.();
+    } catch (error) {
+      console.warn('Error saving cookie consent:', error);
+      setIsVisible(false);
+      onAccept?.();
+    }
   };
 
   const handleDecline = () => {
-    localStorage.setItem('cookie-consent', 'declined');
-    setIsVisible(false);
-    
-    // 通知 Google Analytics 关闭追踪
-    if (typeof window !== 'undefined' && window.gtag && process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) {
-      window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, {
-        send_page_view: false,
-        anonymize_ip: true,
-        allow_google_signals: false,
-        allow_ad_personalization_signals: false,
-      });
+    try {
+      localStorage.setItem('cookie-consent', 'declined');
+      setIsVisible(false);
+      
+      // 通知 Google Analytics 关闭追踪
+      if (typeof window !== 'undefined' && window.gtag && process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) {
+        window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, {
+          send_page_view: false,
+          anonymize_ip: true,
+          allow_google_signals: false,
+          allow_ad_personalization_signals: false,
+        });
+      }
+      
+      onDecline?.();
+    } catch (error) {
+      console.warn('Error saving cookie consent:', error);
+      setIsVisible(false);
+      onDecline?.();
     }
-    
-    onDecline?.();
   };
 
   const handleDismiss = () => {
@@ -195,7 +228,8 @@ export default function CookieConsent({ onAccept, onDecline }: CookieConsentProp
   // 生成隐私政策页面的正确链接
   const privacyHref = locale === 'en' ? '/privacy-and-terms' : `/${locale}/privacy-and-terms`;
 
-  if (!isVisible) {
+  // Don't render anything until client-side hydration is complete and component should be visible
+  if (!isClientSide || !isVisible) {
     return null;
   }
 
@@ -246,23 +280,44 @@ export default function CookieConsent({ onAccept, onDecline }: CookieConsentProp
   );
 }
 
-// 检查用户是否已同意 Cookie
+// 检查用户是否已同意 Cookie - 添加错误处理以防止hydration问题
 export const hasUserConsentedToCookies = (): boolean => {
   if (typeof window === 'undefined') return true; // 默认同意（服务端渲染时）
-  const consent = localStorage.getItem('cookie-consent');
-  // 如果用户没有做出选择，默认为同意；只有明确拒绝时才返回 false
-  return consent !== 'declined';
+  
+  try {
+    const consent = localStorage.getItem('cookie-consent');
+    // 如果用户没有做出选择，默认为同意；只有明确拒绝时才返回 false
+    return consent !== 'declined';
+  } catch (error) {
+    // 如果 localStorage 不可用，默认返回 true
+    console.warn('Error accessing localStorage:', error);
+    return true;
+  }
 };
 
-// 检查用户是否明确拒绝了 Cookie
+// 检查用户是否明确拒绝了 Cookie - 添加错误处理
 export const hasUserDeclinedCookies = (): boolean => {
   if (typeof window === 'undefined') return false;
-  return localStorage.getItem('cookie-consent') === 'declined';
+  
+  try {
+    return localStorage.getItem('cookie-consent') === 'declined';
+  } catch (error) {
+    // 如果 localStorage 不可用，默认返回 false
+    console.warn('Error accessing localStorage:', error);
+    return false;
+  }
 };
 
-// 获取用户的 Cookie 同意状态
+// 获取用户的 Cookie 同意状态 - 添加错误处理
 export const getCookieConsentStatus = (): 'accepted' | 'declined' | null => {
   if (typeof window === 'undefined') return null;
-  const consent = localStorage.getItem('cookie-consent');
-  return consent as 'accepted' | 'declined' | null;
+  
+  try {
+    const consent = localStorage.getItem('cookie-consent');
+    return consent as 'accepted' | 'declined' | null;
+  } catch (error) {
+    // 如果 localStorage 不可用，返回 null
+    console.warn('Error accessing localStorage:', error);
+    return null;
+  }
 }; 

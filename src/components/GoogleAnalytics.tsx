@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { hasUserDeclinedCookies } from './CookieConsent';
 
 // 声明全局 gtag 函数
@@ -22,7 +22,17 @@ interface GoogleAnalyticsProps {
 }
 
 export default function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
+  const [isClientSide, setIsClientSide] = useState(false);
+
   useEffect(() => {
+    // Ensure we're on the client side to prevent hydration mismatch
+    setIsClientSide(true);
+  }, []);
+
+  useEffect(() => {
+    // Only run analytics logic on client side after hydration
+    if (!isClientSide) return;
+
     // 默认初始化 Google Analytics，如果用户明确拒绝则关闭
     if (hasUserDeclinedCookies()) {
       // 用户拒绝了 Cookie，关闭 GA 追踪
@@ -39,7 +49,7 @@ export default function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps)
         page_location: window.location.href,
       });
     }
-  }, [measurementId]);
+  }, [measurementId, isClientSide]);
 
   return null;
 }
