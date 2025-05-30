@@ -1,7 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+
+// 声明全局 gtag 函数
+declare global {
+  interface Window {
+    gtag: (...args: unknown[]) => void;
+  }
+}
 
 interface CookieConsentProps {
   onAccept?: () => void;
@@ -164,6 +171,17 @@ export default function CookieConsent({ onAccept, onDecline }: CookieConsentProp
   const handleDecline = () => {
     localStorage.setItem('cookie-consent', 'declined');
     setIsVisible(false);
+    
+    // 通知 Google Analytics 关闭追踪
+    if (typeof window !== 'undefined' && window.gtag && process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) {
+      window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, {
+        send_page_view: false,
+        anonymize_ip: true,
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
+      });
+    }
+    
     onDecline?.();
   };
 
@@ -230,8 +248,16 @@ export default function CookieConsent({ onAccept, onDecline }: CookieConsentProp
 
 // 检查用户是否已同意 Cookie
 export const hasUserConsentedToCookies = (): boolean => {
+  if (typeof window === 'undefined') return true; // 默认同意（服务端渲染时）
+  const consent = localStorage.getItem('cookie-consent');
+  // 如果用户没有做出选择，默认为同意；只有明确拒绝时才返回 false
+  return consent !== 'declined';
+};
+
+// 检查用户是否明确拒绝了 Cookie
+export const hasUserDeclinedCookies = (): boolean => {
   if (typeof window === 'undefined') return false;
-  return localStorage.getItem('cookie-consent') === 'accepted';
+  return localStorage.getItem('cookie-consent') === 'declined';
 };
 
 // 获取用户的 Cookie 同意状态

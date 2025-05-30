@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { hasUserConsentedToCookies } from './CookieConsent';
+import { hasUserDeclinedCookies } from './CookieConsent';
 
 // Declare global adsbygoogle
 declare global {
@@ -16,13 +16,13 @@ interface GoogleAdSenseProps {
 
 export default function GoogleAdSense({ publisherId }: GoogleAdSenseProps) {
   useEffect(() => {
-    // Only initialize Google AdSense if user has consented to cookies
-    if (hasUserConsentedToCookies()) {
+    // 默认初始化 Google AdSense，只有用户明确拒绝时才不初始化
+    // if (!hasUserDeclinedCookies()) {
       // Initialize adsbygoogle array if it doesn't exist
       if (typeof window !== 'undefined') {
         window.adsbygoogle = window.adsbygoogle || [];
       }
-    }
+    // }
   }, [publisherId]);
 
   return null;
@@ -45,20 +45,20 @@ export function AdBanner({
   style = {}
 }: AdBannerProps) {
   useEffect(() => {
-    // Only show ads if user has consented to cookies
-    if (hasUserConsentedToCookies() && typeof window !== 'undefined') {
+    // 只有在用户没有明确拒绝的情况下才显示广告
+    // if (!hasUserDeclinedCookies() && typeof window !== 'undefined') {
       try {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
       } catch (err) {
         console.error('AdSense error:', err);
       }
-    }
+    // }
   }, []);
 
-  // Don't render ads if user hasn't consented to cookies
-  if (!hasUserConsentedToCookies()) {
-    return null;
-  }
+  // 如果用户拒绝了 Cookie，不渲染广告
+  // if (hasUserDeclinedCookies()) {
+  //   return null;
+  // }
 
   const publisherId = process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID;
   

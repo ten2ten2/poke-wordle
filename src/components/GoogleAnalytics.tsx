@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { hasUserConsentedToCookies } from './CookieConsent';
+import { hasUserDeclinedCookies } from './CookieConsent';
 
 // 声明全局 gtag 函数
 declare global {
@@ -23,8 +23,17 @@ interface GoogleAnalyticsProps {
 
 export default function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
   useEffect(() => {
-    // 只有在用户同意的情况下才初始化 Google Analytics
-    if (hasUserConsentedToCookies()) {
+    // 默认初始化 Google Analytics，如果用户明确拒绝则关闭
+    if (hasUserDeclinedCookies()) {
+      // 用户拒绝了 Cookie，关闭 GA 追踪
+      gtag('config', measurementId, {
+        send_page_view: false,
+        anonymize_ip: true,
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
+      });
+    } else {
+      // 默认或用户同意的情况下，正常初始化 GA
       gtag('config', measurementId, {
         page_title: document.title,
         page_location: window.location.href,
@@ -37,7 +46,8 @@ export default function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps)
 
 // 用于跟踪页面浏览的函数
 export const trackPageView = (url: string, title?: string) => {
-  if (typeof window !== 'undefined' && hasUserConsentedToCookies()) {
+  // 只有在用户没有明确拒绝的情况下才追踪
+  if (typeof window !== 'undefined' && !hasUserDeclinedCookies()) {
     gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!, {
       page_title: title || document.title,
       page_location: url,
@@ -52,7 +62,8 @@ export const trackEvent = (
   label?: string,
   value?: number
 ) => {
-  if (typeof window !== 'undefined' && hasUserConsentedToCookies()) {
+  // 只有在用户没有明确拒绝的情况下才追踪
+  if (typeof window !== 'undefined' && !hasUserDeclinedCookies()) {
     gtag('event', action, {
       event_category: category,
       event_label: label,
