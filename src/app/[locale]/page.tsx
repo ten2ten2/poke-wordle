@@ -11,7 +11,6 @@ import Footer from '@/components/Footer';
 import GameInput from '@/components/GameInput';
 import GuessTable from '@/components/GuessTable';
 import GameOverModal from '@/components/GameOverModal';
-import { resourceLimits } from 'worker_threads';
 
 export default function GamePage() {
   const locale = useLocale();
@@ -103,10 +102,25 @@ export default function GamePage() {
   }, [gameState.targetPokemon, pendingGuess, gameState.settings, isPokemonNameValid, addGuess, locale, t]);
 
   const handleSettingsChange = useCallback((newSettings: GameSettings) => {
+    const currentSettings = gameState.settings;
+    
+    // Check if any settings that affect game validity have changed
+    const gameAffectingSettingsChanged = 
+      newSettings.maxGuesses !== currentSettings.maxGuesses ||
+      newSettings.selectedGenerations.length !== currentSettings.selectedGenerations.length ||
+      !newSettings.selectedGenerations.every(gen => currentSettings.selectedGenerations.includes(gen)) ||
+      newSettings.isPrankster !== currentSettings.isPrankster ||
+      newSettings.isGenArrow !== currentSettings.isGenArrow;
+    
     updateSettings(newSettings);
-    resetGame();
-    setShowSettingsChangeNotice(true);
-  }, [updateSettings, resetGame]);
+    
+    // Only reset the game if settings that affect game validity have changed
+    // guessOrder only affects display order, so we don't need to reset for that
+    if (gameAffectingSettingsChanged) {
+      resetGame();
+      setShowSettingsChangeNotice(true);
+    }
+  }, [updateSettings, resetGame, gameState.settings]);
 
   const handleGuessSubmit = useCallback(async (name: string) => {
     // Prevent new guesses if game is over
@@ -143,7 +157,7 @@ export default function GamePage() {
           is_prankster: gameState.settings.isPrankster,
           is_gen_arrow: gameState.settings.isGenArrow,
           locale,
-          previousFieldToHide: gameState.guesses[gameState.guesses.length - 1]?.fieldToHide || null,
+          previousFieldToHide: gameState.settings.guessOrder === 'reverse' ? gameState.guesses[0]?.fieldToHide : gameState.guesses[gameState.guesses.length - 1]?.fieldToHide,
         }),
       });
 
@@ -163,7 +177,7 @@ export default function GamePage() {
     } finally {
       setIsLoading(false);
     }
-  }, [gameState.targetPokemon, gameState.settings, gameState.isGameOver, isPokemonNameValid, addGuess, locale, t, startNewGame]);
+  }, [gameState.targetPokemon, gameState.settings, gameState.isGameOver, gameState.guesses, isPokemonNameValid, addGuess, locale, t, startNewGame]);
 
   const handleRandomStart = useCallback(() => {
     // Prevent random start if game is over

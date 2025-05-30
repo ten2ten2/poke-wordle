@@ -106,9 +106,21 @@ export function useGameState(locale: string) {
       const updatedSettings = { ...prev.settings, ...newSettings };
       // Save to localStorage
       saveGameSettings(updatedSettings);
+      
+      // If only guessOrder changed, re-order existing guesses
+      const prevGuessOrder = prev.settings.guessOrder;
+      const newGuessOrder = updatedSettings.guessOrder;
+      
+      let reorderedGuesses = prev.guesses;
+      if (prevGuessOrder !== newGuessOrder && prev.guesses.length > 0) {
+        // When switching between normal and reverse order, simply reverse the current array
+        reorderedGuesses = [...prev.guesses].reverse();
+      }
+      
       return {
         ...prev,
-        settings: updatedSettings
+        settings: updatedSettings,
+        guesses: reorderedGuesses
       };
     });
   }, []);
