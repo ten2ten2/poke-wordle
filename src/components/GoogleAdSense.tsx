@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { hasUserDeclinedCookies } from './CookieConsent';
+// import { hasUserDeclinedCookies } from './CookieConsent';
 
 // Declare global adsbygoogle
 declare global {
