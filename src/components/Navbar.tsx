@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { Cog6ToothIcon, InformationCircleIcon, LanguageIcon } from '@heroicons/react/24/outline';
 import Settings from './Settings';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -15,22 +15,23 @@ interface NavbarProps {
 
 export default function Navbar({ onSettingsChange, currentSettings }: NavbarProps) {
   const t = useTranslations();
+  const locale = useLocale();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
 
   // Check if this is a first-time user and show about modal
   useEffect(() => {
-    const hasSeenAbout = localStorage.getItem('hasSeenAbout');
+    const hasSeenAbout = localStorage.getItem(`hasSeenAbout_${locale}`);
     if (!hasSeenAbout) {
       setIsAboutOpen(true);
     }
-  }, []);
+  }, [locale]);
 
   // Handle closing about modal and mark as seen
   const handleAboutClose = () => {
     setIsAboutOpen(false);
-    localStorage.setItem('hasSeenAbout', 'true');
+    localStorage.setItem(`hasSeenAbout_${locale}`, 'true');
   };
 
   return (
