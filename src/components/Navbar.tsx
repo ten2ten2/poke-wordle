@@ -19,19 +19,41 @@ export default function Navbar({ onSettingsChange, currentSettings }: NavbarProp
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isClientSide, setIsClientSide] = useState(false);
 
-  // Check if this is a first-time user and show about modal
+  // Ensure we're on the client side to prevent hydration mismatch
   useEffect(() => {
-    const hasSeenAbout = localStorage.getItem(`hasSeenAbout_${locale}`);
-    if (!hasSeenAbout) {
+    setIsClientSide(true);
+  }, []);
+
+  // Check if this is a first-time user and show about modal - only after client-side hydration
+  useEffect(() => {
+    if (!isClientSide) return;
+    
+    try {
+      const hasSeenAbout = localStorage.getItem(`hasSeenAbout_${locale}`);
+      if (!hasSeenAbout) {
+        setIsAboutOpen(true);
+      }
+    } catch (error) {
+      // If localStorage is not available, default to showing about modal
+      console.warn('localStorage not available:', error);
       setIsAboutOpen(true);
     }
-  }, [locale]);
+  }, [locale, isClientSide]);
 
   // Handle closing about modal and mark as seen
   const handleAboutClose = () => {
     setIsAboutOpen(false);
-    localStorage.setItem(`hasSeenAbout_${locale}`, 'true');
+    
+    // Only try to set localStorage on client side
+    if (isClientSide) {
+      try {
+        localStorage.setItem(`hasSeenAbout_${locale}`, 'true');
+      } catch (error) {
+        console.warn('Error saving to localStorage:', error);
+      }
+    }
   };
 
   return (

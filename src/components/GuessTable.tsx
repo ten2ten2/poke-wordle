@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { GuessResult } from '@/types/pokemon';
 import Image from 'next/image';
@@ -11,6 +12,12 @@ interface GuessTableProps {
 
 export default function GuessTable({ guesses }: GuessTableProps) {
   const t = useTranslations();
+  const [isClientSide, setIsClientSide] = useState(false);
+
+  // Ensure we're on the client side to prevent hydration mismatch
+  useEffect(() => {
+    setIsClientSide(true);
+  }, []);
 
   if (guesses.length === 0) {
     return (
@@ -66,7 +73,161 @@ export default function GuessTable({ guesses }: GuessTableProps) {
     <div className="space-y-4 sm:space-y-6">
       {guesses.map((guess, index) => (
         <div key={index} className="guess-table-card">
-          <div className="flex">
+          {/* Mobile Layout */}
+          <div className="block sm:hidden">
+            {/* Pokemon Profile */}
+            <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+              <div className="relative w-16 h-16 mr-3 flex-shrink-0">
+                <Image
+                  src={guess.profile || '/images/pokemon-placeholder.png'}
+                  alt={guess.name}
+                  fill
+                  className="object-contain"
+                  sizes="64px"
+                  priority={index < 3}
+                />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                {guess.name}
+              </h3>
+            </div>
+
+            {/* Vertical Property List */}
+            <div className="text-center">
+              {/* Types */}
+              <div className="flex content-center items-center justify-start py-2 border-b border-dashed border-gray-100">
+                <span className="text-sm font-medium text-gray-700 w-20 flex-shrink-0">
+                  {t('game.columns.type')}
+                </span>
+                <div className="flex flex-wrap gap-1 justify-end">
+                  {guess.fieldToHide === 'types' ? (
+                    renderPranksterContent(guess.pranksterPokemonProfile || '')
+                  ) : (
+                    guess.types.map((type, typeIndex) => (
+                      <span
+                        key={typeIndex}
+                        className={getTagClassName(type.status)}
+                      >
+                        {type.value}
+                      </span>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              {/* Base Stats */}
+              <div className="flex content-center items-center justify-start py-2 border-b border-dashed border-gray-100">
+                <span className="text-sm font-medium text-gray-700 w-20 flex-shrink-0">
+                  {t('game.columns.baseStats')}
+                </span>
+                <div className="flex justify-end">
+                  {guess.fieldToHide === 'base_stats' ? (
+                    renderPranksterContent(guess.pranksterPokemonProfile || '')
+                  ) : (
+                    <span
+                      className={clsx(
+                        getTagClassName(guess.base_stats_total.status),
+                        getArrowClassName(guess.base_stats_total.arrow)
+                      )}
+                    >
+                      {guess.base_stats_total.value}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Generation */}
+              <div className="flex content-center items-center justify-start py-2 border-b border-dashed border-gray-100">
+                <span className="text-sm font-medium text-gray-700 w-20 flex-shrink-0">
+                  {t('game.columns.generation')}
+                </span>
+                <div className="flex justify-end">
+                  {guess.fieldToHide === 'generation' ? (
+                    renderPranksterContent(guess.pranksterPokemonProfile || '')
+                  ) : (
+                    <span
+                      className={clsx(
+                        getTagClassName(guess.generation.status),
+                        getArrowClassName(guess.generation.arrow)
+                      )}
+                    >
+                      {t(`generation.Gen${guess.generation.value}`)}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Abilities */}
+              <div className="flex content-center items-center justify-start py-2 border-b border-dashed border-gray-100">
+                <span className="text-sm font-medium text-gray-700 w-20 flex-shrink-0">
+                  {t('game.columns.abilities')}
+                </span>
+                <div className="flex flex-wrap gap-1 justify-end">
+                  {guess.fieldToHide === 'abilities' ? (
+                    renderPranksterContent(guess.pranksterPokemonProfile || '')
+                  ) : (
+                    guess.abilities.map((ability, abilityIndex) => (
+                      <span
+                        key={abilityIndex}
+                        className={getTagClassName(ability.status)}
+                      >
+                        {ability.value}
+                      </span>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              {/* Evolution */}
+              <div className="flex content-center items-center justify-start py-2 border-b border-dashed border-gray-100">
+                <span className="text-sm font-medium text-gray-700 w-20 flex-shrink-0">
+                  {t('game.columns.evolution')}
+                </span>
+                <div className="flex flex-wrap gap-1 justify-end">
+                  {guess.fieldToHide === 'evolution' ? (
+                    renderPranksterContent(guess.pranksterPokemonProfile || '')
+                  ) : (
+                    <>
+                      {guess.evolution_stage.value !== null && (
+                        <span className={getTagClassName(guess.evolution_stage.status)}>
+                          {t(`evolution.stage${guess.evolution_stage.value}`)}
+                        </span>
+                      )}
+                      {guess.evolution_method_detail.value && (
+                        <span className={getTagClassName(guess.evolution_method_detail.status)}>
+                          {t(`evolutionMethods.${guess.evolution_method_detail.value}`)}
+                        </span>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Tags */}
+              <div className="flex content-center items-center justify-start py-2">
+                <span className="text-sm font-medium text-gray-700 w-20 flex-shrink-0">
+                  {t('game.columns.tags')}
+                </span>
+                <div className="flex flex-wrap gap-1 justify-end">
+                  {guess.fieldToHide === 'tags' ? (
+                    renderPranksterContent(guess.pranksterPokemonProfile || '')
+                  ) : (
+                    guess.tags.map((tag, tagIndex) => (
+                      <span
+                        key={tagIndex}
+                        className={getTagClassName(tag.status)}
+                      >
+                        {t(`tags.${tag.value}`)}
+                      </span>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop Layout */}
+          <div className="hidden sm:flex">
             {/* Pokemon Profile and Name */}
             <div className="pokemon-profile-section w-40 min-h-40">
               <div className="relative w-16 h-16 sm:w-20 sm:h-20 mb-2">
