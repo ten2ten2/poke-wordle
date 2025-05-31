@@ -65,7 +65,13 @@ export default function LanguageSwitcher({ isOpen, onClose }: LanguageSwitcherPr
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onClose}>
+      <Dialog 
+        as="div" 
+        className="relative z-10" 
+        onClose={onClose}
+        aria-labelledby="language-switcher-title"
+        aria-describedby="language-switcher-description"
+      >
         <TransitionChild
           as={Fragment}
           enter="ease-out duration-300"
@@ -90,33 +96,56 @@ export default function LanguageSwitcher({ isOpen, onClose }: LanguageSwitcherPr
               leaveTo="opacity-0 scale-95"
             >
               <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <div className="flex justify-between items-center mb-4">
-                  <DialogTitle as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                <header className="flex justify-between items-center mb-4">
+                  <DialogTitle 
+                    as="h2" 
+                    id="language-switcher-title"
+                    className="text-lg font-medium leading-6 text-gray-900"
+                  >
                     {t('navbar.language')}
                   </DialogTitle>
                   <button
+                    type="button"
                     onClick={onClose}
                     className="rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    aria-label={t('common.close') || 'Close dialog'}
                   >
-                    <XMarkIcon className="h-6 w-6" />
+                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
-                </div>
+                </header>
 
-                <div className="space-y-2">
-                  {languages.map((language) => (
-                    <button
-                      key={language.code}
-                      onClick={() => handleLanguageChange(language.code)}
-                      className={`w-full text-left px-4 py-2 rounded-md transition-colors ${
-                        locale === language.code
-                          ? 'bg-blue-100 text-blue-900'
-                          : 'hover:bg-gray-100 text-gray-700'
-                      }`}
-                    >
-                      {language.name}
-                    </button>
-                  ))}
-                </div>
+                <main>
+                  <p 
+                    id="language-switcher-description" 
+                    className="sr-only"
+                  >
+                    Select your preferred language from the list below
+                  </p>
+                  <nav aria-label="Language selection">
+                    <ul className="space-y-2" role="list">
+                      {languages.map((language) => (
+                        <li key={language.code}>
+                          <button
+                            type="button"
+                            onClick={() => handleLanguageChange(language.code)}
+                            className={`w-full text-left px-4 py-2 rounded-md transition-colors ${
+                              locale === language.code
+                                ? 'bg-blue-100 text-blue-900'
+                                : 'hover:bg-gray-100 text-gray-700'
+                            }`}
+                            aria-current={locale === language.code ? 'true' : 'false'}
+                            aria-label={`Switch to ${language.name}`}
+                          >
+                            <span aria-hidden="true">{language.name}</span>
+                            {locale === language.code && (
+                              <span className="sr-only"> (current language)</span>
+                            )}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </nav>
+                </main>
               </DialogPanel>
             </TransitionChild>
           </div>
