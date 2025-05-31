@@ -59,13 +59,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ogLocale: 'ko_KR',
     },
     'zh-hans': {
-      title: '宝可梦猜词 - 猜宝可梦游戏',
-      description: '用宝可梦猜词测试你的宝可梦知识！根据属性、数值、特性、进化等信息猜出宝可梦。',
+      title: '宝可梦猜猜乐 - 猜宝可梦游戏',
+      description: '用宝可梦猜猜乐测试你的宝可梦知识！根据属性、数值、特性、进化等信息猜出宝可梦。',
       ogLocale: 'zh_CN',
     },
     'zh-hant': {
-      title: '寶可夢猜詞 - 猜寶可夢遊戲',
-      description: '用寶可夢猜詞測試你的寶可夢知識！根據屬性、數值、特性、進化等資訊猜出寶可夢。',
+      title: '寶可夢猜猜樂 - 猜寶可夢遊戲',
+      description: '用寶可夢猜猜樂測試你的寶可夢知識！根據屬性、數值、特性、進化等資訊猜出寶可夢。',
       ogLocale: 'zh_TW',
     },
   };
