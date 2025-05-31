@@ -3,36 +3,63 @@ import { MetadataRoute } from 'next';
 const locales = ['en', 'ja', 'fr', 'de', 'it', 'es', 'ko', 'zh-hans', 'zh-hant'];
 const baseUrl = 'https://www.pokewordle.app';
 
+// Helper function to create language alternates
+function createLanguageAlternates(includeXDefault: boolean = false): Record<string, string> {
+  const alternates: Record<string, string> = {};
+  
+  // Add x-default for the main language (English) if requested
+  if (includeXDefault) {
+    alternates['x-default'] = baseUrl;
+  }
+  
+  // Add all language alternates
+  locales.forEach(loc => {
+    const langCode = loc === 'zh-hans' ? 'zh-Hans' : loc === 'zh-hant' ? 'zh-Hant' : loc;
+    const langUrl = loc === 'en' ? baseUrl : `${baseUrl}/${loc}`;
+    alternates[langCode] = langUrl;
+  });
+  
+  return alternates;
+}
+
+// Helper function to create privacy page alternates
+function createPrivacyAlternates(includeXDefault: boolean = false): Record<string, string> {
+  const alternates: Record<string, string> = {};
+  
+  // Add x-default for the main language (English) if requested
+  if (includeXDefault) {
+    alternates['x-default'] = `${baseUrl}/privacy-and-terms`;
+  }
+  
+  // Add all language alternates
+  locales.forEach(loc => {
+    const langCode = loc === 'zh-hans' ? 'zh-Hans' : loc === 'zh-hant' ? 'zh-Hant' : loc;
+    const langUrl = loc === 'en' 
+      ? `${baseUrl}/privacy-and-terms` 
+      : `${baseUrl}/${loc}/privacy-and-terms`;
+    alternates[langCode] = langUrl;
+  });
+  
+  return alternates;
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const currentDate = new Date().toISOString();
+  // Use more precise timestamp with proper ISO formatting
+  const currentDate = new Date();
+  const lastModified = currentDate.toISOString();
   
   // Generate sitemap entries for all locales (main game pages)
   const localeEntries = locales.map((locale) => {
-    // Generate correct URL for English vs other locales
     const localeUrl = locale === 'en' ? baseUrl : `${baseUrl}/${locale}`;
-    
-    // Create alternates object with x-default for English
-    const alternates: Record<string, string> = {};
-    
-    // Add x-default for the main language (English)
-    if (locale === 'en') {
-      alternates['x-default'] = baseUrl;
-    }
-    
-    // Add all language alternates
-    locales.forEach(loc => {
-      const langCode = loc === 'zh-hans' ? 'zh-Hans' : loc === 'zh-hant' ? 'zh-Hant' : loc;
-      const langUrl = loc === 'en' ? baseUrl : `${baseUrl}/${loc}`;
-      alternates[langCode] = langUrl;
-    });
+    const isMainLocale = locale === 'en';
     
     return {
       url: localeUrl,
-      lastModified: currentDate,
+      lastModified,
       changeFrequency: 'weekly' as const,
-      priority: locale === 'en' ? 1.0 : 0.9,
+      priority: isMainLocale ? 1.0 : 0.9,
       alternates: {
-        languages: alternates
+        languages: createLanguageAlternates(isMainLocale)
       }
     };
   });
@@ -42,35 +69,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const privacyUrl = locale === 'en' 
       ? `${baseUrl}/privacy-and-terms` 
       : `${baseUrl}/${locale}/privacy-and-terms`;
-    
-    // Create alternates object with x-default for English
-    const alternates: Record<string, string> = {};
-    
-    // Add x-default for the main language (English)
-    if (locale === 'en') {
-      alternates['x-default'] = `${baseUrl}/privacy-and-terms`;
-    }
-    
-    // Add all language alternates
-    locales.forEach(loc => {
-      const langCode = loc === 'zh-hans' ? 'zh-Hans' : loc === 'zh-hant' ? 'zh-Hant' : loc;
-      const langUrl = loc === 'en' 
-        ? `${baseUrl}/privacy-and-terms` 
-        : `${baseUrl}/${loc}/privacy-and-terms`;
-      alternates[langCode] = langUrl;
-    });
+    const isMainLocale = locale === 'en';
     
     return {
       url: privacyUrl,
-      lastModified: currentDate,
+      lastModified,
       changeFrequency: 'monthly' as const,
       priority: 0.5,
       alternates: {
-        languages: alternates
+        languages: createPrivacyAlternates(isMainLocale)
       }
     };
   });
 
-  // Return only locale entries and privacy entries (no separate root entry to avoid duplication)
+  // Combine all entries with main pages first for better SEO
   return [...localeEntries, ...privacyEntries];
 } 
