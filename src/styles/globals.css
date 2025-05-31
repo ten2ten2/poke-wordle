@@ -62,7 +62,7 @@
 @layer components {
   /* Enhanced tag styles with responsive sizing */
   .tag {
-    @apply inline-flex items-center rounded-full;
+    @apply inline-flex items-center rounded-lg;
     padding: 0.25rem 0.5rem;
     font-size: 0.75rem;
     line-height: 1rem;
@@ -70,7 +70,10 @@
     /* Responsive font sizing */
     @apply text-xs sm:text-sm;
     /* Better touch targets on mobile */
-    @apply min-h-[28px] mobile:min-h-[32px];
+    @apply min-h-[24px] mobile:min-h-[28px];
+    /* Improved spacing */
+    margin: 0.125rem;
+    text-align: center;
   }
   
   .tag-exact {
@@ -82,7 +85,7 @@
   }
   
   .tag-nope {
-    @apply bg-gray-100 text-gray-800;
+    @apply bg-gray-100 text-gray-900;
   }
   
   .arrow-up::after {
@@ -227,6 +230,27 @@
   
   .form-row-mobile {
     @apply flex flex-col mobile:space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4;
+  }
+
+  /* Guess table styles */
+  .guess-table-card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden;
+  }
+
+  .guess-table-header {
+    @apply bg-gray-50 border-b border-dashed border-gray-200 px-3 py-2 text-center;
+  }
+
+  .guess-table-cell {
+    @apply p-3 min-h-[80px] flex flex-col items-center justify-start gap-1;
+  }
+
+  .pokemon-profile-section {
+    @apply flex-shrink-0 flex flex-col justify-center items-center text-center bg-gray-50 border-r border-gray-200 p-4;
+  }
+
+  .property-column {
+    @apply flex-shrink-0 border-0 last:border-r-0;
   }
 }
 

@@ -221,7 +221,7 @@ export default function GamePage() {
         </div>
       )} */}
 
-      <main className="flex-1 container-responsive section-padding">
+      <main className="w-screen container-responsive section-padding">
         <div className="space-y-4 sm:space-y-6">
           {/* Language Change Notice */}
           {showLanguageChangeNotice && (
@@ -373,7 +373,7 @@ export default function GamePage() {
           </section>
 
           {/* Game Results Section */}
-          <section className="card overflow-hidden" aria-labelledby="game-results-heading">
+          <section aria-labelledby="game-results-heading">
             <h2 id="game-results-heading" className="sr-only">
               {t('game.resultsSection')}
             </h2>
