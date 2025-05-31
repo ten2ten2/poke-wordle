@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { GuessResult } from '@/types/pokemon';
 import Image from 'next/image';
@@ -12,12 +11,6 @@ interface GuessTableProps {
 
 export default function GuessTable({ guesses }: GuessTableProps) {
   const t = useTranslations();
-  const [isClientSide, setIsClientSide] = useState(false);
-
-  // Ensure we're on the client side to prevent hydration mismatch
-  useEffect(() => {
-    setIsClientSide(true);
-  }, []);
 
   if (guesses.length === 0) {
     return (
