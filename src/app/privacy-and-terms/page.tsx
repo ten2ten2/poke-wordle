@@ -4,11 +4,35 @@ import { Metadata } from 'next';
 import PrivacyAndTermsPage from '@/app/[locale]/privacy-and-terms/page';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy & Terms of Service - Poke Wordle',
-  description: 'Privacy policy and terms of service for Poke Wordle, the Pokémon guessing game. Learn about data collection, storage, and usage policies.',
+  title: 'Privacy Policy & Terms - Poke Wordle',
+  description: 'Read our privacy policy and terms of service for Poke Wordle. Learn how we protect your data, what we collect, and our game usage policies. Your privacy matters to us.',
+  keywords: [
+    'privacy policy',
+    'terms of service',
+    'data protection',
+    'poke wordle',
+    'pokemon game privacy',
+    'user data',
+    'game terms',
+    'privacy rights',
+    'data collection',
+    'user agreement'
+  ],
   robots: {
     index: true,
     follow: true,
+  },
+  openGraph: {
+    title: 'Privacy Policy & Terms - Poke Wordle',
+    description: 'Read our privacy policy and terms of service for Poke Wordle. Learn how we protect your data, what we collect, and our game usage policies.',
+    url: 'https://www.pokewordle.app/privacy-and-terms',
+    type: 'website',
+    siteName: 'Poke Wordle',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Privacy Policy & Terms - Poke Wordle',
+    description: 'Read our privacy policy and terms of service for Poke Wordle. Learn how we protect your data and our game usage policies.',
   },
   alternates: {
     canonical: '/privacy-and-terms',
