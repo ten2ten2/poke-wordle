@@ -1,6 +1,5 @@
 {
   "title": "ポケワードル",
-  "description": "タイプ、種族値、特性、進化などの手がかりからポケモンを当てよう！",
   "game": {
     "inputPlaceholder": "ポケモン名を入力...",
     "submit": "決定",
@@ -16,14 +15,10 @@
     "congratulations": "おめでとう！",
     "betterLuckNextTime": "次回頑張って！",
     "guessedIn": "{count}回で正解しました",
-    "usedAllGuesses": "{max}回の推測をすべて使いました",
-    "close": "閉じる",
     "playAgain": "もう一度",
     "startPrompt": "ポケモン名を入力するか「ランダム推測」をクリックしてゲームを始めよう！",
     "languageChanged": "言語が変更されました",
     "languageChangedDesc": "言語が変更されました。ポケモンデータが新しい言語に更新されました。ゲームを続けるには新しいゲームを開始してください。",
-    "generationChanged": "世代設定が変更されました",
-    "generationChangedDesc": "世代設定が変更されました。現在のゲームは新しい設定に合わせてリセットされました。ゲームを続けるには新しいゲームを開始してください。",
     "settingsChanged": "設定が変更されました",
     "settingsChangedDesc": "ゲーム設定が変更されました。現在のゲームは新しい設定に合わせてリセットされました。ゲームを続けるには新しいゲームを開始してください。",
     "inputSection": "ゲーム入力エリア",
@@ -31,14 +26,10 @@
     "resultsSection": "ゲーム結果エリア",
     "noGuessesYet": "まだ推測がありません",
     "correctAnswer": "正解",
-    "scrollHint": "スクロールして詳細を確認",
     "guessesUsed": "使用した推測回数",
     "result": "結果",
     "defeat": "敗北",
-    "viewResults": "結果を見る",
     "columns": {
-      "profile": "プロフィール",
-      "name": "名前",
       "type": "タイプ",
       "baseStats": "種族値",
       "generation": "世代",
@@ -46,30 +37,16 @@
       "evolution": "進化",
       "tags": "タグ"
     },
-    "evolutionMethod": "進化方法",
-    "detailedStats": "詳細種族値",
-    "stats": {
-      "hp": "HP",
-      "attack": "こうげき",
-      "defense": "ぼうぎょ",
-      "spAttack": "とくこう",
-      "spDefense": "とくぼう",
-      "speed": "すばやさ"
-    }
+    "evolutionMethod": "進化方法"
   },
   "settings": {
     "title": "設定",
-    "settingsTab": "設定",
-    "aboutTab": "について",
     "maxGuesses": "最大推測回数",
     "times": "回",
     "generationSelection": "世代選択",
     "selectAll": "すべて選択",
     "deselectAll": "すべて解除",
     "generationRequired": "少なくとも一つの世代を選択する必要があります",
-    "generations": "世代選択",
-    "prankster": "いたずらモード",
-    "pranksterDesc": "推測ごとにランダムで一つの属性を隠す",
     "pranksterMode": "いたずらモード",
     "pranksterModeDesc": "推測ごとにランダムで一つの属性を隠す",
     "genArrow": "世代矢印",
@@ -78,20 +55,12 @@
     "reverseOrder": "逆順",
     "reverseOrderDesc": "新しい推測が上に表示されます",
     "normalOrder": "正順",
-    "normalOrderDesc": "新しい推測が下に表示されます",
-    "guessOrderNormal": "正順（古い順）",
-    "guessOrderReverse": "逆順（新しい順）",
-    "apply": "設定を適用",
-    "reset": "デフォルトに戻す",
-    "resetConfirm": "すべての設定をデフォルト値にリセットしてもよろしいですか？",
-    "cancel": "キャンセル",
-    "confirm": "リセット"
+    "normalOrderDesc": "新しい推測が下に表示されます"
   },
   "common": {
     "close": "閉じる",
     "cancel": "キャンセル",
-    "save": "保存",
-    "back": "ゲームに戻る"
+    "save": "保存"
   },
   "about": {
     "title": "について",
@@ -145,13 +114,7 @@
     "main_navigation": "メインナビゲーション"
   },
   "footer": {
-    "copyright": "© 2025 ポケワードル。全著作権所有。",
-    "privacyAndTerms": "プライバシーと利用規約",
-    "allRightsReserved": "全著作権所有。",
-    "github": "GitHub",
-    "privacy": "プライバシーポリシー",
-    "terms": "利用規約",
-    "pokemonAttribution": "ポケモン関連コンテンツは任天堂、Game Freak および Creatures Inc. の所有物です。"
+    "privacyAndTerms": "プライバシーと利用規約"
   },
   "generation": {
     "Gen1": "第1世代",
@@ -208,17 +171,8 @@
     "paradox": "パラドックスポケモン",
     "late": "大器晩成ポケモン"
   },
-  "cookieConsent": {
-    "title": "localStorage を使用しています",
-    "description": "私たちは localStorage と類似の技術を使用して、あなたの体験を向上させ、サイトの使用状況を分析し、マーケティング活動を支援しています。サイトの使用を続けることで、localStorage の使用に同意したものとみなされます。",
-    "learnMore": "詳細を見る",
-    "accept": "同意する",
-    "decline": "拒否する",
-    "close": "閉じる"
-  },
   "privacyAndTerms": {
     "title": "プライバシーポリシーと利用規約",
-    "lastUpdated": "最終更新：{date}",
     "privacyPolicy": {
       "title": "プライバシーポリシー",
       "introduction": "このプライバシーポリシーは、ポケワードル（「当社」、「当社の」、または「私たち」）がサービスをご利用いただく際に、お客様の情報をどのように収集、使用、保護するかについて説明しています。",
@@ -291,4 +245,4 @@
       }
     }
   }
-} 
+}

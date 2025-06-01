@@ -1,6 +1,5 @@
 {
   "title": "Poke Wordle",
-  "description": "Errate das Pokémon basierend auf seinen Attributen, Werten, Fähigkeiten, Evolution und mehr!",
   "game": {
     "inputPlaceholder": "Pokémon-Name eingeben...",
     "submit": "Bestätigen",
@@ -16,14 +15,10 @@
     "congratulations": "Glückwunsch!",
     "betterLuckNextTime": "Viel Glück beim nächsten Mal!",
     "guessedIn": "Du hast es in {count} Versuchen erraten",
-    "usedAllGuesses": "Du hast alle {max} Versuche verbraucht",
-    "close": "Schließen",
     "playAgain": "Nochmal spielen",
     "startPrompt": "Gib einen Pokémon-Namen ein oder klicke auf \"Zufälliger Tipp\" um zu starten!",
     "languageChanged": "Sprache geändert",
     "languageChangedDesc": "Die Sprache wurde geändert. Pokémon-Daten wurden auf die neue Sprache aktualisiert. Bitte starte ein neues Spiel, um weiterzuspielen.",
-    "generationChanged": "Generationseinstellungen geändert",
-    "generationChangedDesc": "Die Generationseinstellungen wurden geändert. Das aktuelle Spiel wurde zurückgesetzt, um den neuen Einstellungen zu entsprechen. Bitte starte ein neues Spiel, um weiterzuspielen.",
     "settingsChanged": "Einstellungen geändert",
     "settingsChangedDesc": "Spieleinstellungen wurden geändert. Das aktuelle Spiel wurde zurückgesetzt, um den neuen Einstellungen zu entsprechen. Bitte starte ein neues Spiel, um weiterzuspielen.",
     "inputSection": "Spiel-Eingabebereich",
@@ -31,14 +26,10 @@
     "resultsSection": "Spiel-Ergebnisbereich",
     "noGuessesYet": "Noch keine Versuche",
     "correctAnswer": "Richtige Antwort",
-    "scrollHint": "Scrollen für weitere Informationen",
     "guessesUsed": "Verwendete Versuche",
     "result": "Ergebnis",
     "defeat": "Niederlage",
-    "viewResults": "Ergebnisse anzeigen",
     "columns": {
-      "profile": "Profil",
-      "name": "Name",
       "type": "Typ",
       "baseStats": "Basiswerte",
       "generation": "Generation",
@@ -46,30 +37,16 @@
       "evolution": "Evolution",
       "tags": "Tags"
     },
-    "evolutionMethod": "Evolutionsmethode",
-    "detailedStats": "Detaillierte Werte",
-    "stats": {
-      "hp": "KP",
-      "attack": "Angriff",
-      "defense": "Verteidigung",
-      "spAttack": "Sp.-Angriff",
-      "spDefense": "Sp.-Verteidigung",
-      "speed": "Initiative"
-    }
+    "evolutionMethod": "Evolutionsmethode"
   },
   "settings": {
     "title": "Einstellungen",
-    "settingsTab": "Einstellungen",
-    "aboutTab": "Über",
     "maxGuesses": "Max. Versuche",
     "times": "mal",
     "generationSelection": "Generationsauswahl",
     "selectAll": "Alle auswählen",
     "deselectAll": "Alle abwählen",
     "generationRequired": "Mindestens eine Generation muss ausgewählt sein",
-    "generations": "Generationen",
-    "prankster": "Schabernack-Modus",
-    "pranksterDesc": "Zufällig ein Attribut pro Versuch verstecken",
     "pranksterMode": "Schabernack-Modus",
     "pranksterModeDesc": "Zufällig ein Attribut pro Versuch verstecken",
     "genArrow": "Generationspfeile",
@@ -78,20 +55,12 @@
     "reverseOrder": "Umgekehrte Reihenfolge",
     "reverseOrderDesc": "Neue Versuche erscheinen oben",
     "normalOrder": "Normale Reihenfolge",
-    "normalOrderDesc": "Neue Versuche erscheinen unten",
-    "guessOrderNormal": "Normal (älteste zuerst)",
-    "guessOrderReverse": "Umgekehrt (neueste zuerst)",
-    "apply": "Einstellungen anwenden",
-    "reset": "Auf Standard zurücksetzen",
-    "resetConfirm": "Bist du sicher, dass du alle Einstellungen auf ihre Standardwerte zurücksetzen möchtest?",
-    "cancel": "Abbrechen",
-    "confirm": "Zurücksetzen"
+    "normalOrderDesc": "Neue Versuche erscheinen unten"
   },
   "common": {
     "close": "Schließen",
     "cancel": "Abbrechen",
-    "save": "Speichern",
-    "back": "Zurück zum Spiel"
+    "save": "Speichern"
   },
   "about": {
     "title": "Über",
@@ -145,13 +114,7 @@
     "main_navigation": "Hauptnavigation"
   },
   "footer": {
-    "copyright": "© 2025 Poke Wordle. Alle Rechte vorbehalten.",
-    "privacyAndTerms": "Datenschutz & Bedingungen",
-    "allRightsReserved": "Alle Rechte vorbehalten.",
-    "github": "GitHub",
-    "privacy": "Datenschutzerklärung",
-    "terms": "Nutzungsbedingungen",
-    "pokemonAttribution": "Pokémon-bezogene Inhalte gehören Nintendo, Game Freak und Creatures Inc."
+    "privacyAndTerms": "Datenschutz & Bedingungen"
   },
   "generation": {
     "Gen1": "Generation 1",
@@ -208,17 +171,8 @@
     "paradox": "Paradox-Pokémon",
     "late": "Spätentwickler-Pokémon"
   },
-  "cookieConsent": {
-    "title": "Wir verwenden localStorage",
-    "description": "Wir verwenden localStorage und ähnliche Technologien, um Ihre Erfahrung zu verbessern, die Website-Nutzung zu analysieren und unsere Marketing-Bemühungen zu unterstützen. Durch die weitere Nutzung unserer Website stimmen Sie der Verwendung von localStorage zu.",
-    "learnMore": "Mehr erfahren",
-    "accept": "Akzeptieren",
-    "decline": "Ablehnen",
-    "close": "Schließen"
-  },
   "privacyAndTerms": {
     "title": "Datenschutzerklärung & Nutzungsbedingungen",
-    "lastUpdated": "Zuletzt aktualisiert: {date}",
     "privacyPolicy": {
       "title": "Datenschutzerklärung",
       "introduction": "Diese Datenschutzerklärung beschreibt, wie Poke Wordle (\"wir\", \"unser\" oder \"uns\") Ihre Informationen sammelt, verwendet und schützt, wenn Sie unseren Service nutzen.",
@@ -291,4 +245,4 @@
       }
     }
   }
-} 
+}

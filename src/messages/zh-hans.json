@@ -1,6 +1,5 @@
 {
   "title": "宝可梦猜猜乐",
-  "description": "根据宝可梦的属性、数值、特性、进化等信息来猜测宝可梦！",
   "game": {
     "inputPlaceholder": "输入宝可梦名称...",
     "submit": "提交",
@@ -16,14 +15,10 @@
     "congratulations": "恭喜！",
     "betterLuckNextTime": "下次加油！",
     "guessedIn": "你用了 {count} 次猜测",
-    "usedAllGuesses": "你已用完所有 {max} 次猜测机会",
-    "close": "关闭",
     "playAgain": "再来一局",
     "startPrompt": "输入宝可梦名称或点击\"随机开局\"来开始游戏！",
     "languageChanged": "语言已更改",
     "languageChangedDesc": "语言已更改。宝可梦数据已更新为新语言。请开始新游戏以继续游玩。",
-    "generationChanged": "世代设置已更改",
-    "generationChangedDesc": "世代设置已更改。当前游戏已重置以匹配新设置。请开始新游戏以继续游玩。",
     "settingsChanged": "设置已更改",
     "settingsChangedDesc": "游戏设置已更改。当前游戏已重置以匹配新设置。请开始新游戏以继续游玩。",
     "inputSection": "游戏输入区域",
@@ -31,14 +26,10 @@
     "resultsSection": "游戏结果区域",
     "noGuessesYet": "还没有猜测记录",
     "correctAnswer": "正确答案",
-    "scrollHint": "滚动查看更多信息",
     "guessesUsed": "已使用猜测次数",
     "result": "结果",
     "defeat": "失败",
-    "viewResults": "查看结果",
     "columns": {
-      "profile": "样子",
-      "name": "名称",
       "type": "属性",
       "baseStats": "种族值",
       "generation": "世代",
@@ -46,30 +37,16 @@
       "evolution": "进化",
       "tags": "其它标签"
     },
-    "evolutionMethod": "进化方式",
-    "detailedStats": "详细种族值",
-    "stats": {
-      "hp": "HP",
-      "attack": "攻击",
-      "defense": "防御",
-      "spAttack": "特攻",
-      "spDefense": "特防",
-      "speed": "速度"
-    }
+    "evolutionMethod": "进化方式"
   },
   "settings": {
     "title": "设置",
-    "settingsTab": "设置",
-    "aboutTab": "关于",
     "maxGuesses": "本轮可猜测次数",
     "times": "次",
     "generationSelection": "世代选择",
     "selectAll": "全选",
     "deselectAll": "全不选",
     "generationRequired": "至少需要选择一个世代",
-    "generations": "世代",
-    "prankster": "恶作剧模式",
-    "pranksterDesc": "每次猜测随机隐藏一个属性",
     "pranksterMode": "恶作剧之心开关",
     "pranksterModeDesc": "开启后，每次猜测会有恶作剧之心的宝可梦随机遮盖一项数据",
     "genArrow": "世代箭头开关",
@@ -78,20 +55,12 @@
     "reverseOrder": "反向显示",
     "reverseOrderDesc": "新的猜测出现在最上方",
     "normalOrder": "正向显示",
-    "normalOrderDesc": "新的猜测出现在最下方",
-    "guessOrderNormal": "正常（最旧的在前）",
-    "guessOrderReverse": "反向（最新的在前）",
-    "apply": "应用设置",
-    "reset": "重置为默认值",
-    "resetConfirm": "您确定要将所有设置重置为默认值吗？",
-    "cancel": "取消",
-    "confirm": "重置"
+    "normalOrderDesc": "新的猜测出现在最下方"
   },
   "common": {
     "close": "关闭",
     "cancel": "取消",
-    "save": "保存",
-    "back": "返回游戏"
+    "save": "保存"
   },
   "about": {
     "title": "关于",
@@ -116,7 +85,7 @@
         "gen8": "第八世代：剑 ｜ 盾 ｜ 晶灿钻石 ｜ 明亮珍珠 ｜ 传说: 阿尔宙斯",
         "gen9": "第九世代：朱 ｜ 紫 ｜ 传说: Z-A"
       },
-      "note": "可以通过设置更改猜测宝可梦的范围。"
+      "note": "可以通过设置更改宝可梦的范围。"
     },
     "colorGuide": {
       "title": "标签颜色说明",
@@ -145,13 +114,7 @@
     "main_navigation": "主导航"
   },
   "footer": {
-    "copyright": "© 2025 宝可梦猜猜乐。保留所有权利。",
-    "privacyAndTerms": "隐私与条款",
-    "allRightsReserved": "保留所有权利。",
-    "github": "GitHub",
-    "privacy": "隐私政策",
-    "terms": "使用条款",
-    "pokemonAttribution": "宝可梦相关内容归任天堂、Game Freak 和 Creatures Inc. 所有。"
+    "privacyAndTerms": "隐私与条款"
   },
   "generation": {
     "Gen1": "第一世代",
@@ -206,19 +169,10 @@
     "has-gmax": "有超极巨化",
     "ultra": "究极异兽",
     "paradox": "悖谬宝可梦",
-    "late": "大器晚成宝可梦"
-  },
-  "cookieConsent": {
-    "title": "我们使用 localStorage",
-    "description": "我们使用 localStorage 和类似技术来改善您的体验、分析网站使用情况并协助我们的营销工作。通过继续使用我们的网站，您同意我们使用 localStorage。",
-    "learnMore": "了解更多",
-    "accept": "接受",
-    "decline": "拒绝",
-    "close": "关闭"
+    "late": "大器晚成的宝可梦"
   },
   "privacyAndTerms": {
     "title": "隐私政策与服务条款",
-    "lastUpdated": "最后更新：{date}",
     "privacyPolicy": {
       "title": "隐私政策",
       "introduction": "本隐私政策描述了宝可梦猜猜乐（“我们”或“我们的”）如何收集、使用和保护您在使用我们服务时的信息。",
@@ -291,4 +245,4 @@
       }
     }
   }
-} 
+}

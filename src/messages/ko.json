@@ -1,6 +1,5 @@
 {
   "title": "포케 워들",
-  "description": "포켓몬의 속성, 스탯, 특성, 진화 등을 바탕으로 포켓몬을 맞춰보세요!",
   "game": {
     "inputPlaceholder": "포켓몬 이름을 입력하세요...",
     "submit": "제출",
@@ -16,14 +15,10 @@
     "congratulations": "축하합니다!",
     "betterLuckNextTime": "다음에 더 잘하세요!",
     "guessedIn": "{count}번 만에 맞추셨습니다",
-    "usedAllGuesses": "모든 {max}번의 기회를 사용했습니다",
-    "close": "닫기",
     "playAgain": "다시 하기",
     "startPrompt": "포켓몬 이름을 입력하거나 \"랜덤 추측\"을 클릭하여 시작하세요!",
     "languageChanged": "언어 변경됨",
     "languageChangedDesc": "언어가 변경되었습니다. 포켓몬 데이터가 새 언어로 업데이트되었습니다. 게임을 계속하려면 새 게임을 시작해주세요.",
-    "generationChanged": "세대 설정 변경됨",
-    "generationChangedDesc": "세대 설정이 변경되었습니다. 현재 게임이 새 설정에 맞게 재설정되었습니다. 게임을 계속하려면 새 게임을 시작해주세요.",
     "settingsChanged": "설정 변경됨",
     "settingsChangedDesc": "게임 설정이 변경되었습니다. 현재 게임이 새 설정에 맞게 재설정되었습니다. 게임을 계속하려면 새 게임을 시작해주세요.",
     "inputSection": "게임 입력 영역",
@@ -31,14 +26,10 @@
     "resultsSection": "게임 결과 영역",
     "noGuessesYet": "아직 추측이 없습니다",
     "correctAnswer": "정답",
-    "scrollHint": "더 많은 정보를 보려면 스크롤하세요",
     "guessesUsed": "사용한 추측 횟수",
     "result": "결과",
     "defeat": "패배",
-    "viewResults": "결과 보기",
     "columns": {
-      "profile": "프로필",
-      "name": "이름",
       "type": "타입",
       "baseStats": "기본 스탯",
       "generation": "세대",
@@ -46,30 +37,16 @@
       "evolution": "진화",
       "tags": "태그"
     },
-    "evolutionMethod": "진화 방법",
-    "detailedStats": "상세 스탯",
-    "stats": {
-      "hp": "HP",
-      "attack": "공격",
-      "defense": "방어",
-      "spAttack": "특수공격",
-      "spDefense": "특수방어",
-      "speed": "스피드"
-    }
+    "evolutionMethod": "진화 방법"
   },
   "settings": {
     "title": "설정",
-    "settingsTab": "설정",
-    "aboutTab": "정보",
     "maxGuesses": "최대 추측 횟수",
     "times": "번",
     "generationSelection": "세대 선택",
     "selectAll": "모두 선택",
     "deselectAll": "모두 해제",
     "generationRequired": "최소 하나의 세대를 선택해야 합니다",
-    "generations": "세대",
-    "prankster": "장난꾸러기 모드",
-    "pranksterDesc": "추측마다 무작위로 하나의 속성 숨기기",
     "pranksterMode": "장난꾸러기 모드",
     "pranksterModeDesc": "추측마다 무작위로 하나의 속성 숨기기",
     "genArrow": "세대 화살표",
@@ -78,20 +55,12 @@
     "reverseOrder": "역순",
     "reverseOrderDesc": "새로운 추측이 위에 나타남",
     "normalOrder": "정순",
-    "normalOrderDesc": "새로운 추측이 아래에 나타남",
-    "guessOrderNormal": "일반 (오래된 것 먼저)",
-    "guessOrderReverse": "역순 (새로운 것 먼저)",
-    "apply": "설정 적용",
-    "reset": "기본값으로 재설정",
-    "resetConfirm": "모든 설정을 기본값으로 재설정하시겠습니까?",
-    "cancel": "취소",
-    "confirm": "재설정"
+    "normalOrderDesc": "새로운 추측이 아래에 나타남"
   },
   "common": {
     "close": "닫기",
     "cancel": "취소",
-    "save": "저장",
-    "back": "게임으로 돌아가기"
+    "save": "저장"
   },
   "about": {
     "title": "정보",
@@ -145,13 +114,7 @@
     "main_navigation": "메인 네비게이션"
   },
   "footer": {
-    "copyright": "© 2025 포케 워들. 모든 권리 보유.",
-    "privacyAndTerms": "개인정보 및 약관",
-    "allRightsReserved": "모든 권리 보유.",
-    "github": "GitHub",
-    "privacy": "개인정보 처리방침",
-    "terms": "이용약관",
-    "pokemonAttribution": "포켓몬 관련 콘텐츠는 닌텐도, Game Freak 및 Creatures Inc.의 소유입니다."
+    "privacyAndTerms": "개인정보 및 약관"
   },
   "generation": {
     "Gen1": "1세대",
@@ -208,17 +171,8 @@
     "paradox": "패러독스 포켓몬",
     "late": "대기만성 포켓몬"
   },
-  "cookieConsent": {
-    "title": "localStorage를 사용합니다",
-    "description": "저희는 localStorage와 유사한 기술을 사용하여 사용자 경험을 개선하고, 사이트 사용량을 분석하며, 마케팅 활동을 지원합니다. 사이트를 계속 사용하시면 localStorage 사용에 동의하는 것으로 간주됩니다.",
-    "learnMore": "자세히 알아보기",
-    "accept": "동의",
-    "decline": "거부",
-    "close": "닫기"
-  },
   "privacyAndTerms": {
     "title": "개인정보 처리방침 및 이용약관",
-    "lastUpdated": "최종 업데이트: {date}",
     "privacyPolicy": {
       "title": "개인정보 처리방침",
       "introduction": "이 개인정보 처리방침은 포케 워들(\"우리\", \"저희\" 또는 \"당사\")이 서비스를 이용할 때 귀하의 정보를 수집, 사용 및 보호하는 방법을 설명합니다.",
@@ -291,4 +245,4 @@
       }
     }
   }
-} 
+}

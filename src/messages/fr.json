@@ -1,6 +1,5 @@
 {
   "title": "Poke Wordle",
-  "description": "Devinez le Pokémon basé sur ses attributs, statistiques, capacités, évolution et plus !",
   "game": {
     "inputPlaceholder": "Entrez le nom du Pokémon...",
     "submit": "Soumettre",
@@ -16,14 +15,10 @@
     "congratulations": "Félicitations !",
     "betterLuckNextTime": "Bonne chance la prochaine fois !",
     "guessedIn": "Vous avez trouvé en {count} essais",
-    "usedAllGuesses": "Vous avez utilisé tous les {max} essais",
-    "close": "Fermer",
     "playAgain": "Rejouer",
     "startPrompt": "Entrez un nom de Pokémon ou cliquez sur \"Supposition Aléatoire\" pour commencer !",
     "languageChanged": "Langue Modifiée",
     "languageChangedDesc": "La langue a été modifiée. Les données Pokémon ont été mises à jour vers la nouvelle langue. Veuillez commencer un nouveau jeu pour continuer à jouer.",
-    "generationChanged": "Paramètres de Génération Modifiés",
-    "generationChangedDesc": "Les paramètres de génération ont été modifiés. Le jeu actuel a été réinitialisé pour correspondre aux nouveaux paramètres. Veuillez commencer un nouveau jeu pour continuer à jouer.",
     "settingsChanged": "Paramètres Modifiés",
     "settingsChangedDesc": "Les paramètres du jeu ont été modifiés. Le jeu actuel a été réinitialisé pour correspondre aux nouveaux paramètres. Veuillez commencer un nouveau jeu pour continuer à jouer.",
     "inputSection": "Section de saisie du jeu",
@@ -31,14 +26,10 @@
     "resultsSection": "Section des résultats du jeu",
     "noGuessesYet": "Aucune supposition encore",
     "correctAnswer": "Bonne réponse",
-    "scrollHint": "Faites défiler pour voir plus d'informations",
     "guessesUsed": "Suppositions utilisées",
     "result": "Résultat",
     "defeat": "Défaite",
-    "viewResults": "Voir les résultats",
     "columns": {
-      "profile": "Profil",
-      "name": "Nom",
       "type": "Type",
       "baseStats": "Statistiques de Base",
       "generation": "Génération",
@@ -46,30 +37,16 @@
       "evolution": "Évolution",
       "tags": "Étiquettes"
     },
-    "evolutionMethod": "Méthode d'Évolution",
-    "detailedStats": "Statistiques Détaillées",
-    "stats": {
-      "hp": "PV",
-      "attack": "Attaque",
-      "defense": "Défense",
-      "spAttack": "Att. Spé.",
-      "spDefense": "Déf. Spé.",
-      "speed": "Vitesse"
-    }
+    "evolutionMethod": "Méthode d'Évolution"
   },
   "settings": {
     "title": "Paramètres",
-    "settingsTab": "Paramètres",
-    "aboutTab": "À Propos",
     "maxGuesses": "Tentatives Maximum",
     "times": "fois",
     "generationSelection": "Sélection de Génération",
     "selectAll": "Tout Sélectionner",
     "deselectAll": "Tout Désélectionner",
     "generationRequired": "Au moins une génération doit être sélectionnée",
-    "generations": "Générations",
-    "prankster": "Mode Farceur",
-    "pranksterDesc": "Cacher aléatoirement un attribut par supposition",
     "pranksterMode": "Mode Farceur",
     "pranksterModeDesc": "Cacher aléatoirement un attribut par supposition",
     "genArrow": "Flèches de Génération",
@@ -78,20 +55,12 @@
     "reverseOrder": "Ordre Inverse",
     "reverseOrderDesc": "Les nouvelles suppositions apparaissent en haut",
     "normalOrder": "Ordre Normal",
-    "normalOrderDesc": "Les nouvelles suppositions apparaissent en bas",
-    "guessOrderNormal": "Normal (plus ancien en premier)",
-    "guessOrderReverse": "Inverse (plus récent en premier)",
-    "apply": "Appliquer les Paramètres",
-    "reset": "Réinitialiser aux Valeurs par Défaut",
-    "resetConfirm": "Êtes-vous sûr de vouloir réinitialiser tous les paramètres à leurs valeurs par défaut ?",
-    "cancel": "Annuler",
-    "confirm": "Réinitialiser"
+    "normalOrderDesc": "Les nouvelles suppositions apparaissent en bas"
   },
   "common": {
     "close": "Fermer",
     "cancel": "Annuler",
-    "save": "Sauvegarder",
-    "back": "Retour au Jeu"
+    "save": "Sauvegarder"
   },
   "about": {
     "title": "À propos",
@@ -145,13 +114,7 @@
     "main_navigation": "Navigation Principale"
   },
   "footer": {
-    "copyright": "© 2025 Poke Wordle. Tous droits réservés.",
-    "privacyAndTerms": "Confidentialité et Conditions",
-    "allRightsReserved": "Tous droits réservés.",
-    "github": "GitHub",
-    "privacy": "Politique de Confidentialité",
-    "terms": "Conditions d'Utilisation",
-    "pokemonAttribution": "Le contenu lié aux Pokémon appartient à Nintendo, Game Freak et Creatures Inc."
+    "privacyAndTerms": "Confidentialité et Conditions"
   },
   "generation": {
     "Gen1": "Génération 1",
@@ -208,17 +171,8 @@
     "paradox": "Pokémon Paradoxe",
     "late": "Pokémon à Évolution Tardive"
   },
-  "cookieConsent": {
-    "title": "Nous utilisons localStorage",
-    "description": "Nous utilisons localStorage et des technologies similaires pour améliorer votre expérience, analyser l'utilisation du site et aider nos efforts de marketing. En continuant à utiliser notre site, vous consentez à notre utilisation de localStorage.",
-    "learnMore": "En savoir plus",
-    "accept": "Accepter",
-    "decline": "Refuser",
-    "close": "Fermer"
-  },
   "privacyAndTerms": {
     "title": "Politique de Confidentialité et Conditions d'Utilisation",
-    "lastUpdated": "Dernière mise à jour : {date}",
     "privacyPolicy": {
       "title": "Politique de Confidentialité",
       "introduction": "Cette Politique de Confidentialité décrit comment Poke Wordle (\"nous\", \"notre\" ou \"nos\") collecte, utilise et protège vos informations lorsque vous utilisez notre service.",
@@ -291,4 +245,4 @@
       }
     }
   }
-} 
+}
