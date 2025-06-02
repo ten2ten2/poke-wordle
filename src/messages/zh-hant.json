@@ -60,7 +60,8 @@
   "common": {
     "close": "關閉",
     "cancel": "取消",
-    "save": "儲存"
+    "save": "儲存",
+    "back": "返回"
   },
   "about": {
     "title": "關於",
@@ -173,6 +174,7 @@
   },
   "privacyAndTerms": {
     "title": "隱私政策與服務條款",
+    "lastUpdated": "最後更新: {date}",
     "privacyPolicy": {
       "title": "隱私政策",
       "introduction": "本隱私政策描述了寶可夢猜猜樂（「我們」或「我們的」）如何收集、使用和保護您在使用我們服務時的資訊。",

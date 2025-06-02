@@ -60,7 +60,8 @@
   "common": {
     "close": "关闭",
     "cancel": "取消",
-    "save": "保存"
+    "save": "保存",
+    "back": "返回"
   },
   "about": {
     "title": "关于",
@@ -173,6 +174,7 @@
   },
   "privacyAndTerms": {
     "title": "隐私政策与服务条款",
+    "lastUpdated": "最后更新: {date}",
     "privacyPolicy": {
       "title": "隐私政策",
       "introduction": "本隐私政策描述了宝可梦猜猜乐（“我们”或“我们的”）如何收集、使用和保护您在使用我们服务时的信息。",

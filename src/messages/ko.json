@@ -60,7 +60,8 @@
   "common": {
     "close": "닫기",
     "cancel": "취소",
-    "save": "저장"
+    "save": "저장",
+    "back": "뒤로"
   },
   "about": {
     "title": "정보",
@@ -172,7 +173,8 @@
     "late": "대기만성 포켓몬"
   },
   "privacyAndTerms": {
-    "title": "개인정보 처리방침 및 이용약관",
+    "title": "개인정보 보호정책 및 서비스 약관",
+    "lastUpdated": "최종 업데이트: {date}",
     "privacyPolicy": {
       "title": "개인정보 처리방침",
       "introduction": "이 개인정보 처리방침은 포케 워들(\"우리\", \"저희\" 또는 \"당사\")이 서비스를 이용할 때 귀하의 정보를 수집, 사용 및 보호하는 방법을 설명합니다.",

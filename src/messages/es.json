@@ -60,7 +60,8 @@
   "common": {
     "close": "Cerrar",
     "cancel": "Cancelar",
-    "save": "Guardar"
+    "save": "Guardar",
+    "back": "Atrás"
   },
   "about": {
     "title": "Acerca de",
@@ -173,6 +174,7 @@
   },
   "privacyAndTerms": {
     "title": "Política de Privacidad y Términos de Servicio",
+    "lastUpdated": "Última actualización: {date}",
     "privacyPolicy": {
       "title": "Política de Privacidad",
       "introduction": "Esta Política de Privacidad describe cómo Poke Wordle (\"nosotros\", \"nuestro\" o \"nos\") recopila, usa y protege su información cuando usa nuestro servicio.",
