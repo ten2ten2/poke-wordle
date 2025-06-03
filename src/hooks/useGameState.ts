@@ -48,7 +48,6 @@ export function useGameState(locale: string) {
         p => p.id === gameState.targetPokemon?.id
       );
       if (!isTargetStillAvailable) {
-        console.log('Target Pokemon is no longer available, resetting game');
         setGameState(prev => ({
           ...prev,
           targetPokemon: null,
@@ -91,7 +90,6 @@ export function useGameState(locale: string) {
     clearGameProgress();
     const targetPokemon = getRandomPokemon(availablePokemon);
 
-    console.log('Starting new game with target Pokemon:', targetPokemon);
     setGameState(prev => ({
       ...prev,
       targetPokemon,
@@ -103,7 +101,6 @@ export function useGameState(locale: string) {
 
   // Reset game to initial state
   const resetGame = useCallback(() => {
-    console.log('Resetting game');
     clearGameProgress();
     setGameState(prev => ({
       ...prev,
@@ -117,7 +114,6 @@ export function useGameState(locale: string) {
 
   // Update settings and save to localStorage
   const updateSettings = useCallback((newSettings: Partial<GameSettings>) => {
-    console.log('Updating settings:', newSettings);
     setGameState(prev => {
       const updatedSettings = { ...prev.settings, ...newSettings };
       // Save to localStorage
@@ -177,7 +173,6 @@ export function useGameState(locale: string) {
 
   // Give up
   const giveUp = useCallback(() => {
-    console.log('Giving up');
     setGameState(prev => {
       const newState = {
         ...prev,
