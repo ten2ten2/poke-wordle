@@ -1,7 +1,7 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { Metadata } from 'next';
-import PrivacyAndTermsPage from '@/app/[locale]/privacy-and-terms/page';
+import PrivacyAndTermsContent from '@/components/PrivacyAndTermsContent';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy & Terms - Poke Wordle',
@@ -56,7 +56,7 @@ export default async function RootPrivacyAndTermsPage() {
 
   return (
     <NextIntlClientProvider messages={messages} locale="en">
-      <PrivacyAndTermsPage />
+      <PrivacyAndTermsContent />
     </NextIntlClientProvider>
   );
 } 
