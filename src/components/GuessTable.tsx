@@ -51,6 +51,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
               height={64}
               className="h-full w-full object-contain"
               sizes="(max-width: 640px) 48px, 64px"
+              unoptimized={true}
             />
           </div>
         </div>
