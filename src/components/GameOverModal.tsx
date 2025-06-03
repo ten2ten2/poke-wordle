@@ -6,6 +6,8 @@ import { useTranslations } from 'next-intl';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Pokemon } from '@/types/pokemon';
 import Image from 'next/image';
+import { translateText } from '@/lib/pokemon';
+import { useLocale } from 'next-intl';
 
 interface GameOverModalProps {
   isOpen: boolean;
@@ -27,6 +29,7 @@ export default function GameOverModal({
   maxGuesses
 }: GameOverModalProps) {
   const t = useTranslations();
+  const locale = useLocale();
 
   const handleRestart = () => {
     onRestart();
@@ -275,7 +278,7 @@ export default function GameOverModal({
                       <div className="relative w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40">
                         <Image
                           src={targetPokemon.profile}
-                          alt={targetPokemon.name}
+                          alt={translateText(targetPokemon.name, locale)}
                           fill
                           className="object-contain"
                           sizes="(max-width: 640px) 96px, (max-width: 1024px) 128px, 160px"
@@ -285,8 +288,8 @@ export default function GameOverModal({
                     </div>
                     
                     <h4 className="text-responsive-lg font-bold text-gray-900 mb-2">
-                      <a href={targetPokemon.wiki_url} target="_blank" rel="noopener noreferrer" className="hover:underline" title={targetPokemon.name}>
-                        {targetPokemon.name} <svg className="w-4 h-4 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                      <a href={targetPokemon.wiki_url} target="_blank" rel="noopener noreferrer" className="hover:underline" title={translateText(targetPokemon.name, locale)}>
+                        {translateText(targetPokemon.name, locale)} <svg className="w-4 h-4 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                       </a>
                     </h4>
                     
@@ -297,7 +300,7 @@ export default function GameOverModal({
                           key={index}
                           className={`px-3 py-1 rounded-full text-white text-sm font-medium ${getTypeColor(type)}`}
                         >
-                          {type}
+                          {translateText(type, locale)}
                         </span>
                       ))}
                     </div>
@@ -359,7 +362,7 @@ export default function GameOverModal({
                               key={index}
                               className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm"
                             >
-                              {ability}
+                              {translateText(ability, locale)}
                             </span>
                           ))}
                         </div>

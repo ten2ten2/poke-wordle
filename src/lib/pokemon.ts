@@ -1,31 +1,33 @@
 import { Pokemon, ComparisonStatus, GuessResult } from '@/types/pokemon';
 
-// Import all locale data files
-import pokeDataEn from '@/data/poke_data_en.json';
-import pokeDataJa from '@/data/poke_data_ja.json';
-import pokeDataFr from '@/data/poke_data_fr.json';
-import pokeDataDe from '@/data/poke_data_de.json';
-import pokeDataIt from '@/data/poke_data_it.json';
-import pokeDataEs from '@/data/poke_data_es.json';
-import pokeDataKo from '@/data/poke_data_ko.json';
-import pokeDataZhHans from '@/data/poke_data_zh-hans.json';
-import pokeDataZhHant from '@/data/poke_data_zh-hant.json';
+// Import data files
+import pokeData from '@/data/pokemon_data.json';
+import i18nData from '@/data/pokemon_i18n.json';
 import pranksterProfileData from '@/data/prankster_profile.json';
 
-const localeDataMap: Record<string, Pokemon[]> = {
-  'en': pokeDataEn as Pokemon[],
-  'ja': pokeDataJa as Pokemon[],
-  'fr': pokeDataFr as Pokemon[],
-  'de': pokeDataDe as Pokemon[],
-  'it': pokeDataIt as Pokemon[],
-  'es': pokeDataEs as Pokemon[],
-  'ko': pokeDataKo as Pokemon[],
-  'zh-hans': pokeDataZhHans as Pokemon[],
-  'zh-hant': pokeDataZhHant as Pokemon[],
-};
+export function loadPokemonData(): Pokemon[] {
+  return pokeData as Pokemon[];
+}
 
-export function loadPokemonData(locale: string): Pokemon[] {
-  return localeDataMap[locale] || (pokeDataEn as Pokemon[]);
+export function loadTranslationData(): Record<string, Record<string, string>> {
+  return i18nData as Record<string, Record<string, string>>;
+}
+
+export function translateText(key: string, locale: string = 'en'): string {
+  const translations = loadTranslationData();
+  return translations[key]?.[locale] || key;
+}
+
+export function translatePokemon(pokemon: Pokemon, locale: string = 'en'): Pokemon {
+  const translations = loadTranslationData();
+  
+  return {
+    ...pokemon,
+    name: translations[pokemon.name]?.[locale] || pokemon.name,
+    types: pokemon.types?.map(type => translations[type]?.[locale] || type) || [],
+    abilities: pokemon.abilities?.map(ability => translations[ability]?.[locale] || ability) || [],
+    tags: pokemon.tags?.map(tag => translations[tag]?.[locale] || tag) || []
+  };
 }
 
 export function loadPranksterProfiles(): string[] {

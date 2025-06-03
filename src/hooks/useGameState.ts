@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Pokemon, GameState, GameSettings, GuessResult } from '@/types/pokemon';
-import { loadPokemonData, filterPokemonByGenerations, getRandomPokemon } from '@/lib/pokemon';
+import { loadPokemonData, filterPokemonByGenerations, getRandomPokemon, translatePokemon } from '@/lib/pokemon';
 import { saveGameSettings, loadGameSettings } from '@/lib/storage';
 
 const defaultSettings: GameSettings = {
@@ -24,53 +24,38 @@ export function useGameState(locale: string) {
     };
   });
 
-  const [allPokemon, setAllPokemon] = useState<Pokemon[]>([]);
   const [availablePokemon, setAvailablePokemon] = useState<Pokemon[]>([]);
   const [pokemonNames, setPokemonNames] = useState<string[]>([]);
 
-  // Load Pokemon data when locale changes
+  // Update Pokemon names when locale changes
   useEffect(() => {
-    const pokemonData = loadPokemonData(locale);
-    setAllPokemon(pokemonData);
-    
-    // Reset game state when language changes to ensure consistency
-    setGameState(prev => ({
-      ...prev,
-      targetPokemon: null,
-      guesses: [],
-      isGameOver: false,
-      isWon: false
-    }));
-  }, [locale]);
+    const translatedNames = availablePokemon.map(p => translatePokemon(p, locale).name);
+    setPokemonNames(translatedNames);
+  }, [locale, availablePokemon]);
 
-  // Filter Pokemon and update names when allPokemon or selectedGenerations change
+  // Filter Pokemon when selectedGenerations change
   useEffect(() => {
-    if (allPokemon.length > 0) {
-      const filteredPokemon = filterPokemonByGenerations(
-        allPokemon,
-        gameState.settings.selectedGenerations
+    const filteredPokemon = filterPokemonByGenerations(loadPokemonData(), gameState.settings.selectedGenerations);
+    setAvailablePokemon(filteredPokemon);
+
+    // If there's an active game and the current target Pokemon is no longer available,
+    // reset the game
+    if (gameState.targetPokemon) {
+      const isTargetStillAvailable = filteredPokemon.some(
+        p => p.id === gameState.targetPokemon?.id
       );
-      setAvailablePokemon(filteredPokemon);
-      setPokemonNames(filteredPokemon.map(p => p.name));
-      
-      // If there's an active game and the current target Pokemon is no longer available,
-      // reset the game
-      if (gameState.targetPokemon) {
-        const isTargetStillAvailable = filteredPokemon.some(
-          p => p.id === gameState.targetPokemon?.id
-        );
-        if (!isTargetStillAvailable) {
-          setGameState(prev => ({
-            ...prev,
-            targetPokemon: null,
-            guesses: [],
-            isGameOver: false,
-            isWon: false
-          }));
-        }
+      if (!isTargetStillAvailable) {
+        console.log('Target Pokemon is no longer available, resetting game');
+        setGameState(prev => ({
+          ...prev,
+          targetPokemon: null,
+          guesses: [],
+          isGameOver: false,
+          isWon: false
+        }));
       }
     }
-  }, [allPokemon, gameState.settings.selectedGenerations, gameState.targetPokemon]);
+  }, [gameState.settings.selectedGenerations, gameState.targetPokemon]);
 
   // Start new game
   const startNewGame = useCallback(() => {
@@ -79,7 +64,8 @@ export function useGameState(locale: string) {
     }
 
     const targetPokemon = getRandomPokemon(availablePokemon);
-    
+
+    console.log('Starting new game with target Pokemon:', targetPokemon);
     setGameState(prev => ({
       ...prev,
       targetPokemon,
@@ -91,6 +77,7 @@ export function useGameState(locale: string) {
 
   // Reset game to initial state
   const resetGame = useCallback(() => {
+    console.log('Resetting game');
     setGameState(prev => ({
       ...prev,
       targetPokemon: null,
@@ -102,21 +89,22 @@ export function useGameState(locale: string) {
 
   // Update settings and save to localStorage
   const updateSettings = useCallback((newSettings: Partial<GameSettings>) => {
+    console.log('Updating settings:', newSettings);
     setGameState(prev => {
       const updatedSettings = { ...prev.settings, ...newSettings };
       // Save to localStorage
       saveGameSettings(updatedSettings);
-      
+
       // If only guessOrder changed, re-order existing guesses
       const prevGuessOrder = prev.settings.guessOrder;
       const newGuessOrder = updatedSettings.guessOrder;
-      
+
       let reorderedGuesses = prev.guesses;
       if (prevGuessOrder !== newGuessOrder && prev.guesses.length > 0) {
         // When switching between normal and reverse order, simply reverse the current array
         reorderedGuesses = [...prev.guesses].reverse();
       }
-      
+
       return {
         ...prev,
         settings: updatedSettings,
@@ -128,7 +116,7 @@ export function useGameState(locale: string) {
   // Add guess
   const addGuess = useCallback((guess: GuessResult) => {
     setGameState(prev => {
-      const newGuesses = gameState.settings.guessOrder === 'reverse' 
+      const newGuesses = gameState.settings.guessOrder === 'reverse'
         ? [guess, ...prev.guesses]
         : [...prev.guesses, guess];
 
@@ -146,6 +134,7 @@ export function useGameState(locale: string) {
 
   // Give up
   const giveUp = useCallback(() => {
+    console.log('Giving up');
     setGameState(prev => ({
       ...prev,
       isGameOver: true,
@@ -153,12 +142,14 @@ export function useGameState(locale: string) {
     }));
   }, []);
 
-  // Check if Pokemon name exists
+  // Check if Pokemon name exists (support both original and translated names)
   const isPokemonNameValid = useCallback((name: string) => {
-    return pokemonNames.filter(pokeName => 
-      pokeName.toLowerCase() === name.toLowerCase()
-    ).length > 0;
-  }, [pokemonNames]);
+    return availablePokemon.some(pokemon => {
+      const translatedPokemon = translatePokemon(pokemon, locale);
+      return translatedPokemon.name.toLowerCase() === name.toLowerCase() ||
+        pokemon.name.toLowerCase() === name.toLowerCase();
+    });
+  }, [availablePokemon, locale]);
 
   return {
     gameState,

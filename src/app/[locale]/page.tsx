@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useGameState } from '@/hooks/useGameState';
-import { getRandomPranksterImage } from '@/lib/pokemon';
+import { getRandomPranksterImage, translateText } from '@/lib/pokemon';
 import { GameSettings, GuessResult } from '@/types/pokemon';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -25,22 +25,14 @@ export default function GamePage() {
     addGuess,
     giveUp,
     isPokemonNameValid,
-    availablePokemon
+    availablePokemon,
   } = useGameState(locale);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showLanguageChangeNotice, setShowLanguageChangeNotice] = useState(false);
   const [showSettingsChangeNotice, setShowSettingsChangeNotice] = useState(false);
   const [pendingGuess, setPendingGuess] = useState<string | null>(null);
   const [showGameOverModal, setShowGameOverModal] = useState(false);
-
-  // Show notice when language changes and there was an active game
-  useEffect(() => {
-    if (!gameState.targetPokemon && gameState.guesses.length === 0) {
-      setShowLanguageChangeNotice(false);
-    }
-  }, [gameState.targetPokemon, gameState.guesses.length]);
 
   // Show game over modal when game ends
   useEffect(() => {
@@ -137,7 +129,6 @@ export default function GamePage() {
     // If no game is started, start one first and set pending guess
     if (!gameState.targetPokemon) {
       setPendingGuess(name);
-      setShowLanguageChangeNotice(false);
       setShowSettingsChangeNotice(false);
       startNewGame();
       return;
@@ -185,8 +176,7 @@ export default function GamePage() {
     if (gameState.isGameOver) {
       return;
     }
-    
-    setShowLanguageChangeNotice(false);
+  
     setShowSettingsChangeNotice(false);
     
     if (availablePokemon.length > 0) {
@@ -200,7 +190,6 @@ export default function GamePage() {
   }, [giveUp]);
 
   const handleRestart = useCallback(() => {
-    setShowLanguageChangeNotice(false);
     setShowSettingsChangeNotice(false);
     setPendingGuess(null); // Clear any pending guess
     setShowGameOverModal(false); // Close game over modal
@@ -223,38 +212,6 @@ export default function GamePage() {
 
       <main className="w-screen container-responsive section-padding">
         <div className="space-y-4 sm:space-y-6">
-          {/* Language Change Notice */}
-          {showLanguageChangeNotice && (
-            <aside 
-              className="card card-padding bg-blue-50 border border-blue-200 animate-slide-up" 
-              role="alert" 
-              aria-live="polite"
-            >
-              <div className="flex flex-col sm:flex-row sm:items-start">
-                <div className="flex-shrink-0 mb-2 sm:mb-0 sm:mr-3">
-                  <svg 
-                    className="h-5 w-5 text-blue-400" 
-                    viewBox="0 0 20 20" 
-                    fill="currentColor" 
-                    aria-hidden="true"
-                  >
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-responsive-sm font-medium text-blue-800">
-                    {t('game.languageChanged')}
-                  </h3>
-                  <div className="mt-2 text-responsive-sm text-blue-700">
-                    <p>
-                      {t('game.languageChangedDesc')}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </aside>
-          )}
-
           {/* Settings Change Notice */}
           {showSettingsChangeNotice && (
             <aside 
@@ -347,13 +304,13 @@ export default function GamePage() {
                       <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
                         <p className="text-responsive-lg font-bold text-red-600">
                           {t('game.gameLost', {
-                            pokemon: gameState.targetPokemon?.name || ''
+                            pokemon: gameState.targetPokemon ? translateText(gameState.targetPokemon.name, locale) : ''
                           })}
                         </p>
                         <div className="relative w-12 h-12 sm:w-16 sm:h-16 overflow-hidden rounded-lg">
                           <Image
                             src={gameState.targetPokemon?.profile || ''}
-                            alt={`${gameState.targetPokemon?.name || ''} - ${t('game.correctAnswer')}`}
+                            alt={`${gameState.targetPokemon ? translateText(gameState.targetPokemon.name, locale) : ''} - ${t('game.correctAnswer')}`}
                             fill
                             className="object-contain"
                             sizes="(max-width: 640px) 48px, 64px"

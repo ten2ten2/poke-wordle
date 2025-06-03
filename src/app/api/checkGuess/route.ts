@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { loadPokemonData, comparePokemon } from '@/lib/pokemon';
+import { loadPokemonData, comparePokemon, translatePokemon } from '@/lib/pokemon';
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,12 +12,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Load Pokemon data for the specified locale
-    const pokemonData = loadPokemonData(locale);
+    // Load Pokemon data
+    const pokemonData = loadPokemonData();
 
-    // Find the guessed Pokemon
+    // Find the guessed Pokemon by original name or translated name
     const guessPokemon = pokemonData.find(
-      p => p.name.toLowerCase() === name.toLowerCase()
+      p => {
+        const translatedPokemon = translatePokemon(p, locale);
+        return p.name.toLowerCase() === name.toLowerCase() ||
+               translatedPokemon.name.toLowerCase() === name.toLowerCase();
+      }
     );
 
     if (!guessPokemon) {
@@ -37,7 +41,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Compare the Pokemon
+    // Compare the Pokemon using original data
     const result = comparePokemon(
       guessPokemon,
       targetPokemon,

@@ -1,7 +1,8 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { GuessResult } from '@/types/pokemon';
+import { translateText } from '@/lib/pokemon';
 import Image from 'next/image';
 import clsx from 'clsx';
 
@@ -11,7 +12,8 @@ interface GuessTableProps {
 
 export default function GuessTable({ guesses }: GuessTableProps) {
   const t = useTranslations();
-
+  const locale = useLocale();
+  
   if (guesses.length === 0) {
     return (
       <div className="text-center py-12 sm:py-16">
@@ -73,7 +75,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
               <div className="relative w-16 h-16 mr-3 flex-shrink-0">
                 <Image
                   src={guess.profile || '/images/pokemon-placeholder.png'}
-                  alt={guess.name}
+                  alt={translateText(guess.name, locale)}
                   fill
                   className="object-contain"
                   sizes="64px"
@@ -81,7 +83,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                 />
               </div>
               <h3 className="text-lg font-semibold text-gray-900">
-                {guess.name}
+                {translateText(guess.name, locale)}
               </h3>
             </div>
 
@@ -101,7 +103,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                         key={typeIndex}
                         className={getTagClassName(type.status)}
                       >
-                        {type.value}
+                        {translateText(type.value, locale)}
                       </span>
                     ))
                   )}
@@ -164,7 +166,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                         key={abilityIndex}
                         className={getTagClassName(ability.status)}
                       >
-                        {ability.value}
+                        {translateText(ability.value, locale)}
                       </span>
                     ))
                   )}
@@ -226,7 +228,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
               <div className="relative w-16 h-16 sm:w-20 sm:h-20 mb-2">
                 <Image
                   src={guess.profile || '/images/pokemon-placeholder.png'}
-                  alt={guess.name}
+                  alt={translateText(guess.name, locale)}
                   fill
                   className="object-contain"
                   sizes="(max-width: 640px) 64px, 80px"
@@ -234,7 +236,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                 />
               </div>
               <h3 className="text-xs sm:text-sm font-medium text-gray-900 leading-tight break-words">
-                {guess.name}
+                {translateText(guess.name, locale)}
               </h3>
             </div>
 
@@ -257,7 +259,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                           key={typeIndex}
                           className={getTagClassName(type.status)}
                         >
-                          {type.value}
+                          {translateText(type.value, locale)}
                         </span>
                       ))
                     )}
@@ -326,7 +328,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                           key={abilityIndex}
                           className={getTagClassName(ability.status)}
                         >
-                          {ability.value}
+                          {translateText(ability.value, locale)}
                         </span>
                       ))
                     )}
