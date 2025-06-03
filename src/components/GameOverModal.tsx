@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Pokemon } from '@/types/pokemon';
 import Image from 'next/image';
-import { translateText } from '@/lib/pokemon';
+import { translateText, getWikiUrl } from '@/lib/pokemon';
 import { useLocale } from 'next-intl';
 
 interface GameOverModalProps {
@@ -288,7 +288,7 @@ export default function GameOverModal({
                     </div>
                     
                     <h4 className="text-responsive-lg font-bold text-gray-900 mb-2">
-                      <a href={targetPokemon.wiki_url} target="_blank" rel="noopener noreferrer" className="hover:underline" title={translateText(targetPokemon.name, locale)}>
+                      <a href={getWikiUrl(translateText(targetPokemon.name, locale), locale)} target="_blank" rel="noopener noreferrer" className="hover:underline" title={translateText(targetPokemon.name, locale)}>
                         {translateText(targetPokemon.name, locale)} <svg className="w-4 h-4 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                       </a>
                     </h4>

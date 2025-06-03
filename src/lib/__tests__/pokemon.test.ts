@@ -89,7 +89,8 @@ import {
   getRandomPokemon, 
   translatePokemon, 
   comparePokemon,
-  translateText 
+  translateText,
+  getWikiUrl
 } from '../pokemon';
 
 // Mock data for tests (duplicate data for test reference)
@@ -274,6 +275,92 @@ describe('pokemon.ts', () => {
     it('should apply prankster effect when enabled', () => {
       const result = comparePokemon(guessPokemon, targetPokemon, true, false, null);
       expect(result.fieldToHide).not.toBeNull();
+    });
+  });
+
+  describe('getWikiUrl', () => {
+    it('should generate correct wiki URLs for Mr. Mime in all languages', () => {
+      // English
+      expect(getWikiUrl('Mr. Mime', 'en')).toBe('https://bulbapedia.bulbagarden.net/wiki/Mr._Mime');
+      
+      // Japanese
+      expect(getWikiUrl('バリヤード', 'ja')).toBe('https://wiki.ポケモン.com/wiki/バリヤード');
+      
+      // Spanish
+      expect(getWikiUrl('Mr. Mime', 'es')).toBe('https://www.wikidex.net/wiki/Mr._Mime');
+      
+      // German
+      expect(getWikiUrl('Pantimos', 'de')).toBe('https://www.pokewiki.de/Pantimos');
+      
+      // Italian
+      expect(getWikiUrl('Mr. Mime', 'it')).toBe('https://wiki.pokemoncentral.it/Mr._Mime');
+      
+      // French
+      expect(getWikiUrl('M. Mime', 'fr')).toBe('https://www.pokepedia.fr/M._Mime');
+      
+      // Chinese Traditional
+      expect(getWikiUrl('魔牆人偶', 'zh-hant')).toBe('https://wiki.52poke.com/zh-hant/魔牆人偶');
+      
+      // Chinese Simplified
+      expect(getWikiUrl('魔墙人偶', 'zh-hans')).toBe('https://wiki.52poke.com/zh-hans/魔墙人偶');
+      
+      // Korean (no wiki available)
+      expect(getWikiUrl('마임맨', 'ko')).toBe('');
+    });
+
+    it('should generate correct wiki URLs for Tapu Koko in all languages', () => {
+      // English
+      expect(getWikiUrl('Tapu Koko', 'en')).toBe('https://bulbapedia.bulbagarden.net/wiki/Tapu_Koko');
+      
+      // Japanese
+      expect(getWikiUrl('カプ・コケコ', 'ja')).toBe('https://wiki.ポケモン.com/wiki/カプ・コケコ');
+      
+      // Spanish
+      expect(getWikiUrl('Tapu Koko', 'es')).toBe('https://www.wikidex.net/wiki/Tapu_Koko');
+      
+      // German
+      expect(getWikiUrl('Kapu-Riki', 'de')).toBe('https://www.pokewiki.de/Kapu-Riki');
+      
+      // Italian
+      expect(getWikiUrl('Tapu Koko', 'it')).toBe('https://wiki.pokemoncentral.it/Tapu_Koko');
+      
+      // French
+      expect(getWikiUrl('Tokorico', 'fr')).toBe('https://www.pokepedia.fr/Tokorico');
+      
+      // Chinese Traditional
+      expect(getWikiUrl('卡璞・鳴鳴', 'zh-hant')).toBe('https://wiki.52poke.com/zh-hant/卡璞・鳴鳴');
+      
+      // Chinese Simplified
+      expect(getWikiUrl('卡璞・鸣鸣', 'zh-hans')).toBe('https://wiki.52poke.com/zh-hans/卡璞・鸣鸣');
+      
+      // Korean (no wiki available)
+      expect(getWikiUrl('카푸꼬꼬꼭', 'ko')).toBe('');
+    });
+
+    it('should handle names with spaces and special characters', () => {
+      // Test space replacement for English
+      expect(getWikiUrl('Mr. Mime', 'en')).toBe('https://bulbapedia.bulbagarden.net/wiki/Mr._Mime');
+      
+      // Test space replacement for Spanish
+      expect(getWikiUrl('Tapu Koko', 'es')).toBe('https://www.wikidex.net/wiki/Tapu_Koko');
+      
+      // Test no space replacement for Japanese (trim only)
+      expect(getWikiUrl('カプ・コケコ', 'ja')).toBe('https://wiki.ポケモン.com/wiki/カプ・コケコ');
+      
+      // Test no space replacement for Chinese (trim only)
+      expect(getWikiUrl('卡璞・鳴鳴', 'zh-hant')).toBe('https://wiki.52poke.com/zh-hant/卡璞・鳴鳴');
+    });
+
+    it('should return empty string for unsupported locales', () => {
+      expect(getWikiUrl('Mr. Mime', 'pt')).toBe('');
+      expect(getWikiUrl('Tapu Koko', 'ru')).toBe('');
+      expect(getWikiUrl('Test', 'unknown')).toBe('');
+    });
+
+    it('should handle default locale parameter', () => {
+      // Should default to English when no locale is provided
+      expect(getWikiUrl('Mr. Mime')).toBe('https://bulbapedia.bulbagarden.net/wiki/Mr._Mime');
+      expect(getWikiUrl('Tapu Koko')).toBe('https://bulbapedia.bulbagarden.net/wiki/Tapu_Koko');
     });
   });
 }); 

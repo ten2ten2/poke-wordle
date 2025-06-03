@@ -201,3 +201,37 @@ export function getRandomPranksterImage(): string {
   }
   return pranksterProfiles[Math.floor(Math.random() * pranksterProfiles.length)];
 }
+
+export function getWikiUrl(name: string, locale: string = 'en'): string {
+  switch (locale) {
+    case "en":
+      name = name.replace(/ /g, "_")
+      return `https://bulbapedia.bulbagarden.net/wiki/${name}`
+    case "ja":
+      name = name.trim()
+      return `https://wiki.ポケモン.com/wiki/${name}`
+    case "es":
+      name = name.replace(/ /g, "_")
+      return `https://www.wikidex.net/wiki/${name}`
+    case "de":
+      name = name.trim()
+      return `https://www.pokewiki.de/${name}`
+    case "it":
+      name = name.replace(/ /g, "_")
+      return `https://wiki.pokemoncentral.it/${name}`
+    case "fr":
+      name = name.replace(/ /g, "_")
+      return `https://www.pokepedia.fr/${name}`
+    case "zh-hant":
+      name = name.trim()
+      return `https://wiki.52poke.com/zh-hant/${name}`
+    case "zh-hans":
+      name = name.trim()
+      return `https://wiki.52poke.com/zh-hans/${name}`
+    case "ko":
+      // Korean wiki is not available
+      return ""
+    default:
+      return ""
+  }
+}
