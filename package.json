@@ -15,7 +15,6 @@
   "dependencies": {
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
-    "@next/swc-darwin-x64": "^15.4.0",
     "clsx": "^2.1.1",
     "gtag": "^1.0.1",
     "next": "latest",
