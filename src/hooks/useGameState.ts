@@ -1,7 +1,7 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { Pokemon, GameState, GameSettings, GuessResult } from '@/types/pokemon';
 import { loadPokemonData, filterPokemonByGenerations, getRandomPokemon, translatePokemon } from '@/lib/pokemon';
-import { saveGameSettings, loadGameSettings } from '@/lib/storage';
+import { saveGameSettings, loadGameSettings, saveGameProgress, loadGameProgress, clearGameProgress } from '@/lib/storage';
 
 const defaultSettings: GameSettings = {
   maxGuesses: 10,
@@ -26,6 +26,9 @@ export function useGameState(locale: string) {
 
   const [availablePokemon, setAvailablePokemon] = useState<Pokemon[]>([]);
   const [pokemonNames, setPokemonNames] = useState<string[]>([]);
+  
+  // 简单标记，避免重复恢复
+  const restoredRef = useRef(false);
 
   // Update Pokemon names when locale changes
   useEffect(() => {
@@ -57,12 +60,35 @@ export function useGameState(locale: string) {
     }
   }, [gameState.settings.selectedGenerations, gameState.targetPokemon]);
 
+  // 尝试恢复进度（仅在初始化时）
+  useEffect(() => {
+    if (availablePokemon.length > 0 && !restoredRef.current && !gameState.targetPokemon) {
+      const savedProgress = loadGameProgress();
+      if (savedProgress && 
+          JSON.stringify(savedProgress.selectedGenerations.sort()) === JSON.stringify(gameState.settings.selectedGenerations.sort())) {
+        
+        const targetPokemon = availablePokemon.find(p => p.id === savedProgress.targetPokemon.id);
+        if (targetPokemon) {
+          setGameState(prev => ({
+            ...prev,
+            targetPokemon,
+            guesses: savedProgress.guesses,
+            isGameOver: savedProgress.isGameOver,
+            isWon: savedProgress.isWon
+          }));
+        }
+      }
+      restoredRef.current = true;
+    }
+  }, [availablePokemon.length]);
+
   // Start new game
   const startNewGame = useCallback(() => {
     if (availablePokemon.length === 0) {
       return;
     }
 
+    clearGameProgress();
     const targetPokemon = getRandomPokemon(availablePokemon);
 
     console.log('Starting new game with target Pokemon:', targetPokemon);
@@ -78,6 +104,7 @@ export function useGameState(locale: string) {
   // Reset game to initial state
   const resetGame = useCallback(() => {
     console.log('Resetting game');
+    clearGameProgress();
     setGameState(prev => ({
       ...prev,
       targetPokemon: null,
@@ -85,6 +112,7 @@ export function useGameState(locale: string) {
       isGameOver: false,
       isWon: false
     }));
+    restoredRef.current = false;
   }, []);
 
   // Update settings and save to localStorage
@@ -94,23 +122,27 @@ export function useGameState(locale: string) {
       const updatedSettings = { ...prev.settings, ...newSettings };
       // Save to localStorage
       saveGameSettings(updatedSettings);
-
+      
       // If only guessOrder changed, re-order existing guesses
       const prevGuessOrder = prev.settings.guessOrder;
       const newGuessOrder = updatedSettings.guessOrder;
-
+      
       let reorderedGuesses = prev.guesses;
       if (prevGuessOrder !== newGuessOrder && prev.guesses.length > 0) {
         // When switching between normal and reverse order, simply reverse the current array
         reorderedGuesses = [...prev.guesses].reverse();
       }
-
+      
       return {
         ...prev,
         settings: updatedSettings,
         guesses: reorderedGuesses
       };
     });
+    
+    if (newSettings.selectedGenerations) {
+      restoredRef.current = false;
+    }
   }, []);
 
   // Add guess
@@ -122,6 +154,17 @@ export function useGameState(locale: string) {
 
       const isWon = guess.isCorrect;
       const isGameOver = isWon || newGuesses.length >= prev.settings.maxGuesses;
+
+      // 保存进度（游戏结束时也保存，不清除）
+      if (prev.targetPokemon) {
+        saveGameProgress({
+          targetPokemon: prev.targetPokemon,
+          guesses: newGuesses,
+          selectedGenerations: prev.settings.selectedGenerations,
+          isGameOver,
+          isWon
+        });
+      }
 
       return {
         ...prev,
@@ -135,11 +178,26 @@ export function useGameState(locale: string) {
   // Give up
   const giveUp = useCallback(() => {
     console.log('Giving up');
-    setGameState(prev => ({
-      ...prev,
-      isGameOver: true,
-      isWon: false
-    }));
+    setGameState(prev => {
+      const newState = {
+        ...prev,
+        isGameOver: true,
+        isWon: false
+      };
+
+      // Save progress when giving up
+      if (prev.targetPokemon) {
+        saveGameProgress({
+          targetPokemon: prev.targetPokemon,
+          guesses: prev.guesses,
+          selectedGenerations: prev.settings.selectedGenerations,
+          isGameOver: true,
+          isWon: false
+        });
+      }
+
+      return newState;
+    });
   }, []);
 
   // Check if Pokemon name exists (support both original and translated names)
