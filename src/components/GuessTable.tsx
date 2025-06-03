@@ -79,6 +79,7 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
                 <Image
                   src={guess.profile || '/images/pokemon-placeholder.png'}
                   alt={translateText(guess.name, locale)}
+                  title={translateText(guess.name, locale)}
                   fill
                   className="object-contain"
                   sizes="64px"
@@ -233,6 +234,7 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
                 <Image
                   src={guess.profile || '/images/pokemon-placeholder.png'}
                   alt={translateText(guess.name, locale)}
+                  title={translateText(guess.name, locale)}
                   fill
                   className="object-contain"
                   sizes="(max-width: 640px) 64px, 80px"
