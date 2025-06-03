@@ -337,6 +337,35 @@ describe('pokemon.ts', () => {
       expect(getWikiUrl('카푸꼬꼬꼭', 'ko')).toBe('');
     });
 
+    it('should generate correct wiki URLs for Shaymin (Sky Forme) in all languages', () => {
+      // English
+      expect(getWikiUrl('Shaymin (Sky Forme)', 'en')).toBe('https://bulbapedia.bulbagarden.net/wiki/Shaymin');
+      
+      // Japanese
+      expect(getWikiUrl('シェイミ (スカイフォルム)', 'ja')).toBe('https://wiki.ポケモン.com/wiki/シェイミ');
+      
+      // Spanish
+      expect(getWikiUrl('Shaymin (Forma Cielo)', 'es')).toBe('https://www.wikidex.net/wiki/Shaymin');
+      
+      // German
+      expect(getWikiUrl('Shaymin (Zenitform)', 'de')).toBe('https://www.pokewiki.de/Shaymin');
+      
+      // Italian
+      expect(getWikiUrl('Shaymin (Forma Cielo)', 'it')).toBe('https://wiki.pokemoncentral.it/Shaymin');
+      
+      // French
+      expect(getWikiUrl('Shaymin (Forme Céleste)', 'fr')).toBe('https://www.pokepedia.fr/Shaymin');
+      
+      // Chinese Traditional
+      expect(getWikiUrl('謝米 (天空形態)', 'zh-hant')).toBe('https://wiki.52poke.com/zh-hant/謝米');
+      
+      // Chinese Simplified
+      expect(getWikiUrl('谢米 (天空形态)', 'zh-hans')).toBe('https://wiki.52poke.com/zh-hans/谢米');
+      
+      // Korean (no wiki available)
+      expect(getWikiUrl('쉐이미 (스카이폼)', 'ko')).toBe('');
+    });
+
     it('should handle names with spaces and special characters', () => {
       // Test space replacement for English
       expect(getWikiUrl('Mr. Mime', 'en')).toBe('https://bulbapedia.bulbagarden.net/wiki/Mr._Mime');

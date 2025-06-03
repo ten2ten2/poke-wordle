@@ -203,6 +203,9 @@ export function getRandomPranksterImage(): string {
 }
 
 export function getWikiUrl(name: string, locale: string = 'en'): string {
+  // Remove parentheses and content within them from the name
+  name = name.replace(/\s*\([^)]*\)/g, '');
+
   switch (locale) {
     case "en":
       name = name.replace(/ /g, "_")
