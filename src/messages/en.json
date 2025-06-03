@@ -161,7 +161,7 @@
     "item-stone-sun": "Use Sun Stone"
   },
   "tags": {
-    "starter": "Starter",
+    "starter": "First Partner",
     "legendary": "Legendary",
     "mythical": "Mythical",
     "fossil": "Fossil",
@@ -170,7 +170,7 @@
     "has-gmax": "Has Gigantamax",
     "ultra": "Ultra Beast",
     "paradox": "Paradox Pokémon",
-    "late": "Late Bloomer Pokémon"
+    "late": "Late Bloomer"
   },
   "privacyAndTerms": {
     "title": "Privacy Policy & Terms of Service",

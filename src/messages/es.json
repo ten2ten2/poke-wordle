@@ -161,7 +161,7 @@
     "unique": "Método de evolución especial"
   },
   "tags": {
-    "starter": "Inicial",
+    "starter": "Pokémon inicial",
     "legendary": "Legendario",
     "mythical": "Mítico",
     "fossil": "Fósil",
@@ -170,7 +170,7 @@
     "has-gmax": "Tiene Gigantamax",
     "ultra": "Ultraente",
     "paradox": "Pokémon Paradoja",
-    "late": "Pokémon de Florecimiento Tardío"
+    "late": "Late Bloomer"
   },
   "privacyAndTerms": {
     "title": "Política de Privacidad y Términos de Servicio",

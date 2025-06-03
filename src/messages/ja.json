@@ -161,7 +161,7 @@
     "unique": "特殊な進化方法"
   },
   "tags": {
-    "starter": "御三家",
+    "starter": "最初のパートナー",
     "legendary": "伝説のポケモン",
     "mythical": "幻のポケモン",
     "fossil": "化石ポケモン",
@@ -170,7 +170,7 @@
     "has-gmax": "キョダイマックスあり",
     "ultra": "ウルトラビースト",
     "paradox": "パラドックスポケモン",
-    "late": "大器晩成ポケモン"
+    "late": "大器晩成なポケモン"
   },
   "privacyAndTerms": {
     "title": "プライバシーポリシーと利用規約",

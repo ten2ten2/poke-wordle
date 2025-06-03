@@ -161,16 +161,16 @@
     "unique": "Metodo di evoluzione speciale"
   },
   "tags": {
-    "starter": "Starter",
+    "starter": "Pokémon iniziale",
     "legendary": "Leggendario",
     "mythical": "Mitico",
-    "fossil": "Fossile",
+    "fossil": "Fossili",
     "regional": "Forma Regionale",
     "has-mega": "Ha Mega Evoluzione",
     "has-gmax": "Ha Gigantamax",
     "ultra": "Ultracreatura",
     "paradox": "Pokémon Paradosso",
-    "late": "Pokémon a Fioritura Tardiva"
+    "late": "Late Bloomer"
   },
   "privacyAndTerms": {
     "title": "Informativa sulla Privacy e Termini di Servizio",
