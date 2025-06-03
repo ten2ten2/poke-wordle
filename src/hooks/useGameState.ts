@@ -79,7 +79,7 @@ export function useGameState(locale: string) {
       }
       restoredRef.current = true;
     }
-  }, [availablePokemon.length]);
+  }, [availablePokemon, gameState.settings.selectedGenerations, gameState.targetPokemon]);
 
   // Start new game
   const startNewGame = useCallback(() => {

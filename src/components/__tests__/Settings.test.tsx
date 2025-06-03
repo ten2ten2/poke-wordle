@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Settings from '../Settings';
 import { GameSettings } from '@/types/pokemon';
@@ -504,8 +504,6 @@ describe('Settings', () => {
 
   describe('Edge Cases', () => {
     test('handles empty generation selection', async () => {
-      const user = userEvent.setup();
-      
       // Start with a props that already has empty selection to avoid the disabled save button
       const propsWithEmptySelection = {
         ...defaultProps,

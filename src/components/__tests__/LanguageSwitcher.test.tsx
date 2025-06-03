@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 // Mock modules with direct object approach
@@ -33,7 +33,7 @@ jest.mock('../../lib/storage', () => ({
 import LanguageSwitcher from '../LanguageSwitcher';
 
 // Get the mocked functions for use in tests
-const { useTranslations, useLocale } = jest.requireMock('next-intl');
+const { useLocale } = jest.requireMock('next-intl');
 const { useRouter, usePathname } = jest.requireMock('next/navigation');
 const { savePreferredLocale } = jest.requireMock('../../lib/storage');
 

@@ -15,7 +15,7 @@ describe('Data Integrity Tests', () => {
       expect(Array.isArray(pokemon)).toBe(true);
       expect(pokemon.length).toBeGreaterThan(0);
       
-      pokemon.forEach((p, index) => {
+      pokemon.forEach((p) => {
         expect(p).toHaveProperty('id');
         expect(p).toHaveProperty('name');
         expect(p).toHaveProperty('generation');
@@ -149,7 +149,7 @@ describe('Data Integrity Tests', () => {
       });
 
       // Each generation should have at least some Pokemon
-      generationCounts.forEach((count, gen) => {
+      generationCounts.forEach((count) => {
         expect(count).toBeGreaterThan(0);
       });
     });

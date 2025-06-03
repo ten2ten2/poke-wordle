@@ -2,8 +2,9 @@
  * @jest-environment jsdom
  */
 
+import '@testing-library/jest-dom';
 import React from 'react';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Navbar from '../Navbar';
 import { GameSettings } from '@/types/pokemon';
@@ -12,15 +13,14 @@ import { GameSettings } from '@/types/pokemon';
 jest.mock('next-intl', () => ({
   useTranslations: jest.fn(() => (key: string) => {
     const translations: Record<string, string> = {
+      'navbar.about': 'About',
       'navbar.settings': 'Settings',
       'navbar.language': 'Language',
-      'navbar.about': 'About',
-      'navbar.title': 'Pokemon Wordle',
       'navbar.main_navigation': 'Main navigation',
-      'title': 'Pokemon Wordle',
-      'about.title': 'About Pokemon Wordle',
-      'about.description': 'Guess the Pokemon based on its stats!',
-      'about.close': 'Close'
+      'common.close': 'Close',
+      'common.pokemon': 'Pokemon',
+      'common.wordle': 'Wordle',
+      'title': 'Pokemon Wordle'
     };
     return translations[key] || key;
   }),
@@ -28,8 +28,25 @@ jest.mock('next-intl', () => ({
 }));
 
 // Mock child components
+interface MockSettingsProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSettingsChange: (settings: GameSettings) => void;
+  currentSettings: GameSettings;
+}
+
+interface MockLanguageSwitcherProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+interface MockAboutProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
 jest.mock('../Settings', () => {
-  return function MockSettings({ isOpen, onClose, onSettingsChange, currentSettings }: any) {
+  return function MockSettings({ isOpen, onClose, onSettingsChange, currentSettings }: MockSettingsProps) {
     return isOpen ? (
       <div data-testid="settings-modal">
         <button onClick={onClose}>Close Settings</button>
@@ -40,7 +57,7 @@ jest.mock('../Settings', () => {
 });
 
 jest.mock('../LanguageSwitcher', () => {
-  return function MockLanguageSwitcher({ isOpen, onClose }: any) {
+  return function MockLanguageSwitcher({ isOpen, onClose }: MockLanguageSwitcherProps) {
     return isOpen ? (
       <div data-testid="language-modal">
         <button onClick={onClose}>Close Language</button>
@@ -50,7 +67,7 @@ jest.mock('../LanguageSwitcher', () => {
 });
 
 jest.mock('../About', () => {
-  return function MockAbout({ isOpen, onClose }: any) {
+  return function MockAbout({ isOpen, onClose }: MockAboutProps) {
     return isOpen ? (
       <div data-testid="about-modal">
         <button onClick={onClose}>Close About</button>
