@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { Pokemon, GameState, GameSettings, GuessResult } from '@/types/pokemon';
 import { loadPokemonData, filterPokemonByGenerations, getRandomPokemon, translatePokemon } from '@/lib/pokemon';
 import { saveGameSettings, loadGameSettings, saveGameProgress, loadGameProgress, clearGameProgress } from '@/lib/storage';
@@ -30,15 +30,13 @@ export function useGameState(locale: string) {
   // 简单标记，避免重复恢复
   const restoredRef = useRef(false);
 
-  // Update Pokemon names when locale changes
-  useEffect(() => {
-    const translatedNames = availablePokemon.map(p => translatePokemon(p, locale).name);
-    setPokemonNames(translatedNames);
-  }, [locale, availablePokemon]);
+  // Memoize filtered Pokemon data to avoid recalculation
+  const filteredPokemon = useMemo(() => {
+    return filterPokemonByGenerations(loadPokemonData(), gameState.settings.selectedGenerations);
+  }, [gameState.settings.selectedGenerations]);
 
-  // Filter Pokemon when selectedGenerations change
+  // Update available Pokemon when filtered data changes
   useEffect(() => {
-    const filteredPokemon = filterPokemonByGenerations(loadPokemonData(), gameState.settings.selectedGenerations);
     setAvailablePokemon(filteredPokemon);
 
     // If there's an active game and the current target Pokemon is no longer available,
@@ -57,7 +55,17 @@ export function useGameState(locale: string) {
         }));
       }
     }
-  }, [gameState.settings.selectedGenerations, gameState.targetPokemon]);
+  }, [filteredPokemon, gameState.targetPokemon]);
+
+  // Memoize translated Pokemon names to avoid recalculation
+  const translatedPokemonNames = useMemo(() => {
+    return availablePokemon.map(p => translatePokemon(p, locale).name);
+  }, [availablePokemon, locale]);
+
+  // Update Pokemon names when translated names change
+  useEffect(() => {
+    setPokemonNames(translatedPokemonNames);
+  }, [translatedPokemonNames]);
 
   // 尝试恢复进度（仅在初始化时）
   useEffect(() => {

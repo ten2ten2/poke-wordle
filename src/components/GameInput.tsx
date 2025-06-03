@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 
 interface GameInputProps {
@@ -26,29 +26,38 @@ export default function GameInput({
 }: GameInputProps) {
   const t = useTranslations();
   const [input, setInput] = useState('');
-  const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [shouldShowSuggestions, setShouldShowSuggestions] = useState(false);
+  const [debouncedInput, setDebouncedInput] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Debounce input changes
   useEffect(() => {
-    if (input.length > 0 && shouldShowSuggestions) {
-      const filtered = pokemonNames
-        .filter(name => name.toLowerCase().indexOf(input.toLowerCase()) !== -1)
-      setSuggestions(filtered);
-      setShowSuggestions(filtered.length > 0);
-    } else if (!shouldShowSuggestions) {
-      setSuggestions([]);
-      setShowSuggestions(false);
-    } else {
-      setSuggestions([]);
-      setShowSuggestions(false);
-    }
-    setSelectedIndex(-1);
-  }, [input, pokemonNames, shouldShowSuggestions]);
+    const timer = setTimeout(() => {
+      setDebouncedInput(input);
+    }, 150);
 
-  const handleSubmit = (name?: string) => {
+    return () => clearTimeout(timer);
+  }, [input]);
+
+  // Memoize filtered suggestions to avoid recalculation on every render
+  const suggestions = useMemo(() => {
+    if (debouncedInput.length === 0 || !shouldShowSuggestions) {
+      return [];
+    }
+    
+    const lowercaseInput = debouncedInput.toLowerCase();
+    return pokemonNames
+      .filter(name => name.toLowerCase().includes(lowercaseInput))
+  }, [debouncedInput, pokemonNames, shouldShowSuggestions]);
+
+  useEffect(() => {
+    setShowSuggestions(suggestions.length > 0 && shouldShowSuggestions);
+    setSelectedIndex(-1);
+  }, [suggestions, shouldShowSuggestions]);
+
+  const handleSubmit = useCallback((name?: string) => {
     if (gameOver) return;
     
     const submittedName = name || input;
@@ -58,51 +67,67 @@ export default function GameInput({
       setShowSuggestions(false);
       setSelectedIndex(-1);
     }
-  };
+  }, [gameOver, input, onSubmit]);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (gameOver) return;
-    
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      setSelectedIndex(prev => 
-        prev < suggestions.length - 1 ? prev + 1 : prev
-      );
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      setSelectedIndex(prev => prev > 0 ? prev - 1 : -1);
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      if (selectedIndex >= 0) {
-        setInput(suggestions[selectedIndex]);
-        setShouldShowSuggestions(false);
-        setShowSuggestions(false);
-        setSelectedIndex(-1);
-        setSuggestions([]);
-      } else {
-        handleSubmit();
-      }
-    } else if (e.key === 'Escape') {
-      setShowSuggestions(false);
-      setSelectedIndex(-1);
-    }
-  };
+  const handleInputChange = useCallback((value: string) => {
+    setInput(value);
+    setShouldShowSuggestions(value.length > 0);
+  }, []);
 
-  const handleSuggestionClick = (suggestion: string) => {
+  const handleSuggestionClick = useCallback((suggestion: string) => {
     if (gameOver) return;
     
     setInput(suggestion);
     setShouldShowSuggestions(false);
     setShowSuggestions(false);
     setSelectedIndex(-1);
-    setSuggestions([]);
     inputRef.current?.focus();
-  };
+  }, [gameOver]);
 
-  const handleInputChange = (value: string) => {
-    setInput(value);
-    setShouldShowSuggestions(true);
-  };
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (selectedIndex >= 0 && suggestions[selectedIndex]) {
+        setInput(suggestions[selectedIndex]);
+        setShouldShowSuggestions(false);
+        setShowSuggestions(false);
+        setSelectedIndex(-1);
+      } else {
+        handleSubmit();
+      }
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedIndex(prev => Math.min(prev + 1, suggestions.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedIndex(prev => Math.max(prev - 1, -1));
+    } else if (e.key === 'Escape') {
+      setShowSuggestions(false);
+      setShouldShowSuggestions(false);
+      setSelectedIndex(-1);
+    }
+  }, [selectedIndex, suggestions, handleSubmit]);
+
+  const handleRandomStart = useCallback(() => {
+    onRandomStart();
+    setInput('');
+    setShowSuggestions(false);
+    setSelectedIndex(-1);
+  }, [onRandomStart]);
+
+  const handleGiveUp = useCallback(() => {
+    onGiveUp();
+    setInput('');
+    setShowSuggestions(false);
+    setSelectedIndex(-1);
+  }, [onGiveUp]);
+
+  const handleRestart = useCallback(() => {
+    onRestart();
+    setInput('');
+    setShowSuggestions(false);
+    setSelectedIndex(-1);
+  }, [onRestart]);
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -125,7 +150,6 @@ export default function GameInput({
                 // Delay hiding to allow click events on suggestions
                 setTimeout(() => {
                   setShowSuggestions(false);
-                  setSuggestions([]);
                 }, 150);
               }}
               placeholder={t('game.inputPlaceholder')}
@@ -175,7 +199,7 @@ export default function GameInput({
       <div className="flex flex-wrap gap-3 sm:gap-4 justify-center">
         {!gameStarted && (
           <button
-            onClick={onRandomStart}
+            onClick={handleRandomStart}
             disabled={disabled || gameOver}
             className="btn-success flex-1 sm:flex-none min-w-[140px]"
           >
@@ -185,7 +209,7 @@ export default function GameInput({
         
         {gameStarted && !gameOver && (
           <button
-            onClick={onGiveUp}
+            onClick={handleGiveUp}
             disabled={disabled}
             className="btn-danger flex-1 sm:flex-none min-w-[100px]"
           >
@@ -194,7 +218,7 @@ export default function GameInput({
         )}
         
         <button
-          onClick={onRestart}
+          onClick={handleRestart}
           disabled={disabled}
           className="btn-secondary flex-1 sm:flex-none min-w-[100px]"
         >

@@ -5,12 +5,13 @@ import { GuessResult } from '@/types/pokemon';
 import { translateText } from '@/lib/pokemon';
 import Image from 'next/image';
 import clsx from 'clsx';
+import { memo } from 'react';
 
 interface GuessTableProps {
   guesses: GuessResult[];
 }
 
-export default function GuessTable({ guesses }: GuessTableProps) {
+const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
   const t = useTranslations();
   const locale = useLocale();
   
@@ -51,6 +52,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
               height={64}
               className="h-full w-full object-contain"
               sizes="(max-width: 640px) 48px, 64px"
+              loading="lazy"
               unoptimized={true}
             />
           </div>
@@ -68,7 +70,7 @@ export default function GuessTable({ guesses }: GuessTableProps) {
   return (
     <div className="space-y-4 sm:space-y-6">
       {guesses.map((guess, index) => (
-        <div key={index} className="guess-table-card">
+        <div key={`${guess.name}-${index}`} className="guess-table-card">
           {/* Mobile Layout */}
           <div className="block sm:hidden">
             {/* Pokemon Profile */}
@@ -80,7 +82,8 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                   fill
                   className="object-contain"
                   sizes="64px"
-                  priority={index < 3}
+                  priority={index < 2}
+                  loading={index < 2 ? 'eager' : 'lazy'}
                 />
               </div>
               <h3 className="text-lg font-semibold text-gray-900">
@@ -233,7 +236,8 @@ export default function GuessTable({ guesses }: GuessTableProps) {
                   fill
                   className="object-contain"
                   sizes="(max-width: 640px) 64px, 80px"
-                  priority={index < 3}
+                  priority={index < 2}
+                  loading={index < 2 ? 'eager' : 'lazy'}
                 />
               </div>
               <h3 className="text-xs sm:text-sm font-medium text-gray-900 leading-tight break-words">
@@ -392,4 +396,6 @@ export default function GuessTable({ guesses }: GuessTableProps) {
       ))}
     </div>
   );
-} 
+});
+
+export default GuessTable; 
