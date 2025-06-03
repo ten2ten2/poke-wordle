@@ -2,26 +2,60 @@
  * @jest-environment jsdom
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @next/next/no-img-element */
+
 import React from 'react';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+// Define proper types for mock components
+interface MockProps {
+  children?: React.ReactNode;
+  as?: any; // Keep as any for flexibility in mock components
+  [key: string]: any;
+}
+
+interface DialogProps extends MockProps {
+  onClose?: () => void;
+}
+
+interface TransitionProps extends MockProps {
+  show?: boolean;
+}
+
+interface IconProps {
+  className?: string;
+  'aria-hidden'?: boolean;
+  [key: string]: any;
+}
+
+interface ImageProps {
+  src: string;
+  alt: string;
+  fill?: boolean;
+  className?: string;
+  sizes?: string;
+  priority?: boolean;
+  [key: string]: any;
+}
 
 // Mock Headless UI components to avoid animation warnings
 jest.mock('@headlessui/react', () => ({
-  Dialog: ({ children, as = 'div', onClose, ...props }: any) => 
+  Dialog: ({ children, as = 'div', onClose, ...props }: DialogProps) => 
     React.createElement(as, { role: 'dialog', onClose, ...props }, children),
-  DialogPanel: ({ children, as = 'div', ...props }: any) => 
+  DialogPanel: ({ children, as = 'div', ...props }: MockProps) => 
     React.createElement(as, { ...props }, children),
-  DialogTitle: ({ children, as = 'h2', ...props }: any) => 
+  DialogTitle: ({ children, as = 'h2', ...props }: MockProps) => 
     React.createElement(as, { ...props }, children),
-  Transition: ({ show, appear, children, as = 'div', ...props }: any) => {
-    if (as === React.Fragment || as === 'Fragment') {
+  Transition: ({ show, children, as = 'div', ...props }: TransitionProps) => {
+    if (as === React.Fragment || as === 'Fragment' || as === 'react.fragment') {
       return show ? children : null;
     }
     return show ? React.createElement(as, { ...props }, children) : null;
   },
-  TransitionChild: ({ children, as = 'div', ...props }: any) => {
-    if (as === React.Fragment || as === 'Fragment') {
+  TransitionChild: ({ children, as = 'div', ...props }: MockProps) => {
+    if (as === React.Fragment || as === 'Fragment' || as === 'react.fragment') {
       return children;
     }
     return React.createElement(as, { ...props }, children);
@@ -31,12 +65,12 @@ jest.mock('@headlessui/react', () => ({
 
 // Mock Heroicons
 jest.mock('@heroicons/react/24/outline', () => ({
-  XMarkIcon: (props: any) => <svg {...props} data-testid="x-mark-icon" />,
+  XMarkIcon: (props: IconProps) => <svg {...props} data-testid="x-mark-icon" />,
 }));
 
 // Mock Next.js Image component
 jest.mock('next/image', () => {
-  return function MockImage({ src, alt, ...props }: any) {
+  return function MockImage({ src, alt, ...props }: ImageProps) {
     return <img src={src} alt={alt} {...props} />;
   };
 });
@@ -69,7 +103,7 @@ jest.mock('next-intl', () => ({
 // Mock translateText function
 jest.mock('../../lib/pokemon', () => ({
   translateText: jest.fn((text) => text),
-  getWikiUrl: jest.fn((name, locale) => `https://example.com/wiki/${name}`)
+  getWikiUrl: jest.fn((name) => `https://example.com/wiki/${name}`)
 }));
 
 // Now import components and types
