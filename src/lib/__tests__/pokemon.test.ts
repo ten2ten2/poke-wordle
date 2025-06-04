@@ -26,8 +26,7 @@ jest.mock('@/data/pokemon_data.json', () => [
     evolution_stage: 1,
     evolution_method: 'level',
     evolution_method_detail: '16',
-    tags: ['Starter', 'Quadruped'],
-    wiki_url: 'https://bulbapedia.bulbagarden.net/wiki/Bulbasaur'
+    tags: ['Starter', 'Quadruped']
   },
   {
     id: 2,
@@ -49,8 +48,7 @@ jest.mock('@/data/pokemon_data.json', () => [
     evolution_stage: 2,
     evolution_method: 'level',
     evolution_method_detail: '32',
-    tags: ['Quadruped'],
-    wiki_url: 'https://bulbapedia.bulbagarden.net/wiki/Ivysaur'
+    tags: ['Quadruped']
   },
   {
     id: 25,
@@ -72,8 +70,7 @@ jest.mock('@/data/pokemon_data.json', () => [
     evolution_stage: 1,
     evolution_method: 'item',
     evolution_method_detail: 'Thunder Stone',
-    tags: ['Bipedal', 'Mascot'],
-    wiki_url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu'
+    tags: ['Bipedal', 'Mascot']
   }
 ], { virtual: true });
 
@@ -115,8 +112,7 @@ const mockPokemon: Pokemon[] = [
     evolution_stage: 1,
     evolution_method: 'level',
     evolution_method_detail: '16',
-    tags: ['Starter', 'Quadruped'],
-    wiki_url: 'https://bulbapedia.bulbagarden.net/wiki/Bulbasaur'
+    tags: ['Starter', 'Quadruped']
   },
   {
     id: 2,
@@ -138,8 +134,7 @@ const mockPokemon: Pokemon[] = [
     evolution_stage: 2,
     evolution_method: 'level',
     evolution_method_detail: '32',
-    tags: ['Quadruped'],
-    wiki_url: 'https://bulbapedia.bulbagarden.net/wiki/Ivysaur'
+    tags: ['Quadruped']
   },
   {
     id: 25,
@@ -161,8 +156,7 @@ const mockPokemon: Pokemon[] = [
     evolution_stage: 1,
     evolution_method: 'item',
     evolution_method_detail: 'Thunder Stone',
-    tags: ['Bipedal', 'Mascot'],
-    wiki_url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu'
+    tags: ['Bipedal', 'Mascot']
   }
 ];
 

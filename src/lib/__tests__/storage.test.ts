@@ -31,8 +31,7 @@ const mockPokemon: Pokemon = {
   evolution_stage: 1,
   evolution_method: 'level',
   evolution_method_detail: '16',
-  tags: ['Starter', 'Quadruped'],
-  wiki_url: 'https://bulbapedia.bulbagarden.net/wiki/Bulbasaur'
+  tags: ['Starter', 'Quadruped']
 };
 
 const mockSettings: GameSettings = {

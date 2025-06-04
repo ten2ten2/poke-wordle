@@ -19,7 +19,6 @@ export interface Pokemon {
   evolution_method: string;
   evolution_method_detail: string;
   tags: string[];
-  wiki_url: string;
 }
 
 export type ComparisonStatus = 'exact' | 'close' | 'nope';

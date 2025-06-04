@@ -163,15 +163,6 @@ describe('Data Integrity Tests', () => {
         }
       });
     });
-
-    test('should have valid wiki URLs', () => {
-      pokemon.forEach(p => {
-        if (p.wiki_url) {
-          expect(typeof p.wiki_url).toBe('string');
-          expect(p.wiki_url).toMatch(/^https?:\/\//);
-        }
-      });
-    });
   });
 
   describe('Localization Coverage', () => {

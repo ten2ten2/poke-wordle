@@ -35,8 +35,7 @@ const mockPokemon = {
   evolution_stage: 1,
   evolution_method: 'level',
   evolution_method_detail: '16',
-  tags: ['Starter'],
-  wiki_url: 'https://example.com'
+  tags: ['Starter']
 };
 
 const mockGuessResult = {

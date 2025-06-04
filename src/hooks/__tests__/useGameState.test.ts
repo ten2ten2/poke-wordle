@@ -32,8 +32,7 @@ const mockPokemon: Pokemon[] = [
     evolution_stage: 1,
     evolution_method: 'level',
     evolution_method_detail: '16',
-    tags: ['Starter'],
-    wiki_url: 'https://example.com'
+    tags: ['Starter']
   },
   {
     id: 2,
@@ -48,8 +47,7 @@ const mockPokemon: Pokemon[] = [
     evolution_stage: 2,
     evolution_method: 'level',
     evolution_method_detail: '32',
-    tags: ['Quadruped'],
-    wiki_url: 'https://example.com'
+    tags: ['Quadruped']
   },
   {
     id: 25,
@@ -64,8 +62,7 @@ const mockPokemon: Pokemon[] = [
     evolution_stage: 1,
     evolution_method: 'item',
     evolution_method_detail: 'Thunder Stone',
-    tags: ['Bipedal'],
-    wiki_url: 'https://example.com'
+    tags: ['Bipedal']
   }
 ];
 

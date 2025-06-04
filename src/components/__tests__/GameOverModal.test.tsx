@@ -131,7 +131,6 @@ const mockPokemon: Pokemon = {
   evolution_method: 'level',
   evolution_method_detail: '16',
   tags: ['Starter', 'Quadruped'],
-  wiki_url: 'https://bulbapedia.bulbagarden.net/wiki/Bulbasaur'
 };
 
 const mockOnRestart = jest.fn();
