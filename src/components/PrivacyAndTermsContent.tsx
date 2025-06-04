@@ -3,7 +3,7 @@
 import { useTranslations, useLocale } from 'next-intl';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-import { ArrowLeftIcon, LanguageIcon } from '@heroicons/react/24/outline';
+import { LanguageIcon } from '@heroicons/react/24/outline';
 import { useState, useEffect } from 'react';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import Breadcrumb from '@/components/Breadcrumb';
