@@ -61,7 +61,9 @@
     "close": "關閉",
     "cancel": "取消",
     "save": "儲存",
-    "back": "返回"
+    "back": "返回",
+    "home": "首頁",
+    "breadcrumb": "麵包屑導航"
   },
   "about": {
     "title": "關於",

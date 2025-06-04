@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowLeftIcon, LanguageIcon } from '@heroicons/react/24/outline';
 import { useState, useEffect } from 'react';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export default function PrivacyAndTermsContent() {
   const t = useTranslations();
@@ -60,16 +61,16 @@ export default function PrivacyAndTermsContent() {
 
       <main className="flex-1 container-responsive section-padding">
         <div className="max-w-4xl mx-auto">
-          {/* Back to Home Link */}
+          {/* Breadcrumb */}
           <div className="mb-6">
-            <Link
-              href={homeHref}
-              title={t('common.back', { defaultValue: 'Back to Game' })}
-              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors duration-200"
-            >
-              <ArrowLeftIcon className="w-4 h-4" />
-              <span className="text-responsive-sm">{t('common.back', { defaultValue: 'Back to Game' })}</span>
-            </Link>
+            <Breadcrumb
+              items={[
+                {
+                  label: t('privacyAndTerms.title'),
+                  current: true
+                }
+              ]}
+            />
           </div>
 
           {/* Page Header */}

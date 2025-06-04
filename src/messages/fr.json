@@ -61,7 +61,9 @@
     "close": "Fermer",
     "cancel": "Annuler",
     "save": "Sauvegarder",
-    "back": "Retour"
+    "back": "Retour",
+    "home": "Accueil",
+    "breadcrumb": "Fil d'Ariane"
   },
   "about": {
     "title": "À propos",

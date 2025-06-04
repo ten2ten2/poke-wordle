@@ -61,7 +61,9 @@
     "close": "Schließen",
     "cancel": "Abbrechen",
     "save": "Speichern",
-    "back": "Zurück"
+    "back": "Zurück",
+    "home": "Startseite",
+    "breadcrumb": "Brotkrümel-Navigation"
   },
   "about": {
     "title": "Über",

@@ -61,7 +61,9 @@
     "close": "Close",
     "cancel": "Cancel",
     "save": "Save",
-    "back": "Back"
+    "back": "Back",
+    "home": "Home",
+    "breadcrumb": "Breadcrumb"
   },
   "about": {
     "title": "About",

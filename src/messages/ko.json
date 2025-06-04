@@ -61,7 +61,9 @@
     "close": "닫기",
     "cancel": "취소",
     "save": "저장",
-    "back": "뒤로"
+    "back": "뒤로",
+    "home": "홈",
+    "breadcrumb": "브레드크럼"
   },
   "about": {
     "title": "정보",

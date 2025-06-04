@@ -61,7 +61,9 @@
     "close": "閉じる",
     "cancel": "キャンセル",
     "save": "保存",
-    "back": "戻る"
+    "back": "戻る",
+    "home": "ホーム",
+    "breadcrumb": "パンくずリスト"
   },
   "about": {
     "title": "について",

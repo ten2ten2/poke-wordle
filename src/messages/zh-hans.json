@@ -61,7 +61,9 @@
     "close": "关闭",
     "cancel": "取消",
     "save": "保存",
-    "back": "返回"
+    "back": "返回",
+    "home": "首页",
+    "breadcrumb": "面包屑导航"
   },
   "about": {
     "title": "关于",

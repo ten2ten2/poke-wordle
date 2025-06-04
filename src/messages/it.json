@@ -61,7 +61,9 @@
     "close": "Chiudi",
     "cancel": "Annulla",
     "save": "Salva",
-    "back": "Indietro"
+    "back": "Indietro",
+    "home": "Home",
+    "breadcrumb": "Navigazione"
   },
   "about": {
     "title": "Informazioni",
