@@ -10,6 +10,7 @@ import { savePreferredLocale } from '@/lib/storage';
 interface LanguageSwitcherProps {
   isOpen: boolean;
   onClose: () => void;
+  availableLocales?: string[]; // Optional prop to filter available languages
 }
 
 const languages = [
@@ -24,11 +25,16 @@ const languages = [
   { code: 'es', name: 'Español' },
 ];
 
-export default function LanguageSwitcher({ isOpen, onClose }: LanguageSwitcherProps) {
+export default function LanguageSwitcher({ isOpen, onClose, availableLocales }: LanguageSwitcherProps) {
   const t = useTranslations();
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+
+  // Filter languages based on availableLocales prop, or show all if not provided
+  const filteredLanguages = availableLocales 
+    ? languages.filter(lang => availableLocales.includes(lang.code))
+    : languages;
 
   const handleLanguageChange = (newLocale: string) => {
     // Save the preferred locale to localStorage
@@ -123,7 +129,7 @@ export default function LanguageSwitcher({ isOpen, onClose }: LanguageSwitcherPr
                   </p>
                   <nav aria-label="Language selection">
                     <ul className="space-y-2" role="list">
-                      {languages.map((language) => (
+                      {filteredLanguages.map((language) => (
                         <li key={language.code}>
                           <button
                             type="button"

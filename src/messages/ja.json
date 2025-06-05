@@ -114,7 +114,13 @@
     "about": "について",
     "settings": "設定",
     "language": "言語",
+    "knowledge": "ナレッジ",
     "main_navigation": "メインナビゲーション"
+  },
+  "knowledge": {
+    "title": "ナレッジ",
+    "description": "あなたが興味を持つかもしれないポケモンの知識",
+    "comingSoon": "近日公開！より良いポケモン推測者になるための包括的なナレッジベースを構築中です。"
   },
   "footer": {
     "privacyAndTerms": "プライバシーと利用規約"

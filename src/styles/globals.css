@@ -38,23 +38,38 @@
     outline-offset: 2px;
   }
   
-  /* Custom scrollbar for webkit browsers */
-  ::-webkit-scrollbar {
+  /* Hide scrollbar by default, show only on hover/scroll */
+  * {
+    /* Firefox */
+    scrollbar-width: none;
+    /* IE and Edge */
+    -ms-overflow-style: none;
+  }
+  
+  /* Webkit browsers (Chrome, Safari, Edge) */
+  *::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+  }
+  
+  /* Show scrollbar on hover for better UX */
+  *:hover::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
   
-  ::-webkit-scrollbar-track {
+  *:hover::-webkit-scrollbar-track {
     background: theme('colors.gray.100');
     border-radius: 4px;
   }
   
-  ::-webkit-scrollbar-thumb {
+  *:hover::-webkit-scrollbar-thumb {
     background: theme('colors.gray.300');
     border-radius: 4px;
   }
   
-  ::-webkit-scrollbar-thumb:hover {
+  *:hover::-webkit-scrollbar-thumb:hover {
     background: theme('colors.gray.400');
   }
 }
@@ -151,9 +166,36 @@
   /* Responsive table styles */
   .table-responsive {
     @apply overflow-x-auto;
-    /* Custom scrollbar for mobile */
+    /* Hide scrollbar by default */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .table-responsive::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+  }
+  
+  /* Show scrollbar on hover for tables */
+  .table-responsive:hover {
     scrollbar-width: thin;
     scrollbar-color: theme('colors.gray.300') theme('colors.gray.100');
+  }
+  
+  .table-responsive:hover::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .table-responsive:hover::-webkit-scrollbar-track {
+    background: theme('colors.gray.100');
+    border-radius: 4px;
+  }
+  
+  .table-responsive:hover::-webkit-scrollbar-thumb {
+    background: theme('colors.gray.300');
+    border-radius: 4px;
   }
   
   .table-cell-responsive {

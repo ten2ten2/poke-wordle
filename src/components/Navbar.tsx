@@ -7,19 +7,34 @@ import Settings from './Settings';
 import LanguageSwitcher from './LanguageSwitcher';
 import { GameSettings } from '@/types/pokemon';
 import About from './About';
+import Link from 'next/link';
 
 interface NavbarProps {
-  onSettingsChange: (settings: GameSettings) => void;
-  currentSettings: GameSettings;
+  onSettingsChange?: (settings: GameSettings) => void;
+  currentSettings?: GameSettings;
+  showAbout?: boolean; // 是否显示 About 按钮
+  showSettings?: boolean; // 是否显示设置按钮
+  showLanguage?: boolean; // 是否显示语言按钮
+  availableLocales?: string[]; // 可用的语言列表
 }
 
-export default function Navbar({ onSettingsChange, currentSettings }: NavbarProps) {
+export default function Navbar({ 
+  onSettingsChange, 
+  currentSettings, 
+  showAbout = true, 
+  showSettings = true, 
+  showLanguage = true, 
+  availableLocales 
+}: NavbarProps) {
   const t = useTranslations();
   const locale = useLocale();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isClientSide, setIsClientSide] = useState(false);
+
+  // Generate the correct href for home page
+  const homeHref = locale === 'en' ? '/' : `/${locale}`;
 
   // Ensure we're on the client side to prevent hydration mismatch
   useEffect(() => {
@@ -63,74 +78,87 @@ export default function Navbar({ onSettingsChange, currentSettings }: NavbarProp
           <div className="flex justify-between items-center h-14 sm:h-16">
             {/* Logo/Title */}
             <div className="flex-shrink-0">
-              <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 truncate">
-                {t('title')}
-              </h1>
+              <Link href={homeHref} title={t('title')} className="hover:opacity-80 transition-opacity">
+                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 truncate">
+                  {t('title')}
+                </h1>
+              </Link>
             </div>
 
             {/* Navigation Actions */}
             <ul className="flex items-center space-x-2 sm:space-x-4" role="list">
               {/* About Button */}
-              <li>
-                <button
-                  onClick={() => setIsAboutOpen(true)}
-                  className="touch-target p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
-                  aria-label={t('navbar.about')}
-                  title={t('navbar.about')}
-                  type="button"
-                >
-                  <InformationCircleIcon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
-                </button>
-              </li>
+              {showAbout && (
+                <li>
+                  <button
+                    onClick={() => setIsAboutOpen(true)}
+                    className="touch-target p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
+                    aria-label={t('navbar.about')}
+                    title={t('navbar.about')}
+                    type="button"
+                  >
+                    <InformationCircleIcon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
+                  </button>
+                </li>
+              )}
 
               {/* Settings Button */}
-              <li>
-                <button
-                  onClick={() => setIsSettingsOpen(true)}
-                  className="touch-target p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
-                  aria-label={t('navbar.settings')}
-                  title={t('navbar.settings')}
-                  type="button"
-                >
-                  <Cog6ToothIcon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
-                </button>
-              </li>
+              {showSettings && (
+                <li>
+                  <button
+                    onClick={() => setIsSettingsOpen(true)}
+                    className="touch-target p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
+                    aria-label={t('navbar.settings')}
+                    title={t('navbar.settings')}
+                    type="button"
+                  >
+                    <Cog6ToothIcon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
+                  </button>
+                </li>
+              )}
 
               {/* Language Button */}
-              <li>
-                <button
-                  onClick={() => setIsLanguageOpen(true)}
-                  className="touch-target p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
-                  aria-label={t('navbar.language')}
-                  title={t('navbar.language')}
-                  type="button"
-                >
-                  <LanguageIcon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
-                </button>
-              </li>
+              {showLanguage && (
+                <li>
+                  <button
+                    onClick={() => setIsLanguageOpen(true)}
+                    className="touch-target p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
+                    aria-label={t('navbar.language')}
+                    title={t('navbar.language')}
+                    type="button"
+                  >
+                    <LanguageIcon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
         </nav>
       </header>
 
       {/* About Modal */}
-      <About
-        isOpen={isAboutOpen}
-        onClose={handleAboutClose}
-      />
+      {showAbout && (
+        <About
+          isOpen={isAboutOpen}
+          onClose={handleAboutClose}
+        />
+      )}
 
       {/* Settings Modal */}
-      <Settings
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-        onSettingsChange={onSettingsChange}
-        currentSettings={currentSettings}
-      />
+      {showSettings && onSettingsChange && currentSettings && (
+        <Settings
+          isOpen={isSettingsOpen}
+          onClose={() => setIsSettingsOpen(false)}
+          onSettingsChange={onSettingsChange}
+          currentSettings={currentSettings}
+        />
+      )}
 
       {/* Language Switcher Modal */}
       <LanguageSwitcher
         isOpen={isLanguageOpen}
         onClose={() => setIsLanguageOpen(false)}
+        availableLocales={availableLocales}
       />
 
     </>

@@ -114,7 +114,13 @@
     "about": "关于",
     "settings": "设置",
     "language": "语言",
+    "knowledge": "知识库",
     "main_navigation": "主导航"
+  },
+  "knowledge": {
+    "title": "知识库",
+    "description": "你可能感兴趣的宝可梦知识",
+    "comingSoon": "即将推出！我们正在构建一个全面的宝可梦知识库，帮助您成为更好的宝可梦猜测者。"
   },
   "footer": {
     "privacyAndTerms": "隐私与条款"

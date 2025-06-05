@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 
 const locales = ['en', 'ja', 'fr', 'de', 'it', 'es', 'ko', 'zh-hans', 'zh-hant'];
+const knowledgeLocales = ['en', 'ja', 'zh-hans', 'zh-hant'];
 const baseUrl = 'https://www.pokewordle.app';
 
 // Helper function to create language alternates
@@ -37,6 +38,27 @@ function createPrivacyAlternates(includeXDefault: boolean = false): Record<strin
     const langUrl = loc === 'en' 
       ? `${baseUrl}/privacy-and-terms` 
       : `${baseUrl}/${loc}/privacy-and-terms`;
+    alternates[langCode] = langUrl;
+  });
+  
+  return alternates;
+}
+
+// Helper function to create knowledge list page alternates
+function createKnowledgeAlternates(includeXDefault: boolean = false): Record<string, string> {
+  const alternates: Record<string, string> = {};
+  
+  // Add x-default for the main language (English) if requested
+  if (includeXDefault) {
+    alternates['x-default'] = `${baseUrl}/knowledge`;
+  }
+  
+  // Add all language alternates
+  knowledgeLocales.forEach(loc => {
+    const langCode = loc === 'zh-hans' ? 'zh-Hans' : loc === 'zh-hant' ? 'zh-Hant' : loc;
+    const langUrl = loc === 'en'
+      ? `${baseUrl}/knowledge` 
+      : `${baseUrl}/${loc}/knowledge`;
     alternates[langCode] = langUrl;
   });
   
@@ -82,6 +104,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     };
   });
 
+  // Generate knowledge archive page for all locales
+  const knowledgeEntries = knowledgeLocales.map((locale) => {
+    const knowledgeUrl = locale === 'en' 
+      ? `${baseUrl}/knowledge` 
+      : `${baseUrl}/${locale}/knowledge`;
+    const isMainLocale = locale === 'en';
+
+    return {
+      url: knowledgeUrl,
+      lastModified,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+      alternates: {
+        languages: createKnowledgeAlternates(isMainLocale)
+      }
+    };
+  });
+
   // Combine all entries with main pages first for better SEO
-  return [...localeEntries, ...privacyEntries];
+  return [...localeEntries, ...privacyEntries, ...knowledgeEntries];
 } 

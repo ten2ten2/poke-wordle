@@ -114,7 +114,13 @@
     "about": "關於",
     "settings": "設定",
     "language": "語言",
+    "knowledge": "知識庫",
     "main_navigation": "主導航"
+  },
+  "knowledge": {
+    "title": "知識庫",
+    "description": "你可能感興趣的寶可夢知識",
+    "comingSoon": "即將推出！我們正在構建一個全面的寶可夢知識庫，幫助您成為更好的寶可夢猜測者。"
   },
   "footer": {
     "privacyAndTerms": "隱私與條款"
