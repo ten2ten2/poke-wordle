@@ -28,6 +28,12 @@ jest.mock('next-intl', () => ({
   useLocale: jest.fn(() => 'en')
 }));
 
+// Mock the knowledge configuration
+jest.mock('@/config/knowledge', () => ({
+  isKnowledgeSupported: jest.fn((locale: string) => ['en', 'ja', 'zh-hans', 'zh-hant'].includes(locale)),
+  KNOWLEDGE_SUPPORTED_LOCALES: ['en', 'ja', 'zh-hans', 'zh-hant']
+}));
+
 // Mock Next.js Link component
 jest.mock('next/link', () => {
   return function MockLink({ children, href, ...props }: { 
@@ -185,6 +191,33 @@ describe('Navbar', () => {
   });
 
   describe('Conditional Rendering', () => {
+    test('shows knowledge button for supported locales', async () => {
+      await act(async () => {
+        render(<Navbar {...defaultProps} />);
+      });
+      
+      expect(screen.getByLabelText('Knowledge')).toBeInTheDocument();
+    });
+
+    test('hides knowledge button for unsupported locales', async () => {
+      const { useLocale } = jest.requireMock('next-intl');
+      const { isKnowledgeSupported } = jest.requireMock('@/config/knowledge');
+      
+      // Mock unsupported locale
+      useLocale.mockReturnValue('fr');
+      isKnowledgeSupported.mockReturnValue(false);
+      
+      await act(async () => {
+        render(<Navbar {...defaultProps} />);
+      });
+      
+      expect(screen.queryByLabelText('Knowledge')).not.toBeInTheDocument();
+      
+      // Reset mocks
+      useLocale.mockReturnValue('en');
+      isKnowledgeSupported.mockImplementation((locale: string) => ['en', 'ja', 'zh-hans', 'zh-hant'].includes(locale));
+    });
+
     test('hides about button when showAbout is false', async () => {
       await act(async () => {
         render(<Navbar {...defaultProps} showAbout={false} />);

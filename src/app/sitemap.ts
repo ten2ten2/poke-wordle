@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
+import { KNOWLEDGE_SUPPORTED_LOCALES } from '@/config/knowledge';
 
 const locales = ['en', 'ja', 'fr', 'de', 'it', 'es', 'ko', 'zh-hans', 'zh-hant'];
-const knowledgeLocales = ['en', 'ja', 'zh-hans', 'zh-hant'];
 const baseUrl = 'https://www.pokewordle.app';
 
 // Helper function to create language alternates
@@ -53,8 +53,8 @@ function createKnowledgeAlternates(includeXDefault: boolean = false): Record<str
     alternates['x-default'] = `${baseUrl}/knowledge`;
   }
   
-  // Add all language alternates
-  knowledgeLocales.forEach(loc => {
+  // Add language alternates only for supported locales
+  KNOWLEDGE_SUPPORTED_LOCALES.forEach(loc => {
     const langCode = loc === 'zh-hans' ? 'zh-Hans' : loc === 'zh-hant' ? 'zh-Hant' : loc;
     const langUrl = loc === 'en'
       ? `${baseUrl}/knowledge` 
@@ -104,8 +104,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     };
   });
 
-  // Generate knowledge archive page for all locales
-  const knowledgeEntries = knowledgeLocales.map((locale) => {
+  // Generate knowledge archive page only for supported locales
+  const knowledgeEntries = KNOWLEDGE_SUPPORTED_LOCALES.map((locale) => {
     const knowledgeUrl = locale === 'en' 
       ? `${baseUrl}/knowledge` 
       : `${baseUrl}/${locale}/knowledge`;

@@ -8,6 +8,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import { GameSettings } from '@/types/pokemon';
 import About from './About';
 import Link from 'next/link';
+import { isKnowledgeSupported } from '@/config/knowledge';
 
 interface NavbarProps {
   onSettingsChange?: (settings: GameSettings) => void;
@@ -31,9 +32,12 @@ export default function Navbar({
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isClientSide, setIsClientSide] = useState(false);
 
+  // Check if current locale supports Knowledge page
+  const showKnowledge = isKnowledgeSupported(locale);
+
   // Generate the correct href for home page
   const homeHref = locale === 'en' ? '/' : `/${locale}`;
-
+  
   // Generate the correct href for knowledge page
   const knowledgeHref = locale === 'en' ? '/knowledge' : `/${locale}/knowledge`;
 
@@ -88,17 +92,19 @@ export default function Navbar({
 
             {/* Navigation Actions */}
             <ul className="flex items-center space-x-2 sm:space-x-4" role="list">
-              {/* Knowledge Button */}
-              <li>
-                <Link
-                  href={knowledgeHref}
-                  className="touch-target p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
-                  aria-label={t('navbar.knowledge')}
-                  title={t('navbar.knowledge')}
-                >
-                  <BookOpenIcon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
-                </Link>
-              </li>
+              {/* Knowledge Button - only show if locale supports it */}
+              {showKnowledge && (
+                <li>
+                  <Link
+                    href={knowledgeHref}
+                    className="touch-target p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
+                    aria-label={t('navbar.knowledge')}
+                    title={t('navbar.knowledge')}
+                  >
+                    <BookOpenIcon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
+                  </Link>
+                </li>
+              )}
 
               {/* About Button */}
               {showAbout && (

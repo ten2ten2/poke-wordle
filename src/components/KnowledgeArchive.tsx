@@ -4,12 +4,10 @@ import { useTranslations } from 'next-intl';
 import Breadcrumb from '@/components/Breadcrumb';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import { KNOWLEDGE_SUPPORTED_LOCALES } from '@/config/knowledge';
 
 export default function KnowledgeArchive() {
   const t = useTranslations();
-  
-  // Knowledge page is only available in these languages
-  const knowledgeLocales = ['en', 'ja', 'zh-hans', 'zh-hant'];
   
   const breadcrumbItems = [
     {
@@ -24,7 +22,7 @@ export default function KnowledgeArchive() {
       <Navbar 
         showAbout={false}
         showSettings={false}
-        availableLocales={knowledgeLocales}
+        availableLocales={[...KNOWLEDGE_SUPPORTED_LOCALES]}
       />
       
       <main className="w-screen flex-1 container-responsive section-padding">

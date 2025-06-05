@@ -2,6 +2,22 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { Metadata } from 'next';
 import KnowledgeArchive from '@/components/KnowledgeArchive';
+import { KNOWLEDGE_SUPPORTED_LOCALES } from '@/config/knowledge';
+
+// Generate language alternates dynamically from supported locales
+const generateLanguageAlternates = (): Record<string, string> => {
+  const languages: Record<string, string> = {};
+  
+  KNOWLEDGE_SUPPORTED_LOCALES.forEach(locale => {
+    const langCode = locale === 'zh-hans' ? 'zh-Hans' : 
+                     locale === 'zh-hant' ? 'zh-Hant' : 
+                     locale;
+    const langUrl = locale === 'en' ? '/knowledge' : `/${locale}/knowledge`;
+    languages[langCode] = langUrl;
+  });
+  
+  return languages;
+};
 
 export const metadata: Metadata = {
   title: 'Knowledge Base - Poke Wordle',
@@ -36,12 +52,7 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: '/knowledge',
-    languages: {
-      'en': '/knowledge',
-      'ja': '/ja/knowledge',
-      'zh-Hans': '/zh-hans/knowledge',
-      'zh-Hant': '/zh-hant/knowledge',
-    },
+    languages: generateLanguageAlternates(),
   },
 };
 
