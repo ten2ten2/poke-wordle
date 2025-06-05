@@ -10,13 +10,8 @@ This directory should contain the following images for optimal SEO:
 - `apple-touch-icon.png` (180x180px) - Apple touch icon for iOS devices
 
 ### PWA Icons
-- `icon-72x72.png` (72x72px)
 - `icon-96x96.png` (96x96px)
-- `icon-128x128.png` (128x128px)
-- `icon-144x144.png` (144x144px)
-- `icon-152x152.png` (152x152px)
 - `icon-192x192.png` (192x192px)
-- `icon-384x384.png` (384x384px)
 - `icon-512x512.png` (512x512px)
 
 ### PWA Screenshots
