@@ -16,6 +16,7 @@ jest.mock('next-intl', () => ({
       'navbar.about': 'About',
       'navbar.settings': 'Settings',
       'navbar.language': 'Language',
+      'navbar.knowledge': 'Knowledge',
       'navbar.main_navigation': 'Main navigation',
       'common.close': 'Close',
       'common.pokemon': 'Pokemon',
@@ -26,6 +27,17 @@ jest.mock('next-intl', () => ({
   }),
   useLocale: jest.fn(() => 'en')
 }));
+
+// Mock Next.js Link component
+jest.mock('next/link', () => {
+  return function MockLink({ children, href, ...props }: any) {
+    return (
+      <a href={href} {...props}>
+        {children}
+      </a>
+    );
+  };
+});
 
 // Mock child components
 interface MockSettingsProps {
@@ -119,11 +131,12 @@ describe('Navbar', () => {
       expect(screen.getByRole('navigation')).toBeInTheDocument();
     });
 
-    test('renders all navigation buttons', async () => {
+    test('renders all navigation buttons by default', async () => {
       await act(async () => {
         render(<Navbar {...defaultProps} />);
       });
       
+      expect(screen.getByLabelText('Knowledge')).toBeInTheDocument();
       expect(screen.getByLabelText('About')).toBeInTheDocument();
       expect(screen.getByLabelText('Settings')).toBeInTheDocument();
       expect(screen.getByLabelText('Language')).toBeInTheDocument();
@@ -139,6 +152,48 @@ describe('Navbar', () => {
       
       const buttonList = screen.getByRole('list');
       expect(buttonList).toBeInTheDocument();
+    });
+
+    test('renders knowledge link with correct href for English locale', async () => {
+      await act(async () => {
+        render(<Navbar {...defaultProps} />);
+      });
+      
+      const knowledgeLink = screen.getByLabelText('Knowledge');
+      expect(knowledgeLink).toHaveAttribute('href', '/knowledge');
+    });
+
+    test('renders knowledge link with correct href for non-English locale', async () => {
+      const { useLocale } = require('next-intl');
+      useLocale.mockReturnValue('ja');
+      
+      await act(async () => {
+        render(<Navbar {...defaultProps} />);
+      });
+      
+      const knowledgeLink = screen.getByLabelText('Knowledge');
+      expect(knowledgeLink).toHaveAttribute('href', '/ja/knowledge');
+      
+      // Reset the mock back to 'en' for other tests
+      useLocale.mockReturnValue('en');
+    });
+  });
+
+  describe('Conditional Rendering', () => {
+    test('hides about button when showAbout is false', async () => {
+      await act(async () => {
+        render(<Navbar {...defaultProps} showAbout={false} />);
+      });
+      
+      expect(screen.queryByLabelText('About')).not.toBeInTheDocument();
+    });
+
+    test('hides settings button when showSettings is false', async () => {
+      await act(async () => {
+        render(<Navbar {...defaultProps} showSettings={false} />);
+      });
+      
+      expect(screen.queryByLabelText('Settings')).not.toBeInTheDocument();
     });
   });
 
@@ -294,9 +349,12 @@ describe('Navbar', () => {
         render(<Navbar {...defaultProps} />);
       });
       
+      const knowledgeLink = screen.getByLabelText('Knowledge');
       const aboutButton = screen.getByLabelText('About');
       const settingsButton = screen.getByLabelText('Settings');
       const languageButton = screen.getByLabelText('Language');
+      
+      expect(knowledgeLink).toHaveAttribute('title', 'Knowledge');
       
       expect(aboutButton).toHaveAttribute('type', 'button');
       expect(aboutButton).toHaveAttribute('title', 'About');
@@ -315,12 +373,28 @@ describe('Navbar', () => {
         render(<Navbar {...defaultProps} />);
       });
       
-      const aboutButton = screen.getByLabelText('About');
-      
+      // Tab to the first focusable element (home link)
       await act(async () => {
         await user.tab();
       });
       
+      const homeLink = screen.getByTitle('Pokemon Wordle');
+      expect(document.activeElement).toBe(homeLink);
+      
+      // Tab to the knowledge link
+      await act(async () => {
+        await user.tab();
+      });
+      
+      const knowledgeLink = screen.getByLabelText('Knowledge');
+      expect(document.activeElement).toBe(knowledgeLink);
+      
+      // Tab to the about button
+      await act(async () => {
+        await user.tab();
+      });
+      
+      const aboutButton = screen.getByLabelText('About');
       expect(document.activeElement).toBe(aboutButton);
       
       await act(async () => {

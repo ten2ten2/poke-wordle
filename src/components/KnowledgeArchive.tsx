@@ -1,13 +1,12 @@
 'use client';
 
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import Breadcrumb from '@/components/Breadcrumb';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 
 export default function KnowledgeArchive() {
   const t = useTranslations();
-  const locale = useLocale();
   
   // Knowledge page is only available in these languages
   const knowledgeLocales = ['en', 'ja', 'zh-hans', 'zh-hant'];
@@ -21,11 +20,10 @@ export default function KnowledgeArchive() {
 
   return (
     <div className="min-h-screen-safe bg-gray-50 flex flex-col safe-all">
-      {/* 使用自定义 Navbar - 只显示语言按钮 */}
+      {/* 使用自定义 Navbar */}
       <Navbar 
         showAbout={false}
         showSettings={false}
-        showLanguage={true}
         availableLocales={knowledgeLocales}
       />
       

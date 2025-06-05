@@ -22,7 +22,6 @@ export default function PrivacyAndTermsContent() {
       <Navbar 
         showAbout={false}
         showSettings={false}
-        showLanguage={true}
       />
 
       <main className="w-screen flex-1 container-responsive section-padding">

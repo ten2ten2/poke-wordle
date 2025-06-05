@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { Cog6ToothIcon, InformationCircleIcon, LanguageIcon } from '@heroicons/react/24/outline';
+import { Cog6ToothIcon, InformationCircleIcon, LanguageIcon, BookOpenIcon } from '@heroicons/react/24/outline';
 import Settings from './Settings';
 import LanguageSwitcher from './LanguageSwitcher';
 import { GameSettings } from '@/types/pokemon';
@@ -14,17 +14,15 @@ interface NavbarProps {
   currentSettings?: GameSettings;
   showAbout?: boolean; // 是否显示 About 按钮
   showSettings?: boolean; // 是否显示设置按钮
-  showLanguage?: boolean; // 是否显示语言按钮
   availableLocales?: string[]; // 可用的语言列表
 }
 
-export default function Navbar({ 
-  onSettingsChange, 
-  currentSettings, 
-  showAbout = true, 
-  showSettings = true, 
-  showLanguage = true, 
-  availableLocales 
+export default function Navbar({
+  onSettingsChange,
+  currentSettings,
+  showAbout = true,
+  showSettings = true,
+  availableLocales
 }: NavbarProps) {
   const t = useTranslations();
   const locale = useLocale();
@@ -36,6 +34,9 @@ export default function Navbar({
   // Generate the correct href for home page
   const homeHref = locale === 'en' ? '/' : `/${locale}`;
 
+  // Generate the correct href for knowledge page
+  const knowledgeHref = locale === 'en' ? '/knowledge' : `/${locale}/knowledge`;
+
   // Ensure we're on the client side to prevent hydration mismatch
   useEffect(() => {
     setIsClientSide(true);
@@ -44,7 +45,7 @@ export default function Navbar({
   // Check if this is a first-time user and show about modal - only after client-side hydration
   useEffect(() => {
     if (!isClientSide) return;
-    
+
     try {
       const hasSeenAbout = localStorage.getItem(`hasSeenAbout_${locale}`);
       if (!hasSeenAbout) {
@@ -60,7 +61,7 @@ export default function Navbar({
   // Handle closing about modal and mark as seen
   const handleAboutClose = () => {
     setIsAboutOpen(false);
-    
+
     // Only try to set localStorage on client side
     if (isClientSide) {
       try {
@@ -87,6 +88,18 @@ export default function Navbar({
 
             {/* Navigation Actions */}
             <ul className="flex items-center space-x-2 sm:space-x-4" role="list">
+              {/* Knowledge Button */}
+              <li>
+                <Link
+                  href={knowledgeHref}
+                  className="touch-target p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
+                  aria-label={t('navbar.knowledge')}
+                  title={t('navbar.knowledge')}
+                >
+                  <BookOpenIcon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
+                </Link>
+              </li>
+
               {/* About Button */}
               {showAbout && (
                 <li>
@@ -118,19 +131,17 @@ export default function Navbar({
               )}
 
               {/* Language Button */}
-              {showLanguage && (
-                <li>
-                  <button
-                    onClick={() => setIsLanguageOpen(true)}
-                    className="touch-target p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
-                    aria-label={t('navbar.language')}
-                    title={t('navbar.language')}
-                    type="button"
-                  >
-                    <LanguageIcon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
-                  </button>
-                </li>
-              )}
+              <li>
+                <button
+                  onClick={() => setIsLanguageOpen(true)}
+                  className="touch-target p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
+                  aria-label={t('navbar.language')}
+                  title={t('navbar.language')}
+                  type="button"
+                >
+                  <LanguageIcon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
+                </button>
+              </li>
             </ul>
           </div>
         </nav>
