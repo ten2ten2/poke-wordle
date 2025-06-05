@@ -30,7 +30,11 @@ jest.mock('next-intl', () => ({
 
 // Mock Next.js Link component
 jest.mock('next/link', () => {
-  return function MockLink({ children, href, ...props }: any) {
+  return function MockLink({ children, href, ...props }: { 
+    children: React.ReactNode; 
+    href: string; 
+    [key: string]: unknown;
+  }) {
     return (
       <a href={href} {...props}>
         {children}
@@ -164,7 +168,8 @@ describe('Navbar', () => {
     });
 
     test('renders knowledge link with correct href for non-English locale', async () => {
-      const { useLocale } = require('next-intl');
+      // Mock the useLocale hook to return 'ja'
+      const { useLocale } = jest.requireMock('next-intl');
       useLocale.mockReturnValue('ja');
       
       await act(async () => {
