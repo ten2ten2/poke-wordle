@@ -34,7 +34,7 @@
   
   /* Improve focus visibility */
   *:focus-visible {
-    outline: 2px solid theme('colors.blue.500');
+    outline: 2px solid theme('colors.red.400');
     outline-offset: 2px;
   }
   
@@ -115,7 +115,7 @@
   
   /* Responsive button styles */
   .btn-primary {
-    @apply px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed;
+    @apply px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed;
     @apply mobile:px-6 mobile:py-3 mobile:text-base;
     @apply transition-colors duration-200;
   }
@@ -140,7 +140,7 @@
   
   /* Responsive input styles */
   .input-primary {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed;
+    @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed;
     @apply mobile:px-4 mobile:py-3 mobile:text-base;
     @apply transition-colors duration-200;
   }
@@ -248,7 +248,7 @@
   
   /* Loading states */
   .loading-spinner {
-    @apply animate-spin rounded-full border-2 border-gray-300 border-t-blue-600;
+    @apply animate-spin rounded-full border-2 border-gray-300 border-t-red-500;
   }
   
   /* Touch-friendly interactive elements */
