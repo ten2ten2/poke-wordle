@@ -1,9 +1,19 @@
 import createNextIntlPlugin from 'next-intl/plugin';
+import createMDX from '@next/mdx';
+import remarkGfm from 'remark-gfm';
 
 const withNextIntl = createNextIntlPlugin();
 
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [],
+  },
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   redirects: async () => {
     return [
       {
@@ -107,4 +117,4 @@ const nextConfig = {
   },
 };
 
-export default withNextIntl(nextConfig); 
+export default withNextIntl(withMDX(nextConfig)); 

@@ -16,6 +16,7 @@
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
     "@mdx-js/loader": "^3.1.0",
+    "@mdx-js/mdx": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
     "@next/mdx": "^15.3.3",
     "@tailwindcss/typography": "^0.5.16",
@@ -27,7 +28,12 @@
     "next-intl": "^4.1.0",
     "react": "latest",
     "react-dom": "latest",
-    "remark-gfm": "^4.0.1"
+    "rehype-stringify": "^10.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-mdx": "^3.1.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
+    "unified": "^11.0.5"
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
