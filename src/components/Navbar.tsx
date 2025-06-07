@@ -97,7 +97,7 @@ export default function Navbar({
                 <li>
                   <Link
                     href={knowledgeHref}
-                    className="touch-target p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
+                    className="touch-target p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-300 transition-colors duration-200"
                     aria-label={t('navbar.knowledge')}
                     title={t('navbar.knowledge')}
                   >
@@ -111,7 +111,7 @@ export default function Navbar({
                 <li>
                   <button
                     onClick={() => setIsAboutOpen(true)}
-                    className="touch-target p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
+                    className="touch-target p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-300 transition-colors duration-200"
                     aria-label={t('navbar.about')}
                     title={t('navbar.about')}
                     type="button"

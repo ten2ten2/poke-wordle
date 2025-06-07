@@ -64,6 +64,7 @@ export default function LanguageSwitcher({ isOpen, onClose, availableLocales }: 
       }
       const newPath = `/${newLocale}${currentPath === '/' ? '' : currentPath}`;
       router.push(newPath);
+      }
     }
     
     onClose();
@@ -113,7 +114,7 @@ export default function LanguageSwitcher({ isOpen, onClose, availableLocales }: 
                   <button
                     type="button"
                     onClick={onClose}
-                    className="rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-300"
                     aria-label={t('common.close') || 'Close dialog'}
                   >
                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
@@ -136,7 +137,7 @@ export default function LanguageSwitcher({ isOpen, onClose, availableLocales }: 
                             onClick={() => handleLanguageChange(language.code)}
                             className={`w-full text-left px-4 py-2 rounded-md transition-colors ${
                               locale === language.code
-                                ? 'bg-blue-100 text-blue-900'
+                                ? 'bg-red-100 text-red-900'
                                 : 'hover:bg-gray-100 text-gray-700'
                             }`}
                             aria-current={locale === language.code ? 'true' : 'false'}

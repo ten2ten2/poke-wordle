@@ -1,0 +1,78 @@
+{
+    "en": [
+        {
+            "id": "k-en-1",
+            "slug": "late-bloomers-pokemon",
+            "title": "What are \"Late Bloomers\" Pokémon?",
+            "createdAt": "2025-06-06T00:03:12+08:00",
+            "translations": {
+                "zh-hans": {
+                    "slug": "大器晚成的宝可梦"
+                },
+                "zh-hant": {
+                    "slug": "大器晚成的寶可夢"
+                },
+                "ja": {
+                    "slug": "大器晩成なポケモン"
+                }
+            }
+        }
+    ],
+    "ja": [
+        {
+            "id": "k-ja-1",
+            "slug": "大器晩成なポケモン",
+            "title": "「大器晩成」なポケモンとは？",
+            "createdAt": "2025-06-06T00:03:12+08:00",
+            "translations": {
+                "zh-hans": {
+                    "slug": "大器晚成的宝可梦"
+                },
+                "zh-hant": {
+                    "slug": "大器晚成的寶可夢"
+                },
+                "en": {
+                    "slug": "late-bloomers-pokemon"
+                }
+            }
+        }
+    ],
+    "zh-hans": [
+        {
+            "id": "k-zh-hans-1",
+            "slug": "大器晚成的宝可梦",
+            "title": "什么是「大器晚成」的宝可梦？",
+            "createdAt": "2025-06-06T00:03:12+08:00",
+            "translations": {
+                "zh-hant": {
+                    "slug": "大器晚成的寶可夢"
+                },
+                "ja": {
+                    "slug": "大器晩成なポケモン"
+                },
+                "en": {
+                    "slug": "late-bloomers-pokemon"
+                }
+            }
+        }
+    ],
+    "zh-hant": [
+        {
+            "id": "k-zh-hant-1",
+            "slug": "大器晚成的寶可夢",
+            "title": "什麼是「大器晚成」的寶可夢？",
+            "createdAt": "2025-06-06T00:03:12+08:00",
+            "translations": {
+                "zh-hans": {
+                    "slug": "大器晚成的宝可梦"
+                },
+                "ja": {
+                    "slug": "大器晩成なポケモン"
+                },
+                "en": {
+                    "slug": "late-bloomers-pokemon"
+                }
+            }
+        }
+    ]
+}
