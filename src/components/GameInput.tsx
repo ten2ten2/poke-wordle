@@ -168,7 +168,7 @@ export default function GameInput({
                     key={suggestion}
                     onClick={() => handleSuggestionClick(suggestion)}
                     className={`w-full text-left px-4 py-3 sm:py-2 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none transition-colors duration-150 ${
-                      index === selectedIndex ? 'bg-blue-100' : ''
+                      index === selectedIndex ? 'bg-red-100' : ''
                     } ${index === 0 ? 'rounded-t-lg' : ''} ${index === suggestions.length - 1 ? 'rounded-b-lg' : ''}`}
                   >
                     <span className="text-responsive-sm">{suggestion}</span>
