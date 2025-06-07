@@ -246,7 +246,7 @@ export default function CookieConsent({ onAccept, onDecline }: CookieConsentProp
               <a 
                 href={privacyHref}
                 title={t.privacyAndTerms}
-                className="text-blue-600 hover:text-blue-800 underline ml-1"
+                className="text-red-400 hover:text-red-600 underline ml-1"
               >
                 {t.learnMore}
               </a>
@@ -262,7 +262,7 @@ export default function CookieConsent({ onAccept, onDecline }: CookieConsentProp
             </button>
             <button
               onClick={handleAccept}
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors"
+              className="px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-md transition-colors"
             >
               {t.accept}
             </button>

@@ -120,7 +120,9 @@
   "knowledge": {
     "title": "Knowledge",
     "description": "Pokémon knowledge that you might have interests in",
-    "comingSoon": "Coming soon! We're working on building a comprehensive knowledge base to help you become a better Pokémon guesser."
+    "comingSoon": "Coming soon! We're working on building a comprehensive knowledge base to help you become a better Pokémon guesser.",
+    "readMore": "Read More",
+    "readNext": "Read Next"
   },
   "footer": {
     "privacyAndTerms": "Privacy & Terms"

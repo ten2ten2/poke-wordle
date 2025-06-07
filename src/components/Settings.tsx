@@ -100,7 +100,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                     <nav aria-label={t('common.close')}>
                       <button
                         type="button"
-                        className="touch-target rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="touch-target rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-300"
                         onClick={handleCancel}
                         aria-label={t('common.close')}
                       >
@@ -122,7 +122,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                             type="button"
                             onClick={() => setLocalSettings(prev => ({ ...prev, guessOrder: 'reverse' }))}
                             className={`touch-target px-4 py-3 text-responsive-sm font-medium rounded-md border transition-colors duration-200 ${localSettings.guessOrder === 'reverse'
-                              ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
+                              ? 'bg-red-500 text-white border-red-500 shadow-sm'
                               : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
                               }`}
                           >
@@ -135,7 +135,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                             type="button"
                             onClick={() => setLocalSettings(prev => ({ ...prev, guessOrder: 'normal' }))}
                             className={`touch-target px-4 py-3 text-responsive-sm font-medium rounded-md border transition-colors duration-200 ${localSettings.guessOrder === 'normal'
-                              ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
+                              ? 'bg-red-500 text-white border-red-500 shadow-sm'
                               : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
                               }`}
                           >
@@ -159,7 +159,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                               type="button"
                               onClick={() => handleMaxGuessesChange(value)}
                               className={`touch-target px-2 py-2 text-responsive-sm font-medium rounded-md border transition-colors duration-200 ${localSettings.maxGuesses === value
-                                ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
+                                ? 'bg-red-500 text-white border-red-500 shadow-sm'
                                 : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
                                 }`}
                             >
@@ -179,7 +179,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                             <button
                               type="button"
                               onClick={handleSelectAllGenerations}
-                              className="text-xs text-blue-500 hover:text-blue-700 font-medium"
+                              className="text-sm text-red-500 hover:text-red-600 font-medium"
                             >
                               {t('settings.selectAll')}
                             </button>
@@ -187,7 +187,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                             <button
                               type="button"
                               onClick={handleDeselectAllGenerations}
-                              className="text-xs text-blue-500 hover:text-blue-700 font-medium"
+                              className="text-sm text-red-500 hover:text-red-600 font-medium"
                             >
                               {t('settings.deselectAll')}
                             </button>
@@ -200,7 +200,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                               type="button"
                               onClick={() => handleGenerationToggle(gen)}
                               className={`touch-target px-3 py-2 text-responsive-sm font-medium rounded-md border transition-colors duration-200 ${localSettings.selectedGenerations.includes(gen)
-                                ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
+                                ? 'bg-red-500 text-white border-red-500 shadow-sm'
                                 : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
                                 }`}
                             >
@@ -224,7 +224,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                               type="checkbox"
                               checked={localSettings.isGenArrow}
                               onChange={handleGenArrowToggle}
-                              className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
+                              className="h-4 w-4 accent-red-500 text-red-500 focus:ring-red-500 border-gray-300 rounded"
                             />
                           </div>
                           <div className="flex-1">
@@ -247,7 +247,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                               type="checkbox"
                               checked={localSettings.isPrankster}
                               onChange={handlePranksterToggle}
-                              className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
+                              className="h-4 w-4 accent-red-500 text-red-500 focus:ring-red-500 border-gray-300 rounded"
                             />
                           </div>
                           <div className="flex-1">
@@ -274,7 +274,9 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
                           type="button"
                           onClick={handleSave}
                           disabled={localSettings.selectedGenerations.length === 0}
-                          className="btn-primary w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="btn-primary w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed 
+                          bg-red-500 text-white border-red-500 shadow-sm
+                          hover:bg-red-600 hover:border-red-600"
                         >
                           {t('common.save')}
                         </button>

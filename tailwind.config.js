@@ -65,6 +65,7 @@ module.exports = {
     },
   },
   plugins: [
+    require('@tailwindcss/typography'),
     // Custom plugin for safe area support
     function({ addUtilities }) {
       addUtilities({

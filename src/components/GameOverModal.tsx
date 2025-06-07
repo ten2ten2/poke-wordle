@@ -264,7 +264,7 @@ export default function GameOverModal({
                     </DialogTitle>
                     <button
                       type="button"
-                      className="touch-target rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="touch-target rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-300"
                       onClick={onClose}
                       aria-label={t('common.close')}
                     >
@@ -434,7 +434,7 @@ export default function GameOverModal({
                     <button
                       type="button"
                       onClick={handleRestart}
-                      className="btn-primary flex-1"
+                      className="btn-primary flex-1 bg-red-500 text-white border-red-500 shadow-sm hover:bg-red-600 hover:border-red-600"
                     >
                       {t('game.playAgain')}
                     </button>
