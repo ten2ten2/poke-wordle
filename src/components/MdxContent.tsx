@@ -7,7 +7,7 @@ import { FAQ, Question, Answer } from '@/components/mdx/KnowledgeComponents';
 import JsonLd from '@/components/mdx/JsonLd';
 
 // Custom link component for external links
-function CustomLink({ href, children, ...props }: any) {
+function CustomLink({ href, children, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
   // Check if it's an external link
   const isExternal = href && (href.startsWith('http://') || href.startsWith('https://'));
   
