@@ -8,7 +8,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import { GameSettings } from '@/types/pokemon';
 import About from './About';
 import Link from 'next/link';
-import { isKnowledgeSupported } from '@/config/knowledge';
+import { isKnowledgeSupported, KnowledgeArticle } from '@/config/knowledge';
 
 interface NavbarProps {
   onSettingsChange?: (settings: GameSettings) => void;
@@ -16,6 +16,7 @@ interface NavbarProps {
   showAbout?: boolean; // 是否显示 About 按钮
   showSettings?: boolean; // 是否显示设置按钮
   availableLocales?: string[]; // 可用的语言列表
+  currentArticle?: KnowledgeArticle; // 当前知识文章（如果在文章页面）
 }
 
 export default function Navbar({
@@ -23,7 +24,8 @@ export default function Navbar({
   currentSettings,
   showAbout = true,
   showSettings = true,
-  availableLocales
+  availableLocales,
+  currentArticle
 }: NavbarProps) {
   const t = useTranslations();
   const locale = useLocale();
@@ -176,6 +178,7 @@ export default function Navbar({
         isOpen={isLanguageOpen}
         onClose={() => setIsLanguageOpen(false)}
         availableLocales={availableLocales}
+        currentArticle={currentArticle}
       />
 
     </>
