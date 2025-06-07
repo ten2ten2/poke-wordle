@@ -8,6 +8,27 @@ export const KNOWLEDGE_SUPPORTED_LOCALES = ['en', 'ja', 'zh-hans', 'zh-hant'] as
 // Type for supported knowledge locales
 export type KnowledgeSupportedLocale = typeof KNOWLEDGE_SUPPORTED_LOCALES[number];
 
+// Knowledge article interface
+export interface KnowledgeArticle {
+  id: string;
+  slug: string;
+  title: string;
+  createdAt: string;
+  translations?: {
+    [locale: string]: {
+      slug: string;
+    };
+  };
+}
+
+// Knowledge data structure
+export interface KnowledgeData {
+  en: KnowledgeArticle[];
+  ja: KnowledgeArticle[];
+  'zh-hans': KnowledgeArticle[];
+  'zh-hant': KnowledgeArticle[];
+}
+
 /**
  * Check if a locale supports the Knowledge page
  */

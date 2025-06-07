@@ -6,11 +6,13 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
 import { savePreferredLocale } from '@/lib/storage';
+import { KnowledgeArticle } from '@/config/knowledge';
 
 interface LanguageSwitcherProps {
   isOpen: boolean;
   onClose: () => void;
   availableLocales?: string[]; // Optional prop to filter available languages
+  currentArticle?: KnowledgeArticle; // Current knowledge article if on article page
 }
 
 const languages = [
@@ -25,7 +27,7 @@ const languages = [
   { code: 'es', name: 'Español' },
 ];
 
-export default function LanguageSwitcher({ isOpen, onClose, availableLocales }: LanguageSwitcherProps) {
+export default function LanguageSwitcher({ isOpen, onClose, availableLocales, currentArticle }: LanguageSwitcherProps) {
   const t = useTranslations();
   const locale = useLocale();
   const router = useRouter();
@@ -40,30 +42,60 @@ export default function LanguageSwitcher({ isOpen, onClose, availableLocales }: 
     // Save the preferred locale to localStorage
     savePreferredLocale(newLocale);
     
-    // Navigate to the new locale
-    if (newLocale === 'en') {
-      // For English, use root path
-      let newPath;
-      if (locale === 'en') {
-        // Already on English, keep current path
-        newPath = pathname;
+    // Check if we're on a knowledge article page and have article data
+    if (currentArticle && pathname.includes('/knowledge/')) {
+      // Check if the article has a translation for the target locale
+      const hasTranslation = currentArticle.translations && currentArticle.translations[newLocale];
+      
+      if (hasTranslation) {
+        // Navigate to the translated article
+        const translatedSlug = currentArticle.translations![newLocale].slug;
+        let newPath;
+        
+        if (newLocale === 'en') {
+          newPath = `/knowledge/${translatedSlug}`;
+        } else {
+          newPath = `/${newLocale}/knowledge/${translatedSlug}`;
+        }
+        
+        router.push(newPath);
       } else {
-        // Remove locale prefix for English
-        newPath = pathname.replace(`/${locale}`, '') || '/';
+        // No translation available, navigate to knowledge page in target locale
+        let newPath;
+        
+        if (newLocale === 'en') {
+          newPath = '/knowledge';
+        } else {
+          newPath = `/${newLocale}/knowledge`;
+        }
+        
+        router.push(newPath);
       }
-      router.push(newPath);
     } else {
-      // For other languages, use locale prefix
-      let currentPath;
-      if (locale === 'en') {
-        // Currently on English (root path), use current pathname
-        currentPath = pathname;
+      // Regular navigation logic for non-article pages
+      if (newLocale === 'en') {
+        // For English, use root path
+        let newPath;
+        if (locale === 'en') {
+          // Already on English, keep current path
+          newPath = pathname;
+        } else {
+          // Remove locale prefix for English
+          newPath = pathname.replace(`/${locale}`, '') || '/';
+        }
+        router.push(newPath);
       } else {
-        // Remove current locale prefix
-        currentPath = pathname.replace(`/${locale}`, '') || '/';
-      }
-      const newPath = `/${newLocale}${currentPath === '/' ? '' : currentPath}`;
-      router.push(newPath);
+        // For other languages, use locale prefix
+        let currentPath;
+        if (locale === 'en') {
+          // Currently on English (root path), use current pathname
+          currentPath = pathname;
+        } else {
+          // Remove current locale prefix
+          currentPath = pathname.replace(`/${locale}`, '') || '/';
+        }
+        const newPath = `/${newLocale}${currentPath === '/' ? '' : currentPath}`;
+        router.push(newPath);
       }
     }
     
