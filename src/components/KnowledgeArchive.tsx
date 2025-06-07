@@ -13,10 +13,10 @@ const knowledgeData = knowledgeDataRaw as KnowledgeData;
 export default function KnowledgeArchive() {
   const t = useTranslations();
   const locale = useLocale();
-  
+
   // Get articles for current locale
   const articles = knowledgeData[locale as keyof KnowledgeData] || [];
-  
+
   const breadcrumbItems = [
     {
       label: t('knowledge.title'),
@@ -27,19 +27,19 @@ export default function KnowledgeArchive() {
   return (
     <div className="min-h-screen-safe bg-gray-50 flex flex-col safe-all">
       {/* 使用自定义 Navbar */}
-      <Navbar 
+      <Navbar
         showAbout={false}
         showSettings={false}
         availableLocales={[...KNOWLEDGE_SUPPORTED_LOCALES]}
       />
-      
+
       <main className="w-screen flex-1 container-responsive section-padding">
         <div className="max-w-4xl mx-auto">
           {/* Breadcrumb */}
           <div className="mb-6">
             <Breadcrumb items={breadcrumbItems} />
           </div>
-          
+
           {/* Page Header */}
           <div className="card card-padding mb-8">
             <h2 className="text-responsive-2xl font-bold text-gray-900 mb-4">
@@ -49,18 +49,43 @@ export default function KnowledgeArchive() {
               {t('knowledge.description')}
             </p>
           </div>
-          
+
           {/* Content */}
           <div className="card card-padding mb-8">
             {articles.length > 0 ? (
               <div className="space-y-3">
                 {articles.map((article) => {
                   const articleHref = locale === 'en' ? `/knowledge/${article.slug}` : `/${locale}/knowledge/${article.slug}`;
-                  
+
                   return (
                     <article key={article.id} className="border-b border-gray-200 pb-3 last:border-b-0 last:pb-0">
                       <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-4 flex-1 min-w-0">
+                          <svg
+                            className={"w-5 h-5"}
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            {/* 外圈黑色边框 */}
+                            <circle cx="12" cy="12" r="11" fill="#000000" stroke="#000000" strokeWidth="2" />
+
+                            {/* 上半部分 - 红色 */}
+                            <path d="M12 1C18.075 1 23 5.925 23 12H1C1 5.925 5.925 1 12 1Z" fill="#dc2626" />
+
+                            {/* 下半部分 - 白色 */}
+                            <path d="M1 12C1 18.075 5.925 23 12 23C18.075 23 23 18.075 23 12H1Z" fill="#ffffff" />
+
+                            {/* 中间分割线 */}
+                            <rect x="1" y="11" width="22" height="2" fill="#000000" />
+
+                            {/* 中心白色圆圈 */}
+                            <circle cx="12" cy="12" r="4" fill="#ffffff" stroke="#000000" strokeWidth="1" />
+
+                            {/* 中心按钮 */}
+                            <circle cx="12" cy="12" r="2" fill="#ffffff" stroke="#000000" strokeWidth="1" />
+                            <circle cx="12" cy="12" r="1" fill="#000000" />
+                          </svg>
                           <h3 className="text-responsive-base font-medium text-gray-900 truncate">
                             <Link
                               href={articleHref}
@@ -76,14 +101,6 @@ export default function KnowledgeArchive() {
                               day: 'numeric'
                             })}
                           </div>
-                        </div>
-                        <div className="flex-shrink-0">
-                          <Link
-                            href={articleHref}
-                            className="text-sm text-red-500 hover:text-red-600 transition-colors"
-                          >
-                            {t('knowledge.readMore') || 'Read More'} →
-                          </Link>
                         </div>
                       </div>
                     </article>
@@ -118,7 +135,7 @@ export default function KnowledgeArchive() {
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
