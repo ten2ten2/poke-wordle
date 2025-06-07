@@ -122,7 +122,8 @@
     "description": "你可能感兴趣的宝可梦知识",
     "comingSoon": "即将推出！我们正在构建一个全面的宝可梦知识库，帮助您成为更好的宝可梦猜测者。",
     "readMore": "阅读更多",
-    "readNext": "继续阅读"
+    "readNext": "继续阅读",
+    "randomPrefix": "宝可梦问答："
   },
   "footer": {
     "privacyAndTerms": "隐私与条款"

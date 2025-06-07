@@ -122,7 +122,8 @@
     "description": "あなたが興味を持つかもしれないポケモンの知識",
     "comingSoon": "近日公開！より良いポケモン推測者になるための包括的なナレッジベースを構築中です。",
     "readMore": "続きを読む",
-    "readNext": "次を読む"
+    "readNext": "次を読む",
+    "randomPrefix": "ポケモンQ&A："
   },
   "footer": {
     "privacyAndTerms": "プライバシーと利用規約"

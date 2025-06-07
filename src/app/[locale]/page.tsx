@@ -11,6 +11,7 @@ import Footer from '@/components/Footer';
 import GameInput from '@/components/GameInput';
 import GuessTable from '@/components/GuessTable';
 import GameOverModal from '@/components/GameOverModal';
+import RandomKnowledge from '@/components/RandomKnowledge';
 // import { HeaderAdBanner, InContentAdBanner, FooterAdBanner } from '@/components/GoogleAdSense';
 
 export default function GamePage() {
@@ -202,6 +203,9 @@ export default function GamePage() {
         onSettingsChange={handleSettingsChange}
         currentSettings={gameState.settings}
       />
+
+      {/* Random Knowledge Banner */}
+      <RandomKnowledge />
 
       {/* Header Ad Banner - placed after navbar */}
       {/* {process.env.NEXT_PUBLIC_ADSENSE_HEADER_SLOT && (
