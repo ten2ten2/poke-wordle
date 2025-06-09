@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 // 声明全局 gtag 函数
@@ -111,25 +111,66 @@ const messages: Record<string, CookieConsentMessages> = {
   }
 };
 
-// 从 URL 路径检测当前语言 - 仅客户端安全版本
+// localStorage 缓存工具，避免频繁访问
+const localStorageCache = {
+  data: new Map<string, { value: string | null; timestamp: number }>(),
+  ttl: 1000, // 1秒缓存
+
+  get(key: string): string | null {
+    const cached = this.data.get(key);
+    if (cached && Date.now() - cached.timestamp < this.ttl) {
+      return cached.value;
+    }
+
+    try {
+      const value = localStorage.getItem(key);
+      this.data.set(key, { value, timestamp: Date.now() });
+      return value;
+    } catch (error) {
+      console.warn('Error accessing localStorage:', error);
+      return null;
+    }
+  },
+
+  set(key: string, value: string): void {
+    try {
+      localStorage.setItem(key, value);
+      this.data.set(key, { value, timestamp: Date.now() });
+    } catch (error) {
+      console.warn('Error setting localStorage:', error);
+    }
+  }
+};
+
+// 从 URL 路径检测当前语言 - 优化版本，缓存结果
+let cachedLocale: { locale: string; pathname: string } | null = null;
 function detectCurrentLocale(): string {
   if (typeof window === 'undefined') return 'en';
   
   try {
     const pathname = window.location.pathname;
+    
+    // 如果路径没有变化，返回缓存的结果
+    if (cachedLocale && cachedLocale.pathname === pathname) {
+      return cachedLocale.locale;
+    }
+    
     const segments = pathname.split('/').filter(Boolean);
     
     // 如果第一个段是已知的语言代码，则使用它
+    let locale = 'en';
     if (segments.length > 0 && messages[segments[0]]) {
-      return segments[0];
+      locale = segments[0];
     }
+    
+    // 缓存结果
+    cachedLocale = { locale, pathname };
+    return locale;
   } catch (error) {
     // Fallback in case of any errors
     console.warn('Error detecting locale:', error);
+    return 'en';
   }
-  
-  // 否则默认为英语
-  return 'en';
 }
 
 export default function CookieConsent({ onAccept, onDecline }: CookieConsentProps) {
@@ -137,6 +178,7 @@ export default function CookieConsent({ onAccept, onDecline }: CookieConsentProp
   const [isVisible, setIsVisible] = useState(false);
   const [locale, setLocale] = useState('en');
   const [isClientSide, setIsClientSide] = useState(false);
+  const currentPathRef = useRef<string>('');
 
   useEffect(() => {
     // Ensure we're on the client side to prevent hydration mismatch
@@ -145,16 +187,11 @@ export default function CookieConsent({ onAccept, onDecline }: CookieConsentProp
     // 检测当前语言
     const currentLocale = detectCurrentLocale();
     setLocale(currentLocale);
+    currentPathRef.current = window.location.pathname;
 
-    // 检查用户是否已经做出选择 - 只在客户端执行
-    try {
-      const consent = localStorage.getItem('cookie-consent');
-      if (!consent) {
-        setIsVisible(true);
-      }
-    } catch (error) {
-      // In case localStorage is not available, default to showing consent
-      console.warn('localStorage not available:', error);
+    // 检查用户是否已经做出选择 - 使用缓存的localStorage
+    const consent = localStorageCache.get('cookie-consent');
+    if (!consent) {
       setIsVisible(true);
     }
   }, []);
@@ -163,59 +200,75 @@ export default function CookieConsent({ onAccept, onDecline }: CookieConsentProp
     // Only set up route change detection after client-side hydration
     if (!isClientSide) return;
 
-    // 简单的路由变化检测 - 使用定时器定期检查 URL 变化
+    // 高效的路由变化检测，无定时器
     const checkForRouteChange = () => {
-      const newLocale = detectCurrentLocale();
-      if (newLocale !== locale) {
-        setLocale(newLocale);
+      const currentPath = window.location.pathname;
+      if (currentPath !== currentPathRef.current) {
+        currentPathRef.current = currentPath;
+        const newLocale = detectCurrentLocale();
+        if (newLocale !== locale) {
+          setLocale(newLocale);
+        }
       }
     };
 
+    // 监听多种路由变化事件
+    const events = ['popstate', 'pushstate', 'replacestate'];
+    
     // 监听 popstate 事件（浏览器前进/后退）
     window.addEventListener('popstate', checkForRouteChange);
     
-    // 使用定时器定期检查路由变化（用于程序化导航）
-    const intervalId = setInterval(checkForRouteChange, 1000);
+    // 监听程序化导航 - 劫持 pushState 和 replaceState
+    const originalPushState = history.pushState;
+    const originalReplaceState = history.replaceState;
+    
+    history.pushState = function(...args) {
+      originalPushState.apply(history, args);
+      setTimeout(checkForRouteChange, 0); // 异步检查
+    };
+    
+    history.replaceState = function(...args) {
+      originalReplaceState.apply(history, args);
+      setTimeout(checkForRouteChange, 0); // 异步检查
+    };
+
+    // 使用 MutationObserver 监听 DOM 变化作为后备方案
+    const observer = new MutationObserver(() => {
+      checkForRouteChange();
+    });
+    
+    // 只观察 document.title 变化，这通常在路由变化时发生
+    observer.observe(document, { childList: true, subtree: true });
 
     return () => {
       window.removeEventListener('popstate', checkForRouteChange);
-      clearInterval(intervalId);
+      history.pushState = originalPushState;
+      history.replaceState = originalReplaceState;
+      observer.disconnect();
     };
   }, [locale, isClientSide]);
 
   const handleAccept = () => {
-    try {
-      localStorage.setItem('cookie-consent', 'accepted');
-      setIsVisible(false);
-      onAccept?.();
-    } catch (error) {
-      console.warn('Error saving cookie consent:', error);
-      setIsVisible(false);
-      onAccept?.();
-    }
+    localStorageCache.set('cookie-consent', 'accepted');
+    setIsVisible(false);
+    onAccept?.();
   };
 
   const handleDecline = () => {
-    try {
-      localStorage.setItem('cookie-consent', 'declined');
-      setIsVisible(false);
-      
-      // 通知 Google Analytics 关闭追踪
-      if (typeof window !== 'undefined' && window.gtag && process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) {
-        window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, {
-          send_page_view: false,
-          anonymize_ip: true,
-          allow_google_signals: false,
-          allow_ad_personalization_signals: false,
-        });
-      }
-      
-      onDecline?.();
-    } catch (error) {
-      console.warn('Error saving cookie consent:', error);
-      setIsVisible(false);
-      onDecline?.();
+    localStorageCache.set('cookie-consent', 'declined');
+    setIsVisible(false);
+    
+    // 通知 Google Analytics 关闭追踪
+    if (typeof window !== 'undefined' && window.gtag && process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) {
+      window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, {
+        send_page_view: false,
+        anonymize_ip: true,
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
+      });
     }
+    
+    onDecline?.();
   };
 
   const handleDismiss = () => {
@@ -280,44 +333,26 @@ export default function CookieConsent({ onAccept, onDecline }: CookieConsentProp
   );
 }
 
-// 检查用户是否已同意 Cookie - 添加错误处理以防止hydration问题
+// 检查用户是否已同意 Cookie - 使用缓存版本
 export const hasUserConsentedToCookies = (): boolean => {
   if (typeof window === 'undefined') return true; // 默认同意（服务端渲染时）
   
-  try {
-    const consent = localStorage.getItem('cookie-consent');
-    // 如果用户没有做出选择，默认为同意；只有明确拒绝时才返回 false
-    return consent !== 'declined';
-  } catch (error) {
-    // 如果 localStorage 不可用，默认返回 true
-    console.warn('Error accessing localStorage:', error);
-    return true;
-  }
+  const consent = localStorageCache.get('cookie-consent');
+  // 如果用户没有做出选择，默认为同意；只有明确拒绝时才返回 false
+  return consent !== 'declined';
 };
 
-// 检查用户是否明确拒绝了 Cookie - 添加错误处理
+// 检查用户是否明确拒绝了 Cookie - 使用缓存版本
 export const hasUserDeclinedCookies = (): boolean => {
   if (typeof window === 'undefined') return false;
   
-  try {
-    return localStorage.getItem('cookie-consent') === 'declined';
-  } catch (error) {
-    // 如果 localStorage 不可用，默认返回 false
-    console.warn('Error accessing localStorage:', error);
-    return false;
-  }
+  return localStorageCache.get('cookie-consent') === 'declined';
 };
 
-// 获取用户的 Cookie 同意状态 - 添加错误处理
+// 获取用户的 Cookie 同意状态 - 使用缓存版本
 export const getCookieConsentStatus = (): 'accepted' | 'declined' | null => {
   if (typeof window === 'undefined') return null;
   
-  try {
-    const consent = localStorage.getItem('cookie-consent');
-    return consent as 'accepted' | 'declined' | null;
-  } catch (error) {
-    // 如果 localStorage 不可用，返回 null
-    console.warn('Error accessing localStorage:', error);
-    return null;
-  }
+  const consent = localStorageCache.get('cookie-consent');
+  return consent as 'accepted' | 'declined' | null;
 }; 
