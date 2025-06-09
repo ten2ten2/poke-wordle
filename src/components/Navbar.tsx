@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { Cog6ToothIcon, InformationCircleIcon, LanguageIcon, BookOpenIcon } from '@heroicons/react/24/outline';
+import { Cog6ToothIcon, InformationCircleIcon, LanguageIcon } from '@heroicons/react/24/outline';
 import Settings from './Settings';
 import LanguageSwitcher from './LanguageSwitcher';
 import { GameSettings } from '@/types/pokemon';
 import About from './About';
 import Link from 'next/link';
-import { isKnowledgeSupported, KnowledgeArticle } from '@/config/knowledge';
+// import { isKnowledgeSupported, KnowledgeArticle } from '@/config/knowledge';
+import { KnowledgeArticle } from '@/config/knowledge';
 
 interface NavbarProps {
   onSettingsChange?: (settings: GameSettings) => void;
@@ -35,13 +36,13 @@ export default function Navbar({
   const [isClientSide, setIsClientSide] = useState(false);
 
   // Check if current locale supports Knowledge page
-  const showKnowledge = isKnowledgeSupported(locale);
+  // const showKnowledge = isKnowledgeSupported(locale);
 
   // Generate the correct href for home page
   const homeHref = locale === 'en' ? '/' : `/${locale}`;
   
   // Generate the correct href for knowledge page
-  const knowledgeHref = locale === 'en' ? '/knowledge' : `/${locale}/knowledge`;
+  // const knowledgeHref = locale === 'en' ? '/knowledge' : `/${locale}/knowledge`;
 
   // Ensure we're on the client side to prevent hydration mismatch
   useEffect(() => {
@@ -95,7 +96,7 @@ export default function Navbar({
             {/* Navigation Actions */}
             <ul className="flex items-center space-x-2 sm:space-x-4" role="list">
               {/* Knowledge Button - only show if locale supports it */}
-              {showKnowledge && (
+              {/* {showKnowledge && (
                 <li>
                   <Link
                     href={knowledgeHref}
@@ -106,7 +107,7 @@ export default function Navbar({
                     <BookOpenIcon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
                   </Link>
                 </li>
-              )}
+              )} */}
 
               {/* About Button */}
               {showAbout && (

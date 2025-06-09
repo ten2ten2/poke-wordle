@@ -98,7 +98,7 @@ export function generateGameStructuredData(locale: string) {
     },
     "datePublished": "2025-01-01",
     "dateModified": new Date().toISOString().split('T')[0],
-    "keywords": "pokemon, wordle, game, puzzle, guess, pokemon game, pokemon quiz, nintendo, gamefreak",
+    "keywords": "pokemon, wordle, game, pokemon game, ptcg, nintendo, pokemon go, pokemon training card game, legends z-a",
     "audience": {
       "@type": "Audience",
       "audienceType": "Pokemon fans, puzzle game enthusiasts, casual gamers"
@@ -168,7 +168,7 @@ export function generateWebsiteStructuredData() {
     },
     "copyrightYear": new Date().getFullYear(),
     "genre": "Game",
-    "keywords": "pokemon, wordle, game, puzzle, guess, pokemon game, pokemon quiz"
+    "keywords": "pokemon, wordle, game, pokemon game, ptcg, nintendo, pokemon go, pokemon training card game, legends z-a"
   };
 }
 

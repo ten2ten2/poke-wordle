@@ -7,15 +7,15 @@ import { KNOWLEDGE_SUPPORTED_LOCALES } from '@/config/knowledge';
 // Generate language alternates dynamically from supported locales
 const generateLanguageAlternates = (): Record<string, string> => {
   const languages: Record<string, string> = {};
-  
+
   KNOWLEDGE_SUPPORTED_LOCALES.forEach(locale => {
-    const langCode = locale === 'zh-hans' ? 'zh-Hans' : 
-                     locale === 'zh-hant' ? 'zh-Hant' : 
-                     locale;
+    const langCode = locale === 'zh-hans' ? 'zh-Hans' :
+      locale === 'zh-hant' ? 'zh-Hant' :
+        locale;
     const langUrl = locale === 'en' ? '/knowledge' : `/${locale}/knowledge`;
     languages[langCode] = langUrl;
   });
-  
+
   return languages;
 };
 
@@ -25,14 +25,12 @@ export const metadata: Metadata = {
   keywords: [
     'pokemon knowledge',
     'pokemon tips',
-    'poke wordle guide',
-    'pokemon game strategy',
-    'pokemon learning',
-    'pokemon database',
-    'pokemon information',
-    'game tips',
-    'pokemon facts',
-    'pokemon guide'
+    'legends z-a',
+    'pokemon game',
+    'ptcg',
+    'nintendo',
+    'pokemon go',
+    'pokemon training card game',
   ],
   robots: {
     index: true,

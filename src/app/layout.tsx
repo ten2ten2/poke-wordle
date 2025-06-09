@@ -12,22 +12,17 @@ export const metadata: Metadata = {
     default: 'Poke Wordle - Guess the Pokémon Game',
     template: '%s | Poke Wordle'
   },
-  description: 'Test your Pokémon knowledge with Poke Wordle! Guess the Pokémon based on its attributes, stats, abilities, evolution, and more. Play in multiple languages including English, Japanese, French, German, Italian, Spanish, Korean, and Chinese.',
+  description: 'Test your Pokémon knowledge with Poke Wordle! Guess the Pokémon based on its attributes, stats, abilities, evolution, and more.',
   keywords: [
     'pokemon',
     'wordle',
     'game',
-    'puzzle',
-    'guess',
+    'legends z-a',
     'pokemon game',
-    'pokemon quiz',
-    'pokemon wordle',
-    'pokemon guessing game',
+    'ptcg',
     'nintendo',
-    'gamefreak',
-    'multilingual',
-    'browser game',
-    'free game'
+    'pokemon go',
+    'pokemon training card game'
   ],
   authors: [{ name: 'Poke Wordle Team' }],
   creator: 'Poke Wordle Team',
@@ -173,7 +168,7 @@ export default function RootLayout({
               },
               "inLanguage": ["en", "ja", "fr", "de", "it", "es", "ko", "zh-Hans", "zh-Hant"],
               "genre": "Puzzle Game",
-              "keywords": "pokemon, wordle, game, puzzle, guess, pokemon game, pokemon quiz",
+              "keywords": "pokemon, wordle, game, pokemon game, ptcg, nintendo, pokemon go, pokemon training card game, legends z-a",
               "aggregateRating": {
                 "@type": "AggregateRating",
                 "ratingValue": "4.8",
