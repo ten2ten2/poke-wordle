@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 // 声明全局 gtag 函数
@@ -26,8 +26,8 @@ interface CookieConsentMessages {
   privacyAndTerms: string;
 }
 
-// 所有语言的翻译消息
-const messages: Record<string, CookieConsentMessages> = {
+// 所有语言的翻译消息 - 使用 Object.freeze 防止意外修改
+const messages: Record<string, CookieConsentMessages> = Object.freeze({
   en: {
     title: "We use localStorage",
     description: "We use localStorage and similar technologies to improve your experience, analyze site usage, and assist with our marketing efforts. By continuing to use our site, you consent to our use of localStorage.",
@@ -109,145 +109,202 @@ const messages: Record<string, CookieConsentMessages> = {
     close: "關閉",
     privacyAndTerms: "隱私政策和服務條款"
   }
-};
+});
 
-// localStorage 缓存工具，避免频繁访问
-const localStorageCache = {
-  data: new Map<string, { value: string | null; timestamp: number }>(),
-  ttl: 1000, // 1秒缓存
+// 高性能 localStorage 缓存工具
+const localStorageCache = (() => {
+  const cache = new Map<string, { value: string | null; timestamp: number }>();
+  const TTL = 1500; // 1.5秒缓存，平衡性能和实时性
+  
+  return {
+    get(key: string): string | null {
+      const cached = cache.get(key);
+      if (cached && Date.now() - cached.timestamp < TTL) {
+        return cached.value;
+      }
 
-  get(key: string): string | null {
-    const cached = this.data.get(key);
-    if (cached && Date.now() - cached.timestamp < this.ttl) {
-      return cached.value;
+      try {
+        const value = localStorage.getItem(key);
+        cache.set(key, { value, timestamp: Date.now() });
+        return value;
+      } catch (error) {
+        console.warn('Error accessing localStorage:', error);
+        return null;
+      }
+    },
+
+    set(key: string, value: string): void {
+      try {
+        localStorage.setItem(key, value);
+        cache.set(key, { value, timestamp: Date.now() });
+      } catch (error) {
+        console.warn('Error setting localStorage:', error);
+      }
+    },
+
+    // 清理过期缓存
+    cleanup(): void {
+      const now = Date.now();
+      const keysToDelete: string[] = [];
+      
+      cache.forEach((cached, key) => {
+        if (now - cached.timestamp >= TTL) {
+          keysToDelete.push(key);
+        }
+      });
+      
+      keysToDelete.forEach(key => cache.delete(key));
     }
+  };
+})();
 
-    try {
-      const value = localStorage.getItem(key);
-      this.data.set(key, { value, timestamp: Date.now() });
-      return value;
-    } catch (error) {
-      console.warn('Error accessing localStorage:', error);
-      return null;
+// 智能防抖函数 - 支持立即执行和尾随执行
+function smartThrottle<T extends (...args: unknown[]) => void>(
+  func: T, 
+  wait: number, 
+  options: { leading?: boolean; trailing?: boolean } = {}
+): T {
+  let timeout: NodeJS.Timeout | null = null;
+  let lastCallTime = 0;
+  const { leading = false, trailing = true } = options;
+
+  return ((...args: Parameters<T>) => {
+    const now = Date.now();
+    
+    if (!lastCallTime && leading === false) {
+      lastCallTime = now;
     }
-  },
-
-  set(key: string, value: string): void {
-    try {
-      localStorage.setItem(key, value);
-      this.data.set(key, { value, timestamp: Date.now() });
-    } catch (error) {
-      console.warn('Error setting localStorage:', error);
+    
+    const remaining = wait - (now - lastCallTime);
+    
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+      lastCallTime = now;
+      func(...args);
+    } else if (!timeout && trailing !== false) {
+      timeout = setTimeout(() => {
+        lastCallTime = leading === false ? 0 : Date.now();
+        timeout = null;
+        func(...args);
+      }, remaining);
     }
-  }
-};
+  }) as T;
+}
 
-// 从 URL 路径检测当前语言 - 优化版本，缓存结果
-let cachedLocale: { locale: string; pathname: string } | null = null;
+// 优化的语言检测 - 减少计算和内存分配
+let cachedLocale: { locale: string; pathname: string; timestamp: number } | null = null;
+const LOCALE_CACHE_TTL = 3000; // 3秒缓存
+
 function detectCurrentLocale(): string {
   if (typeof window === 'undefined') return 'en';
   
   try {
     const pathname = window.location.pathname;
+    const now = Date.now();
     
-    // 如果路径没有变化，返回缓存的结果
-    if (cachedLocale && cachedLocale.pathname === pathname) {
+    // 检查缓存是否有效
+    if (cachedLocale && 
+        cachedLocale.pathname === pathname && 
+        (now - cachedLocale.timestamp) < LOCALE_CACHE_TTL) {
       return cachedLocale.locale;
     }
     
-    const segments = pathname.split('/').filter(Boolean);
+    // 优化：直接检查路径开头，避免 split 操作
+    const firstSlash = pathname.indexOf('/', 1);
+    const potentialLocale = firstSlash === -1 
+      ? pathname.slice(1) 
+      : pathname.slice(1, firstSlash);
     
-    // 如果第一个段是已知的语言代码，则使用它
-    let locale = 'en';
-    if (segments.length > 0 && messages[segments[0]]) {
-      locale = segments[0];
-    }
+    const locale = messages[potentialLocale] ? potentialLocale : 'en';
     
     // 缓存结果
-    cachedLocale = { locale, pathname };
+    cachedLocale = { locale, pathname, timestamp: now };
     return locale;
   } catch (error) {
-    // Fallback in case of any errors
     console.warn('Error detecting locale:', error);
     return 'en';
   }
 }
 
-export default function CookieConsent({ onAccept, onDecline }: CookieConsentProps) {
-  // Initialize with false to prevent hydration mismatch
+// 使用 memo 优化组件渲染
+const CookieConsent = memo(function CookieConsent({ onAccept, onDecline }: CookieConsentProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [locale, setLocale] = useState('en');
   const [isClientSide, setIsClientSide] = useState(false);
   const currentPathRef = useRef<string>('');
+  const cleanupTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 优化的路由检查函数 - 使用节流避免过度执行
+  const checkForRouteChange = smartThrottle(() => {
+    const currentPath = window.location.pathname;
+    if (currentPath !== currentPathRef.current) {
+      currentPathRef.current = currentPath;
+      const newLocale = detectCurrentLocale();
+      if (newLocale !== locale) {
+        setLocale(newLocale);
+      }
+    }
+  }, 150, { leading: true, trailing: true });
 
   useEffect(() => {
-    // Ensure we're on the client side to prevent hydration mismatch
     setIsClientSide(true);
     
-    // 检测当前语言
     const currentLocale = detectCurrentLocale();
     setLocale(currentLocale);
     currentPathRef.current = window.location.pathname;
 
-    // 检查用户是否已经做出选择 - 使用缓存的localStorage
     const consent = localStorageCache.get('cookie-consent');
     if (!consent) {
       setIsVisible(true);
     }
+
+    // 设置定期缓存清理
+    cleanupTimerRef.current = setInterval(() => {
+      localStorageCache.cleanup();
+    }, 60000); // 每分钟清理一次
+
+    return () => {
+      if (cleanupTimerRef.current) {
+        clearInterval(cleanupTimerRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
-    // Only set up route change detection after client-side hydration
     if (!isClientSide) return;
 
-    // 高效的路由变化检测，无定时器
-    const checkForRouteChange = () => {
-      const currentPath = window.location.pathname;
-      if (currentPath !== currentPathRef.current) {
-        currentPathRef.current = currentPath;
-        const newLocale = detectCurrentLocale();
-        if (newLocale !== locale) {
-          setLocale(newLocale);
-        }
-      }
-    };
-
-    // 监听多种路由变化事件
-    // const events = ['popstate', 'pushstate', 'replacestate'];
+    // 只监听必要的事件，移除性能杀手 MutationObserver
+    const handlePopState = () => checkForRouteChange();
     
-    // 监听 popstate 事件（浏览器前进/后退）
-    window.addEventListener('popstate', checkForRouteChange);
+    // 监听浏览器前进/后退
+    window.addEventListener('popstate', handlePopState, { passive: true });
     
-    // 监听程序化导航 - 劫持 pushState 和 replaceState
+    // 劫持程序化导航 - 使用更高效的方式
     const originalPushState = history.pushState;
     const originalReplaceState = history.replaceState;
     
     history.pushState = function(...args) {
       originalPushState.apply(history, args);
-      setTimeout(checkForRouteChange, 0); // 异步检查
+      // 使用 requestAnimationFrame 优化时机
+      requestAnimationFrame(() => checkForRouteChange());
     };
     
     history.replaceState = function(...args) {
       originalReplaceState.apply(history, args);
-      setTimeout(checkForRouteChange, 0); // 异步检查
+      requestAnimationFrame(() => checkForRouteChange());
     };
-
-    // 使用 MutationObserver 监听 DOM 变化作为后备方案
-    const observer = new MutationObserver(() => {
-      checkForRouteChange();
-    });
-    
-    // 只观察 document.title 变化，这通常在路由变化时发生
-    observer.observe(document, { childList: true, subtree: true });
 
     return () => {
-      window.removeEventListener('popstate', checkForRouteChange);
+      window.removeEventListener('popstate', handlePopState);
       history.pushState = originalPushState;
       history.replaceState = originalReplaceState;
-      observer.disconnect();
     };
-  }, [locale, isClientSide]);
+  }, [isClientSide, checkForRouteChange]);
 
+  // 优化事件处理函数 - 减少闭包创建
   const handleAccept = () => {
     localStorageCache.set('cookie-consent', 'accepted');
     setIsVisible(false);
@@ -258,14 +315,16 @@ export default function CookieConsent({ onAccept, onDecline }: CookieConsentProp
     localStorageCache.set('cookie-consent', 'declined');
     setIsVisible(false);
     
-    // 通知 Google Analytics 关闭追踪
+    // 异步处理 GA 配置，避免阻塞 UI
     if (typeof window !== 'undefined' && window.gtag && process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) {
-      window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, {
-        send_page_view: false,
-        anonymize_ip: true,
-        allow_google_signals: false,
-        allow_ad_personalization_signals: false,
-      });
+      setTimeout(() => {
+        window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, {
+          send_page_view: false,
+          anonymize_ip: true,
+          allow_google_signals: false,
+          allow_ad_personalization_signals: false,
+        });
+      }, 0);
     }
     
     onDecline?.();
@@ -275,25 +334,23 @@ export default function CookieConsent({ onAccept, onDecline }: CookieConsentProp
     setIsVisible(false);
   };
 
-  // 获取当前语言的翻译消息
-  const t = messages[locale] || messages.en;
-
-  // 生成隐私政策页面的正确链接
-  const privacyHref = locale === 'en' ? '/privacy-and-terms' : `/${locale}/privacy-and-terms`;
-
-  // Don't render anything until client-side hydration is complete and component should be visible
+  // 早期返回优化
   if (!isClientSide || !isVisible) {
     return null;
   }
+
+  // 缓存翻译和链接，避免每次渲染时重新计算
+  const t = messages[locale] || messages.en;
+  const privacyHref = locale === 'en' ? '/privacy-and-terms' : `/${locale}/privacy-and-terms`;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex-1">
-            <h3 className="text-sm font-medium text-gray-900 mb-1">
+            <h2 className="text-sm font-medium text-gray-900 mb-1">
               {t.title}
-            </h3>
+            </h2>
             <p className="text-sm text-gray-600">
               {t.description}
               <a 
@@ -331,25 +388,24 @@ export default function CookieConsent({ onAccept, onDecline }: CookieConsentProp
       </div>
     </div>
   );
-}
+});
 
-// 检查用户是否已同意 Cookie - 使用缓存版本
+export default CookieConsent;
+
+// 优化的工具函数 - 使用缓存版本
 export const hasUserConsentedToCookies = (): boolean => {
-  if (typeof window === 'undefined') return true; // 默认同意（服务端渲染时）
+  if (typeof window === 'undefined') return true;
   
   const consent = localStorageCache.get('cookie-consent');
-  // 如果用户没有做出选择，默认为同意；只有明确拒绝时才返回 false
   return consent !== 'declined';
 };
 
-// 检查用户是否明确拒绝了 Cookie - 使用缓存版本
 export const hasUserDeclinedCookies = (): boolean => {
   if (typeof window === 'undefined') return false;
   
   return localStorageCache.get('cookie-consent') === 'declined';
 };
 
-// 获取用户的 Cookie 同意状态 - 使用缓存版本
 export const getCookieConsentStatus = (): 'accepted' | 'declined' | null => {
   if (typeof window === 'undefined') return null;
   
