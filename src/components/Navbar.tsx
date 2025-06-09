@@ -3,10 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Cog6ToothIcon, InformationCircleIcon, LanguageIcon } from '@heroicons/react/24/outline';
-import Settings from './Settings';
+import { DynamicSettings, DynamicAbout } from './DynamicComponents';
 import LanguageSwitcher from './LanguageSwitcher';
 import { GameSettings } from '@/types/pokemon';
-import About from './About';
 import Link from 'next/link';
 // import { isKnowledgeSupported, KnowledgeArticle } from '@/config/knowledge';
 import { KnowledgeArticle } from '@/config/knowledge';
@@ -158,7 +157,7 @@ export default function Navbar({
 
       {/* About Modal */}
       {showAbout && (
-        <About
+        <DynamicAbout
           isOpen={isAboutOpen}
           onClose={handleAboutClose}
         />
@@ -166,7 +165,7 @@ export default function Navbar({
 
       {/* Settings Modal */}
       {showSettings && onSettingsChange && currentSettings && (
-        <Settings
+        <DynamicSettings
           isOpen={isSettingsOpen}
           onClose={() => setIsSettingsOpen(false)}
           onSettingsChange={onSettingsChange}

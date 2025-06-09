@@ -1,5 +1,7 @@
-import CookieConsent from './CookieConsent';
+'use client';
+
+import { DynamicCookieConsent } from './DynamicComponents';
 
 export default function CookieConsentWrapper() {
-  return <CookieConsent />;
+  return <DynamicCookieConsent />;
 } 

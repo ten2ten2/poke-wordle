@@ -11,6 +11,11 @@ const withMDX = createMDX({
   },
 });
 
+// Bundle analyzer configuration
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
@@ -41,6 +46,8 @@ const nextConfig = {
   poweredByHeader: false,
   generateEtags: true,
   trailingSlash: false,
+  // Optimize server components
+  serverExternalPackages: ['gray-matter', 'unified', 'remark-parse', 'remark-rehype', 'rehype-stringify'],
   experimental: {
     optimizePackageImports: ['@heroicons/react', '@headlessui/react'],
     scrollRestoration: true,
@@ -117,4 +124,4 @@ const nextConfig = {
   },
 };
 
-export default withNextIntl(withMDX(nextConfig)); 
+export default withBundleAnalyzer(withNextIntl(withMDX(nextConfig))); 

@@ -10,7 +10,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "analyze": "ANALYZE=true npm run build",
+    "build:analyze": "npm run build && npm run analyze"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",
@@ -36,6 +38,7 @@
     "unified": "^11.0.5"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^15.3.3",
     "@playwright/test": "^1.52.0",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.2",

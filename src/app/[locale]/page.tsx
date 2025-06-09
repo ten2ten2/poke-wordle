@@ -10,8 +10,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import GameInput from '@/components/GameInput';
 import GuessTable from '@/components/GuessTable';
-import GameOverModal from '@/components/GameOverModal';
-import RandomKnowledge from '@/components/RandomKnowledge';
+import { DynamicGameOverModal, DynamicRandomKnowledge } from '@/components/DynamicComponents';
 // import { HeaderAdBanner, InContentAdBanner, FooterAdBanner } from '@/components/GoogleAdSense';
 
 export default function GamePage() {
@@ -205,7 +204,7 @@ export default function GamePage() {
       />
 
       {/* Random Knowledge Banner */}
-      <RandomKnowledge />
+      <DynamicRandomKnowledge />
 
       {/* Header Ad Banner - placed after navbar */}
       {/* {process.env.NEXT_PUBLIC_ADSENSE_HEADER_SLOT && (
@@ -353,7 +352,7 @@ export default function GamePage() {
       <Footer />
 
       {/* Game Over Modal */}
-      <GameOverModal
+      <DynamicGameOverModal
         isOpen={showGameOverModal}
         onClose={() => setShowGameOverModal(false)}
         onRestart={handleRestart}
