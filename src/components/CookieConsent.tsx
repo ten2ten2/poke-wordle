@@ -213,7 +213,7 @@ export default function CookieConsent({ onAccept, onDecline }: CookieConsentProp
     };
 
     // 监听多种路由变化事件
-    const events = ['popstate', 'pushstate', 'replacestate'];
+    // const events = ['popstate', 'pushstate', 'replacestate'];
     
     // 监听 popstate 事件（浏览器前进/后退）
     window.addEventListener('popstate', checkForRouteChange);
