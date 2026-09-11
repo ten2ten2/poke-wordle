@@ -293,7 +293,7 @@ func TestEvolutionConditions(t *testing.T) {
 			chain := make(map[string]any)
 			parseEvolution(gjson.Parse(fmt.Sprintf(`{"species":{"name":%q},"evolution_details":[%s],"evolves_to":[]}`, tt.name, tt.detail)), chain, 2)
 			details := chain[tt.name].(map[string]any)["evolution_details"].([]map[string]any)
-			method, detail := analyzeEvolutionMethod(details)
+			method, detail := analyzeEvolutionMethod(details, tt.name)
 			if detail != tt.want {
 				t.Fatalf("got %s, want %s", detail, tt.want)
 			}

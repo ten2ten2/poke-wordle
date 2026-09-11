@@ -170,8 +170,7 @@ func fetchPokemonDetails(speciesID int) ([]Pokemon, error) {
 		if strings.Contains(variety.Name, "-gmax") {
 			hasGigantamax = true
 		}
-		if strings.Contains(variety.Name, "-alola") || strings.Contains(variety.Name, "-galar") ||
-			strings.Contains(variety.Name, "-hisui") || strings.Contains(variety.Name, "-paldea") {
+		if regionalFormGeneration(species.Name, variety.Name) != 0 {
 			hasRegionalForm = true
 		}
 	}
@@ -254,9 +253,9 @@ func fetchPokemonDetails(speciesID int) ([]Pokemon, error) {
 		if hasRegionalForm {
 			tags = append(tags, "regional")
 		}
-		// 地区形态宝可梦目前为止没有mega进化和超极巨化
-		if !strings.Contains(pokemonName, "-alola") && !strings.Contains(pokemonName, "-galar") &&
-			!strings.Contains(pokemonName, "-hisui") && !strings.Contains(pokemonName, "-paldea") {
+		// 当前收录的地区形态不继承普通形态的 Mega/Gmax 资格。
+		regionalGeneration := regionalFormGeneration(species.Name, pokemonName)
+		if regionalGeneration == 0 {
 			if hasMegaEvolution && megaEvolutionFormEligible(species.Name, pokemonName) {
 				tags = append(tags, "has-mega")
 			}
@@ -267,14 +266,8 @@ func fetchPokemonDetails(speciesID int) ([]Pokemon, error) {
 
 		// 确定地区形态宝可梦世代
 		generation := species.Generation
-		if strings.Contains(pokemonName, "-alola") {
-			generation = 7
-		} else if strings.Contains(pokemonName, "-galar") {
-			generation = 8
-		} else if strings.Contains(pokemonName, "-hisui") {
-			generation = 8
-		} else if strings.Contains(pokemonName, "-paldea") {
-			generation = 9
+		if regionalGeneration != 0 {
+			generation = regionalGeneration
 		} else if pokemonName == "ursaluna-bloodmoon" {
 			generation = 9
 		} else if pokemonName == "basculin-white-striped" {
@@ -300,6 +293,43 @@ func fetchPokemonDetails(speciesID int) ([]Pokemon, error) {
 	}
 
 	return pokemonForms, nil
+}
+
+// Totem variants use the evolution conditions of their underlying regional form.
+func baseFormName(pokemonName string) string {
+	switch pokemonName {
+	case "raticate-totem-alola":
+		return "raticate-alola"
+	case "marowak-totem":
+		return "marowak-alola"
+	default:
+		return pokemonName
+	}
+}
+
+// Match complete form names: pikachu-alola-cap is a costume, not a regional form.
+func regionalFormGeneration(speciesName, pokemonName string) int {
+	pokemonName = baseFormName(pokemonName)
+	form, ok := strings.CutPrefix(pokemonName, speciesName+"-")
+	if !ok {
+		return 0
+	}
+	switch form {
+	case "alola":
+		return 7
+	case "galar", "hisui":
+		return 8
+	case "paldea":
+		return 9
+	}
+	// These regional forms have additional mode/breed suffixes.
+	switch pokemonName {
+	case "darmanitan-galar-standard", "darmanitan-galar-zen":
+		return 8
+	case "tauros-paldea-combat-breed", "tauros-paldea-blaze-breed", "tauros-paldea-aqua-breed":
+		return 9
+	}
+	return 0
 }
 
 // varieties lists a species' Mega forms, but does not identify which base form can Mega Evolve.
@@ -389,7 +419,7 @@ func fetchPokemonFormDetails(pokemonURL string, pokemonName string, species Spec
 			if data, ok := speciesData.(map[string]any); ok {
 				evolutionStage = int(data["stage"].(int))
 				if details, ok := data["evolution_details"].([]map[string]any); ok {
-					evolutionMethod, evolutionMethodDetail = analyzeEvolutionMethod(details)
+					evolutionMethod, evolutionMethodDetail = analyzeEvolutionMethod(details, pokemonName)
 				}
 			}
 		} else {
@@ -448,6 +478,7 @@ func parseEvolution(evolution gjson.Result, chainData map[string]any, stage int)
 		var details []map[string]any
 		evolutionDetails.ForEach(func(key, value gjson.Result) bool {
 			detail := map[string]any{
+				"evolved_form":            value.Get("evolved_form.name").String(),
 				"trigger":                 value.Get("trigger.name").String(),
 				"min_level":               value.Get("min_level").Int(),
 				"item":                    value.Get("item.name").String(),
@@ -485,17 +516,26 @@ func parseEvolution(evolution gjson.Result, chainData map[string]any, stage int)
 }
 
 // 分析进化方式
-func analyzeEvolutionMethod(details []map[string]any) (string, string) {
-	if len(details) == 0 {
-		return "", ""
-	}
-
-	detail := details[0]
+func analyzeEvolutionMethod(details []map[string]any, pokemonName string) (string, string) {
+	pokemonName = baseFormName(pokemonName)
+	var detail map[string]any
+	formSpecific := false
 	for _, candidate := range details {
-		if candidate["is_default"] == true {
-			detail = candidate
-			break
+		evolvedForm, _ := candidate["evolved_form"].(string)
+		if evolvedForm != "" && evolvedForm != pokemonName {
+			continue
 		}
+		// Prefer the exact target form, then its default evolution condition.
+		// A condition without evolved_form is the fallback for other forms.
+		matchesForm := evolvedForm == pokemonName
+		if detail == nil || (matchesForm && !formSpecific) ||
+			(matchesForm == formSpecific && candidate["is_default"] == true && detail["is_default"] != true) {
+			detail = candidate
+			formSpecific = matchesForm
+		}
+	}
+	if detail == nil {
+		return "", ""
 	}
 	trigger := detail["trigger"].(string)
 

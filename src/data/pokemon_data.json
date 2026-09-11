@@ -644,7 +644,7 @@
     },
     "evolution_stage": 2,
     "evolution_method": "level",
-    "evolution_method_detail": "level-normal",
+    "evolution_method_detail": "level-time",
     "tags": [
       "regional"
     ]
@@ -788,7 +788,6 @@
     "evolution_method_detail": "level-friendship",
     "tags": [
       "starter",
-      "regional",
       "has-gmax"
     ]
   },
@@ -3900,7 +3899,7 @@
     },
     "evolution_stage": 2,
     "evolution_method": "level",
-    "evolution_method_detail": "level-normal",
+    "evolution_method_detail": "level-time",
     "tags": [
       "regional"
     ]

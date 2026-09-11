@@ -92,7 +92,15 @@ export function validateDataset(data, translations, images, registry, messages) 
     assert(equal(Object.keys(translation).sort(), [...locales].sort()), `语言范围错误: ${key}`);
     for (const locale of locales) assert(typeof translation[locale] === 'string' && translation[locale].trim() && translation[locale] === translation[locale].trim(), `翻译为空/未清理: ${key}/${locale}`);
   }
-  for (const [name, detail] of [['marill', 'level-friendship'], ['blissey', 'level-friendship'], ['gallade', 'item-stone-dawn-male'], ['froslass', 'item-stone-dawn-female']]) assert.equal(data.find((row) => row.name === name)?.evolution_method_detail, detail, `进化修正回退: ${name}`);
+  // Independently check species-wide tags against the regional forms in the answer set.
+  const regionalSpecies = new Set(data.filter((row) => /-(?:alola|galar|hisui|paldea)$|^darmanitan-galar-(?:standard|zen)$|^tauros-paldea-(?:combat|blaze|aqua)-breed$/.test(row.name)).map((row) => row.pokedex_id_national));
+  for (const row of data) assert.equal(row.tags?.includes('regional') ?? false, regionalSpecies.has(row.pokedex_id_national), `地区形态标签与收录形态不一致: ${row.name}`);
+  for (const [name, detail] of [
+    ['marill', 'level-friendship'], ['blissey', 'level-friendship'],
+    ['gallade', 'item-stone-dawn-male'], ['froslass', 'item-stone-dawn-female'],
+    ['raticate', 'level-normal'], ['raticate-alola', 'level-time'],
+    ['marowak', 'level-normal'], ['marowak-alola', 'level-time'],
+  ]) assert.equal(data.find((row) => row.name === name)?.evolution_method_detail, detail, `进化修正回退: ${name}`);
   for (const [name, locale, value] of [['iron-boulder', 'zh-hans', '铁磐岩'], ['iron-boulder', 'zh-hant', '鐵磐岩'], ['sharpness', 'zh-hans', '锋锐'], ['sharpness', 'zh-hant', '鋒銳'], ['zero-to-hero', 'zh-hans', '全能变身'], ['zero-to-hero', 'zh-hant', '全能變身'], ['thermal-exchange', 'es', 'Termoconversión'], ['wind-rider', 'en', 'Wind Rider'], ['minun', 'zh-hans', '负电拍拍']]) assert.equal(translations[name]?.[locale], value, `翻译修正回退: ${name}/${locale}`);
   assert.equal(new Set(images).size, images.length, '恶作剧图片重复'); images.forEach(secureImage);
   return { pokemon: data.length, species: national.size, translations: Object.keys(translations).length, prankster: images.length };

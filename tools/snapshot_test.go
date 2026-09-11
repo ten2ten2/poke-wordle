@@ -100,7 +100,7 @@ func TestTranslationCorrectionsRejectSourceDrift(t *testing.T) {
 func TestEvolutionUsesUpstreamDefaultInsteadOfHistoricalFirst(t *testing.T) {
 	chain := map[string]any{}
 	parseEvolution(gjson.Parse(`{"species":{"name":"probopass"},"evolution_details":[{"trigger":{"name":"level-up"},"location":{"name":"mt-coronet"},"is_default":false},{"trigger":{"name":"use-item"},"item":{"name":"thunder-stone"},"is_default":true}],"evolves_to":[]}`), chain, 2)
-	method, detail := analyzeEvolutionMethod(chain["probopass"].(map[string]any)["evolution_details"].([]map[string]any))
+	method, detail := analyzeEvolutionMethod(chain["probopass"].(map[string]any)["evolution_details"].([]map[string]any), "probopass")
 	if method != "item" || detail != "item-stone-thunder" {
 		t.Fatalf("%s/%s", method, detail)
 	}
