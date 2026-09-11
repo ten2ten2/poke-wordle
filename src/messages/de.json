@@ -37,7 +37,8 @@
       "evolution": "Evolution",
       "tags": "Tags"
     },
-    "evolutionMethod": "Evolutionsmethode"
+    "evolutionMethod": "Evolutionsmethode",
+    "requestFailed": "Die Antwort konnte nicht geprüft werden. Bitte versuche es erneut."
   },
   "settings": {
     "title": "Einstellungen",
@@ -248,5 +249,14 @@
         "description": "Wenn Sie Fragen zu diesen Bedingungen oder unserer Datenschutzerklärung haben, kontaktieren Sie uns bitte über unser GitHub-Repository."
       }
     }
+  },
+  "cookieConsent": {
+    "title": "Datenschutzeinstellungen",
+    "description": "Wir speichern deinen Spielstand und deine Einstellungen in diesem Browser. Mit „Akzeptieren“ erlaubst du auch Google Analytics, damit wir die Website verbessern können.",
+    "learnMore": "Mehr erfahren",
+    "accept": "Akzeptieren",
+    "decline": "Ablehnen",
+    "close": "Schließen",
+    "privacyAndTerms": "Datenschutzerklärung & Nutzungsbedingungen"
   }
 }

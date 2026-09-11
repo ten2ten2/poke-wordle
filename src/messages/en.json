@@ -37,7 +37,8 @@
       "evolution": "Evolution",
       "tags": "Tags"
     },
-    "evolutionMethod": "Evolution Method"
+    "evolutionMethod": "Evolution Method",
+    "requestFailed": "Unable to check your guess. Please try again."
   },
   "settings": {
     "title": "Settings",
@@ -257,5 +258,14 @@
         "description": "If you have any questions about these terms or our privacy policy, please contact us through our GitHub repository."
       }
     }
+  },
+  "cookieConsent": {
+    "title": "Privacy preferences",
+    "description": "We save your game progress and settings in this browser. Choose Accept to also allow Google Analytics to help us improve the site.",
+    "learnMore": "Learn more",
+    "accept": "Accept",
+    "decline": "Decline",
+    "close": "Close",
+    "privacyAndTerms": "Privacy Policy & Terms of Service"
   }
 }

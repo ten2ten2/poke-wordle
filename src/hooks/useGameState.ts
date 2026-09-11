@@ -1,216 +1,170 @@
-import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
-import { Pokemon, GameState, GameSettings, GuessResult } from '@/types/pokemon';
-import { loadPokemonData, filterPokemonByGenerations, getRandomPokemon, translatePokemon } from '@/lib/pokemon';
-import { saveGameSettings, loadGameSettings, saveGameProgress, loadGameProgress, clearGameProgress } from '@/lib/storage';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import type { GameState, GameSettings, GuessResult } from '@/types/pokemon';
+import {
+  loadPokemonData,
+  filterPokemonByGenerations,
+  getRandomPokemon,
+  translatePokemon,
+} from '@/lib/pokemon';
+import {
+  saveGameSettings,
+  loadGameSettings,
+  saveGameProgress,
+  loadGameProgress,
+  clearGameProgress,
+} from '@/lib/storage';
 
 const defaultSettings: GameSettings = {
   maxGuesses: 10,
   selectedGenerations: [1, 2, 3, 4, 5, 6, 7, 8, 9],
   isPrankster: false,
   isGenArrow: false,
-  guessOrder: 'reverse'
+  guessOrder: 'reverse',
 };
 
-export function useGameState(locale: string) {
-  // Initialize with stored settings or defaults
-  const [gameState, setGameState] = useState<GameState>(() => {
-    const storedSettings = loadGameSettings();
-    return {
-      targetPokemon: null,
-      guesses: [],
-      isGameOver: false,
-      isWon: false,
-      settings: storedSettings || defaultSettings
-    };
-  });
+function emptyGame(settings: GameSettings): GameState {
+  return {
+    settings,
+    targetPokemon: null,
+    guesses: [],
+    isGameOver: false,
+    isWon: false,
+  };
+}
 
-  const [availablePokemon, setAvailablePokemon] = useState<Pokemon[]>([]);
-  const [pokemonNames, setPokemonNames] = useState<string[]>([]);
-  
-  // 简单标记，避免重复恢复
-  const restoredRef = useRef(false);
+function initialState(): GameState {
+  const settings = loadGameSettings() ?? defaultSettings;
+  const progress = loadGameProgress();
+  const state = emptyGame(settings);
+  if (
+    !progress?.targetPokemon?.id ||
+    !Array.isArray(progress.guesses) ||
+    !Array.isArray(progress.selectedGenerations) ||
+    progress.selectedGenerations.length !==
+      settings.selectedGenerations.length ||
+    !progress.selectedGenerations.every((gen) =>
+      settings.selectedGenerations.includes(gen),
+    )
+  )
+    return state;
+  const targetPokemon = filterPokemonByGenerations(
+    loadPokemonData(),
+    settings.selectedGenerations,
+  ).find((pokemon) => pokemon.id === progress.targetPokemon.id);
+  return targetPokemon ? { ...state, ...progress, targetPokemon } : state;
+}
 
-  // Memoize filtered Pokemon data to avoid recalculation
-  const filteredPokemon = useMemo(() => {
-    return filterPokemonByGenerations(loadPokemonData(), gameState.settings.selectedGenerations);
-  }, [gameState.settings.selectedGenerations]);
+export function useGameState(locale: string, restoreProgress = true) {
+  const [gameState, setGameState] = useState(() =>
+    restoreProgress ? initialState() : emptyGame(defaultSettings),
+  );
+  const current = useRef(gameState);
+  const availablePokemon = useMemo(
+    () =>
+      filterPokemonByGenerations(
+        loadPokemonData(),
+        gameState.settings.selectedGenerations,
+      ),
+    [gameState.settings.selectedGenerations],
+  );
+  const pokemonNames = useMemo(
+    () => availablePokemon.map((p) => translatePokemon(p, locale).name),
+    [availablePokemon, locale],
+  );
 
-  // Update available Pokemon when filtered data changes
-  useEffect(() => {
-    setAvailablePokemon(filteredPokemon);
-
-    // If there's an active game and the current target Pokemon is no longer available,
-    // reset the game
-    if (gameState.targetPokemon) {
-      const isTargetStillAvailable = filteredPokemon.some(
-        p => p.id === gameState.targetPokemon?.id
-      );
-      if (!isTargetStillAvailable) {
-        setGameState(prev => ({
-          ...prev,
-          targetPokemon: null,
-          guesses: [],
-          isGameOver: false,
-          isWon: false
-        }));
-      }
+  const commit = useCallback((next: GameState) => {
+    current.current = next;
+    setGameState(next);
+    if (next.targetPokemon) {
+      saveGameProgress({
+        targetPokemon: next.targetPokemon,
+        guesses: next.guesses,
+        selectedGenerations: next.settings.selectedGenerations,
+        isGameOver: next.isGameOver,
+        isWon: next.isWon,
+      });
+    } else {
+      clearGameProgress();
     }
-  }, [filteredPokemon, gameState.targetPokemon]);
+  }, []);
 
-  // Memoize translated Pokemon names to avoid recalculation
-  const translatedPokemonNames = useMemo(() => {
-    return availablePokemon.map(p => translatePokemon(p, locale).name);
-  }, [availablePokemon, locale]);
-
-  // Update Pokemon names when translated names change
-  useEffect(() => {
-    setPokemonNames(translatedPokemonNames);
-  }, [translatedPokemonNames]);
-
-  // 尝试恢复进度（仅在初始化时）
-  useEffect(() => {
-    if (availablePokemon.length > 0 && !restoredRef.current && !gameState.targetPokemon) {
-      const savedProgress = loadGameProgress();
-      if (savedProgress && 
-          JSON.stringify(savedProgress.selectedGenerations.sort()) === JSON.stringify(gameState.settings.selectedGenerations.sort())) {
-        
-        const targetPokemon = availablePokemon.find(p => p.id === savedProgress.targetPokemon.id);
-        if (targetPokemon) {
-          setGameState(prev => ({
-            ...prev,
-            targetPokemon,
-            guesses: savedProgress.guesses,
-            isGameOver: savedProgress.isGameOver,
-            isWon: savedProgress.isWon
-          }));
-        }
-      }
-      restoredRef.current = true;
-    }
-  }, [availablePokemon, gameState.settings.selectedGenerations, gameState.targetPokemon]);
-
-  // Start new game
   const startNewGame = useCallback(() => {
-    if (availablePokemon.length === 0) {
-      return;
-    }
-
-    clearGameProgress();
+    if (!availablePokemon.length) return;
     const targetPokemon = getRandomPokemon(availablePokemon);
+    commit({ ...emptyGame(current.current.settings), targetPokemon });
+    return targetPokemon;
+  }, [availablePokemon, commit]);
 
-    setGameState(prev => ({
-      ...prev,
-      targetPokemon,
-      guesses: [],
-      isGameOver: false,
-      isWon: false
-    }));
-  }, [availablePokemon]);
+  const resetGame = useCallback(
+    () => commit(emptyGame(current.current.settings)),
+    [commit],
+  );
 
-  // Reset game to initial state
-  const resetGame = useCallback(() => {
-    clearGameProgress();
-    setGameState(prev => ({
-      ...prev,
-      targetPokemon: null,
-      guesses: [],
-      isGameOver: false,
-      isWon: false
-    }));
-    restoredRef.current = false;
-  }, []);
+  const updateSettings = useCallback(
+    (changes: Partial<GameSettings>) => {
+      const previous = current.current;
+      const settings = { ...previous.settings, ...changes };
+      saveGameSettings(settings);
+      const invalidatesGame =
+        settings.maxGuesses !== previous.settings.maxGuesses ||
+        settings.isPrankster !== previous.settings.isPrankster ||
+        settings.isGenArrow !== previous.settings.isGenArrow ||
+        settings.selectedGenerations.length !==
+          previous.settings.selectedGenerations.length ||
+        !settings.selectedGenerations.every((gen) =>
+          previous.settings.selectedGenerations.includes(gen),
+        );
+      commit(
+        invalidatesGame
+          ? emptyGame(settings)
+          : {
+              ...previous,
+              settings,
+              guesses:
+                settings.guessOrder === previous.settings.guessOrder
+                  ? previous.guesses
+                  : [...previous.guesses].reverse(),
+            },
+      );
+      return invalidatesGame;
+    },
+    [commit],
+  );
 
-  // Update settings and save to localStorage
-  const updateSettings = useCallback((newSettings: Partial<GameSettings>) => {
-    setGameState(prev => {
-      const updatedSettings = { ...prev.settings, ...newSettings };
-      // Save to localStorage
-      saveGameSettings(updatedSettings);
-      
-      // If only guessOrder changed, re-order existing guesses
-      const prevGuessOrder = prev.settings.guessOrder;
-      const newGuessOrder = updatedSettings.guessOrder;
-      
-      let reorderedGuesses = prev.guesses;
-      if (prevGuessOrder !== newGuessOrder && prev.guesses.length > 0) {
-        // When switching between normal and reverse order, simply reverse the current array
-        reorderedGuesses = [...prev.guesses].reverse();
-      }
-      
-      return {
-        ...prev,
-        settings: updatedSettings,
-        guesses: reorderedGuesses
-      };
-    });
-    
-    if (newSettings.selectedGenerations) {
-      restoredRef.current = false;
-    }
-  }, []);
+  const addGuess = useCallback(
+    (guess: GuessResult) => {
+      const previous = current.current;
+      if (!previous.targetPokemon || previous.isGameOver) return;
+      const guesses =
+        previous.settings.guessOrder === 'reverse'
+          ? [guess, ...previous.guesses]
+          : [...previous.guesses, guess];
+      commit({
+        ...previous,
+        guesses,
+        isWon: guess.isCorrect,
+        isGameOver:
+          guess.isCorrect || guesses.length >= previous.settings.maxGuesses,
+      });
+    },
+    [commit],
+  );
 
-  // Add guess
-  const addGuess = useCallback((guess: GuessResult) => {
-    setGameState(prev => {
-      const newGuesses = gameState.settings.guessOrder === 'reverse'
-        ? [guess, ...prev.guesses]
-        : [...prev.guesses, guess];
-
-      const isWon = guess.isCorrect;
-      const isGameOver = isWon || newGuesses.length >= prev.settings.maxGuesses;
-
-      // 保存进度（游戏结束时也保存，不清除）
-      if (prev.targetPokemon) {
-        saveGameProgress({
-          targetPokemon: prev.targetPokemon,
-          guesses: newGuesses,
-          selectedGenerations: prev.settings.selectedGenerations,
-          isGameOver,
-          isWon
-        });
-      }
-
-      return {
-        ...prev,
-        guesses: newGuesses,
-        isWon,
-        isGameOver
-      };
-    });
-  }, [gameState.settings.guessOrder]);
-
-  // Give up
   const giveUp = useCallback(() => {
-    setGameState(prev => {
-      const newState = {
-        ...prev,
-        isGameOver: true,
-        isWon: false
-      };
+    if (current.current.targetPokemon && !current.current.isGameOver) {
+      commit({ ...current.current, isGameOver: true, isWon: false });
+    }
+  }, [commit]);
 
-      // Save progress when giving up
-      if (prev.targetPokemon) {
-        saveGameProgress({
-          targetPokemon: prev.targetPokemon,
-          guesses: prev.guesses,
-          selectedGenerations: prev.settings.selectedGenerations,
-          isGameOver: true,
-          isWon: false
-        });
-      }
-
-      return newState;
-    });
-  }, []);
-
-  // Check if Pokemon name exists (support both original and translated names)
-  const isPokemonNameValid = useCallback((name: string) => {
-    return availablePokemon.some(pokemon => {
-      const translatedPokemon = translatePokemon(pokemon, locale);
-      return translatedPokemon.name.toLowerCase() === name.toLowerCase() ||
-        pokemon.name.toLowerCase() === name.toLowerCase();
-    });
-  }, [availablePokemon, locale]);
+  const isPokemonNameValid = useCallback(
+    (name: string) =>
+      availablePokemon.some(
+        (p) =>
+          p.name.toLowerCase() === name.toLowerCase() ||
+          translatePokemon(p, locale).name.toLowerCase() === name.toLowerCase(),
+      ),
+    [availablePokemon, locale],
+  );
 
   return {
     gameState,
@@ -221,6 +175,6 @@ export function useGameState(locale: string) {
     updateSettings,
     addGuess,
     giveUp,
-    isPokemonNameValid
+    isPokemonNameValid,
   };
-} 
+}

@@ -37,7 +37,8 @@
       "evolution": "進化",
       "tags": "タグ"
     },
-    "evolutionMethod": "進化方法"
+    "evolutionMethod": "進化方法",
+    "requestFailed": "回答を確認できませんでした。もう一度お試しください。"
   },
   "settings": {
     "title": "設定",
@@ -257,5 +258,14 @@
         "description": "これらの規約や当社のプライバシーポリシーについてご質問がある場合は、GitHub を通じてお問い合わせください。"
       }
     }
+  },
+  "cookieConsent": {
+    "title": "プライバシー設定",
+    "description": "ゲームの進行状況と設定をこのブラウザーに保存します。「同意する」を選ぶと、サイト改善のための Google Analytics の利用も許可されます。",
+    "learnMore": "詳細を見る",
+    "accept": "同意する",
+    "decline": "拒否する",
+    "close": "閉じる",
+    "privacyAndTerms": "プライバシーポリシー・利用規約"
   }
 }

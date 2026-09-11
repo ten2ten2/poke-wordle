@@ -18,15 +18,22 @@ export function translateText(key: string, locale: string = 'en'): string {
   return translations[key]?.[locale] || key;
 }
 
-export function translatePokemon(pokemon: Pokemon, locale: string = 'en'): Pokemon {
+export function translatePokemon(
+  pokemon: Pokemon,
+  locale: string = 'en',
+): Pokemon {
   const translations = loadTranslationData();
-  
+
   return {
     ...pokemon,
     name: translations[pokemon.name]?.[locale] || pokemon.name,
-    types: pokemon.types?.map(type => translations[type]?.[locale] || type) || [],
-    abilities: pokemon.abilities?.map(ability => translations[ability]?.[locale] || ability) || [],
-    tags: pokemon.tags?.map(tag => translations[tag]?.[locale] || tag) || []
+    types:
+      pokemon.types?.map((type) => translations[type]?.[locale] || type) || [],
+    abilities:
+      pokemon.abilities?.map(
+        (ability) => translations[ability]?.[locale] || ability,
+      ) || [],
+    tags: pokemon.tags?.map((tag) => translations[tag]?.[locale] || tag) || [],
   };
 }
 
@@ -34,8 +41,11 @@ export function loadPranksterProfiles(): string[] {
   return (pranksterProfileData as string[]) || [];
 }
 
-export function filterPokemonByGenerations(pokemon: Pokemon[], generations: number[]): Pokemon[] {
-  return pokemon.filter(p => generations.indexOf(p.generation) !== -1);
+export function filterPokemonByGenerations(
+  pokemon: Pokemon[],
+  generations: number[],
+): Pokemon[] {
+  return pokemon.filter((p) => generations.includes(p.generation));
 }
 
 export function getRandomPokemon(pokemon: Pokemon[]): Pokemon {
@@ -56,35 +66,41 @@ export function comparePokemon(
     generation: {
       value: guess.generation,
       status: getGenerationStatus(guess.generation, target.generation),
-      arrow: isGenArrow ? getGenerationArrow(guess.generation, target.generation) : undefined
+      arrow: isGenArrow
+        ? getComparisonArrow(guess.generation, target.generation)
+        : undefined,
     },
-    types: (guess.types || []).map(type => ({
+    types: (guess.types || []).map((type) => ({
       value: type,
-      status: (target.types || []).includes(type) ? 'exact' : 'nope'
+      status: (target.types || []).includes(type) ? 'exact' : 'nope',
     })),
-    abilities: (guess.abilities || []).map(ability => ({
+    abilities: (guess.abilities || []).map((ability) => ({
       value: ability,
-      status: (target.abilities || []).includes(ability) ? 'exact' : 'nope'
+      status: (target.abilities || []).includes(ability) ? 'exact' : 'nope',
     })),
     base_stats_total: {
       value: guess.base_stats_total,
       status: getStatsStatus(guess.base_stats_total, target.base_stats_total),
-      arrow: getStatsArrow(guess.base_stats_total, target.base_stats_total)
+      arrow: getComparisonArrow(
+        guess.base_stats_total,
+        target.base_stats_total,
+      ),
     },
     evolution_stage: {
       value: guess.evolution_stage,
-      status: guess.evolution_stage === target.evolution_stage ? 'exact' : 'nope'
+      status:
+        guess.evolution_stage === target.evolution_stage ? 'exact' : 'nope',
     },
     evolution_method_detail: {
       value: guess.evolution_method_detail,
-      status: getEvolutionStatus(guess, target)
+      status: getEvolutionStatus(guess, target),
     },
-    tags: (guess.tags || []).map(tag => ({
+    tags: (guess.tags || []).map((tag) => ({
       value: tag,
-      status: (target.tags || []).includes(tag) ? 'exact' : 'nope'
+      status: (target.tags || []).includes(tag) ? 'exact' : 'nope',
     })),
     isCorrect: guess.id === target.id,
-    fieldToHide: null
+    fieldToHide: null,
   };
 
   // Apply prankster effect
@@ -95,26 +111,30 @@ export function comparePokemon(
   return result;
 }
 
-function getGenerationStatus(guessGen: number, targetGen: number): ComparisonStatus {
+function getGenerationStatus(
+  guessGen: number,
+  targetGen: number,
+): ComparisonStatus {
   if (guessGen === targetGen) return 'exact';
   if (Math.abs(guessGen - targetGen) === 1) return 'close';
   return 'nope';
 }
 
-function getGenerationArrow(guessGen: number, targetGen: number): 'upper' | 'lower' | undefined {
-  if (guessGen === targetGen) return undefined;
-  return guessGen < targetGen ? 'upper' : 'lower';
+function getComparisonArrow(
+  guess: number,
+  target: number,
+): 'upper' | 'lower' | undefined {
+  if (guess === target) return undefined;
+  return guess < target ? 'upper' : 'lower';
 }
 
-function getStatsStatus(guessStats: number, targetStats: number): ComparisonStatus {
+function getStatsStatus(
+  guessStats: number,
+  targetStats: number,
+): ComparisonStatus {
   if (guessStats === targetStats) return 'exact';
   if (Math.abs(guessStats - targetStats) <= 50) return 'close';
   return 'nope';
-}
-
-function getStatsArrow(guessStats: number, targetStats: number): 'upper' | 'lower' | undefined {
-  if (guessStats === targetStats) return undefined;
-  return guessStats < targetStats ? 'upper' : 'lower';
 }
 
 function getEvolutionStatus(guess: Pokemon, target: Pokemon): ComparisonStatus {
@@ -128,70 +148,21 @@ function getEvolutionStatus(guess: Pokemon, target: Pokemon): ComparisonStatus {
   return 'nope';
 }
 
-function applyPranksterEffect(result: GuessResult, previousFieldToHide: string | null): void {
-  // List of fields that can be hidden
-  const hidableFields = [
+function applyPranksterEffect(
+  result: GuessResult,
+  previousFieldToHide: string | null,
+): void {
+  // Preserve the original weighting: either evolution field hides the same column.
+  const fields = [
     'generation',
     'types',
     'abilities',
-    'base_stats_total',
-    'evolution_stage',
-    'evolution_method_detail',
-    'tags'
-  ];
-
-  // If the previous field to hide is not null, then we need to remove it from the list of hidable fields
-  if (previousFieldToHide) {
-    switch (previousFieldToHide) {
-      case 'generation':
-        hidableFields.splice(hidableFields.indexOf('generation'), 1);
-        break;
-      case 'types':
-        hidableFields.splice(hidableFields.indexOf('types'), 1);
-        break;
-      case 'abilities':
-        hidableFields.splice(hidableFields.indexOf('abilities'), 1);
-        break;
-      case 'base_stats':
-        hidableFields.splice(hidableFields.indexOf('base_stats_total'), 1);
-        break;
-      case 'evolution':
-        hidableFields.splice(hidableFields.indexOf('evolution_stage'), 1);
-        hidableFields.splice(hidableFields.indexOf('evolution_method_detail'), 1);
-        break;
-      case 'tags':
-        hidableFields.splice(hidableFields.indexOf('tags'), 1);
-        break;
-      default:
-        break;
-    }
-  }
-
-  // Hide a random column field
-  const fieldToHide = hidableFields[Math.floor(Math.random() * hidableFields.length)];
-  switch (fieldToHide) {
-    case 'generation':
-      result.fieldToHide = 'generation';
-      break;
-    case 'types':
-      result.fieldToHide = 'types';
-      break;
-    case 'abilities':
-      result.fieldToHide = 'abilities';
-      break;
-    case 'base_stats_total':
-      result.fieldToHide = 'base_stats';
-      break;
-    case 'evolution_stage':
-      result.fieldToHide = 'evolution';
-      break;
-    case 'evolution_method_detail':
-      result.fieldToHide = 'evolution';
-      break;
-    case 'tags':
-      result.fieldToHide = 'tags';
-      break;
-  }
+    'base_stats',
+    'evolution',
+    'evolution',
+    'tags',
+  ].filter((field) => field !== previousFieldToHide);
+  result.fieldToHide = fields[Math.floor(Math.random() * fields.length)];
 }
 
 export function getRandomPranksterImage(): string {
@@ -199,7 +170,9 @@ export function getRandomPranksterImage(): string {
   if (pranksterProfiles.length === 0) {
     return '';
   }
-  return pranksterProfiles[Math.floor(Math.random() * pranksterProfiles.length)];
+  return pranksterProfiles[
+    Math.floor(Math.random() * pranksterProfiles.length)
+  ];
 }
 
 export function getWikiUrl(name: string, locale: string = 'en'): string {
@@ -207,34 +180,34 @@ export function getWikiUrl(name: string, locale: string = 'en'): string {
   name = name.replace(/\s*\([^)]*\)/g, '');
 
   switch (locale) {
-    case "en":
-      name = name.replace(/ /g, "_")
-      return `https://bulbapedia.bulbagarden.net/wiki/${name}`
-    case "ja":
-      name = name.trim()
-      return `https://wiki.ポケモン.com/wiki/${name}`
-    case "es":
-      name = name.replace(/ /g, "_")
-      return `https://www.wikidex.net/wiki/${name}`
-    case "de":
-      name = name.trim()
-      return `https://www.pokewiki.de/${name}`
-    case "it":
-      name = name.replace(/ /g, "_")
-      return `https://wiki.pokemoncentral.it/${name}`
-    case "fr":
-      name = name.replace(/ /g, "_")
-      return `https://www.pokepedia.fr/${name}`
-    case "zh-hant":
-      name = name.trim()
-      return `https://wiki.52poke.com/zh-hant/${name}`
-    case "zh-hans":
-      name = name.trim()
-      return `https://wiki.52poke.com/zh-hans/${name}`
-    case "ko":
+    case 'en':
+      name = name.replace(/ /g, '_');
+      return `https://bulbapedia.bulbagarden.net/wiki/${name}`;
+    case 'ja':
+      name = name.trim();
+      return `https://wiki.ポケモン.com/wiki/${name}`;
+    case 'es':
+      name = name.replace(/ /g, '_');
+      return `https://www.wikidex.net/wiki/${name}`;
+    case 'de':
+      name = name.trim();
+      return `https://www.pokewiki.de/${name}`;
+    case 'it':
+      name = name.replace(/ /g, '_');
+      return `https://wiki.pokemoncentral.it/${name}`;
+    case 'fr':
+      name = name.replace(/ /g, '_');
+      return `https://www.pokepedia.fr/${name}`;
+    case 'zh-hant':
+      name = name.trim();
+      return `https://wiki.52poke.com/zh-hant/${name}`;
+    case 'zh-hans':
+      name = name.trim();
+      return `https://wiki.52poke.com/zh-hans/${name}`;
+    case 'ko':
       // Korean wiki is not available
-      return ""
+      return '';
     default:
-      return ""
+      return '';
   }
 }

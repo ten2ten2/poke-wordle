@@ -7,7 +7,7 @@ import {
   loadGameSettings,
   saveGameProgress,
   loadGameProgress,
-  clearGameProgress
+  clearGameProgress,
 } from '../storage';
 import { GameSettings, Pokemon } from '@/types/pokemon';
 
@@ -26,12 +26,12 @@ const mockPokemon: Pokemon = {
     hp: 45,
     sp_attack: 65,
     sp_defense: 65,
-    speed: 45
+    speed: 45,
   },
   evolution_stage: 1,
   evolution_method: 'level',
   evolution_method_detail: '16',
-  tags: ['Starter', 'Quadruped']
+  tags: ['Starter', 'Quadruped'],
 };
 
 const mockSettings: GameSettings = {
@@ -39,7 +39,7 @@ const mockSettings: GameSettings = {
   selectedGenerations: [1, 2, 3],
   isPrankster: false,
   isGenArrow: true,
-  guessOrder: 'reverse'
+  guessOrder: 'reverse',
 };
 
 describe('storage.ts', () => {
@@ -48,7 +48,7 @@ describe('storage.ts', () => {
   beforeEach(() => {
     // Set up proper localStorage mock
     mockLocalStorage = {};
-    
+
     Object.defineProperty(window, 'localStorage', {
       value: {
         getItem: jest.fn((key: string) => mockLocalStorage[key] || null),
@@ -60,9 +60,9 @@ describe('storage.ts', () => {
         }),
         clear: jest.fn(() => {
           mockLocalStorage = {};
-        })
+        }),
       },
-      writable: true
+      writable: true,
     });
   });
 
@@ -70,13 +70,22 @@ describe('storage.ts', () => {
     test('should save and load game settings', () => {
       saveGameSettings(mockSettings);
       const loaded = loadGameSettings();
-      
+
       expect(loaded).toEqual(mockSettings);
     });
 
     test('should return null when no settings saved', () => {
       const loaded = loadGameSettings();
       expect(loaded).toBeNull();
+    });
+
+    test.each([
+      {},
+      { selectedGenerations: null },
+      { ...mockSettings, selectedGenerations: [] },
+    ])('ignores incomplete settings: %j', (settings) => {
+      mockLocalStorage['poke-wordle-settings'] = JSON.stringify(settings);
+      expect(loadGameSettings()).toBeNull();
     });
 
     test('should handle corrupted settings data', () => {
@@ -92,13 +101,13 @@ describe('storage.ts', () => {
       guesses: [],
       selectedGenerations: [1, 2, 3],
       isGameOver: false,
-      isWon: false
+      isWon: false,
     };
 
     test('should save and load game progress', () => {
       saveGameProgress(mockProgress);
       const loaded = loadGameProgress();
-      
+
       expect(loaded).toEqual(mockProgress);
     });
 
@@ -116,7 +125,7 @@ describe('storage.ts', () => {
     test('should clear game progress', () => {
       saveGameProgress(mockProgress);
       clearGameProgress();
-      
+
       const loaded = loadGameProgress();
       expect(loaded).toBeNull();
     });
@@ -127,15 +136,21 @@ describe('storage.ts', () => {
       // Mock localStorage to throw error
       Object.defineProperty(window, 'localStorage', {
         value: {
-          setItem: jest.fn(() => { throw new Error('localStorage not available'); }),
-          getItem: jest.fn(() => { throw new Error('localStorage not available'); }),
-          removeItem: jest.fn(() => { throw new Error('localStorage not available'); }),
+          setItem: jest.fn(() => {
+            throw new Error('localStorage not available');
+          }),
+          getItem: jest.fn(() => {
+            throw new Error('localStorage not available');
+          }),
+          removeItem: jest.fn(() => {
+            throw new Error('localStorage not available');
+          }),
         },
-        writable: true
+        writable: true,
       });
 
       expect(() => saveGameSettings(mockSettings)).not.toThrow();
       expect(loadGameSettings()).toBeNull();
     });
   });
-}); 
+});

@@ -1,0 +1,42 @@
+[tools]
+node = "24.21.0"
+go = "1.27.1"
+
+[env]
+NEXT_TELEMETRY_DISABLED = "1"
+
+[tasks.install]
+description = "Install locked JavaScript dependencies"
+run = "npm ci"
+
+[tasks.dev]
+run = "npm run dev"
+
+[tasks.build]
+run = "npm run build"
+
+[tasks.start]
+run = "npm start"
+
+[tasks.lint]
+run = "npm run lint"
+
+[tasks.typecheck]
+run = "npm run typecheck"
+
+[tasks.test]
+run = "npm test -- --runInBand"
+
+[tasks.e2e]
+run = "npm run test:e2e"
+
+[tasks.check]
+run = "npm run check"
+
+[tasks."data:check"]
+dir = "poke-json"
+run = ["go vet ./...", "go test ./..."]
+
+[tasks."data:run"]
+dir = "poke-json"
+run = "go run ."

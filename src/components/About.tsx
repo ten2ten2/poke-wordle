@@ -1,8 +1,8 @@
 'use client';
 
-import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
+import { DialogTitle } from '@headlessui/react';
+import Modal from './Modal';
 import { useTranslations } from 'next-intl';
-import { Fragment } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 interface AboutProps {
@@ -14,166 +14,149 @@ export default function About({ isOpen, onClose }: AboutProps) {
   const t = useTranslations();
 
   return (
-    <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-50" onClose={onClose}>
-        <TransitionChild
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm" />
-        </TransitionChild>
-
-        <div className="fixed inset-0 overflow-y-auto safe-all">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <TransitionChild
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
+    <Modal isOpen={isOpen} onClose={onClose} className="max-w-2xl">
+      <article className="card-padding">
+        {/* Header */}
+        <header className="flex items-center justify-between mb-6">
+          <DialogTitle
+            as="h2"
+            className="text-responsive-lg font-medium leading-6 text-gray-900"
+          >
+            {t('about.title')}
+          </DialogTitle>
+          <nav aria-label={t('common.close')}>
+            <button
+              type="button"
+              className="touch-target rounded-md text-gray-400 hover:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-red-300"
+              onClick={onClose}
+              aria-label={t('common.close')}
             >
-              <DialogPanel className="modal-content max-w-2xl">
-                <article className="card-padding">
-                  {/* Header */}
-                  <header className="flex items-center justify-between mb-6">
-                    <DialogTitle as="h2" className="text-responsive-lg font-medium leading-6 text-gray-900">
-                      {t('about.title')}
-                    </DialogTitle>
-                    <nav aria-label={t('common.close')}>
-                      <button
-                        type="button"
-                        className="touch-target rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-300"
-                        onClick={onClose}
-                        aria-label={t('common.close')}
-                      >
-                        <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                      </button>
-                    </nav>
-                  </header>
+              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+            </button>
+          </nav>
+        </header>
 
-                  {/* Content */}
-                  <main className="space-y-6">
-                    {/* 主标题和描述 */}
-                    <section>
-                      <p className="text-gray-600">
-                        {t('about.description')}
-                      </p>
-                    </section>
+        {/* Content */}
+        <main className="space-y-6">
+          {/* 主标题和描述 */}
+          <section>
+            <p className="text-gray-600">{t('about.description')}</p>
+          </section>
 
-                    {/* 游戏玩法 */}
-                    <section>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                        {t('about.howToPlay')}
-                      </h3>
-                      <ol className="list-decimal list-inside space-y-2 text-gray-600">
-                        {t.raw('about.rules').map((rule: string, index: number) => (
-                          <li key={index}>{rule}</li>
-                        ))}
-                      </ol>
-                    </section>
+          {/* 游戏玩法 */}
+          <section>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">
+              {t('about.howToPlay')}
+            </h3>
+            <ol className="list-decimal list-inside space-y-2 text-gray-600">
+              {t.raw('about.rules').map((rule: string, index: number) => (
+                <li key={index}>{rule}</li>
+              ))}
+            </ol>
+          </section>
 
-                    {/* 宝可梦范围 */}
-                    <section>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                        {t('about.pokemonRange.title')}
-                      </h3>
-                      <p className="text-gray-600 mb-3">
-                        {t('about.pokemonRange.description')}
-                      </p>
-                      <ul className="space-y-1 text-sm text-gray-600 ml-4" role="list">
-                        <li>{t('about.pokemonRange.generations.gen1')}</li>
-                        <li>{t('about.pokemonRange.generations.gen2')}</li>
-                        <li>{t('about.pokemonRange.generations.gen3')}</li>
-                        <li>{t('about.pokemonRange.generations.gen4')}</li>
-                        <li>{t('about.pokemonRange.generations.gen5')}</li>
-                        <li>{t('about.pokemonRange.generations.gen6')}</li>
-                        <li>{t('about.pokemonRange.generations.gen7')}</li>
-                        <li>{t('about.pokemonRange.generations.gen8')}</li>
-                        <li>{t('about.pokemonRange.generations.gen9')}</li>
-                      </ul>
-                      <p className="text-gray-600 mt-3">
-                        {t('about.pokemonRange.note')}
-                      </p>
-                    </section>
+          {/* 宝可梦范围 */}
+          <section>
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              {t('about.pokemonRange.title')}
+            </h3>
+            <p className="text-gray-600 mb-3">
+              {t('about.pokemonRange.description')}
+            </p>
+            <ul className="space-y-1 text-sm text-gray-600 ml-4" role="list">
+              <li>{t('about.pokemonRange.generations.gen1')}</li>
+              <li>{t('about.pokemonRange.generations.gen2')}</li>
+              <li>{t('about.pokemonRange.generations.gen3')}</li>
+              <li>{t('about.pokemonRange.generations.gen4')}</li>
+              <li>{t('about.pokemonRange.generations.gen5')}</li>
+              <li>{t('about.pokemonRange.generations.gen6')}</li>
+              <li>{t('about.pokemonRange.generations.gen7')}</li>
+              <li>{t('about.pokemonRange.generations.gen8')}</li>
+              <li>{t('about.pokemonRange.generations.gen9')}</li>
+            </ul>
+            <p className="text-gray-600 mt-3">{t('about.pokemonRange.note')}</p>
+          </section>
 
-                    {/* 标签颜色说明 */}
-                    <section>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                        {t('about.colorGuide.title')}
-                      </h3>
-                      <ul className="space-y-2 text-sm" role="list">
-                        <li className="flex gap-1 items-center">
-                          <span className="tag tag-exact">{t('about.colorGuide.greenTag')}</span>
-                          <span
-                            className="text-gray-600"
-                            dangerouslySetInnerHTML={{
-                              __html: t('about.colorGuide.green')
-                                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                            }}
-                          />
-                        </li>
-                        <li className="flex gap-1 items-center">
-                          <span className="tag tag-close">{t('about.colorGuide.yellowTag')}</span>
-                          <span
-                            className="text-gray-600"
-                            dangerouslySetInnerHTML={{
-                              __html: t('about.colorGuide.yellow')
-                                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                            }}
-                          />
-                        </li>
-                        <li className="flex gap-1 items-center">
-                          <span className="tag tag-nope">{t('about.colorGuide.grayTag')}</span>
-                          <span
-                            className="text-gray-600"
-                            dangerouslySetInnerHTML={{
-                              __html: t('about.colorGuide.gray')
-                                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                            }}
-                          />
-                        </li>
-                      </ul>
-                    </section>
+          {/* 标签颜色说明 */}
+          <section>
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              {t('about.colorGuide.title')}
+            </h3>
+            <ul className="space-y-2 text-sm" role="list">
+              <li className="flex gap-1 items-center">
+                <span className="tag tag-exact">
+                  {t('about.colorGuide.greenTag')}
+                </span>
+                <span
+                  className="text-gray-600"
+                  dangerouslySetInnerHTML={{
+                    __html: t('about.colorGuide.green').replace(
+                      /\*\*(.*?)\*\*/g,
+                      '<strong>$1</strong>',
+                    ),
+                  }}
+                />
+              </li>
+              <li className="flex gap-1 items-center">
+                <span className="tag tag-close">
+                  {t('about.colorGuide.yellowTag')}
+                </span>
+                <span
+                  className="text-gray-600"
+                  dangerouslySetInnerHTML={{
+                    __html: t('about.colorGuide.yellow').replace(
+                      /\*\*(.*?)\*\*/g,
+                      '<strong>$1</strong>',
+                    ),
+                  }}
+                />
+              </li>
+              <li className="flex gap-1 items-center">
+                <span className="tag tag-nope">
+                  {t('about.colorGuide.grayTag')}
+                </span>
+                <span
+                  className="text-gray-600"
+                  dangerouslySetInnerHTML={{
+                    __html: t('about.colorGuide.gray').replace(
+                      /\*\*(.*?)\*\*/g,
+                      '<strong>$1</strong>',
+                    ),
+                  }}
+                />
+              </li>
+            </ul>
+          </section>
 
-                    {/* 黄色标签判断条件 */}
-                    <section>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                        {t('about.yellowConditions.title')}
-                      </h3>
-                      <ul className="space-y-2 text-sm text-gray-600 ml-4" role="list">
-                        <li>{t('about.yellowConditions.stats')}</li>
-                        <li>{t('about.yellowConditions.generation')}</li>
-                        <li>{t('about.yellowConditions.evolution')}</li>
-                      </ul>
-                    </section>
+          {/* 黄色标签判断条件 */}
+          <section>
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              {t('about.yellowConditions.title')}
+            </h3>
+            <ul className="space-y-2 text-sm text-gray-600 ml-4" role="list">
+              <li>{t('about.yellowConditions.stats')}</li>
+              <li>{t('about.yellowConditions.generation')}</li>
+              <li>{t('about.yellowConditions.evolution')}</li>
+            </ul>
+          </section>
 
-                    {/* 数据来源 */}
-                    <section>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                        {t('about.dataSource.title')}
-                      </h3>
-                      <div
-                        className="text-gray-600"
-                        dangerouslySetInnerHTML={{
-                          __html: t('about.dataSource.description')
-                            .replace(/\[([^\]]+)\]\(([^)]+)\s+"([^"]+)"\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-red-400 hover:text-red-600 underline inline-flex items-center gap-1" title="$3">$1<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a>')
-                        }}
-                      />
-                    </section>
-                  </main>
-                </article>
-              </DialogPanel>
-            </TransitionChild>
-          </div>
-        </div>
-      </Dialog>
-    </Transition>
+          {/* 数据来源 */}
+          <section>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">
+              {t('about.dataSource.title')}
+            </h3>
+            <div
+              className="text-gray-600"
+              dangerouslySetInnerHTML={{
+                __html: t('about.dataSource.description').replace(
+                  /\[([^\]]+)\]\(([^)]+)\s+"([^"]+)"\)/g,
+                  '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-red-400 hover:text-red-600 underline inline-flex items-center gap-1" title="$3">$1<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a>',
+                ),
+              }}
+            />
+          </section>
+        </main>
+      </article>
+    </Modal>
   );
-}     
+}

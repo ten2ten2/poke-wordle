@@ -14,7 +14,7 @@ interface GuessTableProps {
 const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
   const t = useTranslations();
   const locale = useLocale();
-  
+
   if (guesses.length === 0) {
     return (
       <div className="text-center py-12 sm:py-16">
@@ -44,7 +44,7 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
     if (pranksterImageUrl) {
       return (
         <div className="flex items-center justify-center py-2">
-          <div className="flex-shrink-0 h-12 w-12 sm:h-16 sm:w-16">
+          <div className="shrink-0 h-12 w-12 sm:h-16 sm:w-16">
             <Image
               src={pranksterImageUrl}
               alt="Hidden by Prankster"
@@ -75,7 +75,7 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
           <div className="block sm:hidden">
             {/* Pokemon Profile */}
             <div className="flex items-center p-3 bg-gray-50 rounded-lg">
-              <div className="relative w-16 h-16 mr-3 flex-shrink-0">
+              <div className="relative w-16 h-16 mr-3 shrink-0">
                 <Image
                   src={guess.profile || '/images/pokemon-placeholder.png'}
                   alt={translateText(guess.name, locale)}
@@ -83,7 +83,6 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
                   fill
                   className="object-contain"
                   sizes="64px"
-                  priority={index < 2}
                   loading={index < 2 ? 'eager' : 'lazy'}
                 />
               </div>
@@ -96,28 +95,28 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
             <div className="text-center">
               {/* Types */}
               <div className="flex content-center items-center justify-start py-2 border-b border-dashed border-gray-100">
-                <span className="text-sm font-medium text-gray-700 w-20 flex-shrink-0">
+                <span className="text-sm font-medium text-gray-700 w-20 shrink-0">
                   {t('game.columns.type')}
                 </span>
                 <div className="flex flex-wrap gap-1 justify-end">
-                  {guess.fieldToHide === 'types' ? (
-                    renderPranksterContent(guess.pranksterPokemonProfile || '')
-                  ) : (
-                    guess.types.map((type, typeIndex) => (
-                      <span
-                        key={typeIndex}
-                        className={getTagClassName(type.status)}
-                      >
-                        {translateText(type.value, locale)}
-                      </span>
-                    ))
-                  )}
+                  {guess.fieldToHide === 'types'
+                    ? renderPranksterContent(
+                        guess.pranksterPokemonProfile || '',
+                      )
+                    : guess.types.map((type, typeIndex) => (
+                        <span
+                          key={typeIndex}
+                          className={getTagClassName(type.status)}
+                        >
+                          {translateText(type.value, locale)}
+                        </span>
+                      ))}
                 </div>
               </div>
 
               {/* Base Stats */}
               <div className="flex content-center items-center justify-start py-2 border-b border-dashed border-gray-100">
-                <span className="text-sm font-medium text-gray-700 w-20 flex-shrink-0">
+                <span className="text-sm font-medium text-gray-700 w-20 shrink-0">
                   {t('game.columns.baseStats')}
                 </span>
                 <div className="flex justify-end">
@@ -127,7 +126,7 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
                     <span
                       className={clsx(
                         getTagClassName(guess.base_stats_total.status),
-                        getArrowClassName(guess.base_stats_total.arrow)
+                        getArrowClassName(guess.base_stats_total.arrow),
                       )}
                     >
                       {guess.base_stats_total.value}
@@ -138,7 +137,7 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
 
               {/* Generation */}
               <div className="flex content-center items-center justify-start py-2 border-b border-dashed border-gray-100">
-                <span className="text-sm font-medium text-gray-700 w-20 flex-shrink-0">
+                <span className="text-sm font-medium text-gray-700 w-20 shrink-0">
                   {t('game.columns.generation')}
                 </span>
                 <div className="flex justify-end">
@@ -148,7 +147,7 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
                     <span
                       className={clsx(
                         getTagClassName(guess.generation.status),
-                        getArrowClassName(guess.generation.arrow)
+                        getArrowClassName(guess.generation.arrow),
                       )}
                     >
                       {t(`generation.Gen${guess.generation.value}`)}
@@ -159,28 +158,28 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
 
               {/* Abilities */}
               <div className="flex content-center items-center justify-start py-2 border-b border-dashed border-gray-100">
-                <span className="text-sm font-medium text-gray-700 w-20 flex-shrink-0">
+                <span className="text-sm font-medium text-gray-700 w-20 shrink-0">
                   {t('game.columns.abilities')}
                 </span>
                 <div className="flex flex-wrap gap-1 justify-end">
-                  {guess.fieldToHide === 'abilities' ? (
-                    renderPranksterContent(guess.pranksterPokemonProfile || '')
-                  ) : (
-                    guess.abilities.map((ability, abilityIndex) => (
-                      <span
-                        key={abilityIndex}
-                        className={getTagClassName(ability.status)}
-                      >
-                        {translateText(ability.value, locale)}
-                      </span>
-                    ))
-                  )}
+                  {guess.fieldToHide === 'abilities'
+                    ? renderPranksterContent(
+                        guess.pranksterPokemonProfile || '',
+                      )
+                    : guess.abilities.map((ability, abilityIndex) => (
+                        <span
+                          key={abilityIndex}
+                          className={getTagClassName(ability.status)}
+                        >
+                          {translateText(ability.value, locale)}
+                        </span>
+                      ))}
                 </div>
               </div>
 
               {/* Evolution */}
               <div className="flex content-center items-center justify-start py-2 border-b border-dashed border-gray-100">
-                <span className="text-sm font-medium text-gray-700 w-20 flex-shrink-0">
+                <span className="text-sm font-medium text-gray-700 w-20 shrink-0">
                   {t('game.columns.evolution')}
                 </span>
                 <div className="flex flex-wrap gap-1 justify-end">
@@ -189,13 +188,23 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
                   ) : (
                     <>
                       {guess.evolution_stage.value !== null && (
-                        <span className={getTagClassName(guess.evolution_stage.status)}>
+                        <span
+                          className={getTagClassName(
+                            guess.evolution_stage.status,
+                          )}
+                        >
                           {t(`evolution.stage${guess.evolution_stage.value}`)}
                         </span>
                       )}
                       {guess.evolution_method_detail.value && (
-                        <span className={getTagClassName(guess.evolution_method_detail.status)}>
-                          {t(`evolutionMethods.${guess.evolution_method_detail.value}`)}
+                        <span
+                          className={getTagClassName(
+                            guess.evolution_method_detail.status,
+                          )}
+                        >
+                          {t(
+                            `evolutionMethods.${guess.evolution_method_detail.value}`,
+                          )}
                         </span>
                       )}
                     </>
@@ -205,22 +214,22 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
 
               {/* Tags */}
               <div className="flex content-center items-center justify-start py-2">
-                <span className="text-sm font-medium text-gray-700 w-20 flex-shrink-0">
+                <span className="text-sm font-medium text-gray-700 w-20 shrink-0">
                   {t('game.columns.tags')}
                 </span>
                 <div className="flex flex-wrap gap-1 justify-end">
-                  {guess.fieldToHide === 'tags' ? (
-                    renderPranksterContent(guess.pranksterPokemonProfile || '')
-                  ) : (
-                    guess.tags.map((tag, tagIndex) => (
-                      <span
-                        key={tagIndex}
-                        className={getTagClassName(tag.status)}
-                      >
-                        {t(`tags.${tag.value}`)}
-                      </span>
-                    ))
-                  )}
+                  {guess.fieldToHide === 'tags'
+                    ? renderPranksterContent(
+                        guess.pranksterPokemonProfile || '',
+                      )
+                    : guess.tags.map((tag, tagIndex) => (
+                        <span
+                          key={tagIndex}
+                          className={getTagClassName(tag.status)}
+                        >
+                          {t(`tags.${tag.value}`)}
+                        </span>
+                      ))}
                 </div>
               </div>
             </div>
@@ -238,7 +247,6 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
                   fill
                   className="object-contain"
                   sizes="(max-width: 640px) 64px, 80px"
-                  priority={index < 2}
                   loading={index < 2 ? 'eager' : 'lazy'}
                 />
               </div>
@@ -258,18 +266,18 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
                     </h4>
                   </div>
                   <div className="guess-table-cell">
-                    {guess.fieldToHide === 'types' ? (
-                      renderPranksterContent(guess.pranksterPokemonProfile || '')
-                    ) : (
-                      guess.types.map((type, typeIndex) => (
-                        <span
-                          key={typeIndex}
-                          className={getTagClassName(type.status)}
-                        >
-                          {translateText(type.value, locale)}
-                        </span>
-                      ))
-                    )}
+                    {guess.fieldToHide === 'types'
+                      ? renderPranksterContent(
+                          guess.pranksterPokemonProfile || '',
+                        )
+                      : guess.types.map((type, typeIndex) => (
+                          <span
+                            key={typeIndex}
+                            className={getTagClassName(type.status)}
+                          >
+                            {translateText(type.value, locale)}
+                          </span>
+                        ))}
                   </div>
                 </div>
 
@@ -282,12 +290,14 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
                   </div>
                   <div className="guess-table-cell">
                     {guess.fieldToHide === 'base_stats' ? (
-                      renderPranksterContent(guess.pranksterPokemonProfile || '')
+                      renderPranksterContent(
+                        guess.pranksterPokemonProfile || '',
+                      )
                     ) : (
                       <span
                         className={clsx(
                           getTagClassName(guess.base_stats_total.status),
-                          getArrowClassName(guess.base_stats_total.arrow)
+                          getArrowClassName(guess.base_stats_total.arrow),
                         )}
                       >
                         {guess.base_stats_total.value}
@@ -305,12 +315,14 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
                   </div>
                   <div className="guess-table-cell">
                     {guess.fieldToHide === 'generation' ? (
-                      renderPranksterContent(guess.pranksterPokemonProfile || '')
+                      renderPranksterContent(
+                        guess.pranksterPokemonProfile || '',
+                      )
                     ) : (
                       <span
                         className={clsx(
                           getTagClassName(guess.generation.status),
-                          getArrowClassName(guess.generation.arrow)
+                          getArrowClassName(guess.generation.arrow),
                         )}
                       >
                         {t(`generation.Gen${guess.generation.value}`)}
@@ -327,18 +339,18 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
                     </h4>
                   </div>
                   <div className="guess-table-cell">
-                    {guess.fieldToHide === 'abilities' ? (
-                      renderPranksterContent(guess.pranksterPokemonProfile || '')
-                    ) : (
-                      guess.abilities.map((ability, abilityIndex) => (
-                        <span
-                          key={abilityIndex}
-                          className={getTagClassName(ability.status)}
-                        >
-                          {translateText(ability.value, locale)}
-                        </span>
-                      ))
-                    )}
+                    {guess.fieldToHide === 'abilities'
+                      ? renderPranksterContent(
+                          guess.pranksterPokemonProfile || '',
+                        )
+                      : guess.abilities.map((ability, abilityIndex) => (
+                          <span
+                            key={abilityIndex}
+                            className={getTagClassName(ability.status)}
+                          >
+                            {translateText(ability.value, locale)}
+                          </span>
+                        ))}
                   </div>
                 </div>
 
@@ -351,17 +363,29 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
                   </div>
                   <div className="guess-table-cell">
                     {guess.fieldToHide === 'evolution' ? (
-                      renderPranksterContent(guess.pranksterPokemonProfile || '')
+                      renderPranksterContent(
+                        guess.pranksterPokemonProfile || '',
+                      )
                     ) : (
                       <>
                         {guess.evolution_stage.value !== null && (
-                          <span className={getTagClassName(guess.evolution_stage.status)}>
+                          <span
+                            className={getTagClassName(
+                              guess.evolution_stage.status,
+                            )}
+                          >
                             {t(`evolution.stage${guess.evolution_stage.value}`)}
                           </span>
                         )}
                         {guess.evolution_method_detail.value && (
-                          <span className={getTagClassName(guess.evolution_method_detail.status)}>
-                            {t(`evolutionMethods.${guess.evolution_method_detail.value}`)}
+                          <span
+                            className={getTagClassName(
+                              guess.evolution_method_detail.status,
+                            )}
+                          >
+                            {t(
+                              `evolutionMethods.${guess.evolution_method_detail.value}`,
+                            )}
                           </span>
                         )}
                       </>
@@ -377,18 +401,18 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
                     </h4>
                   </div>
                   <div className="guess-table-cell">
-                    {guess.fieldToHide === 'tags' ? (
-                      renderPranksterContent(guess.pranksterPokemonProfile || '')
-                    ) : (
-                      guess.tags.map((tag, tagIndex) => (
-                        <span
-                          key={tagIndex}
-                          className={getTagClassName(tag.status)}
-                        >
-                          {t(`tags.${tag.value}`)}
-                        </span>
-                      ))
-                    )}
+                    {guess.fieldToHide === 'tags'
+                      ? renderPranksterContent(
+                          guess.pranksterPokemonProfile || '',
+                        )
+                      : guess.tags.map((tag, tagIndex) => (
+                          <span
+                            key={tagIndex}
+                            className={getTagClassName(tag.status)}
+                          >
+                            {t(`tags.${tag.value}`)}
+                          </span>
+                        ))}
                   </div>
                 </div>
               </div>
@@ -400,4 +424,4 @@ const GuessTable = memo(function GuessTable({ guesses }: GuessTableProps) {
   );
 });
 
-export default GuessTable; 
+export default GuessTable;

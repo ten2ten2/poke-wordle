@@ -37,7 +37,8 @@
       "evolution": "Evoluzione",
       "tags": "Tag"
     },
-    "evolutionMethod": "Metodo di Evoluzione"
+    "evolutionMethod": "Metodo di Evoluzione",
+    "requestFailed": "Impossibile verificare la risposta. Riprova."
   },
   "settings": {
     "title": "Impostazioni",
@@ -248,5 +249,14 @@
         "description": "Se hai domande su questi termini o sulla nostra informativa sulla privacy, contattaci tramite il nostro repository GitHub."
       }
     }
+  },
+  "cookieConsent": {
+    "title": "Preferenze sulla privacy",
+    "description": "Salviamo i progressi di gioco e le impostazioni in questo browser. Scegliendo Accetta, autorizzi anche Google Analytics per aiutarci a migliorare il sito.",
+    "learnMore": "Scopri di più",
+    "accept": "Accetta",
+    "decline": "Rifiuta",
+    "close": "Chiudi",
+    "privacyAndTerms": "Informativa sulla Privacy e Termini di Servizio"
   }
 }
