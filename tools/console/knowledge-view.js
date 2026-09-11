@@ -58,7 +58,8 @@ export function createKnowledgeEditor({ api, notify }) {
     state.generation++; state.id = id; state.locale = locale; state.editing = true;
     const current = version();
     $('knowledge-empty').hidden = true; $('knowledge-editor').hidden = false;
-    fill({ ...current, createdAt: localDate(current?.createdAt ?? new Date().toISOString()), source: current?.source ?? template });
+    const sharedSlug = article()?.versions.en?.slug ?? Object.values(article()?.versions ?? {})[0]?.slug;
+    fill({ ...current, slug: current?.slug ?? sharedSlug, createdAt: localDate(current?.createdAt ?? new Date().toISOString()), source: current?.source ?? template });
     const redirects = (state.model.redirects ?? []).filter((alias) => alias.articleId === current?.id);
     $('knowledge-redirects').hidden = redirects.length === 0;
     $('knowledge-redirect-list').replaceChildren(...redirects.map((alias) => element('li', `/${alias.locale === 'en' ? '' : `${alias.locale}/`}knowledge/${alias.slug}`)));

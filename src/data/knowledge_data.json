@@ -7,13 +7,13 @@
       "createdAt": "2025-06-06T00:03:12+08:00",
       "translations": {
         "zh-hans": {
-          "slug": "大器晚成的宝可梦"
+          "slug": "late-bloomers-pokemon"
         },
         "zh-hant": {
-          "slug": "大器晚成的寶可夢"
+          "slug": "late-bloomers-pokemon"
         },
         "ja": {
-          "slug": "大器晩成なポケモン"
+          "slug": "late-bloomers-pokemon"
         }
       },
       "description": "Learn what defines a late-blooming Pokémon, why the final forms have a base stat total of 600, and which evolution lines carry this label.",
@@ -77,22 +77,22 @@
   "ja": [
     {
       "id": "k-ja-1",
-      "slug": "大器晩成なポケモン",
+      "slug": "late-bloomers-pokemon",
       "title": "「大器晩成」なポケモンとは？",
       "createdAt": "2025-06-06T00:03:12+08:00",
       "translations": {
         "zh-hans": {
-          "slug": "大器晚成的宝可梦"
+          "slug": "late-bloomers-pokemon"
         },
         "zh-hant": {
-          "slug": "大器晚成的寶可夢"
+          "slug": "late-bloomers-pokemon"
         },
         "en": {
           "slug": "late-bloomers-pokemon"
         }
       },
       "description": "「大器晩成」と呼ばれるポケモンの特徴、最終進化形の種族値合計600との関係、該当する進化系統を紹介します。",
-      "updatedAt": "2026-09-11T20:39:21Z"
+      "updatedAt": "2026-09-11T23:47:55.774Z"
     },
     {
       "id": "k-ja-guessing-clues",
@@ -152,22 +152,22 @@
   "zh-hans": [
     {
       "id": "k-zh-hans-1",
-      "slug": "大器晚成的宝可梦",
+      "slug": "late-bloomers-pokemon",
       "title": "什么是「大器晚成」的宝可梦？",
       "createdAt": "2025-06-06T00:03:12+08:00",
       "translations": {
         "zh-hant": {
-          "slug": "大器晚成的寶可夢"
+          "slug": "late-bloomers-pokemon"
         },
         "ja": {
-          "slug": "大器晩成なポケモン"
+          "slug": "late-bloomers-pokemon"
         },
         "en": {
           "slug": "late-bloomers-pokemon"
         }
       },
       "description": "了解「大器晚成」宝可梦的共同特征、最终进化形态种族值合计600的含义，以及具有这一标签的进化家族。",
-      "updatedAt": "2026-09-11T20:39:21Z"
+      "updatedAt": "2026-09-11T23:47:55.881Z"
     },
     {
       "id": "k-zh-hans-guessing-clues",
@@ -227,22 +227,22 @@
   "zh-hant": [
     {
       "id": "k-zh-hant-1",
-      "slug": "大器晚成的寶可夢",
+      "slug": "late-bloomers-pokemon",
       "title": "什麼是「大器晚成」的寶可夢？",
       "createdAt": "2025-06-06T00:03:12+08:00",
       "translations": {
         "zh-hans": {
-          "slug": "大器晚成的宝可梦"
+          "slug": "late-bloomers-pokemon"
         },
         "ja": {
-          "slug": "大器晩成なポケモン"
+          "slug": "late-bloomers-pokemon"
         },
         "en": {
           "slug": "late-bloomers-pokemon"
         }
       },
       "description": "了解「大器晚成」寶可夢的共同特徵、最終進化形態種族值合計600的含義，以及具有這一標籤的進化家族。",
-      "updatedAt": "2026-09-11T20:39:21Z"
+      "updatedAt": "2026-09-11T23:47:56.112Z"
     },
     {
       "id": "k-zh-hant-guessing-clues",

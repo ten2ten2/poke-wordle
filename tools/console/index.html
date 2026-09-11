@@ -51,9 +51,10 @@
               <form id="knowledge-form">
                 <div class="knowledge-fields">
                   <label>文章标题<input id="knowledge-title" type="text" required maxlength="200" autocomplete="off" title="文章标题"></label>
-                  <label>路径名称<input id="knowledge-slug" type="text" required maxlength="150" autocomplete="off" placeholder="例如 mega-evolution，不含 .mdx" title="路径名称"></label>
+                  <label>路径名称<input id="knowledge-slug" type="text" required maxlength="150" autocomplete="off" placeholder="例如 mega-evolution" title="路径名称" aria-describedby="knowledge-slug-help"></label>
                   <label>创建时间<input id="knowledge-created" type="datetime-local" required title="创建时间"></label>
                 </div>
+                <p id="knowledge-slug-help" class="small muted knowledge-help">各语言版本使用相同的英文路径，以小写字母、数字和短横线命名。修改标题时无需修改路径。</p>
                 <p id="knowledge-path" class="small muted knowledge-help"></p>
                 <div class="knowledge-fields knowledge-seo-fields">
                   <label>文章摘要<textarea id="knowledge-description" required maxlength="600" rows="3" placeholder="使用当前语言概括文章内容；用于文章列表和搜索摘要。" title="文章摘要"></textarea></label>
