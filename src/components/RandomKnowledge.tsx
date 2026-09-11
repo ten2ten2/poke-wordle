@@ -1,33 +1,36 @@
 'use client';
 
+import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { ArrowRightIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { KnowledgeData, isKnowledgeSupported } from '@/config/knowledge';
+import { type KnowledgeArticle, isKnowledgeSupported } from '@/config/knowledge';
 import knowledgeDataRaw from '@/data/knowledge_data.json';
-
-const knowledgeData = knowledgeDataRaw as KnowledgeData;
+import { useHydrated } from '@/hooks/useHydrated';
 
 export default function RandomKnowledge() {
   const locale = useLocale();
-  const t = useTranslations();
+  const hydrated = useHydrated();
 
-  // Check if current locale supports knowledge
   if (!isKnowledgeSupported(locale)) {
     return null;
   }
 
-  // Get articles for current locale
-  const articles = knowledgeData[locale as keyof KnowledgeData] || [];
+  const articles = knowledgeDataRaw[locale];
 
   if (articles.length === 0) {
     return null;
   }
 
-  // Keep the featured article consistent between server rendering and hydration.
-  const article = articles[0];
+  // Hydrate the server's first article, then select once for this page visit.
+  return <KnowledgeBanner key={`${locale}-${hydrated}`} articles={articles} randomize={hydrated} />;
+}
 
-  // Generate the correct href
+function KnowledgeBanner({ articles, randomize }: { articles: KnowledgeArticle[]; randomize: boolean }) {
+  const locale = useLocale();
+  const t = useTranslations();
+  const [article] = useState(() => articles[randomize ? Math.floor(Math.random() * articles.length) : 0]);
+
   const encodedSlug = encodeURIComponent(article.slug);
   const href =
     locale === 'en'
