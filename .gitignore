@@ -15,9 +15,3 @@ mise.local.toml
 .DS_Store
 *.log
 *.pem
-poke-json/output/
-poke-json/backup/
-poke-json/compare_result_*.json
-poke-json/poke-json
-poke-json/poke-json-*
-poke-json/*.exe

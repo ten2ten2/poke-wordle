@@ -31,12 +31,13 @@ run = "npm test -- --runInBand"
 run = "npm run test:e2e"
 
 [tasks.check]
+depends = ["data:check"]
 run = "npm run check"
 
 [tasks."data:check"]
-dir = "poke-json"
-run = ["go vet ./...", "go test ./..."]
+dir = "tools/poke-json"
+run = ["go vet ./...", "go test -race ./..."]
 
 [tasks."data:run"]
-dir = "poke-json"
+dir = "tools/poke-json"
 run = "go run ."
