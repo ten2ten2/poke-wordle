@@ -185,6 +185,7 @@ function Game({ ready }: { ready: boolean }) {
       <RandomKnowledge />
 
       <main className="w-full flex-1 container-responsive section-padding">
+        <h1 className="sr-only">{t('title')}</h1>
         <div className="space-y-4 sm:space-y-6">
           {!gameState.targetPokemon && <p className="game-intro">{t('game.intro')}</p>}
           {showSettingsChangeNotice && (

@@ -131,11 +131,12 @@
   },
   "knowledge": {
     "title": "知识库",
-    "description": "你可能感兴趣的宝可梦知识",
+    "description": "了解宝可梦形态、进化与世代知识，掌握宝可梦猜猜乐的颜色标签、数值箭头和筛选规则。",
     "comingSoon": "即将推出！我们正在构建一个全面的宝可梦知识库，帮助您成为更好的宝可梦猜测者。",
     "readMore": "阅读更多",
-    "readNext": "继续阅读",
-    "randomPrefix": "宝可梦问答："
+    "randomPrefix": "宝可梦问答：",
+    "seoTitle": "宝可梦知识库与猜谜指南 - 宝可梦猜猜乐",
+    "relatedArticles": "相关文章"
   },
   "footer": {
     "privacyAndTerms": "隐私与条款"

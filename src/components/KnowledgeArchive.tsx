@@ -27,9 +27,9 @@ export default function KnowledgeArchive() {
           <Breadcrumb items={[{ label: t('knowledge.title'), current: true }]} />
           <section className="card card-padding" aria-labelledby="knowledge-heading">
             <div className="border-b border-gray-100 pb-4 mb-4">
-              <h2 id="knowledge-heading" className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">
+              <h1 id="knowledge-heading" className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">
                 {t('knowledge.title')}
-              </h2>
+              </h1>
               <p className="text-base text-gray-600">{t('knowledge.description')}</p>
             </div>
             {articles.length > 0 ? (
@@ -42,7 +42,8 @@ export default function KnowledgeArchive() {
                     >
                       <Pokeball className="size-6 shrink-0" />
                       <div className="min-w-0 flex-1">
-                        <h3 className="text-base font-semibold">{article.title}</h3>
+                        <h2 className="text-base font-semibold">{article.title}</h2>
+                        <p className="text-sm text-gray-600 mt-1">{article.description}</p>
                         <time dateTime={article.createdAt} className="text-sm text-gray-500">
                           {new Date(article.createdAt).toLocaleDateString(locale === 'en' ? 'en-US' : locale, {
                             year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC',

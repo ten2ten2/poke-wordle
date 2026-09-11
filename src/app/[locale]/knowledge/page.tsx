@@ -6,6 +6,8 @@ import {
   isKnowledgeSupported,
   KNOWLEDGE_SUPPORTED_LOCALES,
 } from '@/config/knowledge';
+import { pageAlternates, pageMetadata } from '@/config/seo';
+import { localePath } from '@/i18n/routing';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -21,50 +23,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const t = await getTranslations({ locale, namespace: 'knowledge' });
 
-  const title = t('title');
+  const title = t('seoTitle');
   const description = t('description');
-
-  // Generate correct URLs for English vs other locales
-  const canonicalUrl = locale === 'en' ? '/knowledge' : `/${locale}/knowledge`;
-  const ogUrl =
-    locale === 'en'
-      ? 'https://www.pokewordle.app/knowledge'
-      : `https://www.pokewordle.app/${locale}/knowledge`;
-
-  // Generate language alternates only for supported locales
-  const languages: Record<string, string> = {
-    'x-default': '/knowledge',
-  };
-
-  KNOWLEDGE_SUPPORTED_LOCALES.forEach((supportedLocale) => {
-    const langCode =
-      supportedLocale === 'zh-hans'
-        ? 'zh-Hans'
-        : supportedLocale === 'zh-hant'
-          ? 'zh-Hant'
-          : supportedLocale;
-    const langUrl =
-      supportedLocale === 'en' ? '/knowledge' : `/${supportedLocale}/knowledge`;
-    languages[langCode] = langUrl;
+  return pageMetadata({
+    locale, title, description, path: localePath(locale, '/knowledge'),
+    languages: pageAlternates('/knowledge', KNOWLEDGE_SUPPORTED_LOCALES),
   });
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: canonicalUrl,
-      languages,
-    },
-    openGraph: {
-      title,
-      description,
-      url: ogUrl,
-    },
-    twitter: {
-      title,
-      description,
-    },
-  };
 }
 
 export default async function KnowledgePage({ params }: Props) {

@@ -3,7 +3,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import { createHash, randomUUID } from 'node:crypto';
 import { paths } from './pipeline.mjs';
-import { inspectMdx, syncArticleMetadata } from './knowledge-mdx.mjs';
+import { inspectMdx } from './knowledge-mdx.mjs';
 
 export const knowledgeLocales = ['en', 'ja', 'zh-hans', 'zh-hant'];
 const digest = (value) => createHash('sha256').update(value).digest('hex');
@@ -23,6 +23,7 @@ export function createKnowledgeManager({ root = paths.root } = {}) {
   const folder = path.join(data, 'knowledge');
   const indexFile = path.join(data, 'knowledge_data.json');
   const registryFile = path.join(data, 'knowledge-loaders.ts');
+  const redirectsFile = path.join(data, 'knowledge-redirects.json');
   let writing = false;
   async function safe(file) {
     const relative = path.relative(root, file);
@@ -39,12 +40,39 @@ export function createKnowledgeManager({ root = paths.root } = {}) {
     assert(validSlug(slug), '路径名称只能包含文字、数字、空格、点、下划线和短横线，且不含 .mdx 后缀');
     return path.join(folder, locale, `${slug}.mdx`);
   };
+  async function seoFields(version) {
+    assert(typeof version.description === 'string' && version.description.trim() && version.description.length <= 600, '请填写该语言的文章摘要（最多 600 字符）');
+    assert(version.seoTitle === undefined || typeof version.seoTitle === 'string' && version.seoTitle.length <= 200, 'SEO 标题不能超过 200 字符');
+    assert(version.image === undefined || typeof version.image === 'string', '分享图片地址无效');
+    const image = version.image?.trim();
+    if (image) {
+      assert(!/[\s\u0000-\u001f\u007f]/u.test(image), '分享图片地址不能含空白字符');
+      const url = new URL(image, 'https://www.pokewordle.app');
+      assert((image.startsWith('https://') || image.startsWith('/images/')) && url.protocol === 'https:' && !url.username && !url.password && !url.hash, '分享图片需要 HTTPS 地址或 /images/ 下的项目图片');
+      assert(/\.(png|jpe?g|webp|gif)$/i.test(url.pathname), '分享图片支持 PNG、JPEG、WebP 或 GIF');
+      if (image.startsWith('/')) {
+        assert(!url.search, '项目图片地址不能含查询参数');
+        const file = path.resolve(root, 'public', `.${decodeURIComponent(url.pathname)}`);
+        assert(file.startsWith(path.join(root, 'public/images/')), '分享图片路径越界');
+        await safe(file);
+        assert((await fs.stat(file)).isFile(), '分享图片文件不存在');
+      }
+    }
+    return {
+      description: version.description.trim(),
+      ...(version.seoTitle?.trim() ? { seoTitle: version.seoTitle.trim() } : {}),
+      ...(image ? { image } : {}),
+    };
+  }
   async function read() {
-    await safe(indexFile); await safe(registryFile);
+    await safe(indexFile); await safe(registryFile); await safe(redirectsFile);
     const raw = await fs.readFile(indexFile, 'utf8');
     const index = JSON.parse(raw);
     const versions = new Map(); const identities = new Set(); const fileNames = new Set();
-    const content = new Map([[indexFile, raw], [registryFile, await optional(registryFile)]]);
+    const redirectsRaw = await optional(redirectsFile);
+    const redirects = JSON.parse(redirectsRaw ?? '[]');
+    assert(Array.isArray(redirects), '历史路径清单无效');
+    const content = new Map([[indexFile, raw], [registryFile, await optional(registryFile)], [redirectsFile, redirectsRaw]]);
     for (const locale of knowledgeLocales) {
       assert(Array.isArray(index[locale]), `${locale} 文章索引无效`);
       for (const metadata of index[locale]) {
@@ -52,11 +80,21 @@ export function createKnowledgeManager({ root = paths.root } = {}) {
         identities.add(metadata.id);
         assert(typeof metadata.title === 'string' && metadata.title.trim(), '文章标题缺失');
         assert(Number.isFinite(Date.parse(metadata.createdAt)), '文章创建时间无效');
+        assert(metadata.updatedAt === undefined || Number.isFinite(Date.parse(metadata.updatedAt)) && Date.parse(metadata.updatedAt) >= Date.parse(metadata.createdAt), '文章更新时间无效');
+        await seoFields(metadata);
         const file = sourceFile(locale, metadata.slug); await safe(file);
         assert(!fileNames.has(normalize(file)), `${locale} 的路径名称重复：${metadata.slug}`); fileNames.add(normalize(file));
         const source = await fs.readFile(file, 'utf8'); content.set(file, source);
         versions.set(key(locale, metadata.slug), { ...metadata, locale, source, file });
       }
+    }
+    const aliases = new Set();
+    for (const alias of redirects) {
+      const id = normalize(key(alias.locale, alias.slug));
+      assert(knowledgeLocales.includes(alias.locale) && validSlug(alias.slug) && !aliases.has(id), '历史路径缺失、无效或重复');
+      aliases.add(id);
+      assert([...versions.values()].some((version) => version.locale === alias.locale && version.id === alias.articleId), '历史路径指向的文章版本已不存在');
+      assert(![...versions.keys()].some((current) => normalize(current) === id), '历史路径与当前文章路径冲突');
     }
     const neighbors = new Map([...versions.keys()].map((id) => [id, new Set()]));
     for (const [id, version] of versions) {
@@ -81,10 +119,10 @@ export function createKnowledgeManager({ root = paths.root } = {}) {
       const preferred = group['zh-hans'] ?? group.en ?? members[0];
       articles.push({ id: members.map((item) => item.id).sort()[0], title: preferred.title, versions: group });
     }
-    return { index, articles, content, revision: digest([...content].sort(([a], [b]) => a.localeCompare(b)).map(([file, value]) => `${path.relative(root, file)}:${digest(value ?? '')}`).join('\n')) };
+    return { index, articles, redirects, content, revision: digest([...content].sort(([a], [b]) => a.localeCompare(b)).map(([file, value]) => `${path.relative(root, file)}:${digest(value ?? '')}`).join('\n')) };
   }
   const publicModel = (snapshot) => ({
-    revision: snapshot.revision, locales: knowledgeLocales,
+    revision: snapshot.revision, locales: knowledgeLocales, redirects: snapshot.redirects,
     articles: snapshot.articles.map((article) => ({ ...article, versions: Object.fromEntries(Object.entries(article.versions).map(([locale, version]) => {
       const { file, ...fields } = version; return [locale, { ...fields, path: path.relative(root, file) }];
     })) })),
@@ -127,21 +165,31 @@ export function createKnowledgeManager({ root = paths.root } = {}) {
         assert(typeof version.title === 'string' && version.title.trim() && version.title.length <= 200, '标题不能为空，且不能超过 200 字符');
         assert(typeof version.createdAt === 'string' && Number.isFinite(Date.parse(version.createdAt)), '创建时间无效');
         const previous = article.versions[locale];
+        assert(!previous || previous.slug === slug || normalize(previous.slug) !== normalize(slug), '路径不能只修改大小写，请使用不同的路径名称');
+        const seo = await seoFields(version);
+        assert(!before.redirects.some((alias) => alias.locale === locale && normalize(alias.slug) === normalize(slug) && alias.articleId !== previous?.id), '该路径属于另一篇文章的历史地址');
         for (const other of before.articles) for (const existing of Object.values(other.versions)) {
           assert(existing === previous || normalize(existing.file) !== normalize(file), `该语言已存在路径 ${slug}`);
         }
         await safe(file);
         if (!previous || previous.file !== file) assert(await optional(file) === null, '目标 MDX 文件已存在，不能覆盖未登记的文章');
+        const source = typeof version.source === 'string' && version.source.endsWith('\n') ? version.source : `${version.source}\n`;
         await inspectMdx(version.source);
         savedID = previous?.id ?? `k-${randomUUID()}`;
+        const fields = { title: version.title.trim(), slug, createdAt: version.createdAt, ...seo, source };
+        if (previous && ['title', 'slug', 'createdAt', 'description', 'seoTitle', 'image', 'source'].every((field) => fields[field] === previous[field])) {
+          return { ...publicModel(before), selectedArticleId: article.id };
+        }
         const updatedAt = new Date().toISOString();
-        const source = syncArticleMetadata(version.source, { locale, slug, title: version.title.trim(), createdAt: version.createdAt, updatedAt });
-        await inspectMdx(source);
+        assert(Date.parse(version.createdAt) <= Date.parse(updatedAt), '创建时间不能晚于当前时间');
         article.versions[locale] = {
-          id: savedID, title: version.title.trim(), slug, locale,
-          createdAt: version.createdAt, updatedAt, source, file,
+          id: savedID, locale, ...fields, updatedAt, file,
         };
-        changes.set(file, source.endsWith('\n') ? source : `${source}\n`);
+        changes.set(file, source);
+        if (previous && previous.slug !== slug) {
+          before.redirects = before.redirects.filter((alias) => !(alias.locale === locale && normalize(alias.slug) === normalize(slug)));
+          before.redirects.push({ locale, slug: previous.slug, articleId: savedID });
+        }
         if (previous && previous.file !== file) changes.set(previous.file, null);
       } else if (body.action === 'deleteVersion') {
         const version = article.versions[body.locale]; assert(version, '该语言版本不存在');
@@ -158,6 +206,8 @@ export function createKnowledgeManager({ root = paths.root } = {}) {
           index[locale].push({ ...metadata, translations: Object.fromEntries(Object.entries(group.versions).filter(([other]) => other !== locale).map(([other, value]) => [other, { slug: value.slug }])) });
         }
       }
+      const ids = new Set(Object.values(index).flat().map((version) => version.id));
+      changes.set(redirectsFile, json(before.redirects.filter((alias) => ids.has(alias.articleId))));
       changes.set(indexFile, json(index)); changes.set(registryFile, registrySource(index));
       assert((await read()).revision === body.revision, '保存期间文件已发生变化，请重新载入后合并');
       await transaction(changes);
@@ -167,7 +217,10 @@ export function createKnowledgeManager({ root = paths.root } = {}) {
   }
   async function check({ sync = false } = {}) {
     const snapshot = await read();
-    for (const article of snapshot.articles) for (const version of Object.values(article.versions)) await inspectMdx(version.source);
+    for (const article of snapshot.articles) for (const version of Object.values(article.versions)) {
+      await inspectMdx(version.source);
+      assert.deepEqual(version.translations ?? {}, Object.fromEntries(Object.entries(article.versions).filter(([locale]) => locale !== version.locale).map(([locale, value]) => [locale, { slug: value.slug }])), '语言关联需要完整且互相对应');
+    }
     const expected = registrySource(snapshot.index);
     if (sync) await transaction(new Map([[registryFile, expected]]));
     else assert(snapshot.content.get(registryFile) === expected, '知识库加载清单过期，请运行 mise run knowledge:sync');

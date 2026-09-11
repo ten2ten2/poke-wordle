@@ -53,10 +53,17 @@
                   <label>创建时间<input id="knowledge-created" type="datetime-local" required></label>
                 </div>
                 <p id="knowledge-path" class="small muted knowledge-help"></p>
+                <div class="knowledge-fields knowledge-seo-fields">
+                  <label>文章摘要<textarea id="knowledge-description" required maxlength="600" rows="3" placeholder="使用当前语言概括文章内容；用于文章列表和搜索摘要。"></textarea></label>
+                  <label>SEO 标题（可选）<input id="knowledge-seo-title" type="text" maxlength="200" placeholder="留空使用文章标题 + Poke Wordle"></label>
+                  <label>分享图片（可选）<input id="knowledge-image" type="text" placeholder="HTTPS 图片地址或 /images/ 下的项目图片"></label>
+                </div>
+                <div class="knowledge-search-preview" aria-label="搜索摘要预览"><strong id="knowledge-search-title"></strong><span id="knowledge-search-url" class="small muted"></span><p id="knowledge-search-description"></p><small class="muted">搜索引擎可能根据查询调整标题和摘要；留空分享图片时使用站点默认图。</small></div>
+                <details id="knowledge-redirects" class="knowledge-help" hidden><summary>历史地址（自动永久跳转到当前文章）</summary><ul id="knowledge-redirect-list"></ul></details>
                 <div class="knowledge-toolbar"><div class="data-actions"><button id="knowledge-source-tab" type="button" class="btn-option" aria-pressed="true">编辑 MDX</button><button id="knowledge-preview" type="button" class="btn-option" aria-pressed="false">预览并校验</button></div><div class="data-actions"><button id="knowledge-import" type="button" class="btn-ghost">导入 MDX</button><input id="knowledge-file" type="file" accept=".mdx,.md" hidden><button id="knowledge-export" type="button" class="btn-ghost">导出 MDX</button></div></div>
                 <div id="knowledge-source-panel" class="knowledge-source-panel"><label for="knowledge-source" class="sr-only">MDX 正文</label><textarea id="knowledge-source" rows="22" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" aria-describedby="knowledge-mdx-help"></textarea><div class="knowledge-source-footer"><span id="knowledge-source-count" class="small muted"></span><button id="knowledge-copy-version" type="button" class="btn-ghost">复制已有版本正文</button></div></div>
                 <div id="knowledge-preview-panel" hidden><p id="knowledge-preview-status" class="small muted knowledge-help" role="status"></p><iframe id="knowledge-preview-frame" title="文章正文预览" sandbox></iframe></div>
-                <p id="knowledge-mdx-help" class="small muted knowledge-help">支持 Markdown、表格、FAQ / Question / Answer、JsonLd 和静态 JSX；不执行 JavaScript 或 import/export。Tab 缩进，Ctrl / ⌘ + S 保存。</p>
+                <p id="knowledge-mdx-help" class="small muted knowledge-help">支持 Markdown、表格、FAQ / Question / Answer 和静态 JSX；正文从 ## 二级标题开始，结构化数据自动生成。Tab 缩进，Ctrl / ⌘ + S 保存。</p>
                 <div class="knowledge-save-bar"><span id="knowledge-dirty" class="small muted" role="status"></span><button id="knowledge-save" type="submit" class="btn-primary">保存到项目</button></div>
               </form>
               <div class="knowledge-delete-actions"><button id="knowledge-delete-version" class="btn-danger">删除此语言版本</button><button id="knowledge-delete-article" class="btn-ghost">删除整篇文章</button></div>

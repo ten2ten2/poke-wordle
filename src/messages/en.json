@@ -131,11 +131,12 @@
   },
   "knowledge": {
     "title": "Knowledge",
-    "description": "Pokémon knowledge that you might have interests in",
+    "description": "Explore Pokémon forms, evolution and generations, and learn how to use the clues in Poke Wordle.",
     "comingSoon": "Coming soon! We're working on building a comprehensive knowledge base to help you become a better Pokémon guesser.",
     "readMore": "Read More",
-    "readNext": "Read Next",
-    "randomPrefix": "Pokémon Q&A: "
+    "randomPrefix": "Pokémon Q&A: ",
+    "seoTitle": "Pokémon Knowledge & Guessing Guides - Poke Wordle",
+    "relatedArticles": "Related articles"
   },
   "footer": {
     "privacyAndTerms": "Privacy & Terms"

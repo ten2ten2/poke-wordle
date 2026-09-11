@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { absoluteUrl } from '@/config/seo';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: '*', allow: '/', disallow: '/api/' },
       { userAgent: 'FacebookBot', disallow: '/' },
     ],
-    sitemap: 'https://www.pokewordle.app/sitemap.xml',
+    sitemap: absoluteUrl('/sitemap.xml'),
   };
 }

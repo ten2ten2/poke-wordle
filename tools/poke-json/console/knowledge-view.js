@@ -2,11 +2,13 @@ import { $, element, languages } from './shared.js';
 
 const template = '<Question>在这里填写问题</Question>\n<Answer>\n在这里编写答案，支持 **Markdown**。\n</Answer>\n';
 const localDate = (value) => { const date = new Date(value); return new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16); };
+const fields = { title: 'title', slug: 'slug', createdAt: 'created', description: 'description', seoTitle: 'seo-title', image: 'image', source: 'source' };
 export function createKnowledgeEditor({ api, notify }) {
   const state = { model: null, id: null, locale: 'zh-hans', editing: false, saved: '', working: false, generation: 0 };
   const article = () => state.model?.articles.find((item) => item.id === state.id);
   const version = () => article()?.versions[state.locale];
-  const values = () => ({ title: $('knowledge-title').value, slug: $('knowledge-slug').value, createdAt: $('knowledge-created').value, source: $('knowledge-source').value });
+  const values = () => Object.fromEntries(Object.entries(fields).map(([name, id]) => [name, $(`knowledge-${id}`).value]));
+  const fill = (values) => { for (const [name, id] of Object.entries(fields)) $(`knowledge-${id}`).value = values[name] ?? ''; };
   const dirty = () => state.editing && JSON.stringify(values()) !== state.saved;
   const canLeave = () => !state.working && (!dirty() || window.confirm('有未保存的 MDX 修改。确定放弃这些修改并离开吗？'));
   function sourceMode() { $('knowledge-source-panel').hidden = false; $('knowledge-preview-panel').hidden = true; $('knowledge-source-tab').setAttribute('aria-pressed', 'true'); $('knowledge-preview').setAttribute('aria-pressed', 'false'); }
@@ -15,6 +17,10 @@ export function createKnowledgeEditor({ api, notify }) {
     const source = $('knowledge-source').value;
     $('knowledge-source-count').textContent = `${source.split('\n').length} 行 · ${source.length} 字符`;
     $('knowledge-path').textContent = `/${state.locale === 'en' ? '' : `${state.locale}/`}knowledge/${$('knowledge-slug').value || '路径名称'}`;
+    const form = values();
+    $('knowledge-search-title').textContent = form.seoTitle.trim() || `${form.title || '文章标题'} - Poke Wordle`;
+    $('knowledge-search-url').textContent = `https://www.pokewordle.app/${state.locale === 'en' ? '' : `${state.locale}/`}knowledge/${encodeURIComponent(form.slug || 'article')}`;
+    $('knowledge-search-description').textContent = form.description || '填写当前语言的文章摘要。';
     $('knowledge-copy-version').hidden = !article();
     $('knowledge-delete-version').disabled = !version() || state.working;
     $('knowledge-delete-article').disabled = !article() || state.working;
@@ -42,10 +48,10 @@ export function createKnowledgeEditor({ api, notify }) {
     state.generation++; state.id = id; state.locale = locale; state.editing = true;
     const current = version();
     $('knowledge-empty').hidden = true; $('knowledge-editor').hidden = false;
-    $('knowledge-title').value = current?.title ?? '';
-    $('knowledge-slug').value = current?.slug ?? '';
-    $('knowledge-created').value = localDate(current?.createdAt ?? new Date().toISOString());
-    $('knowledge-source').value = current?.source ?? template;
+    fill({ ...current, createdAt: localDate(current?.createdAt ?? new Date().toISOString()), source: current?.source ?? template });
+    const redirects = (state.model.redirects ?? []).filter((alias) => alias.articleId === current?.id);
+    $('knowledge-redirects').hidden = redirects.length === 0;
+    $('knowledge-redirect-list').replaceChildren(...redirects.map((alias) => element('li', `/${alias.locale === 'en' ? '' : `${alias.locale}/`}knowledge/${alias.slug}`)));
     state.saved = JSON.stringify(values()); sourceMode();
     $('knowledge-languages').replaceChildren(...state.model.locales.map((language) => {
       const button = element('button', `${languages[language]}${article()?.versions[language] ? '' : ' ＋'}`, 'btn-option');
@@ -97,7 +103,7 @@ export function createKnowledgeEditor({ api, notify }) {
       const edited = JSON.stringify(form) !== JSON.stringify(values());
       const latest = values(); setModel(result); open(result.selectedArticleId, state.locale);
       if (edited) {
-        $('knowledge-title').value = latest.title; $('knowledge-slug').value = latest.slug; $('knowledge-created').value = latest.createdAt; $('knowledge-source').value = latest.source;
+        fill(latest);
       }
       notify(edited ? '提交时的内容已保存，后续输入仍待保存。' : '文章已保存到项目，知识库、语言关联与随机问答已同步。');
     });

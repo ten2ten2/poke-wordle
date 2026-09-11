@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
-import { compile, createProcessor } from '@mdx-js/mdx';
+import { compile } from '@mdx-js/mdx';
 import remarkGfm from 'remark-gfm';
 import { createElement, Fragment } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
 const tags = new Set('a abbr b blockquote br caption circle code dd del details div dl dt em figcaption figure g h1 h2 h3 h4 h5 h6 hr i img kbd li line ol p path polygon polyline pre rect s section small span strong sub summary sup svg table tbody td th thead tr ul'.split(' '));
-const components = new Map([['FAQ', 'section'], ['Question', 'h2'], ['Answer', 'div'], ['JsonLd', null]]);
+const components = new Map([['FAQ', 'section'], ['Question', 'h2'], ['Answer', 'div']]);
 const fail = (node, message) => { const position = node.position?.start; throw new Error(`${position ? `第 ${position.line} 行，第 ${position.column} 列：` : ''}${message}`); };
 
 function literal(node, owner) {
@@ -58,10 +58,11 @@ function validateTree() {
   return (tree) => {
     function visit(node) {
       if (node.type === 'mdxjsEsm') fail(node, '请直接使用内置组件，文章不支持 import/export');
+      if (node.type === 'heading' && node.depth === 1 || node.name === 'h1') fail(node, '页面已包含文章标题，正文请从二级标题（##）开始');
       if (node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement') {
-        if (node.name && !tags.has(node.name) && !components.has(node.name)) fail(node, `未知组件 ${node.name}；可使用 FAQ、Question、Answer、JsonLd 和静态 HTML`);
-        const props = attributes(node);
-        if (node.name === 'JsonLd' && (!props.data || typeof props.data !== 'object' || Array.isArray(props.data))) fail(node, 'JsonLd 需要静态 data 对象');
+        if (node.name === 'JsonLd') fail(node, '结构化数据由文章索引自动生成，请移除 MDX 中的 JsonLd');
+        if (node.name && !tags.has(node.name) && !components.has(node.name)) fail(node, `未知组件 ${node.name}；可使用 FAQ、Question、Answer 和静态 HTML`);
+        attributes(node);
       }
       if (node.type === 'mdxFlowExpression' || node.type === 'mdxTextExpression') {
         expression(node);
@@ -82,7 +83,6 @@ function previewNode(node, index = 0) {
     name = node.tagName;
     props = Object.fromEntries(Object.entries(node.properties ?? {}).map(([key, value]) => [key.replace(/^(data|aria)([A-Z].*)$/, (_, prefix, rest) => `${prefix}-${rest.replace(/[A-Z]/g, (letter, offset) => `${offset ? '-' : ''}${letter.toLowerCase()}`)}`), Array.isArray(value) ? value.join(' ') : value]));
   } else if (node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement') {
-    if (node.name === 'JsonLd') return null;
     name = node.name ? components.get(node.name) ?? node.name : Fragment;
     props = attributes(node);
   } else return null;
@@ -104,25 +104,4 @@ export async function inspectMdx(source) {
     throw error;
   }
   return html;
-}
-
-// Existing articles may carry their own Article JSON-LD block.
-export function syncArticleMetadata(source, metadata) {
-  const tree = createProcessor({ remarkPlugins: [remarkGfm] }).parse(source);
-  const replacements = [];
-  const url = `https://www.pokewordle.app${metadata.locale === 'en' ? '' : `/${metadata.locale}`}/knowledge/${encodeURIComponent(metadata.slug)}`;
-  function visit(node) {
-    if (node.name === 'JsonLd') {
-      const { data } = attributes(node);
-      if (data?.['@type'] === 'Article') {
-        const updated = { ...data, headline: metadata.title, datePublished: metadata.createdAt, dateModified: metadata.updatedAt, inLanguage: metadata.locale, mainEntityOfPage: { '@type': 'WebPage', '@id': url } };
-        if ('url' in updated) updated.url = url;
-        replacements.push({ start: node.position.start.offset, end: node.position.end.offset, value: `<JsonLd data={${JSON.stringify(updated, null, 2)}} />` });
-      }
-    }
-    for (const child of node.children ?? []) visit(child);
-  }
-  visit(tree);
-  for (const change of replacements.sort((a, b) => b.start - a.start)) source = source.slice(0, change.start) + change.value + source.slice(change.end);
-  return source;
 }

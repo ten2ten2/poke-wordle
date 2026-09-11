@@ -1,78 +1,302 @@
 {
-    "en": [
-        {
-            "id": "k-en-1",
-            "slug": "late-bloomers-pokemon",
-            "title": "What are \"Late Bloomers\" Pokémon?",
-            "createdAt": "2025-06-06T00:03:12+08:00",
-            "translations": {
-                "zh-hans": {
-                    "slug": "大器晚成的宝可梦"
-                },
-                "zh-hant": {
-                    "slug": "大器晚成的寶可夢"
-                },
-                "ja": {
-                    "slug": "大器晩成なポケモン"
-                }
-            }
+  "en": [
+    {
+      "id": "k-en-1",
+      "slug": "late-bloomers-pokemon",
+      "title": "What are \"Late Bloomers\" Pokémon?",
+      "createdAt": "2025-06-06T00:03:12+08:00",
+      "translations": {
+        "zh-hans": {
+          "slug": "大器晚成的宝可梦"
+        },
+        "zh-hant": {
+          "slug": "大器晚成的寶可夢"
+        },
+        "ja": {
+          "slug": "大器晩成なポケモン"
         }
-    ],
-    "ja": [
-        {
-            "id": "k-ja-1",
-            "slug": "大器晩成なポケモン",
-            "title": "「大器晩成」なポケモンとは？",
-            "createdAt": "2025-06-06T00:03:12+08:00",
-            "translations": {
-                "zh-hans": {
-                    "slug": "大器晚成的宝可梦"
-                },
-                "zh-hant": {
-                    "slug": "大器晚成的寶可夢"
-                },
-                "en": {
-                    "slug": "late-bloomers-pokemon"
-                }
-            }
+      },
+      "description": "Learn what defines a late-blooming Pokémon, why the final forms have a base stat total of 600, and which evolution lines carry this label.",
+      "updatedAt": "2026-09-11T20:39:21Z"
+    },
+    {
+      "id": "k-en-guessing-clues",
+      "slug": "guessing-clues",
+      "title": "How do Poke Wordle’s colors and arrows work?",
+      "description": "Read exact and close matches, interpret base stat and generation arrows, and understand why matching clues do not always mean a correct guess.",
+      "createdAt": "2026-09-11T20:39:21Z",
+      "translations": {
+        "ja": {
+          "slug": "guessing-clues"
+        },
+        "zh-hans": {
+          "slug": "guessing-clues"
+        },
+        "zh-hant": {
+          "slug": "guessing-clues"
         }
-    ],
-    "zh-hans": [
-        {
-            "id": "k-zh-hans-1",
-            "slug": "大器晚成的宝可梦",
-            "title": "什么是「大器晚成」的宝可梦？",
-            "createdAt": "2025-06-06T00:03:12+08:00",
-            "translations": {
-                "zh-hant": {
-                    "slug": "大器晚成的寶可夢"
-                },
-                "ja": {
-                    "slug": "大器晩成なポケモン"
-                },
-                "en": {
-                    "slug": "late-bloomers-pokemon"
-                }
-            }
+      }
+    },
+    {
+      "id": "k-en-generations-and-settings",
+      "slug": "generations-and-settings",
+      "title": "How do generations and Settings change the game?",
+      "description": "Understand generation filters, regional-form examples, when settings restart a round, and how guess order affects the display.",
+      "createdAt": "2026-09-11T20:39:21Z",
+      "translations": {
+        "ja": {
+          "slug": "generations-and-settings"
+        },
+        "zh-hans": {
+          "slug": "generations-and-settings"
+        },
+        "zh-hant": {
+          "slug": "generations-and-settings"
         }
-    ],
-    "zh-hant": [
-        {
-            "id": "k-zh-hant-1",
-            "slug": "大器晚成的寶可夢",
-            "title": "什麼是「大器晚成」的寶可夢？",
-            "createdAt": "2025-06-06T00:03:12+08:00",
-            "translations": {
-                "zh-hans": {
-                    "slug": "大器晚成的宝可梦"
-                },
-                "ja": {
-                    "slug": "大器晩成なポケモン"
-                },
-                "en": {
-                    "slug": "late-bloomers-pokemon"
-                }
-            }
+      }
+    },
+    {
+      "id": "k-en-forms-and-mega-evolution",
+      "slug": "forms-and-mega-evolution",
+      "title": "Why do forms have different Mega Evolution tags?",
+      "description": "Distinguish a Pokémon species from its forms, and understand how Poke Wordle assigns Mega Evolution clues to Zygarde and Floette.",
+      "createdAt": "2026-09-11T20:39:21Z",
+      "translations": {
+        "ja": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "zh-hans": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "zh-hant": {
+          "slug": "forms-and-mega-evolution"
         }
-    ]
+      }
+    }
+  ],
+  "ja": [
+    {
+      "id": "k-ja-1",
+      "slug": "大器晩成なポケモン",
+      "title": "「大器晩成」なポケモンとは？",
+      "createdAt": "2025-06-06T00:03:12+08:00",
+      "translations": {
+        "zh-hans": {
+          "slug": "大器晚成的宝可梦"
+        },
+        "zh-hant": {
+          "slug": "大器晚成的寶可夢"
+        },
+        "en": {
+          "slug": "late-bloomers-pokemon"
+        }
+      },
+      "description": "「大器晩成」と呼ばれるポケモンの特徴、最終進化形の種族値合計600との関係、該当する進化系統を紹介します。",
+      "updatedAt": "2026-09-11T20:39:21Z"
+    },
+    {
+      "id": "k-ja-guessing-clues",
+      "slug": "guessing-clues",
+      "title": "色付きタグと矢印はどう読み取る？",
+      "description": "種族値合計・世代・進化方法の一致条件と矢印の方向、緑のヒントだけでは正解と限らない理由を解説します。",
+      "createdAt": "2026-09-11T20:39:21Z",
+      "translations": {
+        "en": {
+          "slug": "guessing-clues"
+        },
+        "zh-hans": {
+          "slug": "guessing-clues"
+        },
+        "zh-hant": {
+          "slug": "guessing-clues"
+        }
+      }
+    },
+    {
+      "id": "k-ja-generations-and-settings",
+      "slug": "generations-and-settings",
+      "title": "世代の選択と設定で何が変わる？",
+      "description": "世代フィルターと地方の姿の扱い、ラウンドがリセットされる設定、回答の表示順と保存の仕組みを説明します。",
+      "createdAt": "2026-09-11T20:39:21Z",
+      "translations": {
+        "en": {
+          "slug": "generations-and-settings"
+        },
+        "zh-hans": {
+          "slug": "generations-and-settings"
+        },
+        "zh-hant": {
+          "slug": "generations-and-settings"
+        }
+      }
+    },
+    {
+      "id": "k-ja-forms-and-mega-evolution",
+      "slug": "forms-and-mega-evolution",
+      "title": "姿によってメガシンカのタグが違うのはなぜ？",
+      "description": "同じポケモンの異なる姿を区別し、ジガルデとフラエッテを例にポケワードルのメガシンカタグを読み解きます。",
+      "createdAt": "2026-09-11T20:39:21Z",
+      "translations": {
+        "en": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "zh-hans": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "zh-hant": {
+          "slug": "forms-and-mega-evolution"
+        }
+      }
+    }
+  ],
+  "zh-hans": [
+    {
+      "id": "k-zh-hans-1",
+      "slug": "大器晚成的宝可梦",
+      "title": "什么是「大器晚成」的宝可梦？",
+      "createdAt": "2025-06-06T00:03:12+08:00",
+      "translations": {
+        "zh-hant": {
+          "slug": "大器晚成的寶可夢"
+        },
+        "ja": {
+          "slug": "大器晩成なポケモン"
+        },
+        "en": {
+          "slug": "late-bloomers-pokemon"
+        }
+      },
+      "description": "了解「大器晚成」宝可梦的共同特征、最终进化形态种族值合计600的含义，以及具有这一标签的进化家族。",
+      "updatedAt": "2026-09-11T20:39:21Z"
+    },
+    {
+      "id": "k-zh-hans-guessing-clues",
+      "slug": "guessing-clues",
+      "title": "颜色标签和箭头应该怎么看？",
+      "description": "掌握种族值、世代和进化方式的黄色判定范围，理解箭头方向，以及为什么线索全绿也可能没有猜中。",
+      "createdAt": "2026-09-11T20:39:21Z",
+      "translations": {
+        "en": {
+          "slug": "guessing-clues"
+        },
+        "ja": {
+          "slug": "guessing-clues"
+        },
+        "zh-hant": {
+          "slug": "guessing-clues"
+        }
+      }
+    },
+    {
+      "id": "k-zh-hans-generations-and-settings",
+      "slug": "generations-and-settings",
+      "title": "世代筛选和设置会怎样影响一局游戏？",
+      "description": "了解世代与图鉴编号的区别、地区形态的筛选方式，以及哪些设置会重开一局、哪些只改变猜测排列。",
+      "createdAt": "2026-09-11T20:39:21Z",
+      "translations": {
+        "en": {
+          "slug": "generations-and-settings"
+        },
+        "ja": {
+          "slug": "generations-and-settings"
+        },
+        "zh-hant": {
+          "slug": "generations-and-settings"
+        }
+      }
+    },
+    {
+      "id": "k-zh-hans-forms-and-mega-evolution",
+      "slug": "forms-and-mega-evolution",
+      "title": "为什么不同形态的超级进化标签不一样？",
+      "description": "区分宝可梦物种与具体形态，结合基格尔德和花叶蒂的例子，理解游戏中的「有超级进化」标签。",
+      "createdAt": "2026-09-11T20:39:21Z",
+      "translations": {
+        "en": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "ja": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "zh-hant": {
+          "slug": "forms-and-mega-evolution"
+        }
+      }
+    }
+  ],
+  "zh-hant": [
+    {
+      "id": "k-zh-hant-1",
+      "slug": "大器晚成的寶可夢",
+      "title": "什麼是「大器晚成」的寶可夢？",
+      "createdAt": "2025-06-06T00:03:12+08:00",
+      "translations": {
+        "zh-hans": {
+          "slug": "大器晚成的宝可梦"
+        },
+        "ja": {
+          "slug": "大器晩成なポケモン"
+        },
+        "en": {
+          "slug": "late-bloomers-pokemon"
+        }
+      },
+      "description": "了解「大器晚成」寶可夢的共同特徵、最終進化形態種族值合計600的含義，以及具有這一標籤的進化家族。",
+      "updatedAt": "2026-09-11T20:39:21Z"
+    },
+    {
+      "id": "k-zh-hant-guessing-clues",
+      "slug": "guessing-clues",
+      "title": "顏色標籤和箭頭應該怎麼看？",
+      "description": "掌握種族值、世代和進化方式的黃色判定範圍，理解箭頭方向，以及為什麼線索全綠也可能沒有猜中。",
+      "createdAt": "2026-09-11T20:39:21Z",
+      "translations": {
+        "en": {
+          "slug": "guessing-clues"
+        },
+        "ja": {
+          "slug": "guessing-clues"
+        },
+        "zh-hans": {
+          "slug": "guessing-clues"
+        }
+      }
+    },
+    {
+      "id": "k-zh-hant-generations-and-settings",
+      "slug": "generations-and-settings",
+      "title": "世代篩選和設定會怎樣影響一局遊戲？",
+      "description": "了解世代與圖鑑編號的區別、地區形態的篩選方式，以及哪些設定會重開一局、哪些只改變猜測排列。",
+      "createdAt": "2026-09-11T20:39:21Z",
+      "translations": {
+        "en": {
+          "slug": "generations-and-settings"
+        },
+        "ja": {
+          "slug": "generations-and-settings"
+        },
+        "zh-hans": {
+          "slug": "generations-and-settings"
+        }
+      }
+    },
+    {
+      "id": "k-zh-hant-forms-and-mega-evolution",
+      "slug": "forms-and-mega-evolution",
+      "title": "為什麼不同形態的超級進化標籤不一樣？",
+      "description": "區分寶可夢物種與具體形態，結合基格爾德和花葉蒂的例子，理解遊戲中的「有超級進化」標籤。",
+      "createdAt": "2026-09-11T20:39:21Z",
+      "translations": {
+        "en": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "ja": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "zh-hans": {
+          "slug": "forms-and-mega-evolution"
+        }
+      }
+    }
+  ]
 }

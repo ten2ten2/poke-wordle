@@ -131,11 +131,12 @@
   },
   "knowledge": {
     "title": "ナレッジ",
-    "description": "あなたが興味を持つかもしれないポケモンの知識",
+    "description": "ポケモンの姿・進化・世代と、ポケワードルのヒントを使った推理の方法を紹介します。",
     "comingSoon": "近日公開！より良いポケモン推測者になるための包括的なナレッジベースを構築中です。",
     "readMore": "続きを読む",
-    "readNext": "次を読む",
-    "randomPrefix": "ポケモンQ&A："
+    "randomPrefix": "ポケモンQ&A：",
+    "seoTitle": "ポケモン知識・推理ガイド - ポケワードル",
+    "relatedArticles": "関連記事"
   },
   "footer": {
     "privacyAndTerms": "プライバシーと利用規約"

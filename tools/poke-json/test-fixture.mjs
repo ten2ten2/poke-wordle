@@ -18,13 +18,15 @@ export async function createFixture() {
   const articleTitles = { en: 'Example article', ja: 'サンプル記事', 'zh-hans': '示例文章', 'zh-hant': '範例文章' };
   const knowledge = {};
   for (const [locale, title] of Object.entries(articleTitles)) {
-    const metadata = { id: `fixture-${locale}`, slug: 'example-article', title, createdAt: '2025-06-06T00:00:00Z', translations: Object.fromEntries(Object.keys(articleTitles).filter((language) => language !== locale).map((language) => [language, { slug: 'example-article' }])) };
+    const metadata = { id: `fixture-${locale}`, slug: 'example-article', title, description: `${title} — example description`, createdAt: '2025-06-06T00:00:00Z', translations: Object.fromEntries(Object.keys(articleTitles).filter((language) => language !== locale).map((language) => [language, { slug: 'example-article' }])) };
     knowledge[locale] = [metadata];
     await fs.mkdir(path.join(data, 'knowledge', locale), { recursive: true });
-    await fs.writeFile(path.join(data, 'knowledge', locale, 'example-article.mdx'), `<JsonLd data={{"@type":"Article","headline":${JSON.stringify(title)}}} />\n\n<Question>${title}</Question>\n<Answer>\n**Example answer**\n</Answer>\n`);
+    await fs.writeFile(path.join(data, 'knowledge', locale, 'example-article.mdx'), `<Question>${title}</Question>\n<Answer>\n**Example answer**\n</Answer>\n`);
   }
   await fs.writeFile(path.join(data, 'knowledge_data.json'), JSON.stringify(knowledge));
   await fs.writeFile(path.join(data, 'knowledge-loaders.ts'), registrySource(knowledge));
+  await fs.writeFile(path.join(data, 'knowledge-redirects.json'), '[]\n');
+  await fs.cp(new URL('../../public/images', import.meta.url), path.join(dir, 'public/images'), { recursive: true });
   await fs.cp(new URL('../../public/fonts', import.meta.url), path.join(dir, 'public/fonts'), { recursive: true });
   await fs.cp(new URL('../../public/styles', import.meta.url), path.join(dir, 'public/styles'), { recursive: true });
   const dataFiles = ['pokemon_data.json', 'pokemon_i18n.json', 'prankster_profile.json'];

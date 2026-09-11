@@ -1,4 +1,4 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import KnowledgeArticle from '@/components/KnowledgeArticle';
@@ -8,8 +8,9 @@ import {
   isKnowledgeSupported,
   KNOWLEDGE_SUPPORTED_LOCALES,
   knowledgeData,
+  knowledgeArticlePath,
 } from '@/config/knowledge';
-import { localePath } from '@/i18n/routing';
+import { pageMetadata } from '@/config/seo';
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
@@ -30,51 +31,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {};
   }
 
-  const t = await getTranslations({ locale, namespace: 'knowledge' });
-
-  const canonicalUrl = localePath(
-    locale,
-    `/knowledge/${encodeURIComponent(article.slug)}`,
-  );
-  const ogUrl = `https://www.pokewordle.app${canonicalUrl}`;
-
-  return {
-    title: `${article.title} - ${t('title')} - Poke Wordle`,
-    description: `Learn about ${article.title} in our comprehensive Pokémon knowledge base.`,
-    keywords: [
-      'pokemon knowledge',
-      'pokemon tips',
-      'legends z-a',
-      'pokemon game',
-      'ptcg',
-      'nintendo',
-      'pokemon go',
-      'pokemon training card game',
-      article.title.toLowerCase(),
-    ],
-    robots: {
-      index: true,
-      follow: true,
-    },
-    alternates: {
-      canonical: canonicalUrl,
-      languages: getArticleAlternates(locale, article),
-    },
-    openGraph: {
-      title: `${article.title} - ${t('title')} - Poke Wordle`,
-      description: `Learn about ${article.title} in our comprehensive Pokémon knowledge base.`,
-      url: ogUrl,
-      type: 'article',
-      siteName: 'Poke Wordle',
-      publishedTime: article.createdAt,
-      modifiedTime: article.updatedAt ?? article.createdAt,
-    },
-    twitter: {
-      card: 'summary',
-      title: `${article.title} - ${t('title')} - Poke Wordle`,
-      description: `Learn about ${article.title} in our comprehensive Pokémon knowledge base.`,
-    },
-  };
+  return pageMetadata({
+    locale, title: article.seoTitle || `${article.title} - Poke Wordle`,
+    description: article.description, image: article.image, article,
+    path: knowledgeArticlePath(locale, article.slug),
+    languages: getArticleAlternates(locale, article),
+  });
 }
 
 export function generateStaticParams() {

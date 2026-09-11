@@ -131,11 +131,12 @@
   },
   "knowledge": {
     "title": "知識庫",
-    "description": "你可能感興趣的寶可夢知識",
+    "description": "了解寶可夢形態、進化與世代知識，掌握寶可夢猜猜樂的顏色標籤、數值箭頭和篩選規則。",
     "comingSoon": "即將推出！我們正在構建一個全面的寶可夢知識庫，幫助您成為更好的寶可夢猜測者。",
     "readMore": "閱讀更多",
-    "readNext": "繼續閱讀",
-    "randomPrefix": "寶可夢問答："
+    "randomPrefix": "寶可夢問答：",
+    "seoTitle": "寶可夢知識庫與猜謎指南 - 寶可夢猜猜樂",
+    "relatedArticles": "相關文章"
   },
   "footer": {
     "privacyAndTerms": "隱私與條款"

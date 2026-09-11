@@ -61,3 +61,7 @@ run = ["node tools/poke-json/knowledge-model.mjs check", "node --test tools/poke
 
 [tasks."knowledge:sync"]
 run = "node tools/poke-json/knowledge-model.mjs sync"
+
+[tasks."seo:check"]
+description = "Check production HTML, indexing metadata and redirects after building"
+run = "npm run test:seo"

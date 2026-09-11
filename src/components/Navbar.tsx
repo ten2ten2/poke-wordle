@@ -54,9 +54,9 @@ export default function Navbar({
                 className="flex min-w-0 items-center gap-1.5 sm:gap-3 hover:opacity-80 transition-opacity"
               >
                 <Pokeball className="size-7 sm:size-8 shrink-0" />
-                <h1 className="text-base sm:text-xl font-semibold text-gray-900 truncate">
+                <span className="text-base sm:text-xl font-semibold text-gray-900 truncate">
                   {t('title')}
-                </h1>
+                </span>
               </Link>
             </div>
             <ul

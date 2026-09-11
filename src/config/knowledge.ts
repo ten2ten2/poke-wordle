@@ -1,4 +1,5 @@
 import knowledgeDataRaw from '@/data/knowledge_data.json';
+import redirects from '@/data/knowledge-redirects.json';
 import { localePath } from '@/i18n/routing';
 
 /**
@@ -22,6 +23,9 @@ export interface KnowledgeArticle {
   id: string;
   slug: string;
   title: string;
+  description: string;
+  seoTitle?: string;
+  image?: string;
   createdAt: string;
   updatedAt?: string;
   translations?: {
@@ -59,6 +63,17 @@ export function findKnowledgeArticle(locale: string, slug: string): KnowledgeArt
     (article) =>
       article.slug === slug || encodeURIComponent(article.slug) === slug,
   );
+}
+
+export function knowledgeArticlePath(locale: string, slug: string) {
+  return localePath(locale, `/knowledge/${encodeURIComponent(slug)}`);
+}
+
+export function getKnowledgeRedirect(locale: string, slug: string): string | undefined {
+  if (!isKnowledgeSupported(locale)) return undefined;
+  const alias = redirects.find((entry) => entry.locale === locale && entry.slug === slug);
+  const article = alias && knowledgeData[locale].find((entry) => entry.id === alias.articleId);
+  return article ? knowledgeArticlePath(locale, article.slug) : undefined;
 }
 export function getArticleAlternates(
   locale: string,

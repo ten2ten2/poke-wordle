@@ -19,7 +19,7 @@ mise run dev
 
 | 命令 | 用途 |
 | --- | --- |
-| `mise run check` | Go 静态/竞态检查、数据流程回归、发布校验、ESLint、TypeScript、Jest 和生产构建 |
+| `mise run check` | 数据与知识库校验、ESLint、TypeScript、Jest、生产构建和 SEO 校验 |
 | `mise run test` | Jest 单元测试 |
 | `mise run build` / `mise run start` | 构建 / 启动生产服务器 |
 | `mise run e2e` | 游戏桌面和手机浏览器回归 |
@@ -27,6 +27,7 @@ mise run dev
 | `mise run data:console:test` | 数据与知识文章控制台浏览器回归 |
 | `mise run knowledge:check` | 校验 MDX、文章索引、语言关联和加载清单 |
 | `mise run knowledge:sync` | 手动编辑索引后重新生成 MDX 加载清单 |
+| `mise run seo:check` | 构建后检查实际 HTML、sitemap、语言互链、分享图片和重定向 |
 
 首次运行浏览器测试前执行 `mise exec -- npm exec -- playwright install chromium`。游戏 E2E 默认启动生产服务器，需先构建；`E2E_DEV=1 mise run e2e` 使用开发服务器。测试使用本地图像替身并屏蔽外部分析脚本。
 
@@ -37,12 +38,18 @@ mise run dev
 - Next.js App Router、React、Tailwind CSS。`src/app/[locale]` 和 `src/proxy.ts` 统一语言路由；英文不带路径前缀。
 - `src/hooks/useGameState.ts` 管理游戏与持久化，`src/app/api/checkGuess/route.ts` 比较猜测。
 - `src/data/` 是游戏数据发布目录；`tools/poke-json/` 负责抓取、修正和校对。使用[数据控制台](tools/poke-json/README.md)浏览全量数据、审核候选；操作见[更新流程](tools/poke-json/UPDATE_WORKFLOW.md)。
-- 在[控制台的知识文章页面](http://127.0.0.1:3318/#knowledge)创建文章、管理四种语言版本、编辑并预览 MDX。保存同步 `src/data/knowledge/`、`knowledge_data.json` 和生成的 `knowledge-loaders.ts`，无需手改导入映射。保存到本地项目后，通过现有 Git 和部署流程上线。
+- 在[控制台的知识文章页面](http://127.0.0.1:3318/#knowledge)管理四种语言的 MDX、摘要、SEO 标题和分享图片。保存同步正文、索引、语言关联、加载清单和历史路径；通过 Git 和部署流程上线。
 - Google Analytics 在用户接受后加载；Vercel Analytics 和 Speed Insights 位于根布局。
 
 ## 检查与部署
 
 GitHub Actions 在 `dev`、`main` 推送及 Pull Request 时执行 `mise run check`。数据检查使用本地文件与测试夹具，上游更新由人工触发。
+
+SEO 校验会临时启动生产服务器，逐页检查构建后的输出，不需要浏览器安装。单独运行时先执行 `mise run build`。部署后可运行 `SEO_BASE_URL=https://www.pokewordle.app mise run seo:check`，核对线上页面是否与当前索引一致；自定义外部分享图片需要网络访问。
+
+文章摘要必须使用对应语言；Article 和面包屑结构化数据自动生成。改名会把历史地址直接永久跳转到最新地址，删除版本后对应地址返回 404。重复保存不刷新 `updatedAt`；手动实质修改正文或摘要时同步更新索引日期。sitemap 不使用 `priority`、`changefreq`，也不随构建或版权年份刷新日期。
+
+上线后在 Google Search Console 提交 `/sitemap.xml`，对重点修改的页面使用 URL 检查，查看收录状态、Google 选择的规范网址和 404。自动校验通过表示页面技术条件正常，不等于搜索引擎已经收录。[重新抓取流程](https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl)。
 
 当前工具链保留 TypeScript 6 和 ESLint 9：TypeScript 7 的编译器 API 尚不满足 typescript-eslint，Next.js 的 React 插件仍使用 ESLint 10 已移除的 API。升级前运行完整检查，不用 `--force` 或 `--legacy-peer-deps` 绕过兼容约束。参考 [TypeScript 工具兼容说明](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6.0)。
 

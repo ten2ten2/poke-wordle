@@ -7,7 +7,64 @@ import { createFixture } from './test-fixture.mjs';
 import { createKnowledgeManager } from './knowledge-model.mjs';
 import { inspectMdx } from './knowledge-mdx.mjs';
 
-const newVersion = (title = '测试文章', slug = '测试文章') => ({ title, slug, createdAt: '2026-09-12T00:00:00Z', source: '<Question>问题</Question>\n<Answer>\n**答案**\n</Answer>\n' });
+const newVersion = (title = '测试文章', slug = '测试文章') => ({ title, slug, description: `${title}的摘要`, createdAt: '2025-06-06T00:00:00Z', source: '<Question>问题</Question>\n<Answer>\n**答案**\n</Answer>\n' });
+
+test('renames retain direct aliases, reserve old paths, and clean up aliases on deletion', async (t) => {
+  const fixture = await createFixture(); t.after(fixture.cleanup);
+  const manager = createKnowledgeManager({ root: fixture.dir });
+  let model = await manager.list();
+  const versionID = model.articles[0].versions.en.id;
+  const rename = async (slug) => {
+    const group = model.articles.find((article) => article.versions.en?.id === versionID);
+    model = await manager.update({ action: 'save', revision: model.revision, articleId: group.id, locale: 'en', version: { ...group.versions.en, slug } });
+  };
+  await rename('version.2'); await rename('version-3');
+  assert.deepEqual(model.redirects.map((alias) => alias.slug), ['example-article', 'version.2']);
+  assert(model.redirects.every((alias) => alias.articleId === versionID));
+  await assert.rejects(manager.update({ action: 'save', revision: model.revision, locale: 'en', version: newVersion('Collision', 'version.2') }), /历史地址/);
+  await rename('example-article');
+  assert.deepEqual(model.redirects.map((alias) => alias.slug), ['version.2', 'version-3']);
+  await assert.rejects(rename('EXAMPLE-ARTICLE'), /大小写/);
+  await manager.check();
+  model = await manager.update({ action: 'deleteVersion', revision: model.revision, articleId: model.selectedArticleId, locale: 'en' });
+  assert.deepEqual(model.redirects, []);
+  await manager.check();
+});
+
+test('SEO fields persist, unchanged saves preserve lastmod, and invalid metadata cannot be saved', async (t) => {
+  const fixture = await createFixture(); t.after(fixture.cleanup);
+  const manager = createKnowledgeManager({ root: fixture.dir });
+  let model = await manager.list();
+  const write = (version) => manager.update({ action: 'save', revision: model.revision, articleId: model.articles[0].id, locale: 'en', version });
+  const initial = model.articles[0].versions.en;
+  const unchanged = await write(initial);
+  assert.equal(unchanged.revision, model.revision);
+  assert.equal(unchanged.articles[0].versions.en.updatedAt, undefined);
+  model = await write({ ...initial, description: 'Specific English summary', seoTitle: 'Custom title', image: '/images/og-image.png' });
+  const saved = model.articles[0].versions.en;
+  assert.equal(saved.description, 'Specific English summary'); assert.equal(saved.seoTitle, 'Custom title');
+  assert.equal(saved.image, '/images/og-image.png'); assert(saved.updatedAt);
+  const again = await write(saved); assert.equal(again.revision, model.revision); assert.equal(again.articles[0].versions.en.updatedAt, saved.updatedAt);
+  for (const change of [{ description: '' }, { description: 'x'.repeat(601) }, { seoTitle: 'x'.repeat(201) }, { image: 'javascript:alert(1)' }, { image: 'https://example.org/not-an-image' }, { image: '/images/missing.png' }, { image: '/images/../../src/data/pokemon_data.json' }, { createdAt: '2999-01-01T00:00:00Z' }]) {
+    await assert.rejects(write({ ...saved, ...change }));
+  }
+  assert.equal((await manager.list()).revision, model.revision);
+  model = await write({ ...saved, seoTitle: '', image: '' });
+  assert.equal(model.articles[0].versions.en.seoTitle, undefined); assert.equal(model.articles[0].versions.en.image, undefined);
+});
+
+test('manual changes to aliases participate in the revision check and invalid aliases fail validation', async (t) => {
+  const fixture = await createFixture(); t.after(fixture.cleanup);
+  const manager = createKnowledgeManager({ root: fixture.dir });
+  const model = await manager.list(); const article = model.articles[0];
+  const alias = { locale: 'en', slug: 'previous-name', articleId: article.versions.en.id };
+  const file = path.join(fixture.data, 'knowledge-redirects.json');
+  await fs.writeFile(file, JSON.stringify([alias]));
+  await assert.rejects(manager.update({ action: 'save', revision: model.revision, articleId: article.id, locale: 'en', version: article.versions.en }), /其他窗口/);
+  for (const aliases of [[alias, alias], [{ ...alias, articleId: 'missing' }], [{ ...alias, slug: article.versions.en.slug }]]) {
+    await fs.writeFile(file, JSON.stringify(aliases)); await assert.rejects(manager.check());
+  }
+});
 
 test('knowledge CRUD keeps MDX files, translations and compiled loaders consistent', async (t) => {
   const fixture = await createFixture(); t.after(fixture.cleanup);
@@ -51,7 +108,8 @@ test('stale edits, invalid MDX, duplicate paths and unsafe paths cannot overwrit
   const source = before.articles[0].versions.en;
   const request = { action: 'save', articleId: id, locale: 'en', revision: before.revision, version: { ...source, title: 'Updated title' } };
   const saved = await manager.update(request);
-  assert.match(saved.articles[0].versions.en.source, /"headline": "Updated title"/);
+  assert.equal(saved.articles[0].versions.en.title, 'Updated title');
+  assert.equal(saved.articles[0].versions.en.source, source.source);
   await assert.rejects(manager.update(request), /其他窗口/);
   for (const version of [{ ...source, slug: '../escape' }, { ...source, source: '<Question>unclosed' }, { ...source, source: '{process.exit(1)}' }]) {
     await assert.rejects(manager.update({ ...request, revision: saved.revision, version }));
@@ -70,9 +128,9 @@ test('stale edits, invalid MDX, duplicate paths and unsafe paths cannot overwrit
 
 test('static MDX preview supports existing components and never runs embedded JavaScript', async () => {
   assert.equal(await inspectMdx('{/* editorial note */}\n'), '');
-  const html = await inspectMdx('<FAQ>\n<Question>标题</Question>\n<Answer>\n**回答** [来源](https://example.com)\n\n| A | B |\n| - | - |\n| 1 | 2 |\n</Answer>\n</FAQ>\n\n<JsonLd data={{"@type": "FAQPage", "count": 2}} />\n');
+  const html = await inspectMdx('<FAQ>\n<Question>标题</Question>\n<Answer>\n**回答** [来源](https://example.com)\n\n| A | B |\n| - | - |\n| 1 | 2 |\n</Answer>\n</FAQ>\n');
   assert.match(html, /<h2>标题<\/h2>/); assert.match(html, /<strong>回答<\/strong>/); assert.match(html, /<table>/); assert.doesNotMatch(html, /<script/);
-  for (const source of ['export const x = 1', '{globalThis.injected = true}', '<script>alert(1)</script>', '<div onClick={() => 1}>x</div>', '<div {...globalThis} />', '<Unknown />', '[link](javascript:alert%281%29)', '<a href={"javascript:alert(1)"}>x</a>', '<JsonLd data={{get foo(){return 1}}} />']) await assert.rejects(inspectMdx(source));
+  for (const source of ['# Duplicate title', '<h1>Duplicate title</h1>', '<JsonLd data={{"@type":"Article"}} />', 'export const x = 1', '{globalThis.injected = true}', '<script>alert(1)</script>', '<div onClick={() => 1}>x</div>', '<div {...globalThis} />', '<Unknown />', '[link](javascript:alert%281%29)', '<a href={"javascript:alert(1)"}>x</a>', '<JsonLd data={{get foo(){return 1}}} />']) await assert.rejects(inspectMdx(source));
   assert.equal(globalThis.injected, undefined);
 });
 

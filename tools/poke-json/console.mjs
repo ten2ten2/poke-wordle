@@ -63,6 +63,7 @@ export async function createConsole({ port = 3318 } = {}) {
         } else if (body.action === 'knowledge-check') {
           await command(job, 'mise', ['run', 'knowledge:check']);
           await command(job, 'mise', ['run', 'build']);
+          await command(job, 'mise', ['run', 'seo:check']);
         } else {
           await command(job, 'mise', ['run', 'data:check']);
         }

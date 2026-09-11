@@ -5,8 +5,9 @@ import {
   knowledgeData,
 } from '@/config/knowledge';
 import { routing, localePath } from '@/i18n/routing';
+import { SITE_URL } from '@/config/seo';
 
-const baseUrl = 'https://www.pokewordle.app';
+const baseUrl = SITE_URL;
 const absolute = (paths: Record<string, string>) =>
   Object.fromEntries(
     Object.entries(paths).map(([locale, path]) => [locale, baseUrl + path]),
