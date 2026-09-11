@@ -132,15 +132,15 @@
     "privacyAndTerms": "Privacidad y Términos"
   },
   "generation": {
-    "Gen1": "Generación 1",
-    "Gen2": "Generación 2",
-    "Gen3": "Generación 3",
-    "Gen4": "Generación 4",
-    "Gen5": "Generación 5",
-    "Gen6": "Generación 6",
-    "Gen7": "Generación 7",
-    "Gen8": "Generación 8",
-    "Gen9": "Generación 9"
+    "Gen1": "Gen 1",
+    "Gen2": "Gen 2",
+    "Gen3": "Gen 3",
+    "Gen4": "Gen 4",
+    "Gen5": "Gen 5",
+    "Gen6": "Gen 6",
+    "Gen7": "Gen 7",
+    "Gen8": "Gen 8",
+    "Gen9": "Gen 9"
   },
   "evolution": {
     "stage1": "Sin evolución/Primera etapa",

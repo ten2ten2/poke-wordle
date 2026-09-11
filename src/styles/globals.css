@@ -194,6 +194,8 @@
 .color-legend .tag { font-size: .8125rem; }
 .legend-arrows { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; color: var(--color-gray-600); }
 .status-symbol { flex-shrink: 0; font-weight: 600; }
+.status-arrow { flex-shrink: 0; }
+.tag-label { min-width: 0; overflow-wrap: anywhere; hyphens: auto; }
 .guess-results { display: grid; gap: .75rem; }
 .guess-table-card { border: 1px solid var(--color-gray-200); border-radius: .875rem; background: white; overflow: hidden; }
 .guess-table-card[data-latest] { border-color: var(--color-red-200); }
@@ -204,7 +206,7 @@
 .guess-field { min-width: 0; padding: .625rem .75rem; border-top: 1px solid var(--color-gray-100); }
 .guess-field dt { margin-bottom: .375rem; }
 .guess-field dd { display: flex; flex-wrap: wrap; align-items: flex-start; gap: .25rem; }
-.guess-field .tag { max-width: 100%; overflow-wrap: anywhere; text-align: left; }
+.guess-field .tag { max-width: 100%; text-align: left; }
 @media (width < 40rem) {
   .guess-identity { flex-direction: row; justify-content: flex-start; gap: .75rem; padding: .75rem 2.5rem .75rem .75rem; text-align: left; }
   .guess-identity h3 { min-width: 0; }
@@ -219,10 +221,10 @@
 }
 @media (width >= 64rem) {
   .guess-results { --guess-columns: minmax(10rem, 1.1fr) repeat(2, minmax(6rem, .7fr)) minmax(8rem, .8fr) minmax(8rem, 1fr) repeat(2, minmax(9rem, 1.1fr)); gap: .5rem; }
-  .guess-table-card { display: grid; grid-template-columns: var(--guess-columns); }
+  .guess-table-card { display: grid; grid-template-columns: var(--guess-columns); grid-template-rows: auto 1fr; }
   .guess-fields { display: contents; }
-  .guess-identity { font-size: .875rem; }
-  .guess-field { border-top: 0; padding: 0; }
-  .guess-field dt { margin: 0; padding: .5rem .75rem; background: var(--color-gray-50); border-bottom: 1px dashed var(--color-gray-200); text-align: center; font-weight: 500; }
-  .guess-field dd { padding: .75rem; justify-content: center; }
+  .guess-identity { grid-row: 1 / 3; font-size: .875rem; }
+  .guess-field { display: grid; grid-row: 1 / 3; grid-template-rows: subgrid; border-top: 0; padding: 0; }
+  .guess-field dt { display: grid; place-items: center; margin: 0; padding: .5rem .75rem; background: var(--color-gray-50); border-bottom: 1px dashed var(--color-gray-200); text-align: center; font-weight: 500; }
+  .guess-field dd { min-width: 0; padding: .75rem; justify-content: center; align-content: flex-start; }
 }

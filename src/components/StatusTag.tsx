@@ -18,8 +18,8 @@ export default function StatusTag({ status, arrow, children }: {
   return (
     <span className={`tag ${statusClasses[status]}`} title={description}>
       <span aria-hidden="true" className="status-symbol">{symbols[status]}</span>
-      <span>{children}</span>
-      {arrow && <span aria-hidden="true">{arrow === 'upper' ? '↑' : '↓'}</span>}
+      <span className="tag-label">{children}</span>
+      {arrow && <span aria-hidden="true" className="status-arrow">{arrow === 'upper' ? '↑' : '↓'}</span>}
       <span className="sr-only"> — {description}</span>
     </span>
   );

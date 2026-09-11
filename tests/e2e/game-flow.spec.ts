@@ -276,6 +276,47 @@ test('game layout fits the viewport', async ({ page }, testInfo) => {
   });
 });
 
+test('localized guess headers, long tags and generation buttons fit', async ({ page, isMobile }, testInfo) => {
+  test.setTimeout(60_000);
+  await page.goto('/');
+  await guess(page, 'Bellibolt');
+  await guess(page, 'Flamigo');
+  for (const locale of ['en', 'zh-hans', 'zh-hant', 'ja', 'ko', 'fr', 'de', 'it', 'es']) {
+    const messages = JSON.parse(await readFile(`src/messages/${locale}.json`, 'utf8'));
+    await page.goto(locale === 'en' ? '/' : `/${locale}`);
+    await expect(page.locator('.guess-table-card')).toHaveCount(2);
+    await page.evaluate(() => document.fonts.ready);
+    for (const width of isMobile ? [390] : [1024, 1440]) {
+      await page.setViewportSize({ width, height: 1000 });
+      const layout = await page.locator('.guess-table-card').evaluateAll((cards) => cards.map((card) => ({
+        headers: [...card.querySelectorAll('dt')].map((label) => ({ top: label.getBoundingClientRect().top, bottom: label.getBoundingClientRect().bottom })),
+        overflow: [...card.querySelectorAll('.tag, .tag-label, dd')].filter((node) => node.scrollWidth > node.clientWidth + 1).map((node) => node.textContent),
+        clipped: card.scrollWidth > card.clientWidth + 1,
+      })));
+      for (const card of layout) {
+        expect(card.overflow, `${locale} at ${width}px`).toEqual([]);
+        expect(card.clipped).toBe(false);
+        if (!isMobile) {
+          for (const edge of ['top', 'bottom'] as const) {
+            const positions = card.headers.map((label) => label[edge]);
+            expect(Math.max(...positions) - Math.min(...positions), `${locale} header ${edge}`).toBeLessThan(1);
+          }
+        }
+      }
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      if (locale === 'es' || locale === 'de') await page.locator('.guess-results').screenshot({ path: testInfo.outputPath(`guesses-${locale}-${width}.png`) });
+    }
+    const abbreviated = ['en', 'fr', 'de', 'it', 'es'].includes(locale);
+    await expect(page.locator('.guess-field:nth-child(3) .tag-label')).toHaveText(Array(2).fill(abbreviated ? 'Gen 9' : messages.generation.Gen9));
+    await page.getByRole('button', { name: messages.navbar.settings, exact: true }).click();
+    for (let gen = 1; gen <= 9; gen++) {
+      await expect(page.getByRole('dialog').getByRole('button', { name: abbreviated ? `Gen ${gen}` : messages.generation[`Gen${gen}`], exact: true })).toBeVisible();
+    }
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('dialog')).not.toBeVisible();
+  }
+});
+
 
 test('failed guesses preserve input and retry without spending a turn', async ({ page }) => {
   let attempts = 0;
