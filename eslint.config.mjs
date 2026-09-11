@@ -19,6 +19,5 @@ export default defineConfig([
     'test-results/**',
     'next-env.d.ts',
     'tools/output/**',
-    'tools/backup/**',
   ]),
 ]);

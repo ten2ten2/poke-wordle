@@ -1,10 +1,6 @@
 # Candidate datasets, cached sources and console state
 /output/
 
-# Local artifacts retained from the previous data workflow
-/backup/
-/compare_result_*.json
-
 # Go binaries and profiling output
 /poke-json
 *.exe
