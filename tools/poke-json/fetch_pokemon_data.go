@@ -257,7 +257,7 @@ func fetchPokemonDetails(speciesID int) ([]Pokemon, error) {
 		// 地区形态宝可梦目前为止没有mega进化和超极巨化
 		if !strings.Contains(pokemonName, "-alola") && !strings.Contains(pokemonName, "-galar") &&
 			!strings.Contains(pokemonName, "-hisui") && !strings.Contains(pokemonName, "-paldea") {
-			if hasMegaEvolution {
+			if hasMegaEvolution && megaEvolutionFormEligible(species.Name, pokemonName) {
 				tags = append(tags, "has-mega")
 			}
 			if hasGigantamax {
@@ -300,6 +300,19 @@ func fetchPokemonDetails(speciesID int) ([]Pokemon, error) {
 	}
 
 	return pokemonForms, nil
+}
+
+// varieties lists a species' Mega forms, but does not identify which base form can Mega Evolve.
+// These species require a specific form; see reports/2026-09-12-mega-forms.md for evidence.
+func megaEvolutionFormEligible(speciesName, pokemonName string) bool {
+	switch speciesName {
+	case "floette":
+		return pokemonName == "floette-eternal"
+	case "zygarde":
+		return pokemonName == "zygarde-complete"
+	default:
+		return true
+	}
 }
 
 // 获取单个形态的详细信息

@@ -9,6 +9,7 @@ import (
 	"path"
 	"path/filepath"
 	"reflect"
+	"slices"
 	"strconv"
 	"strings"
 	"sync/atomic"
@@ -161,6 +162,70 @@ func TestProcessAllPokemonConcurrent(t *testing.T) {
 			if row.ID != i+1 || row.PokedexIDNational != i+1 {
 				t.Fatalf("unstable ordering: %+v", row)
 			}
+		}
+	}
+}
+
+func TestMegaTagsRespectEligibleBaseForms(t *testing.T) {
+	for _, tc := range []struct {
+		species string
+		id      int
+		forms   []string
+		want    []string
+	}{
+		{"floette", 670, []string{"floette", "floette-eternal"}, []string{"floette-eternal"}},
+		{"zygarde", 718, []string{"zygarde-50", "zygarde-10", "zygarde-complete"}, []string{"zygarde-complete"}},
+		{"slowbro", 80, []string{"slowbro", "slowbro-galar"}, []string{"slowbro"}},
+		{"charizard", 6, []string{"charizard"}, []string{"charizard"}},
+	} {
+		for _, upstreamMega := range []bool{false, true} {
+			t.Run(fmt.Sprintf("%s/mega=%t", tc.species, upstreamMega), func(t *testing.T) {
+				mockAPI(t, func(r *http.Request) (int, string) {
+					if strings.Contains(r.URL.Path, "/pokemon-species/") {
+						var varieties []map[string]any
+						forms := slices.Clone(tc.forms)
+						if upstreamMega {
+							forms = append(forms, tc.species+"-mega")
+							if tc.species == "charizard" {
+								forms[len(forms)-1] = "charizard-mega-x"
+								forms = append(forms, "charizard-mega-y")
+							}
+						}
+						for i, name := range forms {
+							varieties = append(varieties, map[string]any{"is_default": i == 0, "pokemon": map[string]any{"name": name, "url": fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%d", i+1)}})
+						}
+						body, err := json.Marshal(map[string]any{"id": tc.id, "name": tc.species, "is_legendary": tc.species == "zygarde", "varieties": varieties})
+						if err != nil {
+							t.Fatal(err)
+						}
+						return 200, string(body)
+					}
+					id, _ := strconv.Atoi(path.Base(r.URL.Path))
+					if id < 1 || id > len(tc.forms) {
+						t.Errorf("unexpected Mega form request: %s", r.URL)
+						return 404, `{}`
+					}
+					status, body := fixtureResponse(r)
+					// Distinct base stats keep each gameplay form separate during generation.
+					return status, strings.ReplaceAll(body, `"base_stat":50`, fmt.Sprintf(`"base_stat":%d`, 50+id))
+				})
+				rows, err := fetchPokemonDetails(tc.id)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if len(rows) != len(tc.forms) {
+					t.Fatalf("expected %d base forms, got %+v", len(tc.forms), rows)
+				}
+				for _, row := range rows {
+					want := upstreamMega && slices.Contains(tc.want, row.Name)
+					if got := slices.Contains(row.Tags, "has-mega"); got != want {
+						t.Errorf("%s: has-mega=%t, want %t", row.Name, got, want)
+					}
+					if tc.species == "zygarde" && !slices.Contains(row.Tags, "legendary") {
+						t.Errorf("lost legendary tag: %s", row.Name)
+					}
+				}
+			})
 		}
 	}
 }
