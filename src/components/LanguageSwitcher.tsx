@@ -75,10 +75,10 @@ export default function LanguageSwitcher({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md text-gray-400 hover:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-red-300"
+            className="btn-icon"
             aria-label={t('common.close') || 'Close dialog'}
           >
-            <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+            <XMarkIcon aria-hidden="true" />
           </button>
         </header>
 
@@ -93,11 +93,7 @@ export default function LanguageSwitcher({
                   <button
                     type="button"
                     onClick={() => handleLanguageChange(language.code)}
-                    className={`w-full text-left px-4 py-2 rounded-md transition-colors ${
-                      locale === language.code
-                        ? 'bg-red-100 text-red-900'
-                        : 'hover:bg-gray-100 text-gray-700'
-                    }`}
+                    className="btn-option w-full justify-start text-left"
                     aria-current={locale === language.code ? 'true' : 'false'}
                     aria-label={`Switch to ${language.name}`}
                   >

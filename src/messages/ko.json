@@ -35,8 +35,7 @@
       "generation": "세대",
       "abilities": "특성",
       "evolution": "진화",
-      "tags": "태그",
-      "pokemon": "포켓몬"
+      "tags": "태그"
     },
     "evolutionMethod": "진화 방법",
     "requestFailed": "추측을 확인할 수 없습니다. 다시 시도해 주세요.",
@@ -52,7 +51,6 @@
     "confirmGiveUp": "정답을 확인하고 게임을 끝낼까요?",
     "confirmRestart": "현재 기록을 지우고 새 게임을 시작할까요?",
     "confirmAction": "확인",
-    "latestGuess": "최신",
     "guessNumber": "{number}번째 추측",
     "hiddenField": "장난 모드로 숨겨짐"
   },

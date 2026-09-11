@@ -35,8 +35,7 @@
       "generation": "世代",
       "abilities": "特性",
       "evolution": "進化",
-      "tags": "其它標籤",
-      "pokemon": "寶可夢"
+      "tags": "其它標籤"
     },
     "evolutionMethod": "進化方式",
     "requestFailed": "無法檢查猜測，請重試。",
@@ -52,7 +51,6 @@
     "confirmGiveUp": "查看答案並結束本局？",
     "confirmRestart": "清除目前猜測，開始新一局？",
     "confirmAction": "確認",
-    "latestGuess": "最新",
     "guessNumber": "第 {number} 次",
     "hiddenField": "已被惡作劇模式隱藏"
   },

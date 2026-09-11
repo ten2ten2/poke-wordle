@@ -35,8 +35,7 @@
       "generation": "Generación",
       "abilities": "Habilidades",
       "evolution": "Evolución",
-      "tags": "Etiquetas",
-      "pokemon": "Pokémon"
+      "tags": "Etiquetas"
     },
     "evolutionMethod": "Método de Evolución",
     "requestFailed": "No se pudo comprobar la respuesta. Inténtalo de nuevo.",
@@ -52,7 +51,6 @@
     "confirmGiveUp": "¿Revelar la respuesta y terminar la partida?",
     "confirmRestart": "¿Borrar los intentos y empezar de nuevo?",
     "confirmAction": "Confirmar",
-    "latestGuess": "Último",
     "guessNumber": "Intento {number}",
     "hiddenField": "Oculto por el modo Bromista"
   },

@@ -11,7 +11,7 @@ export async function createConsole({ port = 3318 } = {}) {
   const token = randomBytes(32).toString('hex');
   const jobsDir = path.join(paths.tool, 'output/console-jobs'); await fs.mkdir(jobsDir, { recursive: true });
   const jobs = new Map(); let busy = false; let address;
-  const staticFiles = new Map([['/', ['index.html', 'text/html']], ['/app.js', ['app.js', 'text/javascript']], ['/data-view.js', ['data-view.js', 'text/javascript']], ['/shared.js', ['shared.js', 'text/javascript']], ['/fonts/typography.css', ['../../../public/fonts/typography.css', 'text/css']], ['/fonts/inter-latin-variable.woff2', ['../../../public/fonts/inter-latin-variable.woff2', 'font/woff2']], ['/style.css', ['style.css', 'text/css']]]);
+  const staticFiles = new Map([['/', ['index.html', 'text/html']], ['/app.js', ['app.js', 'text/javascript']], ['/data-view.js', ['data-view.js', 'text/javascript']], ['/shared.js', ['shared.js', 'text/javascript']], ['/fonts/typography.css', ['../../../public/fonts/typography.css', 'text/css']], ['/fonts/inter-latin-variable.woff2', ['../../../public/fonts/inter-latin-variable.woff2', 'font/woff2']], ['/styles/buttons.css', ['../../../public/styles/buttons.css', 'text/css']], ['/style.css', ['style.css', 'text/css']]]);
   const persist = async (job) => {
     const file = path.join(jobsDir, `${job.id}.json`);
     await fs.writeFile(`${file}.tmp`, `${JSON.stringify(job, null, 2)}\n`);

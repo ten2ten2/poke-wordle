@@ -35,8 +35,7 @@
       "generation": "世代",
       "abilities": "特性",
       "evolution": "進化",
-      "tags": "タグ",
-      "pokemon": "ポケモン"
+      "tags": "タグ"
     },
     "evolutionMethod": "進化方法",
     "requestFailed": "回答を確認できませんでした。もう一度お試しください。",
@@ -52,7 +51,6 @@
     "confirmGiveUp": "正解を表示して終了しますか？",
     "confirmRestart": "これまでの予想を消して最初から始めますか？",
     "confirmAction": "確認",
-    "latestGuess": "最新",
     "guessNumber": "{number} 回目",
     "hiddenField": "いたずらモードで非表示"
   },

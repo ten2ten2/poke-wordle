@@ -27,11 +27,11 @@ export default function About({ isOpen, onClose }: AboutProps) {
           <nav aria-label={t('common.close')}>
             <button
               type="button"
-              className="touch-target rounded-md text-gray-400 hover:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-red-300"
+              className="btn-icon"
               onClick={onClose}
               aria-label={t('common.close')}
             >
-              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+              <XMarkIcon aria-hidden="true" />
             </button>
           </nav>
         </header>

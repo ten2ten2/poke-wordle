@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   poweredByHeader: false,
   images: {
+    // Let the browser handle local proxy DNS in development.
+    unoptimized: process.env.NODE_ENV === 'development',
     remotePatterns: [
       new URL(
         'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/**',

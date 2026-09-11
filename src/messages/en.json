@@ -35,8 +35,7 @@
       "generation": "Generation",
       "abilities": "Abilities",
       "evolution": "Evolution",
-      "tags": "Tags",
-      "pokemon": "Pokémon"
+      "tags": "Tags"
     },
     "evolutionMethod": "Evolution Method",
     "requestFailed": "Unable to check your guess. Please try again.",
@@ -52,7 +51,6 @@
     "confirmGiveUp": "Reveal the answer and end this game?",
     "confirmRestart": "Clear your guesses and start a new game?",
     "confirmAction": "Confirm",
-    "latestGuess": "Latest",
     "guessNumber": "Guess {number}",
     "hiddenField": "Hidden by Prankster"
   },

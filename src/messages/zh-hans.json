@@ -35,8 +35,7 @@
       "generation": "世代",
       "abilities": "特性",
       "evolution": "进化",
-      "tags": "其它标签",
-      "pokemon": "宝可梦"
+      "tags": "其它标签"
     },
     "evolutionMethod": "进化方式",
     "requestFailed": "无法检查猜测，请重试。",
@@ -52,7 +51,6 @@
     "confirmGiveUp": "查看答案并结束本局？",
     "confirmRestart": "清除当前猜测，开始新一局？",
     "confirmAction": "确认",
-    "latestGuess": "最新",
     "guessNumber": "第 {number} 次",
     "hiddenField": "已被恶作剧模式隐藏"
   },

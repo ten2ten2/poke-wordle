@@ -26,10 +26,6 @@ const GuessTable = memo(function GuessTable({ guesses, order = 'reverse' }: {
 
   return (
     <div className="guess-results">
-      <div className="guess-headings" aria-hidden="true">
-        <span>{t('game.columns.pokemon')}</span>
-        {columns.map((column) => <span key={column}>{t(`game.columns.${column}`)}</span>)}
-      </div>
       {guesses.map((guess, index) => {
         const number = order === 'reverse' ? guesses.length - index : index + 1;
         const latest = number === guesses.length;
@@ -48,16 +44,14 @@ const GuessTable = memo(function GuessTable({ guesses, order = 'reverse' }: {
         return (
           <article key={`${guess.name}-${index}`} className="guess-table-card" data-latest={latest || undefined} aria-label={`${t('game.guessNumber', { number })}: ${name}`}>
             <header className="guess-identity">
-              {guess.profile ? <Image src={guess.profile} alt={name} width={48} height={48} className="size-12 shrink-0 object-contain" loading={latest ? 'eager' : 'lazy'} /> : <Pokeball className="size-12 shrink-0" />}
-              <div className="min-w-0">
-                <p className="guess-number">{t('game.guessNumber', { number })}{latest && <span className="latest-label">{t('game.latestGuess')}</span>}</p>
-                <h3 className="font-semibold text-gray-900">{name}</h3>
-              </div>
+              <span className="guess-number" aria-hidden="true">{number}</span>
+              {guess.profile ? <Image src={guess.profile} alt={name} width={96} height={96} className="size-20 sm:size-24 shrink-0 object-contain" loading={latest ? 'eager' : 'lazy'} /> : <Pokeball className="size-20 sm:size-24 shrink-0" />}
+              <h3 className="font-semibold text-gray-900">{name}</h3>
             </header>
             <dl className="guess-fields">
               {columns.map((column, field) => (
                 <div key={column} className="guess-field">
-                  <dt className="text-[13px] text-gray-600 lg:sr-only">{t(`game.columns.${column}`)}</dt>
+                  <dt className="text-[13px] text-gray-600">{t(`game.columns.${column}`)}</dt>
                   <dd>{fields[field]}{Array.isArray(fields[field]) && !(fields[field] as ReactNode[]).length && <span className="text-gray-400">—</span>}</dd>
                 </div>
               ))}

@@ -23,7 +23,7 @@ async function guess(page: Page, name: string) {
 
 test.beforeEach(async ({ page }) => {
   // Gameplay tests are independent of remote artwork and hosting analytics.
-  await page.route('**/_next/image?**', (route) =>
+  await page.route(/\/_next\/image\?|^https:\/\/raw\.githubusercontent\.com\/PokeAPI\/sprites\//, (route) =>
     route.fulfill({
       path: 'public/images/icon-96x96.png',
       contentType: 'image/png',

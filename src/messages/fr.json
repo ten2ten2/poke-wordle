@@ -35,8 +35,7 @@
       "generation": "Génération",
       "abilities": "Capacités",
       "evolution": "Évolution",
-      "tags": "Étiquettes",
-      "pokemon": "Pokémon"
+      "tags": "Étiquettes"
     },
     "evolutionMethod": "Méthode d'Évolution",
     "requestFailed": "Impossible de vérifier votre réponse. Réessayez.",
@@ -52,7 +51,6 @@
     "confirmGiveUp": "Révéler la réponse et terminer la partie ?",
     "confirmRestart": "Effacer vos essais et recommencer ?",
     "confirmAction": "Confirmer",
-    "latestGuess": "Dernier",
     "guessNumber": "Essai {number}",
     "hiddenField": "Masqué par le mode Farceur"
   },

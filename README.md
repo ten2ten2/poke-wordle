@@ -15,6 +15,8 @@ mise run dev
 
 打开 http://localhost:3000。工具版本由 `mise.toml` 固定，JavaScript 依赖由 `package-lock.json` 锁定。可选环境变量见 `.env.example`，本地配置放在 `.env.local`。
 
+开发环境由浏览器直接加载原图，兼容代理的 Fake-IP DNS；生产环境保留 Next.js 图片优化和私有 IP 检查。
+
 | 命令 | 用途 |
 | --- | --- |
 | `mise run check` | Go 静态/竞态检查、数据流程回归、发布校验、ESLint、TypeScript、Jest 和生产构建 |
@@ -29,6 +31,7 @@ mise run dev
 ## 代码与数据
 
 - 字体使用自托管 Inter 拉丁可变字体，中日韩按页面语言回退到系统字体；许可见 `public/fonts/OFL.txt`。
+- 页面、弹窗和数据控制台共用 `public/styles/buttons.css`，统一按钮尺寸与交互状态；组件仅指定操作类型和布局。
 - Next.js App Router、React、Tailwind CSS。`src/app/[locale]` 和 `src/proxy.ts` 统一语言路由；英文不带路径前缀。
 - `src/hooks/useGameState.ts` 管理游戏与持久化，`src/app/api/checkGuess/route.ts` 比较猜测。
 - `src/data/` 是游戏数据发布目录；`tools/poke-json/` 负责抓取、修正和校对。使用[数据控制台](tools/poke-json/README.md)浏览全量数据、审核候选；操作见[更新流程](tools/poke-json/UPDATE_WORKFLOW.md)。

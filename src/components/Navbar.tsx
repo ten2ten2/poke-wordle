@@ -67,13 +67,12 @@ export default function Navbar({
                 <li>
                   <button
                     onClick={() => setIsAboutOpen(true)}
-                    className="touch-target p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-hidden focus:ring-2 focus:ring-inset focus:ring-red-300 transition-colors duration-200"
+                    className="btn-icon"
                     aria-label={t('navbar.about')}
                     title={t('navbar.about')}
                     type="button"
                   >
                     <InformationCircleIcon
-                      className="h-5 w-5 sm:h-6 sm:w-6"
                       aria-hidden="true"
                     />
                   </button>
@@ -83,13 +82,12 @@ export default function Navbar({
                 <li>
                   <button
                     onClick={() => setIsSettingsOpen(true)}
-                    className="touch-target p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-hidden focus:ring-2 focus:ring-inset focus:ring-red-300 transition-colors duration-200"
+                    className="btn-icon"
                     aria-label={t('navbar.settings')}
                     title={t('navbar.settings')}
                     type="button"
                   >
                     <Cog6ToothIcon
-                      className="h-5 w-5 sm:h-6 sm:w-6"
                       aria-hidden="true"
                     />
                   </button>
@@ -98,13 +96,12 @@ export default function Navbar({
               <li>
                 <button
                   onClick={() => setIsLanguageOpen(true)}
-                  className="touch-target p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-hidden focus:ring-2 focus:ring-inset focus:ring-red-300 transition-colors duration-200"
+                  className="btn-icon"
                   aria-label={t('navbar.language')}
                   title={t('navbar.language')}
                   type="button"
                 >
                   <LanguageIcon
-                    className="h-5 w-5 sm:h-6 sm:w-6"
                     aria-hidden="true"
                   />
                 </button>

@@ -92,11 +92,11 @@ function SettingsForm({
           <nav aria-label={t('common.close')}>
             <button
               type="button"
-              className="touch-target rounded-md text-gray-400 hover:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-red-300"
+              className="btn-icon"
               onClick={handleCancel}
               aria-label={t('common.close')}
             >
-              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+              <XMarkIcon aria-hidden="true" />
             </button>
           </nav>
         </header>
@@ -119,17 +119,13 @@ function SettingsForm({
                       guessOrder: 'reverse',
                     }))
                   }
-                  className={`touch-target px-4 py-3 text-responsive-sm font-medium rounded-md border transition-colors duration-200 ${
-                    localSettings.guessOrder === 'reverse'
-                      ? 'bg-red-500 text-white border-red-500 shadow-xs'
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
-                  }`}
+                  className="btn-option"
                 >
                   <div className="text-center">
-                    <div className="font-medium">
+                    <div>
                       {t('settings.reverseOrder')}
                     </div>
-                    <div className="text-xs opacity-75 mt-1">
+                    <div className="text-xs font-normal opacity-75 mt-1">
                       {t('settings.reverseOrderDesc')}
                     </div>
                   </div>
@@ -143,17 +139,13 @@ function SettingsForm({
                       guessOrder: 'normal',
                     }))
                   }
-                  className={`touch-target px-4 py-3 text-responsive-sm font-medium rounded-md border transition-colors duration-200 ${
-                    localSettings.guessOrder === 'normal'
-                      ? 'bg-red-500 text-white border-red-500 shadow-xs'
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
-                  }`}
+                  className="btn-option"
                 >
                   <div className="text-center">
-                    <div className="font-medium">
+                    <div>
                       {t('settings.normalOrder')}
                     </div>
-                    <div className="text-xs opacity-75 mt-1">
+                    <div className="text-xs font-normal opacity-75 mt-1">
                       {t('settings.normalOrderDesc')}
                     </div>
                   </div>
@@ -174,11 +166,7 @@ function SettingsForm({
                     type="button"
                     aria-pressed={localSettings.maxGuesses === value}
                     onClick={() => handleMaxGuessesChange(value)}
-                    className={`touch-target px-2 py-2 text-responsive-sm font-medium rounded-md border transition-colors duration-200 ${
-                      localSettings.maxGuesses === value
-                        ? 'bg-red-500 text-white border-red-500 shadow-xs'
-                        : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
-                    }`}
+                    className="btn-option"
                   >
                     {value}
                   </button>
@@ -188,15 +176,15 @@ function SettingsForm({
 
             {/* Generation Selection */}
             <fieldset className="space-y-3">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <legend className="block text-responsive-sm font-medium text-gray-700">
                   {t('settings.generationSelection')}
                 </legend>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-2">
                   <button
                     type="button"
                     onClick={handleSelectAllGenerations}
-                    className="text-sm text-red-500 hover:text-red-600 font-medium"
+                    className="btn-ghost"
                   >
                     {t('settings.selectAll')}
                   </button>
@@ -204,7 +192,7 @@ function SettingsForm({
                   <button
                     type="button"
                     onClick={handleDeselectAllGenerations}
-                    className="text-sm text-red-500 hover:text-red-600 font-medium"
+                    className="btn-ghost"
                   >
                     {t('settings.deselectAll')}
                   </button>
@@ -219,11 +207,7 @@ function SettingsForm({
                       gen,
                     )}
                     onClick={() => handleGenerationToggle(gen)}
-                    className={`touch-target px-3 py-2 text-responsive-sm font-medium rounded-md border transition-colors duration-200 ${
-                      localSettings.selectedGenerations.includes(gen)
-                        ? 'bg-red-500 text-white border-red-500 shadow-xs'
-                        : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
-                    }`}
+                    className="btn-option"
                   >
                     {t(`generation.Gen${gen}`)}
                   </button>
@@ -297,9 +281,7 @@ function SettingsForm({
                 type="button"
                 onClick={handleSave}
                 disabled={localSettings.selectedGenerations.length === 0}
-                className="btn-primary w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed
-                          bg-red-500 text-white border-red-500 shadow-xs
-                          hover:bg-red-600 hover:border-red-600"
+                className="btn-primary w-full sm:w-auto"
               >
                 {t('common.save')}
               </button>

@@ -35,8 +35,7 @@
       "generation": "Generazione",
       "abilities": "Abilità",
       "evolution": "Evoluzione",
-      "tags": "Tag",
-      "pokemon": "Pokémon"
+      "tags": "Tag"
     },
     "evolutionMethod": "Metodo di Evoluzione",
     "requestFailed": "Impossibile verificare la risposta. Riprova.",
@@ -52,7 +51,6 @@
     "confirmGiveUp": "Mostrare la risposta e terminare la partita?",
     "confirmRestart": "Cancellare i tentativi e ricominciare?",
     "confirmAction": "Conferma",
-    "latestGuess": "Ultimo",
     "guessNumber": "Tentativo {number}",
     "hiddenField": "Nascosto dalla modalità Burla"
   },

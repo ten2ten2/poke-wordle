@@ -182,6 +182,8 @@ function Game({ ready }: { ready: boolean }) {
         currentSettings={gameState.settings}
       />
 
+      <RandomKnowledge />
+
       <main className="w-full flex-1 container-responsive section-padding">
         <div className="space-y-4 sm:space-y-6">
           {!gameState.targetPokemon && <p className="game-intro">{t('game.intro')}</p>}
@@ -313,7 +315,6 @@ function Game({ ready }: { ready: boolean }) {
         </div>
       </main>
 
-      <RandomKnowledge />
       <Footer />
       <DynamicGameOverModal
         isOpen={gameState.isGameOver && !dismissedResult}

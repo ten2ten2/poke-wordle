@@ -116,9 +116,9 @@ export default function GameInput({ pokemon, onSubmit, onRandomStart, onGiveUp, 
       <p id="pokemon-search-hint" className="text-[13px] text-gray-500">{t('game.searchHint')}</p>
       {failed && <p role="alert" className="text-sm text-red-700">{t('game.requestFailed')}</p>}
       <div className="flex flex-wrap items-center justify-end gap-1 border-t border-gray-100 pt-1">
-        {!gameStarted && <button type="button" onClick={() => { resetInput(); onRandomStart(); }} disabled={blocked || gameOver} className="btn-quiet mr-auto">{t('game.randomStart')}</button>}
-        {gameStarted && !gameOver && <button type="button" onClick={() => requestAction('giveUp')} disabled={blocked} className="btn-quiet">{t('game.giveUp')}</button>}
-        <button type="button" onClick={() => requestAction('restart')} disabled={blocked} className="btn-quiet">{t('game.restart')}</button>
+        {!gameStarted && <button type="button" onClick={() => { resetInput(); onRandomStart(); }} disabled={blocked || gameOver} className="btn-ghost mr-auto">{t('game.randomStart')}</button>}
+        {gameStarted && !gameOver && <button type="button" onClick={() => requestAction('giveUp')} disabled={blocked} className="btn-ghost">{t('game.giveUp')}</button>}
+        <button type="button" onClick={() => requestAction('restart')} disabled={blocked} className="btn-ghost">{t('game.restart')}</button>
       </div>
       {confirm && (
         <div className="action-confirmation" role="group" aria-label={t(`game.${confirm === 'giveUp' ? 'confirmGiveUp' : 'confirmRestart'}`)}>

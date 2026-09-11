@@ -35,8 +35,7 @@
       "generation": "Generation",
       "abilities": "Fähigkeiten",
       "evolution": "Evolution",
-      "tags": "Tags",
-      "pokemon": "Pokémon"
+      "tags": "Tags"
     },
     "evolutionMethod": "Evolutionsmethode",
     "requestFailed": "Die Antwort konnte nicht geprüft werden. Bitte versuche es erneut.",
@@ -52,7 +51,6 @@
     "confirmGiveUp": "Antwort anzeigen und das Spiel beenden?",
     "confirmRestart": "Versuche löschen und neu beginnen?",
     "confirmAction": "Bestätigen",
-    "latestGuess": "Neuester",
     "guessNumber": "Versuch {number}",
     "hiddenField": "Im Strolch-Modus verborgen"
   },
