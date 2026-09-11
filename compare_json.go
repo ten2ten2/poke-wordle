@@ -11,19 +11,19 @@ import (
 
 // ComparisonResult 比较结果结构
 type ComparisonResult struct {
-	IsEqual     bool                   `json:"is_equal"`
-	Differences []Difference           `json:"differences"`
-	Summary     ComparisonSummary      `json:"summary"`
-	Details     map[string]interface{} `json:"details,omitempty"`
+	IsEqual     bool              `json:"is_equal"`
+	Differences []Difference      `json:"differences"`
+	Summary     ComparisonSummary `json:"summary"`
+	Details     map[string]any    `json:"details,omitempty"`
 }
 
 // Difference 差异结构
 type Difference struct {
-	Path        string      `json:"path"`
-	Type        string      `json:"type"` // "added", "removed", "modified", "type_changed"
-	OldValue    interface{} `json:"old_value,omitempty"`
-	NewValue    interface{} `json:"new_value,omitempty"`
-	Description string      `json:"description"`
+	Path        string `json:"path"`
+	Type        string `json:"type"` // "added", "removed", "modified", "type_changed"
+	OldValue    any    `json:"old_value,omitempty"`
+	NewValue    any    `json:"new_value,omitempty"`
+	Description string `json:"description"`
 }
 
 // ComparisonSummary 比较摘要
@@ -53,7 +53,7 @@ func CompareJSONFiles(file1Path, file2Path string) (*ComparisonResult, error) {
 }
 
 // readJSONFile 读取并解析JSON文件
-func readJSONFile(filepath string) (interface{}, error) {
+func readJSONFile(filepath string) (any, error) {
 	file, err := os.Open(filepath)
 	if err != nil {
 		return nil, err
@@ -65,7 +65,7 @@ func readJSONFile(filepath string) (interface{}, error) {
 		return nil, err
 	}
 
-	var data interface{}
+	var data any
 	err = json.Unmarshal(bytes, &data)
 	if err != nil {
 		return nil, err
@@ -75,12 +75,12 @@ func readJSONFile(filepath string) (interface{}, error) {
 }
 
 // CompareJSON 语义化比较两个JSON数据
-func CompareJSON(data1, data2 interface{}) *ComparisonResult {
+func CompareJSON(data1, data2 any) *ComparisonResult {
 	result := &ComparisonResult{
 		IsEqual:     true,
 		Differences: []Difference{},
 		Summary:     ComparisonSummary{},
-		Details:     make(map[string]interface{}),
+		Details:     make(map[string]any),
 	}
 
 	differences := compareValues(data1, data2, "")
@@ -106,7 +106,7 @@ func CompareJSON(data1, data2 interface{}) *ComparisonResult {
 }
 
 // compareValues 递归比较两个值
-func compareValues(val1, val2 interface{}, path string) []Difference {
+func compareValues(val1, val2 any, path string) []Difference {
 	var differences []Difference
 
 	// 处理nil值
@@ -149,11 +149,11 @@ func compareValues(val1, val2 interface{}, path string) []Difference {
 
 	// 根据类型进行比较
 	switch v1 := val1.(type) {
-	case map[string]interface{}:
-		v2 := val2.(map[string]interface{})
+	case map[string]any:
+		v2 := val2.(map[string]any)
 		differences = append(differences, compareObjects(v1, v2, path)...)
-	case []interface{}:
-		v2 := val2.([]interface{})
+	case []any:
+		v2 := val2.([]any)
 		differences = append(differences, compareArrays(v1, v2, path)...)
 	default:
 		// 基本类型比较
@@ -172,7 +172,7 @@ func compareValues(val1, val2 interface{}, path string) []Difference {
 }
 
 // compareObjects 比较两个对象
-func compareObjects(obj1, obj2 map[string]interface{}, basePath string) []Difference {
+func compareObjects(obj1, obj2 map[string]any, basePath string) []Difference {
 	var differences []Difference
 
 	// 获取所有键的并集
@@ -217,7 +217,7 @@ func compareObjects(obj1, obj2 map[string]interface{}, basePath string) []Differ
 }
 
 // compareArrays 比较两个数组
-func compareArrays(arr1, arr2 []interface{}, basePath string) []Difference {
+func compareArrays(arr1, arr2 []any, basePath string) []Difference {
 	var differences []Difference
 
 	// 长度比较
@@ -258,7 +258,7 @@ func compareArrays(arr1, arr2 []interface{}, basePath string) []Difference {
 
 // CompareJSONStrings 比较两个JSON字符串
 func CompareJSONStrings(json1, json2 string) (*ComparisonResult, error) {
-	var data1, data2 interface{}
+	var data1, data2 any
 
 	err := json.Unmarshal([]byte(json1), &data1)
 	if err != nil {

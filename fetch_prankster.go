@@ -3,8 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
 	"os"
 	"strings"
 	"time"
@@ -31,94 +29,39 @@ type PokemonResponse struct {
 	} `json:"sprites"`
 }
 
-func fetchPranksterImages() {
-	fmt.Println("Prankster 图片获取程序启动...")
-	// Fetch Prankster ability data
-	abilityURL := "https://pokeapi.co/api/v2/ability/prankster"
-
-	fmt.Println("Fetching Prankster ability data...")
-	resp, err := http.Get(abilityURL)
+func fetchPranksterImages() error {
+	body, err := fetchURL("https://pokeapi.co/api/v2/ability/prankster")
 	if err != nil {
-		fmt.Printf("Error fetching ability data: %v\n", err)
-		return
+		return err
 	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Printf("Error reading response body: %v\n", err)
-		return
+	var ability AbilityResponse
+	if err := json.Unmarshal(body, &ability); err != nil {
+		return err
 	}
-
-	var abilityData AbilityResponse
-	err = json.Unmarshal(body, &abilityData)
-	if err != nil {
-		fmt.Printf("Error parsing ability JSON: %v\n", err)
-		return
-	}
-
-	fmt.Printf("Found %d Pokemon with Prankster ability\n", len(abilityData.Pokemon))
-
-	var showdownSprites []string
-
-	// Fetch each Pokemon's showdown sprite
-	for i, pokemonEntry := range abilityData.Pokemon {
-		fmt.Printf("[%d/%d] Processing %s...\n", i+1, len(abilityData.Pokemon), pokemonEntry.Pokemon.Name)
-		// Skip Pokemon with ID 10222
-		if strings.Contains(pokemonEntry.Pokemon.URL, "/10222/") {
-			fmt.Printf("  Skipping ID 10222...\n")
+	sprites := make([]string, 0, len(ability.Pokemon))
+	for _, entry := range ability.Pokemon {
+		if strings.Contains(entry.Pokemon.URL, "/10222/") {
 			continue
 		}
-
-		// Fetch Pokemon details
-		pokemonResp, err := http.Get(pokemonEntry.Pokemon.URL)
+		body, err := fetchURL(entry.Pokemon.URL)
 		if err != nil {
-			fmt.Printf("  Error fetching %s: %v\n", pokemonEntry.Pokemon.Name, err)
-			continue
+			return fmt.Errorf("%s: %w", entry.Pokemon.Name, err)
 		}
-
-		pokemonBody, err := io.ReadAll(pokemonResp.Body)
-		pokemonResp.Body.Close()
-		if err != nil {
-			fmt.Printf("  Error reading %s response: %v\n", pokemonEntry.Pokemon.Name, err)
-			continue
+		var pokemon PokemonResponse
+		if err := json.Unmarshal(body, &pokemon); err != nil {
+			return err
 		}
-
-		var pokemonData PokemonResponse
-		err = json.Unmarshal(pokemonBody, &pokemonData)
-		if err != nil {
-			fmt.Printf("  Error parsing %s JSON: %v\n", pokemonEntry.Pokemon.Name, err)
-			continue
+		if sprite := pokemon.Sprites.Other.Showdown.FrontDefault; sprite != "" {
+			sprites = append(sprites, sprite)
 		}
-
-		// Add showdown sprite URL to array (only if not empty)
-		spriteURL := pokemonData.Sprites.Other.Showdown.FrontDefault
-		if spriteURL != "" {
-			showdownSprites = append(showdownSprites, spriteURL)
-			fmt.Printf("  Added: %s\n", spriteURL)
-		} else {
-			fmt.Printf("  No showdown sprite available\n")
-		}
-
-		// Add a small delay to be respectful to the API
 		time.Sleep(100 * time.Millisecond)
 	}
-
-	// Save results to JSON file
-	outputFile := "output/prankster_profile.json"
-	jsonData, err := json.MarshalIndent(showdownSprites, "", "  ")
-	if err != nil {
-		fmt.Printf("Error marshaling results to JSON: %v\n", err)
-		return
+	if err := os.MkdirAll("output", 0755); err != nil {
+		return err
 	}
-
-	err = os.WriteFile(outputFile, jsonData, 0644)
+	data, err := json.MarshalIndent(sprites, "", "  ")
 	if err != nil {
-		fmt.Printf("Error writing to file: %v\n", err)
-		return
+		return err
 	}
-
-	fmt.Printf("\nFinished processing!\n")
-	fmt.Printf("Results saved to %s\n", outputFile)
-	fmt.Printf("Total showdown sprites found: %d\n", len(showdownSprites))
+	return os.WriteFile("output/prankster_profile.json", data, 0644)
 }

@@ -49,16 +49,26 @@ var (
 // 全局变量
 var (
 	pokemonData     []Pokemon
-	evolutionChains = make(map[int]map[string]interface{})
+	evolutionChains = make(map[int]map[string]any)
 	mutex           sync.Mutex
 	speciesMap      = make(map[int]SpeciesData)
 
 	// 翻译数据存储
-	i18nData           = make(map[string]I18nTranslation)
+	i18nData = make(map[string]I18nTranslation)
+
+	i18nSpecies   = make(map[string]I18nTranslation)
+	i18nTypes     = make(map[string]I18nTranslation)
+	i18nAbilities = make(map[string]I18nTranslation)
+	i18nMoves     = make(map[string]I18nTranslation)
+	i18nItems     = make(map[string]I18nTranslation)
+
 	processedNames     = make(map[string]bool) // 避免重复处理
 	processedTypes     = make(map[string]bool)
 	processedAbilities = make(map[string]bool)
-	i18nMutex          sync.RWMutex // 新增互斥锁用于保护i18n相关数据
+	// processedMoves     = make(map[string]bool)
+	// processedItems     = make(map[string]bool)
+
+	i18nMutex sync.RWMutex // 新增互斥锁用于保护i18n相关数据
 
 	// 语言代码映射
 	languageMapping = map[string]string{

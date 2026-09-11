@@ -30,6 +30,19 @@ func fetchURL(url string) ([]byte, error) {
 	return io.ReadAll(resp.Body)
 }
 
+// 保存翻译数据到JSON文件，分开保存
+func saveI18nToJSONSeparately(filename string, data map[string]I18nTranslation) error {
+	file, err := os.Create(filename)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	encoder := json.NewEncoder(file)
+	encoder.SetIndent("", "  ")
+	return encoder.Encode(data)
+}
+
 // 保存翻译数据到JSON文件
 func saveI18nToJSON(filename string) error {
 	file, err := os.Create(filename)
