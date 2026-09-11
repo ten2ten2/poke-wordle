@@ -55,4 +55,4 @@ E2E 默认自动启动生产服务器；`E2E_DEV=1 mise run e2e` 改用开发模
 
 ## 部署
 
-构建命令为 `npm run build`，启动命令为 `npm start`。部署环境使用与 mise 相同的 Node.js 版本，安装时运行 `npm ci`。修改公开环境变量后需要重新构建。
+构建命令为 `npm run build`，启动命令为 `npm start`，安装时运行 `npm ci`。本地通过 mise 固定 Node.js 24.21.0，`package.json` 的 `engines.node` 固定为 `24.x`，与 [Vercel 支持的 Node.js 版本](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions) 对齐。Vercel 自动维护 24.x 的补丁版本；`@types/node` 同步使用 24 系列。修改公开环境变量后需要重新构建。
