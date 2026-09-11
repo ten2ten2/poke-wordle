@@ -1,0 +1,54 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import * as fs from 'node:fs/promises';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { chromium } from '@playwright/test';
+import { createFixture } from './test-fixture.mjs';
+
+for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844 }]) {
+  test(`console decisions survive reload and gate application at ${viewport.width}px`, { timeout: 60000 }, async (t) => {
+    const fixture = await createFixture(); t.after(fixture.cleanup); fixture.execute('review', 'fixture');
+    const { createConsole } = await import(pathToFileURL(path.join(fixture.tool, 'console.mjs')));
+    const app = await createConsole({ port: 0 }); t.after(() => new Promise((resolve) => app.server.close(resolve)));
+    const browser = await chromium.launch({ headless: true }); t.after(() => browser.close());
+    const page = await browser.newPage({ viewport }); const errors = []; page.on('pageerror', (error) => errors.push(error.message));
+    await page.goto(app.url);
+    await page.getByText('Updated fixture name', { exact: true }).waitFor();
+    assert.equal(await page.getByRole('button', { name: '应用并运行检查' }).isDisabled(), true);
+    await page.locator('.item-name button').first().click();
+    await page.getByRole('button', { name: '查看缓存证据' }).click();
+    await page.locator('#source-body').filter({ hasText: 'pokemon-species/1/' }).waitFor();
+    await page.getByLabel('审核备注').fill('需要重新校对名称');
+    await page.getByRole('button', { name: '要求修正', exact: true }).click();
+    await page.locator('#detail').waitFor({ state: 'hidden' });
+    await page.reload();
+    await page.locator('#count-held').filter({ hasText: '1' }).waitFor();
+    assert.equal(await page.getByRole('button', { name: '应用并运行检查' }).isDisabled(), true);
+    await page.locator('.item-name button').first().click();
+    assert.equal(await page.getByLabel('审核备注').inputValue(), '需要重新校对名称');
+    await page.getByRole('button', { name: '接受变更', exact: true }).click();
+    await page.locator('#detail').waitFor({ state: 'hidden' });
+    await page.waitForFunction(() => !document.getElementById('apply').disabled);
+    await page.reload(); await page.waitForFunction(() => !document.getElementById('apply').disabled);
+    const review = await (await fetch(`${app.url}/api/runs/fixture`)).json();
+    fixture.execute('apply', 'fixture', '--review', review.report_hash);
+    await page.reload();
+    await page.locator('#run-status').filter({ hasText: '已应用' }).waitFor();
+    assert.equal(await page.getByRole('button', { name: '应用并运行检查' }).isDisabled(), true);
+    await page.locator('.item-name button').first().click();
+    assert.equal(await page.getByLabel('审核备注').isVisible(), false);
+    assert.match(await page.locator('#saved-decision').textContent(), /需要重新校对名称/);
+    const exported = await (await fetch(`${app.url}/api/runs/fixture/export`)).json();
+    await fs.mkdir(path.join(fixture.tool, 'reports'));
+    await fs.writeFile(path.join(fixture.tool, 'reports/2026-09-12.json'), JSON.stringify(exported));
+    await fs.rm(fixture.run, { recursive: true });
+    await page.reload();
+    await page.locator('#run-status').filter({ hasText: '已应用' }).waitFor();
+    assert.equal(await page.getByRole('button', { name: '从缓存重建', exact: true }).isDisabled(), true);
+    await page.locator('.item-name button').first().click();
+    assert.match(await page.locator('#saved-decision').textContent(), /需要重新校对名称/);
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
+    assert.deepEqual(errors, []);
+  });
+}

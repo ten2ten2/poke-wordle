@@ -4,6 +4,7 @@ import * as fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
+import { assertApproved, withDecisionLock } from './review-state.mjs';
 
 const tool = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(tool, '../..');
@@ -12,6 +13,7 @@ const runs = path.join(tool, 'output/runs');
 export const files = ['pokemon_data.json', 'pokemon_i18n.json', 'prankster_profile.json'];
 export const locales = ['en', 'ja', 'es', 'de', 'it', 'fr', 'zh-hans', 'zh-hant', 'ko'];
 const registryFile = path.join(tool, 'id-registry.json');
+export const paths = { tool, root, published, runs, registryFile };
 const hash = (value) => createHash('sha256').update(value).digest('hex');
 const readJSON = async (file) => JSON.parse(await fs.readFile(file, 'utf8'));
 const json = (value) => `${JSON.stringify(value, null, 2)}\n`;
@@ -99,7 +101,7 @@ export function validateDataset(data, translations, images, registry, messages) 
 
 const loadDataset = (dir) => Promise.all(files.map((file) => readJSON(path.join(dir, file))));
 const loadMessages = async () => Object.fromEntries(await Promise.all(locales.map(async (locale) => [locale, await readJSON(path.join(root, `src/messages/${locale}.json`))])));
-async function generatorHashes() {
+export async function generatorHashes() {
   return hashes(tool, (await fs.readdir(tool)).filter((file) => file.endsWith('.go') || ['go.mod', 'go.sum', 'corrections.json'].includes(file)).sort());
 }
 async function sourceHashes(cacheDir) {
@@ -135,7 +137,7 @@ async function generate(args) {
   await writeJSON(path.join(dir, 'manifest.json'), manifest);
   console.log(`生成完成。下一步: mise run data:review -- ${id}`);
 }
-async function verifiedRun(id) {
+export async function verifiedRun(id) {
   const dir = runPath(id); const manifest = await readJSON(path.join(dir, 'manifest.json'));
   assert(manifest.schema === 1 && manifest.id === id && manifest.completed_at, '批次未完成');
   assert(equal(manifest.baseline, await hashes(published, [...files, 'dataset.json'])), '发布基准已变化，必须重新生成和校对');
@@ -176,11 +178,15 @@ async function review(id) {
   const corrected = new Set(events.filter((event) => event.kind === 'override').map((event) => `${event.entity}/${event.locale}`));
   const remainingFallbacks = events.filter((event) => event.kind === 'english-form-fallback' && !corrected.has(`${event.entity}/${event.locale}`));
   const report = { id, reviewed_at: new Date().toISOString(), manifest_sha256: await fileHash(path.join(dir, 'manifest.json')), validator_sha256: await fileHash(fileURLToPath(import.meta.url)), counts, differences, high_risk: differences[0].filter((diff) => /^pokemon\.[^.]+$/.test(diff.path) || /\.(id|pokedex_id_national)$/.test(diff.path)), translation_events: events, remaining_english_fallbacks: remainingFallbacks, images: await checkImages(candidate, baseline), candidate: manifest.candidate };
-  await fs.writeFile(path.join(dir, 'review.json'), json(report));
-  const lines = [`# 数据校对 ${id}`, '', `记录 ${counts.pokemon}；种族 ${counts.species}；翻译 ${counts.translations}；图片 ${counts.prankster}。`, '', ...differences.flat().map((diff) => `- ${diff.path}: ${JSON.stringify(diff.before)} → ${JSON.stringify(diff.after)}`), '', `翻译覆盖/回退详见 review.json (${report.translation_events?.length ?? 0} 条)。`, `新增/删除/身份变化: ${report.high_risk.length} 条。`, ''];
-  await fs.writeFile(path.join(dir, 'review.md'), lines.join('\n'));
-  const reviewedHash = await fileHash(path.join(dir, 'review.json'));
-  console.log(`${lines.slice(0, 4).join('\n')}\n差异: ${differences.map((items) => items.length).join(' / ')}；高风险: ${report.high_risk.length}\n校对文件: ${path.join(dir, 'review.md')}\n检查后应用: mise run data:apply -- ${id} --review ${reviewedHash}`);
+  await withDecisionLock(dir, async () => {
+    await fs.writeFile(path.join(dir, 'review.json'), json(report));
+    const lines = [`# 数据校对 ${id}`, '', `记录 ${counts.pokemon}；种族 ${counts.species}；翻译 ${counts.translations}；图片 ${counts.prankster}。`, '', ...differences.flat().map((diff) => `- ${diff.path}: ${JSON.stringify(diff.before)} → ${JSON.stringify(diff.after)}`), '', `翻译覆盖/回退详见 review.json (${report.translation_events?.length ?? 0} 条)。`, `新增/删除/身份变化: ${report.high_risk.length} 条。`, ''];
+    await fs.writeFile(path.join(dir, 'review.md'), lines.join('\n'));
+    const reviewedHash = await fileHash(path.join(dir, 'review.json'));
+    const previousDecisions = await readJSON(path.join(dir, 'decisions.json')).catch((error) => { if (error.code === 'ENOENT') return null; throw error; });
+    await fs.writeFile(path.join(dir, 'decisions.json'), json({ schema: 1, report_sha256: reviewedHash, revision: 0, decisions: {}, history: previousDecisions?.history ?? [] }));
+    console.log(`${lines.slice(0, 4).join('\n')}\n差异: ${differences.map((items) => items.length).join(' / ')}；高风险: ${report.high_risk.length}\n校对文件: ${path.join(dir, 'review.md')}\n使用 mise run data:console 逐项确认后应用: mise run data:apply -- ${id} --review ${reviewedHash}`);
+  });
 }
 
 // Stage every file before replacing any target; on an ordinary I/O failure restore original bytes in memory.
@@ -211,20 +217,29 @@ async function apply(id, flag, reviewedHash) {
   assert.equal(report.manifest_sha256, await fileHash(path.join(dir, 'manifest.json')), '校对对应另一候选');
   assert.equal(report.validator_sha256, await fileHash(fileURLToPath(import.meta.url)), '校验实现已变化，请重新校对');
   assert(equal(report.differences, differences), '差异报告不一致');
-  const metadata = { version: hash(files.map((file) => `${file}:${manifest.candidate[file]}`).join('\n')), files: manifest.candidate, run: id, sources: hash(json(manifest.sources)) };
-  const entries = await Promise.all(files.map(async (file) => [path.join(published, file), await fs.readFile(path.join(dir, 'output', file))]));
-  for (const [index, file] of files.entries()) assert.equal(hash(entries[index][1]), manifest.candidate[file], '读取发布内容时候选发生变化');
-  const registryBytes = await fs.readFile(path.join(dir, 'id-registry.json'));
-  assert.equal(hash(registryBytes), manifest.registry, '读取发布内容时注册表发生变化');
-  entries.push([registryFile, registryBytes], [path.join(published, 'dataset.json'), json(metadata)]);
-  const lock = await fs.open(path.join(tool, 'output/apply.lock'), 'wx');
-  try {
-    // Recheck after taking the exclusive publication lock.
-    assert(equal(manifest.baseline, await hashes(published, [...files, 'dataset.json'])), '发布基准已变化');
-    assert.equal(manifest.baseline_registry, await fileHash(registryFile), '注册表已变化');
-    await replaceBatch(entries);
-  } finally { await lock.close(); await fs.rm(path.join(tool, 'output/apply.lock')); }
-  console.log(`已应用 ${id}，数据版本 ${metadata.version}。请运行 mise run check。`);
+  await withDecisionLock(dir, async () => {
+    assert.equal(await fileHash(path.join(dir, 'review.json')), reviewedHash, '校对报告已变化');
+    const decisionBytes = await fs.readFile(path.join(dir, 'decisions.json')).catch((error) => {
+      if (error.code === 'ENOENT') throw new Error('请先在 data:console 中确认当前批次的变更');
+      throw error;
+    });
+    assertApproved(report, JSON.parse(decisionBytes), reviewedHash);
+    const metadata = { version: hash(files.map((file) => `${file}:${manifest.candidate[file]}`).join('\n')), files: manifest.candidate, run: id, sources: hash(json(manifest.sources)) };
+    const entries = await Promise.all(files.map(async (file) => [path.join(published, file), await fs.readFile(path.join(dir, 'output', file))]));
+    for (const [index, file] of files.entries()) assert.equal(hash(entries[index][1]), manifest.candidate[file], '读取发布内容时候选发生变化');
+    const registryBytes = await fs.readFile(path.join(dir, 'id-registry.json'));
+    assert.equal(hash(registryBytes), manifest.registry, '读取发布内容时注册表发生变化');
+    entries.push([registryFile, registryBytes], [path.join(published, 'dataset.json'), json(metadata)]);
+    const lock = await fs.open(path.join(tool, 'output/apply.lock'), 'wx');
+    try {
+      // Recheck after taking the exclusive publication lock.
+      assert(equal(manifest.baseline, await hashes(published, [...files, 'dataset.json'])), '发布基准已变化');
+      assert.equal(manifest.baseline_registry, await fileHash(registryFile), '注册表已变化');
+      assert.equal(hash(await fs.readFile(path.join(dir, 'decisions.json'))), hash(decisionBytes), '应用前审核决定发生变化');
+      await replaceBatch(entries);
+    } finally { await lock.close(); await fs.rm(path.join(tool, 'output/apply.lock')); }
+    console.log(`已应用 ${id}，数据版本 ${metadata.version}。请运行 mise run check。`);
+  });
 }
 async function verify() {
   const data = await loadDataset(published); const metadata = await readJSON(path.join(published, 'dataset.json'));

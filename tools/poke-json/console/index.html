@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>数据校对 · Poké Wordle</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/"><span class="pokeball" aria-hidden="true"></span><span>Poké Wordle <small>数据工作台</small></span></a><span class="local-label"><i></i>本地控制台</span></header>
+  <div class="layout">
+    <aside class="sidebar"><div class="sidebar-title"><h2>更新批次</h2><button id="refresh" class="text-button">刷新</button></div><p class="muted small">每批独立生成，确认后再应用。</p><nav id="runs" aria-label="数据批次"></nav><div class="sidebar-footer"><span>更新流程</span><ol><li>生成候选与缓存来源</li><li>自动校验，逐项查看差异</li><li>确认或提出修正意见</li><li>应用数据，运行检查</li></ol></div></aside>
+    <main>
+      <section class="intro"><div><p class="eyebrow">DATA REVIEW</p><h1>每一处变化，都有依据</h1><p class="muted">对照当前数据、上游来源和本地修正，确认本次更新。</p></div><button id="generate" class="primary">检查上游更新 <span aria-hidden="true">↗</span></button></section>
+      <div id="notice" role="status" aria-live="polite" hidden></div>
+      <section id="job" class="job-card" hidden><div class="job-title"><strong id="job-title"></strong><span id="job-status" class="badge"></span></div><p id="job-error" class="small"></p><details><summary>查看运行日志</summary><pre id="job-log"></pre></details></section>
+      <div id="empty" class="empty" hidden>还没有数据批次。点击“检查上游更新”开始生成候选。</div>
+      <section id="workspace" hidden>
+        <div class="run-heading"><div><h2 id="run-title">批次详情</h2><p id="run-meta" class="muted small"></p></div><span id="run-status" class="badge"></span></div>
+        <p id="run-note" class="run-note"></p>
+        <div class="stats"><div><span>本批变更</span><strong id="count-changes">—</strong></div><div><span>待确认</span><strong id="count-pending">—</strong></div><div><span>已接受</span><strong id="count-accepted">—</strong></div><div><span>要求修正 / 暂缓</span><strong id="count-held">—</strong></div></div>
+        <div class="run-actions"><button id="review">重新自动校对</button><button id="rebuild">从缓存重建</button><button id="resume">补齐缺失请求</button><a id="export" class="button-link">导出审核记录</a><details class="metadata"><summary>来源与批次</summary><div id="metadata"></div></details></div>
+        <section class="review-card">
+          <div class="tabs" role="tablist" aria-label="查看内容"><button role="tab" data-tab="changes" aria-selected="true">全部变更</button><button role="tab" data-tab="pending" aria-selected="false">待确认</button><button role="tab" data-tab="held" aria-selected="false">修正与暂缓</button><button role="tab" data-tab="correction" aria-selected="false">人工修正依据</button></div>
+          <div class="filters"><label class="search"><span class="sr-only">搜索名称或字段</span><input id="search" type="search" placeholder="搜索宝可梦、语言或字段…"></label><label><span class="sr-only">变更类型</span><select id="category"><option value="all">所有类型</option><option value="pokemon">游戏字段</option><option value="translation">名称翻译</option><option value="formatting">格式变化</option><option value="image">图片</option><option value="fallback">英文回退</option></select></label><span id="result-count" class="muted small"></span></div>
+          <div id="selection" class="selection"><label><input id="select-page" type="checkbox"> 选择当前页普通变更</label><button id="accept-selected">接受已选 <span id="selected-count">0</span> 项</button><span class="muted small">新增、删除及身份变化须单独确认。</span></div>
+          <div class="column-head"><span>条目 / 字段</span><span>当前值</span><span>候选值</span><span>审核</span></div><div id="items"></div>
+          <div class="pagination"><span id="page-label" class="muted small"></span><div><button id="previous">上一页</button><button id="next">下一页</button></div></div>
+        </section>
+        <div class="apply-bar"><div><strong id="apply-title"></strong><p id="apply-note" class="small muted"></p></div><button id="apply" class="primary">应用并运行检查</button></div>
+      </section>
+    </main>
+  </div>
+  <dialog id="detail"><div class="detail-header"><div><p id="detail-category" class="eyebrow"></p><h2 id="detail-title"></h2><p id="detail-field" class="muted small"></p></div><button id="close-detail" aria-label="关闭详情">×</button></div><div class="detail-body"><div id="detail-values" class="detail-values"></div><p id="saved-decision" class="run-note" hidden></p><p id="detail-reason" class="run-note" hidden></p><h3>来源证据</h3><div id="sources"></div><pre id="source-body" hidden></pre><p id="detail-notice" class="run-note" role="status" hidden></p><div id="decision-form"><label for="decision-note">审核备注</label><textarea id="decision-note" rows="3" placeholder="记录判断依据，或说明需要修正的内容"></textarea><p class="small muted">“保留原值”“要求修正”和“暂缓”会阻止整批应用。按备注修正生成规则、重建后再确认。</p><div class="decision-buttons"><button data-decision="accepted" class="primary">接受变更</button><button data-decision="keep">保留原值</button><button data-decision="fix">要求修正</button><button data-decision="defer">暂缓</button><button data-decision="pending" class="text-button">撤回决定</button></div></div></div></dialog>
+</body>
+</html>

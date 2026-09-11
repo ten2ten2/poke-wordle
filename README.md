@@ -22,7 +22,9 @@ mise run dev
 | `mise run test`                     | Jest 单元测试                          |
 | `mise run build` / `mise run start` | 构建 / 启动生产服务器                  |
 | `mise run e2e`                      | Playwright 桌面和移动端回归            |
-| `mise run data:check`               | Go 静态检查和竞态回归测试              |
+| `mise run data:check`               | Go 检查、数据流程与控制台接口回归、发布数据校验 |
+| `mise run data:console`             | 本地数据校对控制台（127.0.0.1:3318）    |
+| `mise run data:console:test`        | 控制台桌面和移动端浏览器回归            |
 | `mise run data:generate`            | 生成隔离的数据候选并缓存来源（需要联网） |
 | `mise run data:review -- <run-id>`   | 校验候选并生成语义差异报告             |
 | `mise run data:verify`              | 离线校验已发布的数据及版本哈希         |
@@ -42,7 +44,7 @@ E2E 默认自动启动生产服务器；`E2E_DEV=1 mise run e2e` 改用开发模
 - Next.js 16 App Router、React 19、Tailwind CSS 4。
 - `src/app/[locale]` 统一处理所有语言；`src/proxy.ts` 使用 next-intl 路由。英文不带前缀，例如 `/knowledge`；其他语言使用 `/ja`、`/zh-hans` 等前缀。
 - `src/hooks/useGameState.ts` 管理游戏和持久化；`src/app/api/checkGuess/route.ts` 比较猜测。
-- `src/data` 保存离线游戏数据。[Go 数据工具](tools/poke-json/README.md) 位于 `tools/poke-json`，保留独立 Go 模块，与前端共用 Git 仓库和 mise 配置。候选按批次输出到 `tools/poke-json/output/runs`，校对后由 `data:apply` 校验哈希并同步到 `src/data`，同时维护稳定 ID 和数据版本。操作见[数据更新流程](tools/poke-json/UPDATE_WORKFLOW.md)。
+- `src/data` 保存离线游戏数据。[Go 数据工具](tools/poke-json/README.md) 位于 `tools/poke-json`，保留独立 Go 模块，与前端共用 Git 仓库和 mise 配置。用 `mise run data:console` 生成候选、对照差异与来源并保存审核决定；所有变更确认后应用到 `src/data`，同步稳定 ID 与数据版本。操作见[数据更新流程](tools/poke-json/UPDATE_WORKFLOW.md)。
 - 知识文章使用构建时编译的 MDX。新增文章时更新 `src/data/knowledge_data.json`、对应 MDX 文件和 `src/components/MdxContent.tsx` 的导入映射。跨语言链接使用文章的 `translations`。
 - Google Analytics 仅在接受后加载；Vercel Analytics 和 Speed Insights 保留在根布局。
 
