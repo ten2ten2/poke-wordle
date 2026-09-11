@@ -6,6 +6,31 @@ import { pathToFileURL } from 'node:url';
 import http from 'node:http';
 import { createFixture } from './test-fixture.mjs';
 
+test('current data reads and exports published files, independently of candidates and reports', async (t) => {
+  const fixture = await createFixture(); t.after(fixture.cleanup);
+  const { createConsole } = await import(pathToFileURL(path.join(fixture.tool, 'console.mjs')));
+  const app = await createConsole({ port: 0 }); t.after(() => new Promise((resolve) => app.server.close(resolve)));
+  const get = async (route) => {
+    const response = await fetch(`${app.url}${route}`); assert.equal(response.status, 200); return response.json();
+  };
+  const before = await get('/api/current');
+  assert.equal(before.integrity.valid, true);
+  assert.equal(before.data['pokemon_data.json'].length, 1135);
+  assert.equal(before.data['pokemon_i18n.json'].bulbasaur.en, 'Bulbasaur');
+  assert.notEqual(before.data['pokemon_i18n.json'].bulbasaur.en, JSON.parse(await fs.readFile(fixture.translationFile)).bulbasaur.en);
+  assert.deepEqual(await get('/api/current/export'), before.data);
+  for (const [file, value] of Object.entries(before.data)) assert.deepEqual(value, JSON.parse(await fs.readFile(path.join(fixture.data, file))));
+  await fs.rm(path.join(fixture.tool, 'output/runs'), { recursive: true });
+  assert.deepEqual((await get('/api/current')).data, before.data);
+  const translationFile = path.join(fixture.data, 'pokemon_i18n.json');
+  const translations = JSON.parse(await fs.readFile(translationFile)); translations.bulbasaur.en = 'Unpublished edit';
+  await fs.writeFile(translationFile, JSON.stringify(translations));
+  const changed = await get('/api/current');
+  assert.equal(changed.data['pokemon_i18n.json'].bulbasaur.en, 'Unpublished edit');
+  assert.equal(changed.integrity.valid, false);
+  assert(changed.integrity.issues.some((issue) => issue.includes('pokemon_i18n.json')));
+});
+
 test('local console persists decisions, rejects stale views and blocks unapproved application', async (t) => {
   const fixture = await createFixture(); t.after(fixture.cleanup);
   fixture.execute('review', 'fixture');

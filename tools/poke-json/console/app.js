@@ -1,6 +1,6 @@
-'use strict';
+import { createDataBrowser } from './data-view.js';
 const $ = (id) => document.getElementById(id);
-const state = { token: '', runs: [], run: null, tab: 'changes', page: 0, selected: new Set(), busy: false, saving: false, detail: null, lastJob: null };
+const state = { token: '', runs: [], run: null, view: location.hash === '#data' ? 'data' : 'review', navigation: 0, tab: 'changes', page: 0, selected: new Set(), busy: false, saving: false, detail: null, lastJob: null };
 const statuses = { applied: '已应用 · 历史记录', archived: '历史记录', stale: '需要重建', incomplete: '生成未完成', needs_review: '待自动校对', reviewable: '待人工确认', accepted: '已接受', pending: '待确认', keep: '保留原值', fix: '要求修正', defer: '暂缓', running: '运行中', passed: '已完成', failed: '失败', interrupted: '已中断' };
 const categories = { pokemon: '游戏字段', translation: '名称翻译', formatting: '格式变化', image: '图片', correction: '人工修正', fallback: '英文回退' };
 const fields = { tags: '标签', abilities: '特性', types: '属性', base_stats_total: '种族值总和', evolution_stage: '进化阶段', evolution_method: '进化方式', evolution_method_detail: '进化分类', generation: '世代', id: '游戏 ID', pokedex_id_national: '全国图鉴编号', profile: '图片', en: '英语', ja: '日语', es: '西班牙语', de: '德语', it: '意大利语', fr: '法语', 'zh-hans': '简体中文', 'zh-hant': '繁体中文', ko: '韩语' };
@@ -19,13 +19,28 @@ async function api(url, body) {
   if (!response.ok) throw new Error(result.error ?? '操作失败');
   return result;
 }
+const dataBrowser = createDataBrowser({ api, notify });
+function renderView() {
+  const current = state.view === 'data';
+  $('current-data').hidden = !current;
+  $('review-intro').hidden = current;
+  $('workspace').hidden = current || !state.run;
+  $('empty').hidden = current || Boolean(state.runs.length);
+  $('job').hidden = !state.lastJob || (current && !state.busy);
+  $('browse-data').setAttribute('aria-current', current ? 'page' : 'false');
+  renderRuns(current ? null : state.run?.id);
+}
+async function showData() {
+  state.navigation++;
+  state.view = 'data'; history.replaceState(null, '', '#data'); renderView();
+  await dataBrowser.load();
+}
 async function loadRuns(preferred) {
   const result = await api('/api/runs'); state.runs = result.runs;
   const id = preferred ?? state.run?.id ?? location.hash.slice(1) ?? result.published_run;
   const selected = state.runs.find((run) => run.id === id) ?? state.runs.find((run) => run.id === result.published_run) ?? state.runs[0];
-  renderRuns(selected?.id);
-  $('empty').hidden = Boolean(selected); $('workspace').hidden = !selected;
-  if (selected) await loadRun(selected.id);
+  if (selected && state.view === 'review') await loadRun(selected.id, false);
+  renderView();
 }
 function renderRuns(id) {
   $('runs').replaceChildren(...state.runs.map((run) => {
@@ -35,14 +50,19 @@ function renderRuns(id) {
     return button;
   }));
 }
-async function loadRun(id) {
+async function loadRun(id, activate = true) {
+  const navigation = activate ? ++state.navigation : state.navigation;
   const run = await api(`/api/runs/${encodeURIComponent(id)}`);
+  if (navigation !== state.navigation) return;
   if (run.id !== state.run?.id || run.report_hash !== state.run?.report_hash) { state.selected.clear(); state.page = 0; }
-  state.run = run; history.replaceState(null, '', `#${run.id}`); renderRuns(run.id); renderRun();
+  state.run = run;
+  if (activate) state.view = 'review';
+  if (state.view === 'review') history.replaceState(null, '', `#${run.id}`);
+  renderView(); renderRun();
 }
 function renderRun() {
   const run = state.run; if (!run) return;
-  $('workspace').hidden = false;
+  $('workspace').hidden = state.view !== 'review';
   $('run-title').textContent = run.status === 'applied' ? '已应用的数据变更' : run.status === 'archived' ? '历史数据变更' : '本次数据变更';
   $('run-meta').textContent = `${date(run.started_at)}${run.counts ? ` · ${run.counts.pokemon ?? '—'} 个答案 · ${run.counts.translations ?? '—'} 个翻译键 · ${run.counts.prankster ?? '—'} 张恶作剧图片` : ''}`;
   $('run-status').replaceWith(Object.assign(badge(run.status), { id: 'run-status' }));
@@ -172,7 +192,7 @@ async function decide(changes) {
   try {
     await api(`/api/runs/${state.run.id}/decisions`, { report_hash: state.run.report_hash, revision: state.run.revision, changes });
     state.selected.clear(); $('detail').close(); notify(changes.some((item) => ['keep', 'fix', 'defer'].includes(item.status)) ? '决定已保存。本批暂停应用，修正生成规则后重建并重新确认。' : '审核决定已保存。');
-    await loadRun(state.run.id);
+    await loadRun(state.run.id, false);
   } catch (error) { notify(error.message); }
   finally { state.saving = false; for (const button of document.querySelectorAll('[data-decision]')) button.disabled = false; renderRun(); }
 }
@@ -185,7 +205,7 @@ async function job(action, mode) {
 async function pollJobs() {
   const result = await api('/api/jobs'); const wasBusy = state.busy; state.busy = result.busy;
   const latest = result.jobs[0];
-  $('job').hidden = !latest;
+  $('job').hidden = !latest || (state.view === 'data' && !state.busy);
   if (latest) {
     const title = { generate: '生成候选与自动校对', review: '自动校对', apply: '应用数据并运行检查', check: '检查已发布数据' }[latest.action];
     $('job-title').textContent = title;
@@ -195,13 +215,17 @@ async function pollJobs() {
     const key = `${latest.id}/${latest.status}`;
     if (key !== state.lastJob) {
       const previous = state.lastJob; state.lastJob = key;
-      if (previous && latest.status !== 'running') await loadRuns(latest.run ?? state.run?.id);
+      if (previous && latest.status !== 'running') {
+        await loadRuns(latest.run ?? state.run?.id);
+        if (state.view === 'data') await dataBrowser.load();
+      }
     }
   }
   $('generate').disabled = state.busy || state.saving;
   if (wasBusy !== state.busy && !state.saving && !$('detail').open) renderRun();
 }
 $('generate').addEventListener('click', () => job('generate', 'live'));
+$('browse-data').addEventListener('click', () => showData().catch((error) => notify(error.message)));
 $('review').addEventListener('click', () => job('review'));
 $('rebuild').addEventListener('click', () => job('generate', 'from'));
 $('resume').addEventListener('click', () => job('generate', 'resume'));
@@ -215,7 +239,12 @@ $('accept-selected').addEventListener('click', () => decide([...state.selected].
 $('close-detail').addEventListener('click', () => $('detail').close());
 for (const button of document.querySelectorAll('[data-decision]')) button.addEventListener('click', () => decide([{ id: state.detail.id, status: button.dataset.decision, note: $('decision-note').value }]));
 async function start() {
-  try { state.token = (await api('/api/session')).token; await loadRuns(); await pollJobs(); }
+  renderView();
+  try {
+    state.token = (await api('/api/session')).token;
+    if (state.view === 'data') await showData();
+    await loadRuns(); await pollJobs();
+  }
   catch (error) { notify(error.message); }
   const poll = async () => { try { await pollJobs(); } catch (error) { notify(error.message); } finally { setTimeout(poll, 2500); } };
   setTimeout(poll, 2500);

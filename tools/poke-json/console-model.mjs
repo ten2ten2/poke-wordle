@@ -12,6 +12,21 @@ const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 export const runDir = (id) => { assert.match(id ?? '', /^[\w-]+$/, '批次编号无效'); return path.join(paths.runs, id); };
 const loadData = async (dir) => Promise.all(files.map((file) => optionalJSON(path.join(dir, file))));
 
+export async function currentData() {
+  const names = [...files, 'knowledge_data.json', 'dataset.json'];
+  const bytes = Object.fromEntries(await Promise.all(names.map(async (name) => [name, await fs.readFile(path.join(paths.published, name))])));
+  const data = Object.fromEntries(names.map((name) => [name, JSON.parse(bytes[name])]));
+  const metadata = data['dataset.json'];
+  const hashes = Object.fromEntries(files.map((name) => [name, digest(bytes[name])]));
+  const issues = files.filter((name) => hashes[name] !== metadata.files[name]).map((name) => `${name} 与已记录的版本不一致`);
+  if (metadata.version !== digest(files.map((name) => `${name}:${hashes[name]}`).join('\n'))) issues.push('数据版本与文件内容不一致');
+  const messages = await readJSON(path.join(paths.root, 'src/messages/zh-hans.json'));
+  return {
+    data, read_at: new Date().toISOString(), integrity: { valid: issues.length === 0, issues },
+    messages: { tags: messages.tags, evolutionMethods: messages.evolutionMethods },
+  };
+}
+
 async function findRun(id) {
   const dir = runDir(id);
   const manifest = await optionalJSON(path.join(dir, 'manifest.json'));

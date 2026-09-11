@@ -6,13 +6,13 @@ import { randomBytes } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import assert from 'node:assert/strict';
 import { paths } from './pipeline.mjs';
-import { listRuns, inspectRun, saveDecisions, readSource, exportReview, requireApproval, runDir } from './console-model.mjs';
+import { listRuns, inspectRun, saveDecisions, readSource, exportReview, requireApproval, runDir, currentData } from './console-model.mjs';
 
 export async function createConsole({ port = 3318 } = {}) {
   const token = randomBytes(32).toString('hex');
   const jobsDir = path.join(paths.tool, 'output/console-jobs'); await fs.mkdir(jobsDir, { recursive: true });
   const jobs = new Map(); let busy = false; let address;
-  const staticFiles = new Map([['/', ['index.html', 'text/html']], ['/app.js', ['app.js', 'text/javascript']], ['/style.css', ['style.css', 'text/css']]]);
+  const staticFiles = new Map([['/', ['index.html', 'text/html']], ['/app.js', ['app.js', 'text/javascript']], ['/data-view.js', ['data-view.js', 'text/javascript']], ['/style.css', ['style.css', 'text/css']]]);
   const persist = async (job) => {
     const file = path.join(jobsDir, `${job.id}.json`);
     await fs.writeFile(`${file}.tmp`, `${JSON.stringify(job, null, 2)}\n`);
@@ -104,6 +104,8 @@ export async function createConsole({ port = 3318 } = {}) {
         });
       }
       if (request.method === 'GET' && url.pathname === '/api/session') return send(200, { token });
+      if (request.method === 'GET' && url.pathname === '/api/current') return send(200, await currentData());
+      if (request.method === 'GET' && url.pathname === '/api/current/export') return send(200, (await currentData()).data, { 'Content-Disposition': 'attachment; filename="published-data.json"' });
       if (request.method === 'GET' && url.pathname === '/api/runs') return send(200, await listRuns());
       if (request.method === 'GET' && url.pathname === '/api/jobs') return send(200, await allJobs());
       const route = url.pathname.match(/^\/api\/runs\/([\w-]+)(?:\/(source|export|decisions))?$/);

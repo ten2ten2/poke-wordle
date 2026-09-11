@@ -13,7 +13,7 @@ export async function createFixture() {
   for (const name of names) await fs.copyFile(new URL(name, originalTool), path.join(tool, name));
   await fs.cp(new URL('./console', import.meta.url), path.join(tool, 'console'), { recursive: true });
   const dataFiles = ['pokemon_data.json', 'pokemon_i18n.json', 'prankster_profile.json'];
-  for (const name of [...dataFiles, 'dataset.json']) await fs.copyFile(new URL(`../../src/data/${name}`, import.meta.url), path.join(data, name));
+  for (const name of [...dataFiles, 'dataset.json', 'knowledge_data.json']) await fs.copyFile(new URL(`../../src/data/${name}`, import.meta.url), path.join(data, name));
   await fs.cp(new URL('../../src/messages', import.meta.url), path.join(dir, 'src/messages'), { recursive: true });
   const run = path.join(tool, 'output/runs/fixture'); await fs.mkdir(path.join(run, 'cache'), { recursive: true });
   await fs.mkdir(path.join(run, 'output'));

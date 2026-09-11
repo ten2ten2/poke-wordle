@@ -2,16 +2,38 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>数据校对 · Poké Wordle</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+  <title>数据校对 · Poké Wordle</title><link rel="stylesheet" href="/style.css"><script src="/app.js" type="module"></script>
 </head>
 <body>
   <header class="topbar"><a class="brand" href="/"><span class="pokeball" aria-hidden="true"></span><span>Poké Wordle <small>数据工作台</small></span></a><span class="local-label"><i></i>本地控制台</span></header>
   <div class="layout">
-    <aside class="sidebar"><div class="sidebar-title"><h2>更新批次</h2><button id="refresh" class="text-button">刷新</button></div><p class="muted small">每批独立生成，确认后再应用。</p><nav id="runs" aria-label="数据批次"></nav><div class="sidebar-footer"><span>更新流程</span><ol><li>生成候选与缓存来源</li><li>自动校验，逐项查看差异</li><li>确认或提出修正意见</li><li>应用数据，运行检查</li></ol></div></aside>
+    <aside class="sidebar"><button id="browse-data" class="data-nav" aria-current="false"><strong>当前数据</strong><small>浏览全部已发布数据</small></button><div class="sidebar-title"><h2>更新批次</h2><button id="refresh" class="text-button">刷新</button></div><p class="muted small">每批独立生成，确认后再应用。</p><nav id="runs" aria-label="数据批次"></nav><div class="sidebar-footer"><span>更新流程</span><ol><li>生成候选与缓存来源</li><li>自动校验，逐项查看差异</li><li>确认或提出修正意见</li><li>应用数据，运行检查</li></ol></div></aside>
     <main>
-      <section class="intro"><div><p class="eyebrow">DATA REVIEW</p><h1>每一处变化，都有依据</h1><p class="muted">对照当前数据、上游来源和本地修正，确认本次更新。</p></div><button id="generate" class="primary">检查上游更新 <span aria-hidden="true">↗</span></button></section>
+      <section id="review-intro" class="intro"><div><p class="eyebrow">DATA REVIEW</p><h1>每一处变化，都有依据</h1><p class="muted">对照当前数据、上游来源和本地修正，确认本次更新。</p></div><button id="generate" class="primary">检查上游更新 <span aria-hidden="true">↗</span></button></section>
       <div id="notice" role="status" aria-live="polite" hidden></div>
       <section id="job" class="job-card" hidden><div class="job-title"><strong id="job-title"></strong><span id="job-status" class="badge"></span></div><p id="job-error" class="small"></p><details><summary>查看运行日志</summary><pre id="job-log"></pre></details></section>
+      <section id="current-data" hidden>
+        <div class="intro"><div><p class="eyebrow">PUBLISHED DATA</p><h1>当前数据</h1><p class="muted">浏览游戏当前使用的数据，查看完整属性与多语言名称。</p></div><div class="data-actions"><button id="data-refresh">刷新数据</button><a href="/api/current/export" class="button-link">导出当前数据</a></div></div>
+        <p id="data-status" class="run-note" role="status">正在读取当前数据…</p>
+        <div id="data-content" hidden>
+          <div id="data-stats" class="stats"></div>
+          <details class="data-version"><summary>数据版本与文件</summary><pre id="data-metadata"></pre></details>
+          <section class="review-card">
+            <nav class="tabs" aria-label="数据类别"><button data-collection="pokemon" aria-pressed="true">宝可梦</button><button data-collection="translations" aria-pressed="false">多语言名称</button><button data-collection="images" aria-pressed="false">恶作剧图片</button><button data-collection="knowledge" aria-pressed="false">知识文章索引</button></nav>
+            <div class="filters data-filters">
+              <label class="search"><span class="sr-only">搜索当前数据</span><input id="data-search" type="search" placeholder="名称、图鉴编号、特性或关键词…"></label>
+              <label><span class="sr-only">显示语言</span><select id="data-locale" aria-label="显示语言"></select></label>
+              <label data-pokemon-filter><span class="sr-only">世代</span><select id="data-generation" aria-label="世代"><option value="all">所有世代</option></select></label>
+              <label data-pokemon-filter><span class="sr-only">属性</span><select id="data-type" aria-label="属性"><option value="all">所有属性</option></select></label>
+              <label data-pokemon-filter><span class="sr-only">标签</span><select id="data-tag" aria-label="标签"><option value="all">所有标签</option></select></label>
+              <label id="data-kind-filter" hidden><span class="sr-only">名称类别</span><select id="data-kind" aria-label="名称类别"><option value="all">所有名称</option><option value="pokemon">宝可梦</option><option value="ability">特性</option><option value="type">属性</option><option value="other">其他</option></select></label>
+              <button id="data-reset" class="text-button">清除筛选</button><span id="data-result-count" class="small muted" role="status"></span>
+            </div>
+            <div id="data-rows"></div>
+            <div class="pagination"><span id="data-page-label" class="muted small"></span><div><button id="data-previous">上一页</button><button id="data-next">下一页</button></div></div>
+          </section>
+        </div>
+      </section>
       <div id="empty" class="empty" hidden>还没有数据批次。点击“检查上游更新”开始生成候选。</div>
       <section id="workspace" hidden>
         <div class="run-heading"><div><h2 id="run-title">批次详情</h2><p id="run-meta" class="muted small"></p></div><span id="run-status" class="badge"></span></div>
@@ -29,6 +51,7 @@
       </section>
     </main>
   </div>
+  <dialog id="data-detail" aria-labelledby="data-detail-title"><div class="detail-header"><div><p id="data-detail-category" class="eyebrow"></p><h2 id="data-detail-title"></h2><p id="data-detail-subtitle" class="small muted"></p></div><button id="close-data-detail" aria-label="关闭数据详情">×</button></div><div id="data-detail-body" class="detail-body"></div></dialog>
   <dialog id="detail"><div class="detail-header"><div><p id="detail-category" class="eyebrow"></p><h2 id="detail-title"></h2><p id="detail-field" class="muted small"></p></div><button id="close-detail" aria-label="关闭详情">×</button></div><div class="detail-body"><div id="detail-values" class="detail-values"></div><p id="saved-decision" class="run-note" hidden></p><p id="detail-reason" class="run-note" hidden></p><h3>来源证据</h3><div id="sources"></div><pre id="source-body" hidden></pre><p id="detail-notice" class="run-note" role="status" hidden></p><div id="decision-form"><label for="decision-note">审核备注</label><textarea id="decision-note" rows="3" placeholder="记录判断依据，或说明需要修正的内容"></textarea><p class="small muted">“保留原值”“要求修正”和“暂缓”会阻止整批应用。按备注修正生成规则、重建后再确认。</p><div class="decision-buttons"><button data-decision="accepted" class="primary">接受变更</button><button data-decision="keep">保留原值</button><button data-decision="fix">要求修正</button><button data-decision="defer">暂缓</button><button data-decision="pending" class="text-button">撤回决定</button></div></div></div></dialog>
 </body>
 </html>
