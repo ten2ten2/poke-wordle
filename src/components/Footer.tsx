@@ -3,10 +3,13 @@
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import { isKnowledgeSupported } from '@/config/knowledge';
+import { useHydrated } from '@/hooks/useHydrated';
 
 export default function Footer() {
   const t = useTranslations();
   const locale = useLocale();
+  // Read the year after hydration so prerendered pages stay correct across years.
+  const currentYear = useHydrated() ? new Date().getFullYear() : 2025;
 
   const prefix = locale === 'en' ? '' : `/${locale}`;
 
@@ -18,7 +21,7 @@ export default function Footer() {
             {/* Copyright */}
             <div className="text-center sm:text-left">
               <p className="text-responsive-sm text-gray-500">
-                © 2025–2026 pokewordle.app
+                © 2025{currentYear > 2025 ? `–${currentYear}` : ''} pokewordle.app
               </p>
             </div>
             

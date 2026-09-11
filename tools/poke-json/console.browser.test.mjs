@@ -10,7 +10,7 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
   test(`published data supports filtering, complete details and refresh at ${viewport.width}px`, { timeout: 60000 }, async (t) => {
     const fixture = await createFixture(); t.after(fixture.cleanup); fixture.execute('review', 'fixture');
     const { createConsole } = await import(pathToFileURL(path.join(fixture.tool, 'console.mjs')));
-    const app = await createConsole({ port: 0 }); t.after(() => new Promise((resolve) => app.server.close(resolve)));
+    const app = await createConsole({ port: 0 }); t.after(() => { app.server.closeAllConnections(); return new Promise((resolve) => app.server.close(resolve)); });
     const browser = await chromium.launch({ headless: true }); t.after(() => browser.close());
     const page = await browser.newPage({ viewport }); const errors = []; page.on('pageerror', (error) => errors.push(error.message));
     await page.route('https://raw.githubusercontent.com/**', (route) => route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" />' }));
@@ -83,7 +83,7 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
   test(`console decisions survive reload and gate application at ${viewport.width}px`, { timeout: 60000 }, async (t) => {
     const fixture = await createFixture(); t.after(fixture.cleanup); fixture.execute('review', 'fixture');
     const { createConsole } = await import(pathToFileURL(path.join(fixture.tool, 'console.mjs')));
-    const app = await createConsole({ port: 0 }); t.after(() => new Promise((resolve) => app.server.close(resolve)));
+    const app = await createConsole({ port: 0 }); t.after(() => { app.server.closeAllConnections(); return new Promise((resolve) => app.server.close(resolve)); });
     const browser = await chromium.launch({ headless: true }); t.after(() => browser.close());
     const page = await browser.newPage({ viewport }); const errors = []; page.on('pageerror', (error) => errors.push(error.message));
     await page.goto(app.url);
@@ -136,7 +136,7 @@ for (const width of [1440, 390]) {
     await fs.writeFile(path.join(fixture.run, 'manifest.json'), JSON.stringify(fixture.manifest));
     fixture.execute('review', 'fixture');
     const { createConsole } = await import(pathToFileURL(path.join(fixture.tool, 'console.mjs')));
-    const app = await createConsole({ port: 0 }); t.after(() => new Promise((resolve) => app.server.close(resolve)));
+    const app = await createConsole({ port: 0 }); t.after(() => { app.server.closeAllConnections(); return new Promise((resolve) => app.server.close(resolve)); });
     const browser = await chromium.launch({ headless: true }); t.after(() => browser.close());
     const page = await browser.newPage({ viewport: { width, height: 900 } });
     await page.route('https://raw.githubusercontent.com/**', (route) => route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"/>' }));

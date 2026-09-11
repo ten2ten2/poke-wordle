@@ -2,7 +2,10 @@ import { readFile } from 'node:fs/promises';
 import { test, expect, type Page } from '@playwright/test';
 import { version as datasetVersion } from '../../src/data/dataset.json';
 import pokemon from '../../src/data/pokemon_data.json';
-import knowledge from '../../src/data/knowledge_data.json';
+import knowledgeData from '../../src/data/knowledge_data.json';
+import type { KnowledgeData } from '../../src/config/knowledge';
+
+const knowledge: KnowledgeData = knowledgeData;
 
 const target = pokemon.find((p) => p.name === 'charmander')!;
 const settings = {
@@ -206,6 +209,14 @@ test('language switch updates the route and document language', async ({
 
 for (const [locale, articles] of Object.entries(knowledge)) {
   const article = articles[0];
+  if (!article) {
+    test(`renders the empty ${locale} knowledge archive`, async ({ page }) => {
+      await page.goto(`${locale === 'en' ? '' : '/' + locale}/knowledge`);
+      await expect(page.locator('#knowledge-heading')).toBeVisible();
+      await expect(page.locator('.knowledge-list-link')).toHaveCount(0);
+    });
+    continue;
+  }
   test(`renders the ${locale} MDX article and valid language alternates`, async ({
     page,
     request,
@@ -224,7 +235,7 @@ for (const [locale, articles] of Object.entries(knowledge)) {
       .evaluateAll((nodes) =>
         nodes.map((node) => (node as HTMLLinkElement).href),
       );
-    expect(links.length).toBeGreaterThanOrEqual(4);
+    expect(links.length).toBeGreaterThanOrEqual(1);
     for (const href of links) {
       const url = new URL(href);
       expect((await request.get(url.pathname)).status()).toBe(200);
@@ -284,12 +295,15 @@ test('failed guesses preserve input and retry without spending a turn', async ({
 });
 
 test('localized navigation, footer and typography work in all nine languages', async ({ page, request }) => {
+  const nextYear = new Date();
+  nextYear.setFullYear(nextYear.getFullYear() + 1);
+  await page.clock.setFixedTime(nextYear);
   for (const locale of ['en', 'zh-hans', 'zh-hant', 'ja', 'ko', 'fr', 'de', 'it', 'es']) {
     const messages = JSON.parse(await readFile(`src/messages/${locale}.json`, 'utf8'));
     const prefix = locale === 'en' ? '' : `/${locale}`;
     await page.goto(prefix || '/');
     await expect(page.locator('header a svg')).toHaveAttribute('aria-hidden', 'true');
-    await expect(page.locator('footer')).toContainText('2025–2026');
+    await expect(page.locator('footer')).toContainText(`2025–${nextYear.getFullYear()}`);
     if (['en', 'zh-hans', 'zh-hant', 'ja'].includes(locale)) {
       const knowledgeHref = `${prefix}/knowledge`;
       await expect(page.locator('footer').getByRole('link', { name: messages.knowledge.title, exact: true })).toHaveAttribute('href', knowledgeHref);

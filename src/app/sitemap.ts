@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next';
 import {
   KNOWLEDGE_SUPPORTED_LOCALES,
   getArticleAlternates,
+  knowledgeData,
 } from '@/config/knowledge';
-import knowledgeData from '@/data/knowledge_data.json';
 import { routing, localePath } from '@/i18n/routing';
 
 const baseUrl = 'https://www.pokewordle.app';
@@ -33,7 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url:
           baseUrl +
           localePath(locale, `/knowledge/${encodeURIComponent(article.slug)}`),
-        lastModified: article.createdAt,
+        lastModified: article.updatedAt ?? article.createdAt,
         alternates: {
           languages: absolute(getArticleAlternates(locale, article)),
         },

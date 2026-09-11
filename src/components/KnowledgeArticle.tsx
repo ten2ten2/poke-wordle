@@ -7,13 +7,11 @@ import {
   KNOWLEDGE_SUPPORTED_LOCALES,
   KnowledgeArticle as KnowledgeArticleType,
   KnowledgeData,
+  knowledgeData,
 } from '@/config/knowledge';
 import Link from 'next/link';
-import knowledgeDataRaw from '@/data/knowledge_data.json';
 import MdxContent from '@/components/MdxContent';
 import { Suspense } from 'react';
-
-const knowledgeData = knowledgeDataRaw as KnowledgeData;
 
 interface KnowledgeArticleProps {
   article: KnowledgeArticleType;

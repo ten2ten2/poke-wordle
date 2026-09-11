@@ -31,7 +31,7 @@ run = "npm test -- --runInBand"
 run = "npm run test:e2e"
 
 [tasks.check]
-depends = ["data:check"]
+depends = ["data:check", "knowledge:check"]
 run = "npm run check"
 
 [tasks."data:check"]
@@ -54,4 +54,10 @@ run = "node tools/poke-json/pipeline.mjs verify"
 run = "node tools/poke-json/console.mjs"
 
 [tasks."data:console:test"]
-run = "node --test tools/poke-json/console.browser.test.mjs"
+run = "node --test tools/poke-json/console.browser.test.mjs tools/poke-json/knowledge.browser.test.mjs"
+
+[tasks."knowledge:check"]
+run = ["node tools/poke-json/knowledge-model.mjs check", "node --test tools/poke-json/knowledge.test.mjs"]
+
+[tasks."knowledge:sync"]
+run = "node tools/poke-json/knowledge-model.mjs sync"

@@ -7,7 +7,7 @@
 <body>
   <header class="topbar"><a class="brand" href="/"><span class="pokeball" aria-hidden="true"></span><span>Poké Wordle <small>数据工作台</small></span></a><span class="local-label"><i></i>本地控制台</span></header>
   <div class="layout">
-    <aside class="sidebar"><button id="browse-data" class="data-nav btn-option" aria-current="false"><strong>当前数据</strong><small>浏览全部已发布数据</small></button><div class="sidebar-title"><h2>更新批次</h2><button id="refresh" class="btn-ghost">刷新</button></div><p class="muted small">每批独立生成，确认后再应用。</p><nav id="runs" aria-label="数据批次"></nav><div class="sidebar-footer"><span>更新流程</span><ol><li>生成候选与缓存来源</li><li>自动校验，逐项查看差异</li><li>确认或提出修正意见</li><li>应用数据，运行检查</li></ol></div></aside>
+    <aside class="sidebar"><button id="browse-data" class="data-nav btn-option" aria-current="false"><strong>当前数据</strong><small>浏览全部已发布数据</small></button><button id="manage-knowledge" class="data-nav btn-option" aria-current="false"><strong>知识文章</strong><small>MDX 编辑与语言版本管理</small></button><div class="sidebar-title"><h2>更新批次</h2><button id="refresh" class="btn-ghost">刷新</button></div><p class="muted small">每批独立生成，确认后再应用。</p><nav id="runs" aria-label="数据批次"></nav><div class="sidebar-footer"><span>更新流程</span><ol><li>生成候选与缓存来源</li><li>自动校验，逐项查看差异</li><li>确认或提出修正意见</li><li>应用数据，运行检查</li></ol></div></aside>
     <main>
       <section id="review-intro" class="intro"><div><p class="eyebrow">DATA REVIEW</p><h1>每一处变化，都有依据</h1><p class="muted">对照当前数据、上游来源和本地修正，确认本次更新。</p></div><button id="generate" class="btn-primary">检查上游更新 <span aria-hidden="true">↗</span></button></section>
       <div id="notice" role="status" aria-live="polite" hidden></div>
@@ -31,6 +31,36 @@
             </div>
             <div id="data-rows"></div>
             <div class="pagination"><span id="data-page-label" class="muted small"></span><div><button id="data-previous">上一页</button><button id="data-next">下一页</button></div></div>
+          </section>
+        </div>
+      </section>
+      <section id="knowledge-manager" hidden>
+        <div class="intro"><div><p class="eyebrow">KNOWLEDGE</p><h1>知识文章</h1><p class="muted">编写 MDX，管理同一篇文章的语言版本。</p></div><div class="data-actions"><button id="knowledge-reload">重新载入</button><button id="knowledge-check">检查已保存文章</button><button id="knowledge-new" class="btn-primary">新建文章</button></div></div>
+        <p id="knowledge-status" class="run-note" role="status">正在读取文章…</p>
+        <div class="knowledge-layout">
+          <section class="review-card knowledge-list-panel" aria-label="文章列表">
+            <div class="knowledge-filters"><label for="knowledge-search" class="sr-only">搜索文章</label><input id="knowledge-search" type="search" placeholder="搜索标题或路径…"><label for="knowledge-filter" class="sr-only">筛选语言版本</label><select id="knowledge-filter"><option value="all">所有文章</option><option value="incomplete">尚未齐全的语言版本</option></select></div>
+            <div id="knowledge-list"></div>
+          </section>
+          <section class="review-card knowledge-editor-panel">
+            <div id="knowledge-empty" class="empty">选择一篇文章，或新建文章开始编写。</div>
+            <div id="knowledge-editor" hidden>
+              <nav id="knowledge-languages" class="tabs" aria-label="文章语言版本"></nav>
+              <form id="knowledge-form">
+                <div class="knowledge-fields">
+                  <label>文章标题<input id="knowledge-title" type="text" required maxlength="200" autocomplete="off"></label>
+                  <label>路径名称<input id="knowledge-slug" type="text" required maxlength="150" autocomplete="off" placeholder="例如 mega-evolution，不含 .mdx"></label>
+                  <label>创建时间<input id="knowledge-created" type="datetime-local" required></label>
+                </div>
+                <p id="knowledge-path" class="small muted knowledge-help"></p>
+                <div class="knowledge-toolbar"><div class="data-actions"><button id="knowledge-source-tab" type="button" class="btn-option" aria-pressed="true">编辑 MDX</button><button id="knowledge-preview" type="button" class="btn-option" aria-pressed="false">预览并校验</button></div><div class="data-actions"><button id="knowledge-import" type="button" class="btn-ghost">导入 MDX</button><input id="knowledge-file" type="file" accept=".mdx,.md" hidden><button id="knowledge-export" type="button" class="btn-ghost">导出 MDX</button></div></div>
+                <div id="knowledge-source-panel" class="knowledge-source-panel"><label for="knowledge-source" class="sr-only">MDX 正文</label><textarea id="knowledge-source" rows="22" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" aria-describedby="knowledge-mdx-help"></textarea><div class="knowledge-source-footer"><span id="knowledge-source-count" class="small muted"></span><button id="knowledge-copy-version" type="button" class="btn-ghost">复制已有版本正文</button></div></div>
+                <div id="knowledge-preview-panel" hidden><p id="knowledge-preview-status" class="small muted knowledge-help" role="status"></p><iframe id="knowledge-preview-frame" title="文章正文预览" sandbox></iframe></div>
+                <p id="knowledge-mdx-help" class="small muted knowledge-help">支持 Markdown、表格、FAQ / Question / Answer、JsonLd 和静态 JSX；不执行 JavaScript 或 import/export。Tab 缩进，Ctrl / ⌘ + S 保存。</p>
+                <div class="knowledge-save-bar"><span id="knowledge-dirty" class="small muted" role="status"></span><button id="knowledge-save" type="submit" class="btn-primary">保存到项目</button></div>
+              </form>
+              <div class="knowledge-delete-actions"><button id="knowledge-delete-version" class="btn-danger">删除此语言版本</button><button id="knowledge-delete-article" class="btn-ghost">删除整篇文章</button></div>
+            </div>
           </section>
         </div>
       </section>

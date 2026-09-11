@@ -1,6 +1,7 @@
 import { $, element, fields } from './shared.js';
 import { createDataBrowser } from './data-view.js';
-const state = { token: '', runs: [], run: null, view: location.hash === '#data' ? 'data' : 'review', navigation: 0, tab: 'changes', page: 0, selected: new Set(), busy: false, saving: false, detail: null, lastJob: null };
+import { createKnowledgeEditor } from './knowledge-view.js';
+const state = { token: '', runs: [], run: null, view: location.hash === '#knowledge' ? 'knowledge' : location.hash === '#data' ? 'data' : 'review', navigation: 0, tab: 'changes', page: 0, selected: new Set(), busy: false, saving: false, detail: null, lastJob: null };
 const statuses = { applied: '已应用 · 历史记录', archived: '历史记录', stale: '需要重建', incomplete: '生成未完成', needs_review: '待自动校对', reviewable: '待人工确认', accepted: '已接受', pending: '待确认', keep: '保留原值', fix: '要求修正', defer: '暂缓', running: '运行中', passed: '已完成', failed: '失败', interrupted: '已中断' };
 const categories = { pokemon: '游戏字段', translation: '名称翻译', formatting: '格式变化', image: '图片', correction: '人工修正', fallback: '英文回退' };
 const historical = () => ['applied', 'archived'].includes(state.run?.status);
@@ -18,20 +19,31 @@ async function api(url, body) {
   return result;
 }
 const dataBrowser = createDataBrowser({ api, notify });
+const knowledgeEditor = createKnowledgeEditor({ api, notify });
 function renderView() {
   const current = state.view === 'data';
+  const knowledge = state.view === 'knowledge';
+  const review = state.view === 'review';
   $('current-data').hidden = !current;
-  $('review-intro').hidden = current;
-  $('workspace').hidden = current || !state.run;
-  $('empty').hidden = current || Boolean(state.runs.length);
-  $('job').hidden = !state.lastJob || (current && !state.busy);
+  $('knowledge-manager').hidden = !knowledge;
+  $('review-intro').hidden = !review;
+  $('workspace').hidden = !review || !state.run;
+  $('empty').hidden = !review || Boolean(state.runs.length);
+  $('job').hidden = !state.lastJob || (!review && !state.busy);
   $('browse-data').setAttribute('aria-current', current ? 'page' : 'false');
-  renderRuns(current ? null : state.run?.id);
+  $('manage-knowledge').setAttribute('aria-current', knowledge ? 'page' : 'false');
+  renderRuns(review ? state.run?.id : null);
 }
 async function showData() {
-  state.navigation++;
+  if (state.view === 'knowledge' && !knowledgeEditor.canLeave()) return;
+  knowledgeEditor.deactivate(); state.navigation++;
   state.view = 'data'; history.replaceState(null, '', '#data'); renderView();
   await dataBrowser.load();
+}
+async function showKnowledge() {
+  if (state.view === 'knowledge' && !knowledgeEditor.canLeave()) return;
+  state.navigation++; state.view = 'knowledge'; history.replaceState(null, '', '#knowledge'); renderView();
+  await knowledgeEditor.load();
 }
 async function loadRuns(preferred) {
   const result = await api('/api/runs'); state.runs = result.runs;
@@ -50,6 +62,10 @@ function renderRuns(id) {
   }));
 }
 async function loadRun(id, activate = true) {
+  if (activate && state.view === 'knowledge') {
+    if (!knowledgeEditor.canLeave()) return;
+    knowledgeEditor.deactivate(); state.view = 'review'; renderView();
+  }
   const navigation = activate ? ++state.navigation : state.navigation;
   const run = await api(`/api/runs/${encodeURIComponent(id)}`);
   if (navigation !== state.navigation) return;
@@ -228,9 +244,9 @@ async function job(action, mode) {
 async function pollJobs() {
   const result = await api('/api/jobs'); const wasBusy = state.busy; state.busy = result.busy;
   const latest = result.jobs[0];
-  $('job').hidden = !latest || (state.view === 'data' && !state.busy);
+  $('job').hidden = !latest || (state.view !== 'review' && !state.busy);
   if (latest) {
-    const title = { generate: '生成候选与自动校对', review: '自动校对', apply: '应用数据并运行检查', check: '检查已发布数据' }[latest.action];
+    const title = { generate: '生成候选与自动校对', review: '自动校对', apply: '应用数据并运行检查', check: '检查已发布数据', 'knowledge-check': '知识库校验与构建' }[latest.action];
     $('job-title').textContent = title;
     $('job-status').replaceWith(Object.assign(badge(latest.status), { id: 'job-status' }));
     $('job-error').textContent = latest.error ? `${latest.applied ? '数据已写入，后续检查未通过。' : ''}${latest.error}` : '';
@@ -245,8 +261,11 @@ async function pollJobs() {
     }
   }
   $('generate').disabled = state.busy || state.saving;
+  $('knowledge-check').disabled = state.busy || state.saving;
   if (wasBusy !== state.busy && !state.saving && !$('detail').open) renderRun();
 }
+$('knowledge-check').addEventListener('click', () => job('knowledge-check'));
+$('manage-knowledge').addEventListener('click', () => showKnowledge().catch((error) => notify(error.message)));
 $('generate').addEventListener('click', () => job('generate', 'live'));
 $('browse-data').addEventListener('click', () => showData().catch((error) => notify(error.message)));
 $('review').addEventListener('click', () => job('review'));
@@ -268,6 +287,7 @@ async function start() {
   try {
     state.token = (await api('/api/session')).token;
     if (state.view === 'data') await showData();
+    if (state.view === 'knowledge') await showKnowledge();
     await loadRuns(); await pollJobs();
   }
   catch (error) { notify(error.message); }

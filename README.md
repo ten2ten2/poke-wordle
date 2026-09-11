@@ -23,8 +23,10 @@ mise run dev
 | `mise run test` | Jest 单元测试 |
 | `mise run build` / `mise run start` | 构建 / 启动生产服务器 |
 | `mise run e2e` | 游戏桌面和手机浏览器回归 |
-| `mise run data:console` | 本地数据浏览与审核，http://127.0.0.1:3318 |
-| `mise run data:console:test` | 数据控制台浏览器回归 |
+| `mise run data:console` | 本地数据审核与知识文章管理，http://127.0.0.1:3318 |
+| `mise run data:console:test` | 数据与知识文章控制台浏览器回归 |
+| `mise run knowledge:check` | 校验 MDX、文章索引、语言关联和加载清单 |
+| `mise run knowledge:sync` | 手动编辑索引后重新生成 MDX 加载清单 |
 
 首次运行浏览器测试前执行 `mise exec -- npm exec -- playwright install chromium`。游戏 E2E 默认启动生产服务器，需先构建；`E2E_DEV=1 mise run e2e` 使用开发服务器。测试使用本地图像替身并屏蔽外部分析脚本。
 
@@ -35,7 +37,7 @@ mise run dev
 - Next.js App Router、React、Tailwind CSS。`src/app/[locale]` 和 `src/proxy.ts` 统一语言路由；英文不带路径前缀。
 - `src/hooks/useGameState.ts` 管理游戏与持久化，`src/app/api/checkGuess/route.ts` 比较猜测。
 - `src/data/` 是游戏数据发布目录；`tools/poke-json/` 负责抓取、修正和校对。使用[数据控制台](tools/poke-json/README.md)浏览全量数据、审核候选；操作见[更新流程](tools/poke-json/UPDATE_WORKFLOW.md)。
-- 知识文章在构建时编译为 MDX。新增文章需更新 `src/data/knowledge_data.json`、MDX 文件及 `src/components/MdxContent.tsx` 的导入映射；`translations` 连接对应语言的文章。
+- 在[控制台的知识文章页面](http://127.0.0.1:3318/#knowledge)创建文章、管理四种语言版本、编辑并预览 MDX。保存同步 `src/data/knowledge/`、`knowledge_data.json` 和生成的 `knowledge-loaders.ts`，无需手改导入映射。保存到本地项目后，通过现有 Git 和部署流程上线。
 - Google Analytics 在用户接受后加载；Vercel Analytics 和 Speed Insights 位于根布局。
 
 ## 检查与部署

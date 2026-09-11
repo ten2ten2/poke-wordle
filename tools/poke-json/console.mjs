@@ -5,13 +5,18 @@ import { randomBytes } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import assert from 'node:assert/strict';
 import { paths } from './pipeline.mjs';
+import { createKnowledgeManager, knowledgeLocales } from './knowledge-model.mjs';
+import { inspectMdx } from './knowledge-mdx.mjs';
 import { listRuns, inspectRun, saveDecisions, readSource, exportReview, requireApproval, runDir, currentData } from './console-model.mjs';
 
 export async function createConsole({ port = 3318 } = {}) {
   const token = randomBytes(32).toString('hex');
+  const knowledge = createKnowledgeManager();
+  const previews = new Map();
+  const escapeHTML = (value) => String(value).replace(/[&<>\"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[char]);
   const jobsDir = path.join(paths.tool, 'output/console-jobs'); await fs.mkdir(jobsDir, { recursive: true });
   const jobs = new Map(); let busy = false; let address;
-  const staticFiles = new Map([['/', ['index.html', 'text/html']], ['/app.js', ['app.js', 'text/javascript']], ['/data-view.js', ['data-view.js', 'text/javascript']], ['/shared.js', ['shared.js', 'text/javascript']], ['/fonts/typography.css', ['../../../public/fonts/typography.css', 'text/css']], ['/fonts/inter-latin-variable.woff2', ['../../../public/fonts/inter-latin-variable.woff2', 'font/woff2']], ['/styles/buttons.css', ['../../../public/styles/buttons.css', 'text/css']], ['/style.css', ['style.css', 'text/css']]]);
+  const staticFiles = new Map([['/', ['index.html', 'text/html']], ['/app.js', ['app.js', 'text/javascript']], ['/data-view.js', ['data-view.js', 'text/javascript']], ['/knowledge-view.js', ['knowledge-view.js', 'text/javascript']], ['/shared.js', ['shared.js', 'text/javascript']], ['/fonts/typography.css', ['../../../public/fonts/typography.css', 'text/css']], ['/fonts/inter-latin-variable.woff2', ['../../../public/fonts/inter-latin-variable.woff2', 'font/woff2']], ['/styles/buttons.css', ['../../../public/styles/buttons.css', 'text/css']], ['/style.css', ['style.css', 'text/css']]]);
   const persist = async (job) => {
     const file = path.join(jobsDir, `${job.id}.json`);
     await fs.writeFile(`${file}.tmp`, `${JSON.stringify(job, null, 2)}\n`);
@@ -29,7 +34,7 @@ export async function createConsole({ port = 3318 } = {}) {
   });
   async function startJob(body) {
     assert(!busy, '已有操作正在运行');
-    assert(['generate', 'review', 'apply', 'check'].includes(body.action), '操作无效');
+    assert(['generate', 'review', 'apply', 'check', 'knowledge-check'].includes(body.action), '操作无效');
     if (body.action === 'generate') assert(['live', 'from', 'resume'].includes(body.mode), '生成模式无效');
     if (body.action === 'review' || body.action === 'apply' || (body.action === 'generate' && body.mode !== 'live')) runDir(body.run);
     busy = true;
@@ -55,6 +60,9 @@ export async function createConsole({ port = 3318 } = {}) {
           job.applied = true; await persist(job);
           await command(job, 'mise', ['run', 'check']);
           await command(job, 'mise', ['run', 'e2e']);
+        } else if (body.action === 'knowledge-check') {
+          await command(job, 'mise', ['run', 'knowledge:check']);
+          await command(job, 'mise', ['run', 'build']);
         } else {
           await command(job, 'mise', ['run', 'data:check']);
         }
@@ -104,6 +112,17 @@ export async function createConsole({ port = 3318 } = {}) {
         });
       }
       if (request.method === 'GET' && url.pathname === '/api/session') return send(200, { token });
+      if (request.method === 'GET' && url.pathname === '/api/knowledge') return send(200, await knowledge.list());
+      const previewRoute = url.pathname.match(/^\/api\/knowledge\/previews\/([a-f0-9]{32})$/);
+      if (request.method === 'GET' && previewRoute) {
+        const preview = previews.get(previewRoute[1]);
+        if (!preview || preview.expires < Date.now()) return send(404, '预览已过期，请重新生成');
+        return send(200, preview.html, {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'; font-src data:; img-src https: data:; frame-ancestors 'self'; base-uri 'none'; form-action 'none'; sandbox",
+          'Referrer-Policy': 'no-referrer',
+        });
+      }
       if (request.method === 'GET' && url.pathname === '/api/current') return send(200, await currentData());
       if (request.method === 'GET' && url.pathname === '/api/current/export') return send(200, (await currentData()).data, { 'Content-Disposition': 'attachment; filename="published-data.json"' });
       if (request.method === 'GET' && url.pathname === '/api/runs') return send(200, await listRuns());
@@ -118,8 +137,28 @@ export async function createConsole({ port = 3318 } = {}) {
       if (request.headers['x-console-token'] !== token) return send(403, { error: '会话已失效，请刷新页面' });
       if (!request.headers['content-type']?.startsWith('application/json')) return send(415, { error: '需要 JSON 请求' });
       let bytes = 0; const chunks = [];
-      for await (const chunk of request) { bytes += chunk.length; assert(bytes <= 128000, '请求过大'); chunks.push(chunk); }
+      for await (const chunk of request) { bytes += chunk.length; assert(bytes <= (url.pathname.startsWith('/api/knowledge') ? 1024000 : 128000), '请求过大'); chunks.push(chunk); }
       const body = JSON.parse(Buffer.concat(chunks).toString());
+      if (url.pathname === '/api/knowledge/preview') {
+        assert(knowledgeLocales.includes(body.locale), '语言无效');
+        assert(typeof body.title === 'string' && body.title.length <= 200, '标题无效');
+        const content = await inspectMdx(body.source);
+        const [typography, style, font] = await Promise.all([
+          fs.readFile(path.join(paths.root, 'public/fonts/typography.css'), 'utf8'),
+          fs.readFile(path.join(paths.tool, 'console/knowledge-preview.css'), 'utf8'),
+          fs.readFile(path.join(paths.root, 'public/fonts/inter-latin-variable.woff2')),
+        ]);
+        for (const [id, item] of previews) if (item.expires < Date.now()) previews.delete(id);
+        while (previews.size >= 20) previews.delete(previews.keys().next().value);
+        const id = randomBytes(16).toString('hex');
+        const html = `<!doctype html><html lang="${body.locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHTML(body.title)}</title><style>@font-face{font-family:Inter;src:url(data:font/woff2;base64,${font.toString('base64')}) format('woff2');font-weight:400 700;font-display:swap}${typography}\n${style}</style></head><body><article><h1>${escapeHTML(body.title || '未命名文章')}</h1>${content}</article></body></html>`;
+        previews.set(id, { html, expires: Date.now() + 600000 });
+        return send(200, { url: `/api/knowledge/previews/${id}` });
+      }
+      if (url.pathname === '/api/knowledge') {
+        assert(!busy, '数据任务正在运行，请等待完成后再保存文章'); busy = true;
+        try { return send(200, await knowledge.update(body)); } finally { busy = false; }
+      }
       if (url.pathname === '/api/jobs') return send(202, await startJob(body));
       if (route?.[2] === 'decisions') {
         assert(!busy, '已有操作正在运行'); busy = true;

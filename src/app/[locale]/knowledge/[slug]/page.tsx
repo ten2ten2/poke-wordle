@@ -7,12 +7,9 @@ import {
   findKnowledgeArticle,
   isKnowledgeSupported,
   KNOWLEDGE_SUPPORTED_LOCALES,
-  KnowledgeData,
+  knowledgeData,
 } from '@/config/knowledge';
-import knowledgeDataRaw from '@/data/knowledge_data.json';
 import { localePath } from '@/i18n/routing';
-
-const knowledgeData = knowledgeDataRaw as KnowledgeData;
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
@@ -70,6 +67,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'article',
       siteName: 'Poke Wordle',
       publishedTime: article.createdAt,
+      modifiedTime: article.updatedAt ?? article.createdAt,
     },
     twitter: {
       card: 'summary',

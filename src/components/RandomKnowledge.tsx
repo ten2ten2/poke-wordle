@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { ArrowRightIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { type KnowledgeArticle, isKnowledgeSupported } from '@/config/knowledge';
-import knowledgeDataRaw from '@/data/knowledge_data.json';
+import { type KnowledgeArticle, isKnowledgeSupported, knowledgeData } from '@/config/knowledge';
 import { useHydrated } from '@/hooks/useHydrated';
 
 export default function RandomKnowledge() {
@@ -16,7 +15,7 @@ export default function RandomKnowledge() {
     return null;
   }
 
-  const articles = knowledgeDataRaw[locale];
+  const articles = knowledgeData[locale];
 
   if (articles.length === 0) {
     return null;

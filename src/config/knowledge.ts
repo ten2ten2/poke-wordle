@@ -1,4 +1,4 @@
-import knowledgeData from '@/data/knowledge_data.json';
+import knowledgeDataRaw from '@/data/knowledge_data.json';
 import { localePath } from '@/i18n/routing';
 
 /**
@@ -23,6 +23,7 @@ export interface KnowledgeArticle {
   slug: string;
   title: string;
   createdAt: string;
+  updatedAt?: string;
   translations?: {
     [locale: string]: {
       slug: string;
@@ -38,6 +39,9 @@ export interface KnowledgeData {
   'zh-hant': KnowledgeArticle[];
 }
 
+// Keep empty language lists typed independently of the current JSON contents.
+export const knowledgeData: KnowledgeData = knowledgeDataRaw;
+
 /**
  * Check if a locale supports the Knowledge page
  */
@@ -49,7 +53,7 @@ export function isKnowledgeSupported(
   );
 }
 
-export function findKnowledgeArticle(locale: string, slug: string) {
+export function findKnowledgeArticle(locale: string, slug: string): KnowledgeArticle | undefined {
   if (!isKnowledgeSupported(locale)) return undefined;
   return knowledgeData[locale].find(
     (article) =>

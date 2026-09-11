@@ -7,10 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import Pokeball from '@/components/Pokeball';
-import { KNOWLEDGE_SUPPORTED_LOCALES, KnowledgeData } from '@/config/knowledge';
-import knowledgeDataRaw from '@/data/knowledge_data.json';
-
-const knowledgeData = knowledgeDataRaw as KnowledgeData;
+import { KNOWLEDGE_SUPPORTED_LOCALES, KnowledgeData, knowledgeData } from '@/config/knowledge';
 
 export default function KnowledgeArchive() {
   const t = useTranslations();
