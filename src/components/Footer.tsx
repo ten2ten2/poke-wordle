@@ -14,13 +14,13 @@ export default function Footer() {
   const prefix = locale === 'en' ? '' : `/${locale}`;
 
   return (
-    <footer className="bg-white border-t border-gray-200 mt-auto safe-bottom">
+    <footer className="bg-surface border-t border-line mt-auto safe-bottom">
       <div className="container-responsive">
         <div className="py-2 pl-1 pr-2 sm:py-3 sm:pl-2 sm:pr-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4">
             {/* Copyright */}
             <div className="text-center sm:text-left">
-              <p className="text-responsive-sm text-gray-500">
+              <p className="text-responsive-sm text-muted">
                 © 2025{currentYear > 2025 ? `–${currentYear}` : ''} pokewordle.app
               </p>
             </div>

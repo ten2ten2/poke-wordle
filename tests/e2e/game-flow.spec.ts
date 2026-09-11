@@ -201,7 +201,7 @@ test('language switch updates the route and document language', async ({
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-hans');
   await expect(page.getByRole('combobox')).toHaveAttribute(
     'placeholder',
-    /宝可梦/,
+    /图鉴/,
   );
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-hans');
@@ -375,4 +375,29 @@ test('first visit stays in the game and About explains colors inline', async ({ 
     await expect(guide.locator('[style]')).toHaveCount(0);
     await expect(page.getByRole('dialog').getByRole('link', { name: 'pokeapi.co' })).toHaveAttribute('href', 'https://pokeapi.co');
   } finally { await context.close(); }
+});
+
+
+test('national-number prefixes show longer numbers and allow selecting them', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('combobox').fill('25');
+  await expect(page.getByRole('option').first()).toContainText('#0025');
+  await page.getByRole('option').filter({ hasText: '#0250' }).click();
+  await page.getByRole('button', { name: 'Submit', exact: true }).click();
+  await expect(page.locator('.guess-table-card')).toContainText('Ho-Oh');
+});
+
+test('changing theme preserves guesses and themes results and dialogs', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'light' });
+  await page.goto('/');
+  await guess(page, 'Pikachu');
+  const progress = await page.evaluate(() => localStorage.getItem('poke-wordle-progress'));
+  await page.getByRole('button', { name: 'Switch to dark mode' }).click();
+  await expect(page.locator('.guess-table-card')).toHaveCount(1);
+  await expect(page.locator('.guess-table-card')).toHaveCSS('background-color', 'rgb(27, 30, 36)');
+  await expect(page.locator('.tag-exact').first()).toHaveCSS('background-color', 'rgb(23, 59, 43)');
+  expect(await page.evaluate(() => localStorage.getItem('poke-wordle-progress'))).toBe(progress);
+  await page.getByRole('button', { name: 'About', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'About', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'About', exact: true })).toHaveCSS('color', 'rgb(229, 231, 235)');
 });

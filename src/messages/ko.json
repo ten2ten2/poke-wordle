@@ -1,7 +1,7 @@
 {
   "title": "포케 워들",
   "game": {
-    "inputPlaceholder": "포켓몬 이름을 입력하세요...",
+    "inputPlaceholder": "이름 / 도감 번호",
     "submit": "제출",
     "submitting": "제출 중...",
     "randomStart": "랜덤 추측",
@@ -126,6 +126,8 @@
     "about": "정보",
     "settings": "설정",
     "language": "언어",
+    "lightMode": "라이트 모드로 전환",
+    "darkMode": "다크 모드로 전환",
     "main_navigation": "메인 네비게이션"
   },
   "footer": {

@@ -4,6 +4,15 @@ const template = '<Question>在这里填写问题</Question>\n<Answer>\n在这�
 const localDate = (value) => { const date = new Date(value); return new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16); };
 const fields = { title: 'title', slug: 'slug', createdAt: 'created', description: 'description', seoTitle: 'seo-title', image: 'image', source: 'source' };
 export function createKnowledgeEditor({ api, notify }) {
+  const previewFrame = $('knowledge-preview-frame');
+  // The opaque sandbox cannot read the parent's manual theme; reload the same static preview.
+  function updatePreviewTheme(source = previewFrame.getAttribute('src')) {
+    if (!source) return;
+    const url = new URL(source, location.href);
+    url.searchParams.set('theme', document.documentElement.dataset.theme ?? 'light');
+    if (previewFrame.src !== url.href) previewFrame.src = url.href;
+  }
+  window.addEventListener('poke-wordle-theme-change', () => updatePreviewTheme());
   const state = { model: null, id: null, locale: 'zh-hans', editing: false, saved: '', working: false, generation: 0 };
   const article = () => state.model?.articles.find((item) => item.id === state.id);
   const version = () => article()?.versions[state.locale];
@@ -87,7 +96,7 @@ export function createKnowledgeEditor({ api, notify }) {
       const source = values(); const generation = state.generation;
       const result = await api('/api/knowledge/preview', { locale: state.locale, title: source.title, source: source.source });
       if (generation !== state.generation || JSON.stringify(source) !== JSON.stringify(values())) { notify('正文已修改，请重新预览。'); return; }
-      $('knowledge-preview-frame').src = result.url;
+      updatePreviewTheme(result.url);
       $('knowledge-source-panel').hidden = true; $('knowledge-preview-panel').hidden = false;
       $('knowledge-source-tab').setAttribute('aria-pressed', 'false'); $('knowledge-preview').setAttribute('aria-pressed', 'true');
       $('knowledge-preview-status').textContent = 'MDX 校验通过。这是未保存的正文预览。';

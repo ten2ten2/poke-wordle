@@ -68,7 +68,7 @@ export default function LanguageSwitcher({
           <DialogTitle
             as="h2"
             id="language-switcher-title"
-            className="text-lg font-medium leading-6 text-gray-900"
+            className="text-lg font-medium leading-6 text-foreground"
           >
             {t('navbar.language')}
           </DialogTitle>

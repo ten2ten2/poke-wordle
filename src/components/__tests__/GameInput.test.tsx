@@ -5,7 +5,8 @@ import { loadPokemonData } from '@/lib/pokemon';
 
 jest.mock('next-intl', () => ({
   useTranslations: () => (key: string) => ({
-    'game.inputPlaceholder': 'Enter Pokémon name', 'game.submit': 'Submit',
+    'game.searchHint': 'Search by name in any language or Pokédex number', 'game.submit': 'Submit',
+    'game.inputPlaceholder': 'Name / Pokédex #',
     'game.giveUp': 'Give Up', 'game.restart': 'Restart', 'game.randomStart': 'Random Guess',
     'game.confirmAction': 'Confirm', 'common.cancel': 'Cancel',
   })[key] ?? key,
@@ -24,6 +25,8 @@ beforeEach(() => { jest.clearAllMocks(); props.onSubmit.mockResolvedValue(true);
 
 test('uses an accessible combobox with image, translated name and national number', async () => {
   render(<GameInput {...props} />);
+  expect(screen.getByRole('combobox')).toHaveAttribute('placeholder', 'Name / Pokédex #');
+  expect(screen.getByRole('combobox')).toHaveAccessibleName('Search by name in any language or Pokédex number');
   await userEvent.type(screen.getByRole('combobox'), 'フシギダネ');
   const option = await screen.findByRole('option', { name: /Bulbasaur/ });
   expect(option).toHaveTextContent('#0001');
@@ -70,6 +73,30 @@ test('does not submit while confirming IME input', async () => {
   fireEvent.compositionEnd(input);
   await userEvent.click(screen.getByRole('button', { name: 'Submit' }));
   expect(props.onSubmit).toHaveBeenCalledWith('bulbasaur');
+});
+
+test.each(['25', '#25', '0025', '＃２５'])('matches national-number prefixes and submits the exact number for %s', async (query) => {
+  const pokemon = loadPokemonData().filter((row) => [25, 125, 250, 251, 252].includes(row.pokedex_id_national));
+  render(<GameInput {...props} pokemon={pokemon} />);
+  await userEvent.type(screen.getByRole('combobox'), query);
+  const options = await screen.findAllByRole('option');
+  expect(options[0]).toHaveTextContent('#0025');
+  expect(options.some((option) => option.textContent?.includes('#0250'))).toBe(true);
+  expect(options.some((option) => option.textContent?.includes('#0251'))).toBe(true);
+  expect(options.some((option) => option.textContent?.includes('#0125'))).toBe(false);
+  await userEvent.click(screen.getByRole('button', { name: 'Submit' }));
+  expect(props.onSubmit).toHaveBeenCalledWith('pikachu');
+});
+
+test('keeps forms with the same national number selectable', async () => {
+  const pokemon = loadPokemonData().filter((row) => row.pokedex_id_national === 718);
+  render(<GameInput {...props} pokemon={pokemon} />);
+  await userEvent.type(screen.getByRole('combobox'), '#718');
+  expect(await screen.findAllByRole('option')).toHaveLength(pokemon.length);
+  expect(pokemon.length).toBeGreaterThan(1);
+  await userEvent.click(screen.getAllByRole('option')[1]);
+  await userEvent.click(screen.getByRole('button', { name: 'Submit' }));
+  expect(props.onSubmit).toHaveBeenCalledWith(pokemon[1].name);
 });
 
 test('prevents repeated submissions while a request is outstanding', async () => {

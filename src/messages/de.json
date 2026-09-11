@@ -1,7 +1,7 @@
 {
   "title": "Poke Wordle",
   "game": {
-    "inputPlaceholder": "Pokémon-Name eingeben...",
+    "inputPlaceholder": "Name / Pokédex #",
     "submit": "Bestätigen",
     "submitting": "Wird gesendet...",
     "randomStart": "Zufälliger Tipp",
@@ -126,6 +126,8 @@
     "about": "Über",
     "settings": "Einstellungen",
     "language": "Sprache",
+    "lightMode": "Zum hellen Modus wechseln",
+    "darkMode": "Zum dunklen Modus wechseln",
     "main_navigation": "Hauptnavigation"
   },
   "footer": {

@@ -16,7 +16,7 @@ const GuessTable = memo(function GuessTable({ guesses, order = 'reverse' }: {
 }) {
   const t = useTranslations();
   const locale = useLocale();
-  if (!guesses.length) return <p className="py-6 text-center text-sm text-gray-500">{t('game.noGuessesYet')}</p>;
+  if (!guesses.length) return <p className="py-6 text-center text-sm text-muted">{t('game.noGuessesYet')}</p>;
 
   function hidden(guess: GuessResult) {
     return guess.pranksterPokemonProfile ? (
@@ -46,13 +46,13 @@ const GuessTable = memo(function GuessTable({ guesses, order = 'reverse' }: {
             <header className="guess-identity">
               <span className="guess-number" aria-hidden="true">{number}</span>
               {guess.profile ? <Image src={guess.profile} alt={name} width={96} height={96} className="size-20 sm:size-24 shrink-0 object-contain" loading={latest ? 'eager' : 'lazy'} /> : <Pokeball className="size-20 sm:size-24 shrink-0" />}
-              <h3 className="font-semibold text-gray-900">{name}</h3>
+              <h3 className="font-semibold text-foreground">{name}</h3>
             </header>
             <dl className="guess-fields">
               {columns.map((column, field) => (
                 <div key={column} className="guess-field">
-                  <dt className="text-[13px] text-gray-600">{t(`game.columns.${column}`)}</dt>
-                  <dd>{fields[field]}{Array.isArray(fields[field]) && !(fields[field] as ReactNode[]).length && <span className="text-gray-400">—</span>}</dd>
+                  <dt className="text-[13px] text-secondary">{t(`game.columns.${column}`)}</dt>
+                  <dd>{fields[field]}{Array.isArray(fields[field]) && !(fields[field] as ReactNode[]).length && <span className="text-muted">—</span>}</dd>
                 </div>
               ))}
             </dl>

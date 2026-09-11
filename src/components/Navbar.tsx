@@ -13,6 +13,7 @@ import { GameSettings } from '@/types/pokemon';
 import Link from 'next/link';
 import { KnowledgeArticle } from '@/config/knowledge';
 import Pokeball from './Pokeball';
+import ThemeToggle from './ThemeToggle';
 
 interface NavbarProps {
   onSettingsChange?: (settings: GameSettings) => void;
@@ -40,7 +41,7 @@ export default function Navbar({
 
   return (
     <>
-      <header className="bg-white shadow-xs border-b border-gray-200 sticky top-0 z-40 safe-top">
+      <header className="bg-surface shadow-xs border-b border-line sticky top-0 z-40 safe-top">
         <nav
           className="container-responsive"
           role="navigation"
@@ -54,7 +55,7 @@ export default function Navbar({
                 className="flex min-w-0 items-center gap-1.5 sm:gap-3 hover:opacity-80 transition-opacity"
               >
                 <Pokeball className="size-7 sm:size-8 shrink-0" />
-                <span className="text-base sm:text-xl font-semibold text-gray-900 truncate">
+                <span className="text-base sm:text-xl font-semibold text-foreground truncate">
                   {t('title')}
                 </span>
               </Link>
@@ -93,6 +94,7 @@ export default function Navbar({
                   </button>
                 </li>
               )}
+              <li><ThemeToggle /></li>
               <li>
                 <button
                   onClick={() => setIsLanguageOpen(true)}

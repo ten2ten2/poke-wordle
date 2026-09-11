@@ -33,27 +33,6 @@ export default function GameOverModal({
 
   if (!targetPokemon) return null;
 
-  const typeColors: Record<string, string> = {
-    normal: 'bg-gray-100 text-gray-900',
-    fire: 'bg-orange-100 text-orange-900',
-    water: 'bg-blue-100 text-blue-900',
-    electric: 'bg-yellow-100 text-yellow-900',
-    grass: 'bg-green-100 text-green-900',
-    ice: 'bg-cyan-100 text-cyan-900',
-    fighting: 'bg-red-100 text-red-900',
-    poison: 'bg-purple-100 text-purple-900',
-    ground: 'bg-amber-100 text-amber-900',
-    flying: 'bg-indigo-100 text-indigo-900',
-    psychic: 'bg-pink-100 text-pink-900',
-    bug: 'bg-lime-100 text-lime-900',
-    rock: 'bg-yellow-100 text-yellow-900',
-    ghost: 'bg-purple-100 text-purple-900',
-    dragon: 'bg-indigo-100 text-indigo-900',
-    dark: 'bg-gray-100 text-gray-900',
-    steel: 'bg-slate-100 text-slate-900',
-    fairy: 'bg-pink-100 text-pink-900',
-  };
-
   return (
     <Modal isOpen={isOpen} onClose={onClose} className="max-w-md">
       <div className="card-padding">
@@ -61,7 +40,7 @@ export default function GameOverModal({
         <div className="flex items-center justify-between mb-6">
           <DialogTitle
             as="h3"
-            className="text-responsive-xl font-bold text-gray-900"
+            className="text-responsive-xl font-bold text-foreground"
           >
             {isWon ? t('game.congratulations') : t('game.gameOver')}
           </DialogTitle>
@@ -90,7 +69,7 @@ export default function GameOverModal({
             </div>
           </div>
 
-          <h4 className="text-responsive-lg font-bold text-gray-900 mb-2">
+          <h4 className="text-responsive-lg font-bold text-foreground mb-2">
             <a
               href={getWikiUrl(
                 translateText(targetPokemon.name, locale),
@@ -124,7 +103,8 @@ export default function GameOverModal({
             {targetPokemon.types.map((type, index) => (
               <span
                 key={index}
-                className={`px-3 py-1 rounded-full text-sm font-medium ${typeColors[type.toLowerCase()] ?? 'bg-gray-100 text-gray-900'}`}
+                className="pokemon-type px-3 py-1 rounded-full text-sm font-medium"
+                data-type={type.toLowerCase()}
               >
                 {translateText(type, locale)}
               </span>
@@ -132,34 +112,34 @@ export default function GameOverModal({
           </div>
 
           {/* Pokemon Details */}
-          <div className="bg-gray-50 rounded-lg p-4 mb-4 text-left">
+          <div className="bg-subtle rounded-lg p-4 mb-4 text-left">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Generation */}
               <div>
-                <div className="text-sm font-medium text-gray-500 mb-1">
+                <div className="text-sm font-medium text-muted mb-1">
                   {t('game.columns.generation')}
                 </div>
-                <div className="text-base font-semibold text-gray-900">
+                <div className="text-base font-semibold text-foreground">
                   {t(`generation.Gen${targetPokemon.generation}`)}
                 </div>
               </div>
 
               {/* Base Stats Total */}
               <div>
-                <div className="text-sm font-medium text-gray-500 mb-1">
+                <div className="text-sm font-medium text-muted mb-1">
                   {t('game.columns.baseStats')}
                 </div>
-                <div className="text-base font-semibold text-gray-900">
+                <div className="text-base font-semibold text-foreground">
                   {targetPokemon.base_stats_total}
                 </div>
               </div>
 
               {/* Evolution Stage */}
               <div>
-                <div className="text-sm font-medium text-gray-500 mb-1">
+                <div className="text-sm font-medium text-muted mb-1">
                   {t('game.columns.evolution')}
                 </div>
-                <div className="text-base font-semibold text-gray-900">
+                <div className="text-base font-semibold text-foreground">
                   {t(`evolution.stage${targetPokemon.evolution_stage}`)}
                 </div>
               </div>
@@ -167,10 +147,10 @@ export default function GameOverModal({
               {/* Evolution Method */}
               {targetPokemon.evolution_method_detail && (
                 <div>
-                  <div className="text-sm font-medium text-gray-500 mb-1">
+                  <div className="text-sm font-medium text-muted mb-1">
                     {t('game.evolutionMethod')}
                   </div>
-                  <div className="text-base font-semibold text-gray-900">
+                  <div className="text-base font-semibold text-foreground">
                     {t(
                       `evolutionMethods.${targetPokemon.evolution_method_detail}`,
                     )}
@@ -181,14 +161,14 @@ export default function GameOverModal({
 
             {/* Abilities */}
             <div className="mt-4">
-              <div className="text-sm font-medium text-gray-500 mb-2">
+              <div className="text-sm font-medium text-muted mb-2">
                 {t('game.columns.abilities')}
               </div>
               <div className="flex flex-wrap gap-2">
                 {targetPokemon.abilities.map((ability, index) => (
                   <span
                     key={index}
-                    className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm"
+                    className="px-2 py-1 bg-info-bg text-info rounded text-sm"
                   >
                     {translateText(ability, locale)}
                   </span>
@@ -199,14 +179,14 @@ export default function GameOverModal({
             {/* Tags */}
             {targetPokemon.tags && targetPokemon.tags.length > 0 && (
               <div className="mt-4">
-                <div className="text-sm font-medium text-gray-500 mb-2">
+                <div className="text-sm font-medium text-muted mb-2">
                   {t('game.columns.tags')}
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {targetPokemon.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-2 py-1 bg-purple-100 text-purple-800 rounded text-sm"
+                      className="px-2 py-1 bg-special-bg text-special rounded text-sm"
                     >
                       {t(`tags.${tag}`)}
                     </span>
@@ -218,23 +198,23 @@ export default function GameOverModal({
         </div>
 
         {/* Game Stats */}
-        <div className="bg-gray-50 rounded-lg p-4 mb-6">
+        <div className="bg-subtle rounded-lg p-4 mb-6">
           <div className="grid grid-cols-2 gap-4 text-center">
             <div>
-              <div className="text-responsive-sm text-gray-500">
+              <div className="text-responsive-sm text-muted">
                 {t('game.guessesUsed')}
               </div>
-              <div className="text-responsive-lg font-bold text-gray-900">
+              <div className="text-responsive-lg font-bold text-foreground">
                 {guessCount} / {maxGuesses}
               </div>
             </div>
             <div>
-              <div className="text-responsive-sm text-gray-500">
+              <div className="text-responsive-sm text-muted">
                 {t('game.result')}
               </div>
               <div
                 className={`text-responsive-lg font-bold ${
-                  isWon ? 'text-green-600' : 'text-red-600'
+                  isWon ? 'text-success' : 'text-danger'
                 }`}
               >
                 {isWon ? t('game.gameWon') : t('game.defeat')}
@@ -246,13 +226,13 @@ export default function GameOverModal({
         {/* Result Message */}
         <div className="text-center mb-6">
           {isWon ? (
-            <p className="text-responsive-base text-gray-700">
+            <p className="text-responsive-base text-secondary">
               {guessCount === 1
                 ? t('game.guessedIn', { count: 1 })
                 : t('game.guessedIn', { count: guessCount })}
             </p>
           ) : (
-            <p className="text-responsive-base text-gray-700">
+            <p className="text-responsive-base text-secondary">
               {t('game.betterLuckNextTime')}
             </p>
           )}

@@ -34,6 +34,7 @@ mise run dev
 ## 代码与数据
 
 - 字体使用自托管 Inter 拉丁可变字体，中日韩按页面语言回退到系统字体；许可见 `public/fonts/OFL.txt`。
+- Header 语言按钮左侧可切换日间／夜间；首次跟随系统，手动选择保存在本机并同步同源标签页。页面、控制台与 MDX 预览共用 `public/styles/theme.css`。
 - 页面、弹窗和数据控制台共用 `public/styles/buttons.css`，统一按钮尺寸与交互状态；组件仅指定操作类型和布局。
 - Next.js App Router、React、Tailwind CSS。`src/app/[locale]` 和 `src/proxy.ts` 统一语言路由；英文不带路径前缀。
 - `src/hooks/useGameState.ts` 管理游戏与持久化，`src/app/api/checkGuess/route.ts` 比较猜测。

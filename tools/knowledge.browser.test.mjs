@@ -21,6 +21,11 @@ for (const width of [1440, 390]) {
     await expect(page.locator('#knowledge-title')).toHaveValue('示例文章');
     await page.getByRole('button', { name: '预览并校验', exact: true }).click();
     await expect(page.frameLocator('#knowledge-preview-frame').getByRole('heading', { level: 2 }).first()).toHaveText('示例文章');
+    await page.getByRole('button', { name: '切换到夜间模式', exact: true }).click();
+    await expect(page.frameLocator('#knowledge-preview-frame').locator('body')).toHaveCSS('background-color', 'rgb(27, 30, 36)');
+    await expect(page.locator('.knowledge-editor-panel')).toHaveCSS('background-color', 'rgb(27, 30, 36)');
+    await page.getByRole('button', { name: '切换到日间模式', exact: true }).click();
+    await expect(page.frameLocator('#knowledge-preview-frame').locator('body')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
     await page.getByRole('button', { name: '编辑 MDX', exact: true }).click();
     await page.getByLabel('MDX 正文').fill('<Question>broken');
     await page.getByRole('button', { name: '预览并校验', exact: true }).click();

@@ -1,7 +1,7 @@
 {
   "title": "Poke Wordle",
   "game": {
-    "inputPlaceholder": "Enter Pokémon name...",
+    "inputPlaceholder": "Name / Pokédex #",
     "submit": "Submit",
     "submitting": "Submitting...",
     "randomStart": "Random Guess",
@@ -127,6 +127,8 @@
     "settings": "Settings",
     "language": "Language",
     "knowledge": "Knowledge",
+    "lightMode": "Switch to light mode",
+    "darkMode": "Switch to dark mode",
     "main_navigation": "Main Navigation"
   },
   "knowledge": {

@@ -1,13 +1,4 @@
 @layer components {
-  :root {
-    --button-accent: #dc2626;
-    --button-accent-hover: #b91c1c;
-    --button-tint: #fef2f2;
-    --button-tint-hover: #fee2e2;
-    --button-tint-text: #991b1b;
-    --button-tint-border: #fecaca;
-  }
-
   :where(button, .button-link) {
     display: inline-flex;
     align-items: center;
@@ -16,10 +7,10 @@
     min-width: 44px;
     min-height: 44px;
     padding: 0.625rem 1rem;
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--control);
     border-radius: 0.75rem;
-    background: #fff;
-    color: #374151;
+    background: var(--surface);
+    color: var(--secondary);
     font: inherit;
     font-size: 0.875rem;
     font-weight: 600;
@@ -33,15 +24,15 @@
   }
 
   .btn-primary {
-    background: var(--button-accent);
-    border-color: var(--button-accent);
+    background: var(--accent);
+    border-color: var(--accent);
     color: #fff;
   }
 
   .btn-ghost, .btn-icon {
     background: transparent;
     border-color: transparent;
-    color: #4b5563;
+    color: var(--secondary);
   }
 
   .btn-icon {
@@ -54,43 +45,43 @@
   .btn-icon > svg { width: 1.25rem; height: 1.25rem; }
 
   .btn-danger {
-    background: #fef2f2;
-    border-color: #fecaca;
-    color: #991b1b;
+    background: var(--danger-bg);
+    border-color: var(--accent-border);
+    color: var(--danger);
   }
 
   .btn-option:is([aria-pressed='true'], [aria-current='true'], [aria-current='page'], [aria-selected='true']) {
-    background: var(--button-tint);
-    border-color: var(--button-tint-border);
-    color: var(--button-tint-text);
+    background: var(--accent-soft);
+    border-color: var(--accent-border);
+    color: var(--accent-text);
   }
 
   @media (hover: hover) {
     :where(button, .button-link):not(:disabled):not([aria-disabled='true']):hover {
-      background: #f3f4f6;
-      border-color: #9ca3af;
+      background: var(--hover);
+      border-color: var(--control);
     }
     .btn-primary:not(:disabled):not([aria-disabled='true']):hover {
-      background: var(--button-accent-hover);
-      border-color: var(--button-accent-hover);
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
     }
     :is(.btn-ghost, .btn-icon):not(:disabled):not([aria-disabled='true']):hover { border-color: transparent; }
-    .btn-danger:not(:disabled):not([aria-disabled='true']):hover { background: #fee2e2; border-color: #fca5a5; }
+    .btn-danger:not(:disabled):not([aria-disabled='true']):hover { background: var(--accent-soft-hover); border-color: var(--accent-border); }
     .btn-option:is([aria-pressed='true'], [aria-current='true'], [aria-current='page'], [aria-selected='true']):not(:disabled):not([aria-disabled='true']):hover {
-      background: var(--button-tint-hover);
-      border-color: var(--button-accent);
+      background: var(--accent-soft-hover);
+      border-color: var(--accent);
     }
   }
 
   :where(button, .button-link):focus-visible {
-    outline: 2px solid var(--button-accent);
+    outline: 2px solid var(--focus);
     outline-offset: 2px;
   }
 
   :is(button, .button-link):is(:disabled, [aria-disabled='true']) {
-    background: #f3f4f6;
-    border-color: #e5e7eb;
-    color: #6b7280;
+    background: var(--hover);
+    border-color: var(--line);
+    color: var(--muted);
     cursor: not-allowed;
     opacity: 1;
   }

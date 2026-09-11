@@ -28,7 +28,7 @@ export default async function KnowledgeArticle({ article, locale }: KnowledgeArt
   const relatedArticles = articles.filter((item) => item.id !== article.id).slice(0, 3);
 
   return (
-    <div className="min-h-screen-safe bg-gray-50 flex flex-col safe-all">
+    <div className="min-h-screen-safe bg-page flex flex-col safe-all">
       <Navbar
         showAbout={false}
         showSettings={false}
@@ -52,12 +52,12 @@ export default async function KnowledgeArticle({ article, locale }: KnowledgeArt
               publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
               ...(article.image ? { image: absoluteUrl(article.image) } : {}),
             }} />
-            <header className="border-b border-gray-100 pb-4 mb-4 sm:pb-6 sm:mb-6">
-              <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">
+            <header className="border-b border-line-subtle pb-4 mb-4 sm:pb-6 sm:mb-6">
+              <h1 className="text-2xl sm:text-3xl font-semibold text-foreground mb-2">
                 {article.title}
               </h1>
-              <p className="text-base text-gray-600 mb-3">{article.description}</p>
-              <time dateTime={article.createdAt} className="text-sm text-gray-500">
+              <p className="text-base text-secondary mb-3">{article.description}</p>
+              <time dateTime={article.createdAt} className="text-sm text-muted">
                 {new Date(article.createdAt).toLocaleDateString(locale === 'en' ? 'en-US' : locale, {
                   year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
                 })}
@@ -75,11 +75,11 @@ export default async function KnowledgeArticle({ article, locale }: KnowledgeArt
           </article>
           {relatedArticles.length > 0 && (
             <nav aria-label={t('relatedArticles')} className="space-y-3">
-              <h2 className="text-lg font-semibold text-gray-900">{t('relatedArticles')}</h2>
+              <h2 className="text-lg font-semibold text-foreground">{t('relatedArticles')}</h2>
               {relatedArticles.map((related) => (
                 <Link key={related.id} href={knowledgeArticlePath(locale, related.slug)} className="knowledge-banner">
                   <span className="min-w-0 flex-1">{related.title}</span>
-                  <ArrowRightIcon className="size-4 shrink-0 text-red-600" aria-hidden="true" />
+                  <ArrowRightIcon className="size-4 shrink-0 text-accent-text" aria-hidden="true" />
                 </Link>
               ))}
             </nav>

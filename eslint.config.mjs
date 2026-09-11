@@ -6,7 +6,7 @@ export default defineConfig([
   ...nextVitals,
   ...nextTypescript,
   {
-    files: ['tools/**/*.mjs', 'tools/console/*.js'],
+    files: ['tools/**/*.mjs', 'tools/console/*.js', 'public/theme.js'],
     rules: {
       'no-unused-vars': ['error', { argsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' }],
       'no-undef': 'error',

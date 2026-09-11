@@ -43,7 +43,7 @@ export default function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
             <div>
               <Link
                 href={homeHref}
-                className="text-gray-400 hover:text-gray-500 transition-colors duration-200"
+                className="text-muted hover:text-muted transition-colors duration-200"
                 title={t('common.home', { defaultValue: 'Home' })}
               >
                 <HomeIcon className="h-5 w-5 shrink-0" aria-hidden="true" />
@@ -59,13 +59,13 @@ export default function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
             <li key={index}>
               <div className="flex items-center">
                 <ChevronRightIcon
-                  className="h-5 w-5 shrink-0 text-gray-400"
+                  className="h-5 w-5 shrink-0 text-muted"
                   aria-hidden="true"
                 />
                 {item.href && !item.current ? (
                   <Link
                     href={item.href}
-                    className="ml-2 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                    className="ml-2 text-sm font-medium text-muted hover:text-secondary transition-colors duration-200"
                     aria-current={item.current ? 'page' : undefined}
                   >
                     {item.label}
@@ -73,7 +73,7 @@ export default function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
                 ) : (
                   <span
                     className={`ml-2 text-sm font-medium ${
-                      item.current ? 'text-gray-900' : 'text-gray-500'
+                      item.current ? 'text-foreground' : 'text-muted'
                     }`}
                     aria-current={item.current ? 'page' : undefined}
                   >

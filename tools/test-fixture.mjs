@@ -28,6 +28,7 @@ export async function createFixture() {
   await fs.writeFile(path.join(data, 'knowledge-redirects.json'), '[]\n');
   await fs.cp(new URL('../public/images', import.meta.url), path.join(dir, 'public/images'), { recursive: true });
   await fs.cp(new URL('../public/fonts', import.meta.url), path.join(dir, 'public/fonts'), { recursive: true });
+  await fs.copyFile(new URL('../public/theme.js', import.meta.url), path.join(dir, 'public/theme.js'));
   await fs.cp(new URL('../public/styles', import.meta.url), path.join(dir, 'public/styles'), { recursive: true });
   const dataFiles = ['pokemon_data.json', 'pokemon_i18n.json', 'prankster_profile.json'];
   for (const name of [...dataFiles, 'dataset.json']) await fs.copyFile(new URL(`../src/data/${name}`, import.meta.url), path.join(data, name));

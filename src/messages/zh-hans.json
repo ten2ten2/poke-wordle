@@ -1,7 +1,7 @@
 {
   "title": "宝可梦猜猜乐",
   "game": {
-    "inputPlaceholder": "输入宝可梦名称...",
+    "inputPlaceholder": "名称 / 图鉴编号",
     "submit": "提交",
     "submitting": "提交中...",
     "randomStart": "随机开局",
@@ -127,6 +127,8 @@
     "settings": "设置",
     "language": "语言",
     "knowledge": "知识库",
+    "lightMode": "切换到日间模式",
+    "darkMode": "切换到夜间模式",
     "main_navigation": "主导航"
   },
   "knowledge": {

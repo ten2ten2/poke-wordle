@@ -34,19 +34,19 @@ export default function CookieConsent({
   return (
     <aside
       aria-label={t('title')}
-      className="fixed bottom-0 inset-x-0 z-50 bg-white border-t border-gray-200 shadow-lg safe-all"
+      className="fixed bottom-0 inset-x-0 z-50 bg-surface border-t border-line shadow-lg safe-all"
     >
       <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex-1">
-          <h2 className="text-sm font-medium text-gray-900 mb-1">
+          <h2 className="text-sm font-medium text-foreground mb-1">
             {t('title')}
           </h2>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-secondary">
             {t('description')}{' '}
             <Link
               href={localePath(locale, '/privacy-and-terms')}
               title={t('privacyAndTerms')}
-              className="text-red-500 underline"
+              className="text-accent-text underline"
             >
               {t('learnMore')}
             </Link>

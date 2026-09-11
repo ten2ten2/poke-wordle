@@ -1,7 +1,7 @@
 {
   "title": "寶可夢猜猜樂",
   "game": {
-    "inputPlaceholder": "輸入寶可夢名稱...",
+    "inputPlaceholder": "名稱 / 圖鑑編號",
     "submit": "提交",
     "submitting": "提交中...",
     "randomStart": "隨機開局",
@@ -127,6 +127,8 @@
     "settings": "設定",
     "language": "語言",
     "knowledge": "知識庫",
+    "lightMode": "切換至日間模式",
+    "darkMode": "切換至夜間模式",
     "main_navigation": "主導航"
   },
   "knowledge": {

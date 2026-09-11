@@ -176,7 +176,7 @@ function Game({ ready }: { ready: boolean }) {
   }, [resetGame, cancelGuess]);
 
   return (
-    <div className="min-h-screen-safe bg-gray-50 flex flex-col safe-all">
+    <div className="min-h-screen-safe bg-page flex flex-col safe-all">
       <Navbar
         onSettingsChange={handleSettingsChange}
         currentSettings={gameState.settings}
@@ -190,14 +190,14 @@ function Game({ ready }: { ready: boolean }) {
           {!gameState.targetPokemon && <p className="game-intro">{t('game.intro')}</p>}
           {showSettingsChangeNotice && (
             <aside
-              className="card card-padding bg-orange-50 border border-orange-200 animate-slide-up"
+              className="card card-padding bg-warning-bg border border-warning-border animate-slide-up"
               role="alert"
               aria-live="polite"
             >
               <div className="flex flex-col sm:flex-row sm:items-start">
                 <div className="shrink-0 mb-2 sm:mb-0 sm:mr-3">
                   <svg
-                    className="h-5 w-5 text-orange-400"
+                    className="h-5 w-5 text-warning"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                     aria-hidden="true"
@@ -210,10 +210,10 @@ function Game({ ready }: { ready: boolean }) {
                   </svg>
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-responsive-sm font-medium text-orange-800">
+                  <h3 className="text-responsive-sm font-medium text-warning">
                     {t('game.settingsChanged')}
                   </h3>
-                  <div className="mt-2 text-responsive-sm text-orange-700">
+                  <div className="mt-2 text-responsive-sm text-warning">
                     <p>{t('game.settingsChangedDesc')}</p>
                   </div>
                 </div>
@@ -243,7 +243,7 @@ function Game({ ready }: { ready: boolean }) {
 
             {error && (
               <div
-                className="mt-3 p-3 bg-red-50 border border-red-200 rounded-md text-responsive-sm text-red-600 animate-slide-up"
+                className="mt-3 p-3 bg-danger-bg border border-accent-border rounded-md text-responsive-sm text-danger animate-slide-up"
                 role="alert"
                 aria-live="assertive"
               >
@@ -261,12 +261,12 @@ function Game({ ready }: { ready: boolean }) {
                 {t('game.statusSection')}
               </h2>
               {gameState.isWon ? (
-                <p className="text-responsive-lg font-bold text-green-600">
+                <p className="text-responsive-lg font-bold text-success">
                   {t('game.gameWon')}
                 </p>
               ) : (
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-                  <p className="text-responsive-lg font-bold text-red-600">
+                  <p className="text-responsive-lg font-bold text-danger">
                     {t('game.gameLost', {
                       pokemon: translateText(gameState.targetPokemon.name, locale),
                     })}

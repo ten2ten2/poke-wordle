@@ -42,12 +42,12 @@ function KnowledgeBanner({ articles, randomize }: { articles: KnowledgeArticle[]
         href={href}
         className="knowledge-banner"
       >
-        <QuestionMarkCircleIcon className="size-5 shrink-0 text-red-600" aria-hidden="true" />
+        <QuestionMarkCircleIcon className="size-5 shrink-0 text-accent-text" aria-hidden="true" />
         <span className="min-w-0 flex-1">
-          <span className="font-semibold text-red-700">{t('knowledge.randomPrefix')}</span>
+          <span className="font-semibold text-accent-text">{t('knowledge.randomPrefix')}</span>
           <span>{article.title}</span>
         </span>
-        <ArrowRightIcon className="size-4 shrink-0 text-red-600" aria-hidden="true" />
+        <ArrowRightIcon className="size-4 shrink-0 text-accent-text" aria-hidden="true" />
       </Link>
     </div>
   );

@@ -1,7 +1,7 @@
 {
   "title": "ポケワードル",
   "game": {
-    "inputPlaceholder": "ポケモン名を入力...",
+    "inputPlaceholder": "名前・図鑑番号",
     "submit": "決定",
     "submitting": "送信中...",
     "randomStart": "ランダム推測",
@@ -127,6 +127,8 @@
     "settings": "設定",
     "language": "言語",
     "knowledge": "ナレッジ",
+    "lightMode": "ライトモードに切り替え",
+    "darkMode": "ダークモードに切り替え",
     "main_navigation": "メインナビゲーション"
   },
   "knowledge": {

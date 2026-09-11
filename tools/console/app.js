@@ -1,6 +1,15 @@
 import { $, element, fields } from './shared.js';
 import { createDataBrowser } from './data-view.js';
 import { createKnowledgeEditor } from './knowledge-view.js';
+const themeButton = $('theme-toggle');
+const updateThemeButton = () => {
+  const label = document.documentElement.dataset.theme === 'dark' ? '切换到日间模式' : '切换到夜间模式';
+  themeButton.setAttribute('aria-label', label); themeButton.title = label;
+};
+themeButton.addEventListener('click', () => window.dispatchEvent(new Event('poke-wordle-theme-toggle')));
+window.addEventListener('poke-wordle-theme-change', updateThemeButton);
+updateThemeButton();
+
 const state = { token: '', runs: [], run: null, view: location.hash === '#knowledge' ? 'knowledge' : location.hash === '#data' ? 'data' : 'review', navigation: 0, tab: 'changes', page: 0, selected: new Set(), busy: false, saving: false, detail: null, lastJob: null };
 const statuses = { applied: '已应用 · 历史记录', archived: '历史记录', stale: '需要重建', incomplete: '生成未完成', needs_review: '待自动校对', reviewable: '待人工确认', accepted: '已接受', pending: '待确认', keep: '保留原值', fix: '要求修正', defer: '暂缓', running: '运行中', passed: '已完成', failed: '失败', interrupted: '已中断' };
 const categories = { pokemon: '游戏字段', translation: '名称翻译', formatting: '格式变化', image: '图片', correction: '人工修正', fallback: '英文回退' };

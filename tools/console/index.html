@@ -2,10 +2,11 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f9fafb"><script src="/theme.js"></script>
   <title>数据校对 · Poké Wordle</title><link rel="stylesheet" href="/style.css"><script src="/app.js" type="module"></script>
 </head>
 <body>
-  <header class="topbar"><a class="brand" href="/"><span class="pokeball" aria-hidden="true"></span><span>Poké Wordle <small>数据工作台</small></span></a><span class="local-label"><i></i>本地控制台</span></header>
+  <header class="topbar"><a class="brand" href="/"><span class="pokeball" aria-hidden="true"></span><span>Poké Wordle <small>数据工作台</small></span></a><div class="topbar-actions"><button id="theme-toggle" class="btn-icon" type="button" aria-label="切换到夜间模式" title="切换到夜间模式"><svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 13A9 9 0 0 1 11 3a9 9 0 1 0 10 10Z"/></svg></button><span class="local-label"><i></i>本地控制台</span></div></header>
   <div class="layout">
     <aside class="sidebar"><button id="browse-data" class="data-nav btn-option" aria-current="false"><strong>当前数据</strong><small>浏览全部已发布数据</small></button><button id="manage-knowledge" class="data-nav btn-option" aria-current="false"><strong>知识文章</strong><small>MDX 编辑与语言版本管理</small></button><div class="sidebar-title"><h2>更新批次</h2><button id="refresh" class="btn-ghost">刷新</button></div><p class="muted small">每批独立生成，确认后再应用。</p><nav id="runs" aria-label="数据批次"></nav><div class="sidebar-footer"><span>更新流程</span><ol><li>生成候选与缓存来源</li><li>自动校验，逐项查看差异</li><li>确认或提出修正意见</li><li>应用数据，运行检查</li></ol></div></aside>
     <main>

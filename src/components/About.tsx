@@ -20,7 +20,7 @@ export default function About({ isOpen, onClose }: AboutProps) {
         <header className="flex items-center justify-between mb-6">
           <DialogTitle
             as="h2"
-            className="text-responsive-lg font-medium leading-6 text-gray-900"
+            className="text-responsive-lg font-medium leading-6 text-foreground"
           >
             {t('about.title')}
           </DialogTitle>
@@ -40,15 +40,15 @@ export default function About({ isOpen, onClose }: AboutProps) {
         <div className="space-y-6 leading-relaxed">
           {/* 主标题和描述 */}
           <section>
-            <p className="text-gray-600">{t('about.description')}</p>
+            <p className="text-secondary">{t('about.description')}</p>
           </section>
 
           {/* 游戏玩法 */}
           <section>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">
+            <h3 className="text-xl font-semibold text-foreground mb-3">
               {t('about.howToPlay')}
             </h3>
-            <ol className="list-decimal list-inside space-y-2 text-gray-600">
+            <ol className="list-decimal list-inside space-y-2 text-secondary">
               {t.raw('about.rules').map((rule: string, index: number) => (
                 <li key={index}>{rule}</li>
               ))}
@@ -57,13 +57,13 @@ export default function About({ isOpen, onClose }: AboutProps) {
 
           {/* 宝可梦范围 */}
           <section>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+            <h3 className="text-lg font-semibold text-foreground mb-3">
               {t('about.pokemonRange.title')}
             </h3>
-            <p className="text-gray-600 mb-3">
+            <p className="text-secondary mb-3">
               {t('about.pokemonRange.description')}
             </p>
-            <ul className="space-y-1 text-sm text-gray-600 ml-4" role="list">
+            <ul className="space-y-1 text-sm text-secondary ml-4" role="list">
               <li>{t('about.pokemonRange.generations.gen1')}</li>
               <li>{t('about.pokemonRange.generations.gen2')}</li>
               <li>{t('about.pokemonRange.generations.gen3')}</li>
@@ -74,17 +74,17 @@ export default function About({ isOpen, onClose }: AboutProps) {
               <li>{t('about.pokemonRange.generations.gen8')}</li>
               <li>{t('about.pokemonRange.generations.gen9')}</li>
             </ul>
-            <p className="text-gray-600 mt-3">{t('about.pokemonRange.note')}</p>
+            <p className="text-secondary mt-3">{t('about.pokemonRange.note')}</p>
           </section>
 
           {/* 标签颜色说明 */}
           <section>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+            <h3 className="text-lg font-semibold text-foreground mb-3">
               {t('about.colorGuide.title')}
             </h3>
             <ul className="space-y-3 text-sm leading-relaxed">
               {(['green', 'yellow', 'gray'] as const).map((color) => (
-                <li key={color} className="text-gray-600">
+                <li key={color} className="text-secondary">
                   {t.rich(`about.colorGuide.${color}`, {
                     tag: (chunks) => (
                       <strong className={`tag font-semibold tag-${{ green: 'exact', yellow: 'close', gray: 'nope' }[color]}`}>
@@ -99,10 +99,10 @@ export default function About({ isOpen, onClose }: AboutProps) {
 
           {/* 黄色标签判断条件 */}
           <section>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+            <h3 className="text-lg font-semibold text-foreground mb-3">
               {t('about.yellowConditions.title')}
             </h3>
-            <ul className="space-y-2 text-sm text-gray-600 ml-4" role="list">
+            <ul className="space-y-2 text-sm text-secondary ml-4" role="list">
               <li>{t('about.yellowConditions.stats')}</li>
               <li>{t('about.yellowConditions.generation')}</li>
               <li>{t('about.yellowConditions.evolution')}</li>
@@ -111,13 +111,13 @@ export default function About({ isOpen, onClose }: AboutProps) {
 
           {/* 数据来源 */}
           <section>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">
+            <h3 className="text-xl font-semibold text-foreground mb-3">
               {t('about.dataSource.title')}
             </h3>
-            <p className="text-gray-600">
+            <p className="text-secondary">
               {t.rich('about.dataSource.description', {
-                pokeapi: (chunks) => <a href="https://pokeapi.co" target="_blank" rel="noopener noreferrer" className="text-red-700 underline underline-offset-2">{chunks}</a>,
-                bulbapedia: (chunks) => <a href="https://bulbapedia.bulbagarden.net/wiki/Main_Page" target="_blank" rel="noopener noreferrer" className="text-red-700 underline underline-offset-2">{chunks}</a>,
+                pokeapi: (chunks) => <a href="https://pokeapi.co" target="_blank" rel="noopener noreferrer" className="text-accent-text underline underline-offset-2">{chunks}</a>,
+                bulbapedia: (chunks) => <a href="https://bulbapedia.bulbagarden.net/wiki/Main_Page" target="_blank" rel="noopener noreferrer" className="text-accent-text underline underline-offset-2">{chunks}</a>,
               })}
             </p>
           </section>

@@ -16,7 +16,7 @@ export async function createConsole({ port = 3318 } = {}) {
   const escapeHTML = (value) => String(value).replace(/[&<>\"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[char]);
   const jobsDir = path.join(paths.tool, 'output/console-jobs'); await fs.mkdir(jobsDir, { recursive: true });
   const jobs = new Map(); let busy = false; let address;
-  const staticFiles = new Map([['/', ['index.html', 'text/html']], ['/app.js', ['app.js', 'text/javascript']], ['/data-view.js', ['data-view.js', 'text/javascript']], ['/knowledge-view.js', ['knowledge-view.js', 'text/javascript']], ['/shared.js', ['shared.js', 'text/javascript']], ['/fonts/typography.css', ['../../public/fonts/typography.css', 'text/css']], ['/fonts/inter-latin-variable.woff2', ['../../public/fonts/inter-latin-variable.woff2', 'font/woff2']], ['/styles/buttons.css', ['../../public/styles/buttons.css', 'text/css']], ['/style.css', ['style.css', 'text/css']]]);
+  const staticFiles = new Map([['/', ['index.html', 'text/html']], ['/app.js', ['app.js', 'text/javascript']], ['/data-view.js', ['data-view.js', 'text/javascript']], ['/knowledge-view.js', ['knowledge-view.js', 'text/javascript']], ['/shared.js', ['shared.js', 'text/javascript']], ['/fonts/typography.css', ['../../public/fonts/typography.css', 'text/css']], ['/fonts/inter-latin-variable.woff2', ['../../public/fonts/inter-latin-variable.woff2', 'font/woff2']], ['/styles/buttons.css', ['../../public/styles/buttons.css', 'text/css']], ['/style.css', ['style.css', 'text/css']], ['/styles/theme.css', ['../../public/styles/theme.css', 'text/css']], ['/theme.js', ['../../public/theme.js', 'text/javascript']]]);
   const persist = async (job) => {
     const file = path.join(jobsDir, `${job.id}.json`);
     await fs.writeFile(`${file}.tmp`, `${JSON.stringify(job, null, 2)}\n`);
@@ -118,7 +118,10 @@ export async function createConsole({ port = 3318 } = {}) {
       if (request.method === 'GET' && previewRoute) {
         const preview = previews.get(previewRoute[1]);
         if (!preview || preview.expires < Date.now()) return send(404, '预览已过期，请重新生成');
-        return send(200, preview.html, {
+        const theme = url.searchParams.get('theme');
+        assert(theme === null || theme === 'light' || theme === 'dark', '主题无效');
+        const html = theme ? preview.html.replace('<html ', `<html data-theme="${theme}" `) : preview.html;
+        return send(200, html, {
           'Content-Type': 'text/html; charset=utf-8',
           'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'; font-src data:; img-src https: data:; frame-ancestors 'self'; base-uri 'none'; form-action 'none'; sandbox",
           'Referrer-Policy': 'no-referrer',
@@ -144,7 +147,8 @@ export async function createConsole({ port = 3318 } = {}) {
         assert(knowledgeLocales.includes(body.locale), '语言无效');
         assert(typeof body.title === 'string' && body.title.length <= 200, '标题无效');
         const content = await inspectMdx(body.source);
-        const [typography, style, font] = await Promise.all([
+        const [theme, typography, style, font] = await Promise.all([
+          fs.readFile(path.join(paths.root, 'public/styles/theme.css'), 'utf8'),
           fs.readFile(path.join(paths.root, 'public/fonts/typography.css'), 'utf8'),
           fs.readFile(path.join(paths.tool, 'console/knowledge-preview.css'), 'utf8'),
           fs.readFile(path.join(paths.root, 'public/fonts/inter-latin-variable.woff2')),
@@ -152,7 +156,7 @@ export async function createConsole({ port = 3318 } = {}) {
         for (const [id, item] of previews) if (item.expires < Date.now()) previews.delete(id);
         while (previews.size >= 20) previews.delete(previews.keys().next().value);
         const id = randomBytes(16).toString('hex');
-        const html = `<!doctype html><html lang="${body.locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHTML(body.title)}</title><style>@font-face{font-family:Inter;src:url(data:font/woff2;base64,${font.toString('base64')}) format('woff2');font-weight:400 700;font-display:swap}${typography}\n${style}</style></head><body><article><h1>${escapeHTML(body.title || '未命名文章')}</h1>${content}</article></body></html>`;
+        const html = `<!doctype html><html lang="${body.locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHTML(body.title)}</title><style>@font-face{font-family:Inter;src:url(data:font/woff2;base64,${font.toString('base64')}) format('woff2');font-weight:400 700;font-display:swap}${theme}\n${typography}\n${style}</style></head><body><article><h1>${escapeHTML(body.title || '未命名文章')}</h1>${content}</article></body></html>`;
         previews.set(id, { html, expires: Date.now() + 600000 });
         return send(200, { url: `/api/knowledge/previews/${id}` });
       }

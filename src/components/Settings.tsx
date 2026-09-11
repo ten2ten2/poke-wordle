@@ -85,7 +85,7 @@ function SettingsForm({
         <header className="flex items-center justify-between mb-6">
           <DialogTitle
             as="h2"
-            className="text-responsive-lg font-medium leading-6 text-gray-900"
+            className="text-responsive-lg font-medium leading-6 text-foreground"
           >
             {t('settings.title')}
           </DialogTitle>
@@ -106,7 +106,7 @@ function SettingsForm({
           <form className="space-y-6">
             {/* Guess Order */}
             <fieldset className="space-y-3">
-              <legend className="block text-responsive-sm font-medium text-gray-700">
+              <legend className="block text-responsive-sm font-medium text-secondary">
                 {t('settings.guessOrder')}
               </legend>
               <div className="grid grid-cols-2 gap-3">
@@ -155,7 +155,7 @@ function SettingsForm({
 
             {/* Max Guesses */}
             <fieldset className="space-y-3">
-              <legend className="block text-responsive-sm font-medium text-gray-700">
+              <legend className="block text-responsive-sm font-medium text-secondary">
                 {t('settings.maxGuesses')} ({localSettings.maxGuesses}{' '}
                 {t('settings.times')})
               </legend>
@@ -177,7 +177,7 @@ function SettingsForm({
             {/* Generation Selection */}
             <fieldset className="space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <legend className="block text-responsive-sm font-medium text-gray-700">
+                <legend className="block text-responsive-sm font-medium text-secondary">
                   {t('settings.generationSelection')}
                 </legend>
                 <div className="flex flex-wrap gap-2">
@@ -214,7 +214,7 @@ function SettingsForm({
                 ))}
               </div>
               {localSettings.selectedGenerations.length === 0 && (
-                <p className="text-xs text-red-600">
+                <p className="text-xs text-danger">
                   {t('settings.generationRequired')}
                 </p>
               )}
@@ -229,14 +229,14 @@ function SettingsForm({
                     type="checkbox"
                     checked={localSettings.isGenArrow}
                     onChange={handleGenArrowToggle}
-                    className="h-4 w-4 accent-red-500 text-red-500 focus:ring-red-500 border-gray-300 rounded"
+                    className="h-4 w-4 accent-accent text-accent-text focus:ring-focus border-control rounded"
                   />
                 </div>
                 <div className="flex-1">
-                  <legend className="text-responsive-sm font-medium text-gray-700">
+                  <legend className="text-responsive-sm font-medium text-secondary">
                     <label htmlFor="genArrow">{t('settings.genArrow')}</label>
                   </legend>
-                  <p className="text-responsive-sm text-gray-500 mt-1">
+                  <p className="text-responsive-sm text-muted mt-1">
                     {t('settings.genArrowDesc')}
                   </p>
                 </div>
@@ -252,16 +252,16 @@ function SettingsForm({
                     type="checkbox"
                     checked={localSettings.isPrankster}
                     onChange={handlePranksterToggle}
-                    className="h-4 w-4 accent-red-500 text-red-500 focus:ring-red-500 border-gray-300 rounded"
+                    className="h-4 w-4 accent-accent text-accent-text focus:ring-focus border-control rounded"
                   />
                 </div>
                 <div className="flex-1">
-                  <legend className="text-responsive-sm font-medium text-gray-700">
+                  <legend className="text-responsive-sm font-medium text-secondary">
                     <label htmlFor="prankster">
                       {t('settings.pranksterMode')}
                     </label>
                   </legend>
-                  <p className="text-responsive-sm text-gray-500 mt-1">
+                  <p className="text-responsive-sm text-muted mt-1">
                     {t('settings.pranksterModeDesc')}
                   </p>
                 </div>

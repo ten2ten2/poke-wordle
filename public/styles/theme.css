@@ -1,0 +1,58 @@
+:root {
+  color-scheme: light;
+  --page: light-dark(#f9fafb, #111318);
+  --surface: light-dark(#ffffff, #1b1e24);
+  --subtle: light-dark(#f9fafb, #242933);
+  --hover: light-dark(#f3f4f6, #2a303a);
+  --foreground: light-dark(#111827, #e5e7eb);
+  --secondary: light-dark(#4b5563, #c3c9d3);
+  --muted: light-dark(#6b7280, #a6adbb);
+  --line: light-dark(#e5e7eb, #343b49);
+  --line-subtle: light-dark(#f3f4f6, #2a303a);
+  --control: light-dark(#6b7280, #788394);
+  --accent: light-dark(#dc2626, #b91c1c);
+  --accent-hover: light-dark(#b91c1c, #dc2626);
+  --accent-text: light-dark(#b91c1c, #fca5a5);
+  --accent-text-hover: light-dark(#991b1b, #fecaca);
+  --accent-soft: light-dark(#fef2f2, #362329);
+  --accent-soft-hover: light-dark(#fee2e2, #482c34);
+  --accent-border: light-dark(#fecaca, #87454b);
+  --focus: light-dark(#dc2626, #fca5a5);
+  --success-bg: light-dark(#dcfce7, #173b2b);
+  --success: light-dark(#166534, #86efac);
+  --warning-bg: light-dark(#fef9c3, #3d3218);
+  --warning: light-dark(#854d0e, #fde68a);
+  --warning-border: light-dark(#d9b266, #917445);
+  --danger-bg: light-dark(#fef2f2, #412326);
+  --danger: light-dark(#991b1b, #fecaca);
+  --neutral-bg: light-dark(#f3f4f6, #2a303a);
+  --neutral: light-dark(#374151, #d1d5db);
+  --info-bg: light-dark(#dbeafe, #1e324f);
+  --info: light-dark(#1e40af, #93c5fd);
+  --special-bg: light-dark(#f3e8ff, #352645);
+  --special: light-dark(#6b21a8, #d8b4fe);
+  --overlay: light-dark(#00000040, #00000099);
+  --shadow: light-dark(#11182714, #00000040);
+  background: var(--page);
+  color: var(--foreground);
+  accent-color: var(--accent);
+}
+
+@media (prefers-color-scheme: dark) { :root { color-scheme: dark; } }
+:root[data-theme='light'] { color-scheme: light; }
+:root[data-theme='dark'] { color-scheme: dark; }
+.theme-moon { display: none; }
+:root[data-theme='dark'] .theme-sun { display: none; }
+:root[data-theme='dark'] .theme-moon { display: block; }
+input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
+
+.pokemon-type { background: var(--type-bg, var(--neutral-bg)); color: var(--type-text, var(--neutral)); }
+.pokemon-type[data-type='fire'], .pokemon-type[data-type='ground'] { --type-bg: light-dark(#ffedd5, #432b1a); --type-text: light-dark(#7c2d12, #fdba74); }
+.pokemon-type[data-type='water'] { --type-bg: var(--info-bg); --type-text: var(--info); }
+.pokemon-type[data-type='electric'], .pokemon-type[data-type='rock'] { --type-bg: var(--warning-bg); --type-text: var(--warning); }
+.pokemon-type[data-type='grass'], .pokemon-type[data-type='bug'] { --type-bg: var(--success-bg); --type-text: var(--success); }
+.pokemon-type[data-type='ice'] { --type-bg: light-dark(#cffafe, #16383f); --type-text: light-dark(#164e63, #67e8f9); }
+.pokemon-type[data-type='fighting'] { --type-bg: var(--danger-bg); --type-text: var(--danger); }
+.pokemon-type[data-type='poison'], .pokemon-type[data-type='ghost'] { --type-bg: var(--special-bg); --type-text: var(--special); }
+.pokemon-type[data-type='flying'], .pokemon-type[data-type='dragon'] { --type-bg: light-dark(#e0e7ff, #2b2d50); --type-text: light-dark(#312e81, #a5b4fc); }
+.pokemon-type[data-type='psychic'], .pokemon-type[data-type='fairy'] { --type-bg: light-dark(#fce7f3, #42263a); --type-text: light-dark(#831843, #f9a8d4); }

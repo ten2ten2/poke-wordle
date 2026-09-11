@@ -1,5 +1,7 @@
 import '@/styles/globals.css';
-import type { Metadata, Viewport } from 'next';
+import type { Metadata } from 'next';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import localFont from 'next/font/local';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
@@ -18,7 +20,7 @@ const inter = localFont({
   display: 'swap',
 });
 
-export const viewport: Viewport = { themeColor: '#ef4444' };
+const themeScript = readFileSync(path.join(process.cwd(), 'public/theme.js'), 'utf8');
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -46,7 +48,10 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   return (
-    <html lang={locale} className={inter.variable}>
+    <html lang={locale} className={inter.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         <NextIntlClientProvider>
           {children}
