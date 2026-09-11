@@ -21449,9 +21449,7 @@
     "evolution_stage": 2,
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
-    "tags": [
-      "has-mega"
-    ]
+    "tags": null
   },
   {
     "id": 746,
@@ -22979,8 +22977,7 @@
     "evolution_method": "",
     "evolution_method_detail": "",
     "tags": [
-      "legendary",
-      "has-mega"
+      "legendary"
     ]
   },
   {
@@ -23010,8 +23007,7 @@
     "evolution_method": "",
     "evolution_method_detail": "",
     "tags": [
-      "legendary",
-      "has-mega"
+      "legendary"
     ]
   },
   {
