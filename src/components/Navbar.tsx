@@ -46,12 +46,12 @@ export default function Navbar({
           role="navigation"
           aria-label={t('navbar.main_navigation')}
         >
-          <div className="flex justify-between items-center gap-2 h-16">
+          <div className="flex justify-between items-center gap-1 sm:gap-2 h-16 px-2 sm:px-6">
             <div className="min-w-0">
               <Link
                 href={homeHref}
                 title={t('title')}
-                className="flex min-w-0 items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity"
+                className="flex min-w-0 items-center gap-1.5 sm:gap-3 hover:opacity-80 transition-opacity"
               >
                 <Pokeball className="size-7 sm:size-8 shrink-0" />
                 <h1 className="text-base sm:text-xl font-semibold text-gray-900 truncate">

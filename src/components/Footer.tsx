@@ -13,8 +13,8 @@ export default function Footer() {
   return (
     <footer className="bg-white border-t border-gray-200 mt-auto safe-bottom">
       <div className="container-responsive">
-        <div className="py-4 sm:py-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="px-2 py-2 sm:px-6 sm:py-3">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4">
             {/* Copyright */}
             <div className="text-center sm:text-left">
               <p className="text-responsive-sm text-gray-500">
