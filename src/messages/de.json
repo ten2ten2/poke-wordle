@@ -35,10 +35,26 @@
       "generation": "Generation",
       "abilities": "Fähigkeiten",
       "evolution": "Evolution",
-      "tags": "Tags"
+      "tags": "Tags",
+      "pokemon": "Pokémon"
     },
     "evolutionMethod": "Evolutionsmethode",
-    "requestFailed": "Die Antwort konnte nicht geprüft werden. Bitte versuche es erneut."
+    "requestFailed": "Die Antwort konnte nicht geprüft werden. Bitte versuche es erneut.",
+    "searchHint": "Name in beliebiger Sprache oder Pokédex-Nummer",
+    "noMatches": "Kein passendes Pokémon",
+    "suggestionCount": "{shown} von {total} Ergebnissen",
+    "intro": "Rate ein Pokémon und grenze die Antwort mithilfe der Hinweise ein.",
+    "matchExact": "Gleich",
+    "matchClose": "Ähnlich",
+    "matchNope": "Anders",
+    "answerHigher": "Die Antwort ist höher",
+    "answerLower": "Die Antwort ist niedriger",
+    "confirmGiveUp": "Antwort anzeigen und das Spiel beenden?",
+    "confirmRestart": "Versuche löschen und neu beginnen?",
+    "confirmAction": "Bestätigen",
+    "latestGuess": "Neuester",
+    "guessNumber": "Versuch {number}",
+    "hiddenField": "Im Strolch-Modus verborgen"
   },
   "settings": {
     "title": "Einstellungen",
@@ -93,12 +109,9 @@
     },
     "colorGuide": {
       "title": "Farbführer",
-      "greenTag": "Grünes Tag",
-      "yellowTag": "Gelbes Tag",
-      "grayTag": "Graues Tag",
-      "green": "Zeigt an, dass dieses Tag **exakt übereinstimmt** mit dem entsprechenden Tag des Ziel-Pokémon",
-      "yellow": "Zeigt an, dass dieses Tag **nah** am entsprechenden Tag des Ziel-Pokémon ist",
-      "gray": "Zeigt an, dass dieses Tag **unterschiedlich** vom entsprechenden Tag des Ziel-Pokémon ist"
+      "green": "<tag>Grünes Tag</tag> Zeigt an, dass dieses Tag exakt übereinstimmt mit dem entsprechenden Tag des Ziel-Pokémon",
+      "yellow": "<tag>Gelbes Tag</tag> Zeigt an, dass dieses Tag nah am entsprechenden Tag des Ziel-Pokémon ist",
+      "gray": "<tag>Graues Tag</tag> Zeigt an, dass dieses Tag unterschiedlich vom entsprechenden Tag des Ziel-Pokémon ist"
     },
     "yellowConditions": {
       "title": "Bedingungen für gelbe Tags",
@@ -108,7 +121,7 @@
     },
     "dataSource": {
       "title": "Datenquelle",
-      "description": "Spieldaten stammen hauptsächlich von [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\") und [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")"
+      "description": "Spieldaten stammen hauptsächlich von <pokeapi>pokeapi.co</pokeapi> und <bulbapedia>Bulbapedia</bulbapedia>"
     }
   },
   "navbar": {

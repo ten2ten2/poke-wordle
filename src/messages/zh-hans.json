@@ -35,10 +35,26 @@
       "generation": "世代",
       "abilities": "特性",
       "evolution": "进化",
-      "tags": "其它标签"
+      "tags": "其它标签",
+      "pokemon": "宝可梦"
     },
     "evolutionMethod": "进化方式",
-    "requestFailed": "无法检查猜测，请重试。"
+    "requestFailed": "无法检查猜测，请重试。",
+    "searchHint": "搜索任意语言名称或全国图鉴编号",
+    "noMatches": "没有匹配的宝可梦",
+    "suggestionCount": "显示 {shown} / {total} 个结果",
+    "intro": "猜一只宝可梦，根据属性提示逐步找到答案。",
+    "matchExact": "相同",
+    "matchClose": "接近",
+    "matchNope": "不同",
+    "answerHigher": "答案更高",
+    "answerLower": "答案更低",
+    "confirmGiveUp": "查看答案并结束本局？",
+    "confirmRestart": "清除当前猜测，开始新一局？",
+    "confirmAction": "确认",
+    "latestGuess": "最新",
+    "guessNumber": "第 {number} 次",
+    "hiddenField": "已被恶作剧模式隐藏"
   },
   "settings": {
     "title": "设置",
@@ -93,12 +109,9 @@
     },
     "colorGuide": {
       "title": "标签颜色说明",
-      "greenTag": "绿色标签",
-      "yellowTag": "黄色标签",
-      "grayTag": "灰色标签",
-      "green": "表示该标签与目标宝可梦的对应标签**相同**",
-      "yellow": "表示该标签与目标宝可梦的对应标签**接近**",
-      "gray": "表示该标签与目标宝可梦的对应标签**不同**"
+      "green": "<tag>绿色标签</tag> 表示该标签与目标宝可梦的对应标签相同",
+      "yellow": "<tag>黄色标签</tag> 表示该标签与目标宝可梦的对应标签接近",
+      "gray": "<tag>灰色标签</tag> 表示该标签与目标宝可梦的对应标签不同"
     },
     "yellowConditions": {
       "title": "黄色标签判断条件",
@@ -108,7 +121,7 @@
     },
     "dataSource": {
       "title": "数据来源",
-      "description": "本游戏数据主要来源于 [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\") 和 [Bulbagpedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")。"
+      "description": "本游戏数据主要来源于 <pokeapi>pokeapi.co</pokeapi> 和 <bulbapedia>Bulbapedia</bulbapedia>。"
     }
   },
   "navbar": {

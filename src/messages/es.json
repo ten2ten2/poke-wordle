@@ -35,10 +35,26 @@
       "generation": "Generación",
       "abilities": "Habilidades",
       "evolution": "Evolución",
-      "tags": "Etiquetas"
+      "tags": "Etiquetas",
+      "pokemon": "Pokémon"
     },
     "evolutionMethod": "Método de Evolución",
-    "requestFailed": "No se pudo comprobar la respuesta. Inténtalo de nuevo."
+    "requestFailed": "No se pudo comprobar la respuesta. Inténtalo de nuevo.",
+    "searchHint": "Nombre en cualquier idioma o número de Pokédex",
+    "noMatches": "No hay Pokémon coincidentes",
+    "suggestionCount": "{shown} de {total} resultados",
+    "intro": "Propón un Pokémon y compara las pistas para encontrar la respuesta.",
+    "matchExact": "Igual",
+    "matchClose": "Cercano",
+    "matchNope": "Diferente",
+    "answerHigher": "La respuesta es mayor",
+    "answerLower": "La respuesta es menor",
+    "confirmGiveUp": "¿Revelar la respuesta y terminar la partida?",
+    "confirmRestart": "¿Borrar los intentos y empezar de nuevo?",
+    "confirmAction": "Confirmar",
+    "latestGuess": "Último",
+    "guessNumber": "Intento {number}",
+    "hiddenField": "Oculto por el modo Bromista"
   },
   "settings": {
     "title": "Configuración",
@@ -93,12 +109,9 @@
     },
     "colorGuide": {
       "title": "Guía de colores",
-      "greenTag": "Etiqueta verde",
-      "yellowTag": "Etiqueta amarilla",
-      "grayTag": "Etiqueta gris",
-      "green": "Indica que esta etiqueta **coincide exactamente** con la etiqueta correspondiente del Pokémon objetivo",
-      "yellow": "Indica que esta etiqueta está **cerca** de la etiqueta correspondiente del Pokémon objetivo",
-      "gray": "Indica que esta etiqueta es **diferente** de la etiqueta correspondiente del Pokémon objetivo"
+      "green": "<tag>Etiqueta verde</tag> Indica que esta etiqueta coincide exactamente con la etiqueta correspondiente del Pokémon objetivo",
+      "yellow": "<tag>Etiqueta amarilla</tag> Indica que esta etiqueta está cerca de la etiqueta correspondiente del Pokémon objetivo",
+      "gray": "<tag>Etiqueta gris</tag> Indica que esta etiqueta es diferente de la etiqueta correspondiente del Pokémon objetivo"
     },
     "yellowConditions": {
       "title": "Condiciones de etiquetas amarillas",
@@ -108,7 +121,7 @@
     },
     "dataSource": {
       "title": "Fuente de datos",
-      "description": "Los datos del juego provienen principalmente de [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\") y [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")."
+      "description": "Los datos del juego provienen principalmente de <pokeapi>pokeapi.co</pokeapi> y <bulbapedia>Bulbapedia</bulbapedia>."
     }
   },
   "navbar": {

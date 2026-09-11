@@ -12,6 +12,7 @@ export async function createFixture() {
   const names = (await fs.readdir(originalTool)).filter((file) => file.endsWith('.go') || ['go.mod', 'go.sum', 'corrections.json', 'id-registry.json', 'pipeline.mjs', 'review-state.mjs', 'console-model.mjs', 'console.mjs'].includes(file));
   for (const name of names) await fs.copyFile(new URL(name, originalTool), path.join(tool, name));
   await fs.cp(new URL('./console', import.meta.url), path.join(tool, 'console'), { recursive: true });
+  await fs.cp(new URL('../../public/fonts', import.meta.url), path.join(dir, 'public/fonts'), { recursive: true });
   const dataFiles = ['pokemon_data.json', 'pokemon_i18n.json', 'prankster_profile.json'];
   for (const name of [...dataFiles, 'dataset.json', 'knowledge_data.json']) await fs.copyFile(new URL(`../../src/data/${name}`, import.meta.url), path.join(data, name));
   await fs.cp(new URL('../../src/messages', import.meta.url), path.join(dir, 'src/messages'), { recursive: true });

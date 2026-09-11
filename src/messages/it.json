@@ -35,10 +35,26 @@
       "generation": "Generazione",
       "abilities": "Abilità",
       "evolution": "Evoluzione",
-      "tags": "Tag"
+      "tags": "Tag",
+      "pokemon": "Pokémon"
     },
     "evolutionMethod": "Metodo di Evoluzione",
-    "requestFailed": "Impossibile verificare la risposta. Riprova."
+    "requestFailed": "Impossibile verificare la risposta. Riprova.",
+    "searchHint": "Nome in qualsiasi lingua o numero del Pokédex",
+    "noMatches": "Nessun Pokémon corrispondente",
+    "suggestionCount": "{shown} risultati su {total}",
+    "intro": "Proponi un Pokémon e confronta gli indizi per trovare la risposta.",
+    "matchExact": "Uguale",
+    "matchClose": "Vicino",
+    "matchNope": "Diverso",
+    "answerHigher": "La risposta è più alta",
+    "answerLower": "La risposta è più bassa",
+    "confirmGiveUp": "Mostrare la risposta e terminare la partita?",
+    "confirmRestart": "Cancellare i tentativi e ricominciare?",
+    "confirmAction": "Conferma",
+    "latestGuess": "Ultimo",
+    "guessNumber": "Tentativo {number}",
+    "hiddenField": "Nascosto dalla modalità Burla"
   },
   "settings": {
     "title": "Impostazioni",
@@ -93,12 +109,9 @@
     },
     "colorGuide": {
       "title": "Guida ai colori",
-      "greenTag": "Tag verde",
-      "yellowTag": "Tag giallo",
-      "grayTag": "Tag grigio",
-      "green": "Indica che questo tag **corrisponde esattamente** al tag corrispondente del Pokémon obiettivo",
-      "yellow": "Indica che questo tag è **vicino** al tag corrispondente del Pokémon obiettivo",
-      "gray": "Indica che questo tag è **diverso** dal tag corrispondente del Pokémon obiettivo"
+      "green": "<tag>Tag verde</tag> Indica che questo tag corrisponde esattamente al tag corrispondente del Pokémon obiettivo",
+      "yellow": "<tag>Tag giallo</tag> Indica che questo tag è vicino al tag corrispondente del Pokémon obiettivo",
+      "gray": "<tag>Tag grigio</tag> Indica che questo tag è diverso dal tag corrispondente del Pokémon obiettivo"
     },
     "yellowConditions": {
       "title": "Condizioni per i tag gialli",
@@ -108,7 +121,7 @@
     },
     "dataSource": {
       "title": "Fonte dei dati",
-      "description": "I dati del gioco provengono principalmente da [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\") e [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")"
+      "description": "I dati del gioco provengono principalmente da <pokeapi>pokeapi.co</pokeapi> e <bulbapedia>Bulbapedia</bulbapedia>"
     }
   },
   "navbar": {

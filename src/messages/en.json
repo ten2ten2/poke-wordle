@@ -35,10 +35,26 @@
       "generation": "Generation",
       "abilities": "Abilities",
       "evolution": "Evolution",
-      "tags": "Tags"
+      "tags": "Tags",
+      "pokemon": "Pokémon"
     },
     "evolutionMethod": "Evolution Method",
-    "requestFailed": "Unable to check your guess. Please try again."
+    "requestFailed": "Unable to check your guess. Please try again.",
+    "searchHint": "Search by name in any language or Pokédex number",
+    "noMatches": "No matching Pokémon",
+    "suggestionCount": "Showing {shown} of {total}",
+    "intro": "Guess a Pokémon, compare the clues, and narrow down the answer.",
+    "matchExact": "Match",
+    "matchClose": "Close",
+    "matchNope": "Different",
+    "answerHigher": "Answer is higher",
+    "answerLower": "Answer is lower",
+    "confirmGiveUp": "Reveal the answer and end this game?",
+    "confirmRestart": "Clear your guesses and start a new game?",
+    "confirmAction": "Confirm",
+    "latestGuess": "Latest",
+    "guessNumber": "Guess {number}",
+    "hiddenField": "Hidden by Prankster"
   },
   "settings": {
     "title": "Settings",
@@ -93,12 +109,9 @@
     },
     "colorGuide": {
       "title": "Color Guide",
-      "greenTag": "Green Tag",
-      "yellowTag": "Yellow Tag",
-      "grayTag": "Gray Tag",
-      "green": "Indicates that this tag **matches exactly** with the target Pokémon's corresponding tag",
-      "yellow": "Indicates that this tag is **close** to the target Pokémon's corresponding tag",
-      "gray": "Indicates that this tag is **different** from the target Pokémon's corresponding tag"
+      "green": "<tag>Green Tag</tag> Indicates that this tag matches exactly with the target Pokémon's corresponding tag",
+      "yellow": "<tag>Yellow Tag</tag> Indicates that this tag is close to the target Pokémon's corresponding tag",
+      "gray": "<tag>Gray Tag</tag> Indicates that this tag is different from the target Pokémon's corresponding tag"
     },
     "yellowConditions": {
       "title": "Yellow Tag Conditions",
@@ -108,7 +121,7 @@
     },
     "dataSource": {
       "title": "Data Source",
-      "description": "Game data is primarily sourced from [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\") and [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")."
+      "description": "Game data is primarily sourced from <pokeapi>pokeapi.co</pokeapi> and <bulbapedia>Bulbapedia</bulbapedia>."
     }
   },
   "navbar": {

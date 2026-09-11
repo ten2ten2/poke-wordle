@@ -125,3 +125,38 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
     assert.deepEqual(errors, []);
   });
 }
+
+for (const width of [1440, 390]) {
+  test(`review navigation saves one item at a time and protects unsaved notes at ${width}px`, { timeout: 60000 }, async (t) => {
+    const fixture = await createFixture(); t.after(fixture.cleanup);
+    const translations = JSON.parse(await fs.readFile(fixture.translationFile));
+    translations.ivysaur.en = 'Second fixture name';
+    await fs.writeFile(fixture.translationFile, JSON.stringify(translations));
+    fixture.manifest.candidate['pokemon_i18n.json'] = await fixture.fileHash(fixture.translationFile);
+    await fs.writeFile(path.join(fixture.run, 'manifest.json'), JSON.stringify(fixture.manifest));
+    fixture.execute('review', 'fixture');
+    const { createConsole } = await import(pathToFileURL(path.join(fixture.tool, 'console.mjs')));
+    const app = await createConsole({ port: 0 }); t.after(() => new Promise((resolve) => app.server.close(resolve)));
+    const browser = await chromium.launch({ headless: true }); t.after(() => browser.close());
+    const page = await browser.newPage({ viewport: { width, height: 900 } });
+    await page.route('https://raw.githubusercontent.com/**', (route) => route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg"/>' }));
+    await page.goto(app.url);
+    await page.locator('.item-name button').first().click();
+    const title = await page.locator('#detail-title').textContent();
+    await page.getByLabel('审核备注').fill('已核对名称');
+    await page.getByRole('button', { name: '下一项待确认' }).click();
+    await page.getByText('备注尚未保存，请先保存审核决定再切换。').first().waitFor();
+    assert.equal(await page.locator('#detail-title').textContent(), title);
+    await page.getByRole('button', { name: '接受并下一项' }).click();
+    await page.waitForFunction((title) => document.getElementById('detail-title').textContent !== title, title);
+    await page.locator('#review-progress-label').filter({ hasText: '1 / 2' }).waitFor();
+    await page.getByRole('button', { name: '接受变更', exact: true }).click();
+    await page.locator('#review-progress-label').filter({ hasText: '2 / 2' }).waitFor();
+    const decisions = JSON.parse(await fs.readFile(path.join(fixture.run, 'decisions.json')));
+    assert.equal(Object.keys(decisions.decisions).length, 2);
+    assert(Object.values(decisions.decisions).some((decision) => decision.note === '已核对名称'));
+    const font = await fetch(`${app.url}/fonts/inter-latin-variable.woff2`);
+    assert.equal(font.headers.get('content-type'), 'font/woff2');
+    assert.equal(Buffer.from(await font.arrayBuffer()).subarray(0, 4).toString(), 'wOF2');
+  });
+}

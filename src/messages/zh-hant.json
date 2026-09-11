@@ -35,10 +35,26 @@
       "generation": "世代",
       "abilities": "特性",
       "evolution": "進化",
-      "tags": "其它標籤"
+      "tags": "其它標籤",
+      "pokemon": "寶可夢"
     },
     "evolutionMethod": "進化方式",
-    "requestFailed": "無法檢查猜測，請重試。"
+    "requestFailed": "無法檢查猜測，請重試。",
+    "searchHint": "搜尋任意語言名稱或全國圖鑑編號",
+    "noMatches": "沒有符合的寶可夢",
+    "suggestionCount": "顯示 {shown} / {total} 個結果",
+    "intro": "猜一隻寶可夢，根據屬性提示逐步找出答案。",
+    "matchExact": "相同",
+    "matchClose": "接近",
+    "matchNope": "不同",
+    "answerHigher": "答案更高",
+    "answerLower": "答案更低",
+    "confirmGiveUp": "查看答案並結束本局？",
+    "confirmRestart": "清除目前猜測，開始新一局？",
+    "confirmAction": "確認",
+    "latestGuess": "最新",
+    "guessNumber": "第 {number} 次",
+    "hiddenField": "已被惡作劇模式隱藏"
   },
   "settings": {
     "title": "設定",
@@ -93,12 +109,9 @@
     },
     "colorGuide": {
       "title": "標籤顏色說明",
-      "greenTag": "綠色標籤",
-      "yellowTag": "黃色標籤",
-      "grayTag": "灰色標籤",
-      "green": "表示該標籤與目標寶可夢的對應標籤**相同**",
-      "yellow": "表示該標籤與目標寶可夢的對應標籤**接近**",
-      "gray": "表示該標籤與目標寶可夢的對應標籤**不同**"
+      "green": "<tag>綠色標籤</tag> 表示該標籤與目標寶可夢的對應標籤相同",
+      "yellow": "<tag>黃色標籤</tag> 表示該標籤與目標寶可夢的對應標籤接近",
+      "gray": "<tag>灰色標籤</tag> 表示該標籤與目標寶可夢的對應標籤不同"
     },
     "yellowConditions": {
       "title": "黃色標籤判斷條件",
@@ -108,7 +121,7 @@
     },
     "dataSource": {
       "title": "資料來源",
-      "description": "本遊戲資料主要來源於 [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\") 和 [Bulbagpedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")。"
+      "description": "本遊戲資料主要來源於 <pokeapi>pokeapi.co</pokeapi> 和 <bulbapedia>Bulbapedia</bulbapedia>。"
     }
   },
   "navbar": {

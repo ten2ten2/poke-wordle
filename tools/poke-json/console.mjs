@@ -11,7 +11,7 @@ export async function createConsole({ port = 3318 } = {}) {
   const token = randomBytes(32).toString('hex');
   const jobsDir = path.join(paths.tool, 'output/console-jobs'); await fs.mkdir(jobsDir, { recursive: true });
   const jobs = new Map(); let busy = false; let address;
-  const staticFiles = new Map([['/', ['index.html', 'text/html']], ['/app.js', ['app.js', 'text/javascript']], ['/data-view.js', ['data-view.js', 'text/javascript']], ['/shared.js', ['shared.js', 'text/javascript']], ['/style.css', ['style.css', 'text/css']]]);
+  const staticFiles = new Map([['/', ['index.html', 'text/html']], ['/app.js', ['app.js', 'text/javascript']], ['/data-view.js', ['data-view.js', 'text/javascript']], ['/shared.js', ['shared.js', 'text/javascript']], ['/fonts/typography.css', ['../../../public/fonts/typography.css', 'text/css']], ['/fonts/inter-latin-variable.woff2', ['../../../public/fonts/inter-latin-variable.woff2', 'font/woff2']], ['/style.css', ['style.css', 'text/css']]]);
   const persist = async (job) => {
     const file = path.join(jobsDir, `${job.id}.json`);
     await fs.writeFile(`${file}.tmp`, `${JSON.stringify(job, null, 2)}\n`);
@@ -85,7 +85,7 @@ export async function createConsole({ port = 3318 } = {}) {
   const server = http.createServer(async (request, response) => {
     const send = (status, value, headers = {}) => {
       response.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', ...headers });
-      response.end(typeof value === 'string' ? value : JSON.stringify(value));
+      response.end(typeof value === 'string' || Buffer.isBuffer(value) ? value : JSON.stringify(value));
     };
     try {
       const allowedHosts = [`127.0.0.1:${address.port}`, `localhost:${address.port}`];
@@ -96,8 +96,9 @@ export async function createConsole({ port = 3318 } = {}) {
       const url = new URL(request.url, `http://${request.headers.host}`);
       if (request.method === 'GET' && staticFiles.has(url.pathname)) {
         const [file, type] = staticFiles.get(url.pathname);
-        return send(200, await fs.readFile(path.join(paths.tool, 'console', file), 'utf8'), {
-          'Content-Type': `${type}; charset=utf-8`,
+        return send(200, await fs.readFile(path.join(paths.tool, 'console', file)), {
+          'Content-Type': type.startsWith('font/') ? type : `${type}; charset=utf-8`,
+          'Cache-Control': type.startsWith('font/') ? 'private, max-age=3600' : 'no-store',
           'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://raw.githubusercontent.com; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
           'Referrer-Policy': 'no-referrer',
         });

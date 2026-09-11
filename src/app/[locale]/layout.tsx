@@ -1,5 +1,6 @@
 import '@/styles/globals.css';
 import type { Metadata, Viewport } from 'next';
+import localFont from 'next/font/local';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -8,6 +9,13 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import CookieConsent from '@/components/CookieConsent';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { routing } from '@/i18n/routing';
+
+const inter = localFont({
+  src: '../../../public/fonts/inter-latin-variable.woff2',
+  variable: '--font-inter',
+  weight: '400 700',
+  display: 'swap',
+});
 
 export const viewport: Viewport = { themeColor: '#ef4444' };
 
@@ -274,7 +282,7 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={inter.variable}>
       <body>
         <NextIntlClientProvider>
           {children}

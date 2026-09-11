@@ -13,6 +13,7 @@ import GameInput from '@/components/GameInput';
 import GuessTable from '@/components/GuessTable';
 import { DynamicGameOverModal } from '@/components/DynamicComponents';
 import RandomKnowledge from '@/components/RandomKnowledge';
+import { ColorLegend } from '@/components/StatusTag';
 import { useHydrated } from '@/hooks/useHydrated';
 
 export default function GameClient() {
@@ -25,7 +26,6 @@ function Game({ ready }: { ready: boolean }) {
   const t = useTranslations();
   const {
     gameState,
-    pokemonNames,
     startNewGame,
     resetGame,
     updateSettings,
@@ -66,16 +66,16 @@ function Game({ ready }: { ready: boolean }) {
     async (name: string) => {
       // Prevent new guesses if game is over
       if (gameState.isGameOver || requestRef.current) {
-        return;
+        return false;
       }
 
       if (!isPokemonNameValid(name)) {
         setError(t('game.pokemonNotFound'));
-        return;
+        return false;
       }
 
       const target = gameState.targetPokemon ?? startNewGame();
-      if (!target) return;
+      if (!target) return false;
       const controller = new AbortController();
       requestRef.current = controller;
       setShowSettingsChangeNotice(false);
@@ -106,7 +106,7 @@ function Game({ ready }: { ready: boolean }) {
         if (response.status === 409 && !controller.signal.aborted) {
           resetGame();
           window.location.reload();
-          return;
+          return false;
         }
 
         if (!response.ok) {
@@ -118,7 +118,10 @@ function Game({ ready }: { ready: boolean }) {
         if (result.fieldToHide && !result.isCorrect) {
           result.pranksterPokemonProfile = getRandomPranksterImage();
         }
-        if (!controller.signal.aborted) addGuess(result);
+        if (!controller.signal.aborted) {
+          addGuess(result);
+          return true;
+        }
       } catch (error) {
         if (!controller.signal.aborted) {
           console.error('Error checking guess:', error);
@@ -130,6 +133,7 @@ function Game({ ready }: { ready: boolean }) {
           setIsLoading(false);
         }
       }
+      return false;
     },
     [
       gameState.targetPokemon,
@@ -177,10 +181,10 @@ function Game({ ready }: { ready: boolean }) {
         onSettingsChange={handleSettingsChange}
         currentSettings={gameState.settings}
       />
-      <RandomKnowledge />
 
-      <main className="w-full container-responsive section-padding">
+      <main className="w-full flex-1 container-responsive section-padding">
         <div className="space-y-4 sm:space-y-6">
+          {!gameState.targetPokemon && <p className="game-intro">{t('game.intro')}</p>}
           {showSettingsChangeNotice && (
             <aside
               className="card card-padding bg-orange-50 border border-orange-200 animate-slide-up"
@@ -221,7 +225,8 @@ function Game({ ready }: { ready: boolean }) {
               {t('game.inputSection')}
             </h2>
             <GameInput
-              pokemonNames={pokemonNames}
+              key={`${gameState.settings.selectedGenerations.join(',')}-${gameState.settings.maxGuesses}-${gameState.settings.isPrankster}-${gameState.settings.isGenArrow}`}
+              pokemon={availablePokemon}
               onSubmit={handleGuessSubmit}
               onRandomStart={handleRandomStart}
               onGiveUp={handleGiveUp}
@@ -251,7 +256,7 @@ function Game({ ready }: { ready: boolean }) {
             {gameState.targetPokemon ? (
               <div className="space-y-3">
                 <p
-                  className="text-responsive-lg font-medium text-gray-700"
+                  className="text-base font-medium tabular-nums text-gray-700"
                   aria-live="polite"
                 >
                   {t('game.guessCount', {
@@ -296,21 +301,19 @@ function Game({ ready }: { ready: boolean }) {
                   </div>
                 )}
               </div>
-            ) : (
-              <p className="text-responsive-lg font-medium text-gray-500">
-                {t('game.startPrompt')}
-              </p>
-            )}
+            ) : null}
           </section>
           <section aria-labelledby="game-results-heading">
             <h2 id="game-results-heading" className="sr-only">
               {t('game.resultsSection')}
             </h2>
-            <GuessTable guesses={gameState.guesses} />
+            <ColorLegend />
+            <GuessTable guesses={gameState.guesses} order={gameState.settings.guessOrder} />
           </section>
         </div>
       </main>
 
+      <RandomKnowledge />
       <Footer />
       <DynamicGameOverModal
         isOpen={gameState.isGameOver && !dismissedResult}

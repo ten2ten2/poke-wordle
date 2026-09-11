@@ -170,14 +170,11 @@ test('opens and closes the language picker', async () => {
   expect(screen.queryByTestId('language-modal')).not.toBeInTheDocument();
 });
 
-test('shows instructions once and saves dismissal', async () => {
+test('opens instructions on request without interrupting first-time visitors', async () => {
   jest.mocked(localStorage.getItem).mockReturnValue(null);
   render(<Navbar {...defaultProps} />);
-  await userEvent.click(
-    await screen.findByRole('button', { name: 'Close About' }),
-  );
-  expect(localStorage.setItem).toHaveBeenCalledWith('hasSeenAbout_en', 'true');
-  await waitFor(() =>
-    expect(screen.queryByTestId('about-modal')).not.toBeInTheDocument(),
-  );
+  expect(screen.queryByTestId('about-modal')).not.toBeInTheDocument();
+  await userEvent.click(screen.getByRole('button', { name: 'About' }));
+  await userEvent.click(await screen.findByRole('button', { name: 'Close About' }));
+  await waitFor(() => expect(screen.queryByTestId('about-modal')).not.toBeInTheDocument());
 });

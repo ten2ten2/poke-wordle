@@ -28,6 +28,7 @@ mise run dev
 
 ## 代码与数据
 
+- 字体使用自托管 Inter 拉丁可变字体，中日韩按页面语言回退到系统字体；许可见 `public/fonts/OFL.txt`。
 - Next.js App Router、React、Tailwind CSS。`src/app/[locale]` 和 `src/proxy.ts` 统一语言路由；英文不带路径前缀。
 - `src/hooks/useGameState.ts` 管理游戏与持久化，`src/app/api/checkGuess/route.ts` 比较猜测。
 - `src/data/` 是游戏数据发布目录；`tools/poke-json/` 负责抓取、修正和校对。使用[数据控制台](tools/poke-json/README.md)浏览全量数据、审核候选；操作见[更新流程](tools/poke-json/UPDATE_WORKFLOW.md)。

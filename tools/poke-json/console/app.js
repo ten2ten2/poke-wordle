@@ -65,6 +65,10 @@ function renderRun() {
   $('run-meta').textContent = `${date(run.started_at)}${run.counts ? ` · ${run.counts.pokemon ?? '—'} 个答案 · ${run.counts.translations ?? '—'} 个翻译键 · ${run.counts.prankster ?? '—'} 张恶作剧图片` : ''}`;
   $('run-status').replaceWith(Object.assign(badge(run.status), { id: 'run-status' }));
   $('run-note').textContent = run.issues.length ? run.issues.join(' ') : historical() ? `${run.status === 'applied' ? '这批数据已应用。' : ''}这里展示当时的旧值与候选值，供回看核对；如需更新，请生成新批次。` : '自动校验检查数据结构和来源一致性。请核对每项变化的内容；所有待确认项通过后，才能应用整批数据。';
+  $('review-progress').hidden = historical();
+  $('review-progress-bar').max = run.summary.total || 1;
+  $('review-progress-bar').value = run.summary.total ? run.summary.accepted : 1;
+  $('review-progress-label').textContent = `${run.summary.accepted} / ${run.summary.total} 项已接受 · ${run.summary.pending} 项待确认 · ${run.summary.held} 项需处理`;
   $('count-changes').textContent = run.summary.total;
   $('count-pending').textContent = historical() ? '—' : run.summary.pending;
   $('count-accepted').textContent = historical() ? '—' : run.summary.accepted;
@@ -149,8 +153,25 @@ function renderSelection(visible) {
 function sourceLink(url, text) {
   const a = element('a', text); if (/^https:\/\//.test(url)) { a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer'; } return a;
 }
+function pendingNeighbors() {
+  const items = state.run.items;
+  const index = items.findIndex((item) => item.id === state.detail?.id);
+  const pending = (item) => item.requiresDecision && (!item.decision || item.decision.status === 'pending');
+  return { previous: items.slice(0, index).findLast(pending), next: items.slice(index + 1).find(pending) };
+}
+function navigatePending(direction) {
+  if (state.saving || state.busy) return;
+  if ($('decision-note').value !== (state.detail?.decision?.note ?? '')) {
+    notify('备注尚未保存，请先保存审核决定再切换。'); return;
+  }
+  const item = pendingNeighbors()[direction];
+  if (item) showDetail(item);
+}
 function showDetail(item) {
   state.detail = item;
+  const neighbors = pendingNeighbors();
+  $('previous-pending').disabled = !editable() || !neighbors.previous;
+  $('next-pending').disabled = !editable() || !neighbors.next;
   $('detail-notice').hidden = true;
   $('detail-category').textContent = `${categories[item.category]}${item.highRisk ? ' / 需逐项确认' : ''}`;
   $('detail-title').textContent = item.label; $('detail-field').textContent = `${item.entity} · ${fields[item.field] ?? (item.field || '整条记录')}`;
@@ -183,16 +204,19 @@ function showDetail(item) {
   $('decision-note').value = item.decision?.note ?? '';
   if (!$('detail').open) $('detail').showModal();
 }
-async function decide(changes) {
+async function decide(changes, advance = false) {
   if (!editable()) return;
+  const nextID = advance ? pendingNeighbors().next?.id : null;
+  let saved = false;
   state.saving = true; renderRun();
   for (const button of document.querySelectorAll('[data-decision]')) button.disabled = true;
   try {
     await api(`/api/runs/${state.run.id}/decisions`, { report_hash: state.run.report_hash, revision: state.run.revision, changes });
     state.selected.clear(); $('detail').close(); notify(changes.some((item) => ['keep', 'fix', 'defer'].includes(item.status)) ? '决定已保存。本批暂停应用，修正生成规则后重建并重新确认。' : '审核决定已保存。');
-    await loadRun(state.run.id, false);
+    await loadRun(state.run.id, false); saved = true;
   } catch (error) { notify(error.message); }
   finally { state.saving = false; for (const button of document.querySelectorAll('[data-decision]')) button.disabled = false; renderRun(); }
+  if (saved && nextID) { const next = state.run.items.find((item) => item.id === nextID); if (next) showDetail(next); }
 }
 async function job(action, mode) {
   if (state.busy || state.saving) return;
@@ -234,8 +258,10 @@ for (const id of ['search', 'category']) $(id).addEventListener('input', () => {
 $('previous').addEventListener('click', () => { state.page--; renderItems(); });
 $('next').addEventListener('click', () => { state.page++; renderItems(); });
 $('accept-selected').addEventListener('click', () => decide([...state.selected].map((id) => ({ id, status: 'accepted' }))));
+$('previous-pending').addEventListener('click', () => navigatePending('previous'));
+$('next-pending').addEventListener('click', () => navigatePending('next'));
 $('close-detail').addEventListener('click', () => $('detail').close());
-for (const button of document.querySelectorAll('[data-decision]')) button.addEventListener('click', () => decide([{ id: state.detail.id, status: button.dataset.decision, note: $('decision-note').value }]));
+for (const button of document.querySelectorAll('[data-decision]')) button.addEventListener('click', () => decide([{ id: state.detail.id, status: button.dataset.decision, note: $('decision-note').value }], button.dataset.next === 'true'));
 async function start() {
   renderView();
   try {

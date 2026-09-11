@@ -1,4 +1,9 @@
 @import 'tailwindcss';
+@import '../../public/fonts/typography.css';
+
+@theme inline {
+  --font-sans: var(--font-ui);
+}
 @plugin "@tailwindcss/typography";
 @source "../data/knowledge";
 
@@ -36,6 +41,7 @@
     -webkit-text-size-adjust: 100%;
   }
   body {
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
   input,
@@ -80,24 +86,16 @@
   @apply text-2xl sm:text-3xl lg:text-4xl;
 }
 
-.arrow-up::after {
-  content: '↑';
-  margin-left: 0.25rem;
-}
-.arrow-down::after {
-  content: '↓';
-  margin-left: 0.25rem;
-}
-
 @utility tag {
   @apply inline-flex items-center rounded-lg;
   padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-  line-height: 1rem;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
   font-weight: 500;
-  @apply text-xs sm:text-sm;
   @apply min-h-[24px] mobile:min-h-[28px];
-  margin: 0.125rem;
+  margin: 0;
   text-align: center;
 }
 
@@ -114,7 +112,7 @@
 }
 
 @utility btn-primary {
-  @apply px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-hidden focus:ring-2 focus:ring-red-400 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed;
+  @apply px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 focus:outline-hidden focus:ring-2 focus:ring-red-400 focus:ring-offset-2 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed;
   @apply mobile:px-6 mobile:py-3 mobile:text-base;
   @apply transition-colors duration-200;
 }
@@ -126,26 +124,25 @@
 }
 
 @utility btn-success {
-  @apply px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-hidden focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed;
+  @apply px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-hidden focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed;
   @apply mobile:px-6 mobile:py-3 mobile:text-base;
   @apply transition-colors duration-200;
 }
 
 @utility btn-danger {
-  @apply px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-hidden focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed;
+  @apply px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-hidden focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed;
   @apply mobile:px-6 mobile:py-3 mobile:text-base;
   @apply transition-colors duration-200;
 }
 
 @utility input-primary {
-  @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed;
+  @apply w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed;
   @apply mobile:px-4 mobile:py-3 mobile:text-base;
   @apply transition-colors duration-200;
 }
 
 @utility card {
-  @apply bg-white rounded-lg shadow-sm;
-  @apply mobile:rounded-xl mobile:shadow-lg;
+  @apply bg-white rounded-2xl border border-gray-200 shadow-xs;
 }
 
 @utility card-padding {
@@ -184,30 +181,55 @@
   @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
 }
 
-@utility guess-table-card {
-  @apply bg-white rounded-lg shadow-xs border border-gray-200 overflow-hidden;
-}
-
-@utility guess-table-header {
-  @apply bg-gray-50 border-b border-dashed border-gray-200 px-3 py-2 text-center;
-}
-
-@utility guess-table-cell {
-  @apply p-3 min-h-[80px] flex flex-col items-center justify-start gap-1;
-}
-
-@utility pokemon-profile-section {
-  @apply shrink-0 flex flex-col justify-center items-center text-center bg-gray-50 border-r border-gray-200 p-4;
-}
-
-@utility property-column {
-  @apply shrink-0 border-0 last:border-r-0;
-}
-
 @utility scrollbar-hide {
   scrollbar-width: none;
 }
 
 @utility mobile-hidden {
   @apply mobile:hidden;
+}
+
+@utility safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.footer-link { display: inline-flex; align-items: center; min-height: 44px; font-size: .875rem; color: var(--color-gray-600); }
+.footer-link:hover { color: var(--color-red-700); }
+.game-intro { max-width: 46rem; margin-inline: auto; text-align: center; color: var(--color-gray-600); }
+.guess-input-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .75rem; align-items: stretch; }
+.guess-input-row button { font-weight: 600; min-width: 5rem; }
+.pokemon-suggestions { z-index: 50; width: var(--input-width); max-height: min(22rem, 45dvh); overflow-y: auto; border: 1px solid var(--color-gray-200); border-radius: .75rem; background: white; box-shadow: 0 8px 24px #11182714; --anchor-padding: 1rem; }
+.pokemon-option { display: flex; align-items: center; gap: .625rem; padding: .5rem .75rem; font-size: .875rem; cursor: pointer; overflow-wrap: anywhere; }
+.pokemon-option[data-focus] { background: var(--color-red-50); color: var(--color-red-900); }
+.btn-quiet { padding: .5rem .75rem; border-radius: .5rem; font-size: .875rem; color: var(--color-gray-600); }
+.btn-quiet:hover { color: var(--color-gray-900); background: var(--color-gray-100); }
+.btn-quiet:disabled { opacity: .5; cursor: not-allowed; }
+.action-confirmation { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; padding: .75rem; border-radius: .75rem; background: var(--color-gray-50); font-size: .875rem; }
+.color-legend { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: .8125rem; }
+.color-legend .tag { font-size: .8125rem; }
+.legend-arrows { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; color: var(--color-gray-600); }
+.status-symbol { flex-shrink: 0; font-weight: 600; }
+.guess-results { display: grid; gap: .75rem; }
+.guess-headings { display: none; }
+.guess-table-card { border: 1px solid var(--color-gray-200); border-radius: .875rem; background: white; overflow: hidden; }
+.guess-table-card[data-latest] { border-color: var(--color-red-200); }
+.guess-identity { display: flex; align-items: center; gap: .75rem; padding: .75rem; background: var(--color-gray-50); font-size: 1rem; }
+.guess-number { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; font-size: .75rem; color: var(--color-gray-500); font-variant-numeric: tabular-nums; }
+.latest-label { color: var(--color-red-700); font-weight: 500; }
+.guess-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.guess-field { min-width: 0; padding: .625rem .75rem; border-top: 1px solid var(--color-gray-100); }
+.guess-field dt { margin-bottom: .375rem; }
+.guess-field dd { display: flex; flex-wrap: wrap; align-items: flex-start; gap: .25rem; }
+.guess-field .tag { max-width: 100%; overflow-wrap: anywhere; text-align: left; }
+@media (width >= 40rem) {
+  .guess-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (width >= 64rem) {
+  .guess-results { --guess-columns: minmax(10rem, 1.1fr) repeat(2, minmax(6rem, .7fr)) minmax(8rem, .8fr) minmax(8rem, 1fr) repeat(2, minmax(9rem, 1.1fr)); gap: .5rem; }
+  .guess-headings { display: grid; grid-template-columns: var(--guess-columns); position: sticky; top: calc(4rem + env(safe-area-inset-top)); z-index: 10; padding: .75rem 1px; border-bottom: 1px solid var(--color-gray-200); background: var(--color-gray-50); font-size: .8125rem; color: var(--color-gray-600); }
+  .guess-headings span { padding-inline: .75rem; }
+  .guess-table-card { display: grid; grid-template-columns: var(--guess-columns); }
+  .guess-fields { display: contents; }
+  .guess-identity { gap: .5rem; font-size: .875rem; align-items: flex-start; }
+  .guess-field { border-top: 0; padding: .875rem .75rem; }
 }

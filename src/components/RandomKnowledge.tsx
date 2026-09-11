@@ -1,6 +1,6 @@
 'use client';
 
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { KnowledgeData, isKnowledgeSupported } from '@/config/knowledge';
 import knowledgeDataRaw from '@/data/knowledge_data.json';
@@ -9,6 +9,7 @@ const knowledgeData = knowledgeDataRaw as KnowledgeData;
 
 export default function RandomKnowledge() {
   const locale = useLocale();
+  const t = useTranslations();
 
   // Check if current locale supports knowledge
   if (!isKnowledgeSupported(locale)) {
@@ -32,29 +33,14 @@ export default function RandomKnowledge() {
       ? `/knowledge/${encodedSlug}`
       : `/${locale}/knowledge/${encodedSlug}`;
 
-  // Get localized prefix based on locale
-  const getPrefix = () => {
-    switch (locale) {
-      case 'zh-hans':
-        return '宝可梦问答：';
-      case 'zh-hant':
-        return '寶可夢問答：';
-      case 'ja':
-        return 'ポケモンQ&A：';
-      case 'en':
-      default:
-        return 'Pokémon Q&A: ';
-    }
-  };
-
   return (
-    <div className="bg-yellow-50 border-b border-yellow-100">
+    <div className="py-5">
       <div className="container-responsive px-4 py-2">
         <Link
           href={href}
-          className="block text-center text-sm text-yellow-700 hover:text-yellow-800 transition-colors duration-200"
+          className="block text-center text-sm text-gray-500 hover:text-red-700 transition-colors"
         >
-          <span className="font-medium">{getPrefix()}</span>
+          <span className="font-medium">{t('knowledge.randomPrefix')}</span>
           <span className="hover:underline">{article.title}</span>
         </Link>
       </div>

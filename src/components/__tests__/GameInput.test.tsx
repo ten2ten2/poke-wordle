@@ -1,308 +1,115 @@
-/**
- * @jest-environment jsdom
- */
-
-import { render, screen, waitFor, act } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import GameInput from '../GameInput';
+import { loadPokemonData } from '@/lib/pokemon';
 
-// Mock next-intl
 jest.mock('next-intl', () => ({
-  useTranslations: jest.fn(() => (key: string) => {
-    const translations: Record<string, string> = {
-      'game.inputPlaceholder': 'Enter Pokemon name...',
-      'game.submit': 'Submit',
-      'game.submitting': 'Submitting...',
-      'game.randomStart': 'Random Start',
-      'game.giveUp': 'Give Up',
-      'game.restart': 'Restart'
-    };
-    return translations[key] || key;
-  })
+  useTranslations: () => (key: string) => ({
+    'game.inputPlaceholder': 'Enter Pokémon name', 'game.submit': 'Submit',
+    'game.giveUp': 'Give Up', 'game.restart': 'Restart', 'game.randomStart': 'Random Guess',
+    'game.confirmAction': 'Confirm', 'common.cancel': 'Cancel',
+  })[key] ?? key,
+  useLocale: () => 'en',
 }));
 
-// Create mock props
-const mockPokemonNames = ['Bulbasaur', 'Ivysaur', 'Venusaur', 'Charmander'];
-const mockOnSubmit = jest.fn();
-const mockOnRandomStart = jest.fn();
-const mockOnGiveUp = jest.fn();
-const mockOnRestart = jest.fn();
-
-const defaultProps = {
-  pokemonNames: mockPokemonNames,
-  onSubmit: mockOnSubmit,
-  onRandomStart: mockOnRandomStart,
-  onGiveUp: mockOnGiveUp,
-  onRestart: mockOnRestart,
-  disabled: false,
-  gameStarted: false,
-  gameOver: false
+const props = {
+  pokemon: loadPokemonData().filter((row) => row.pokedex_id_national <= 4),
+  onSubmit: jest.fn<Promise<boolean>, [string]>(),
+  onRandomStart: jest.fn(), onGiveUp: jest.fn(), onRestart: jest.fn(),
+  disabled: false, gameStarted: false, gameOver: false,
 };
 
-describe('GameInput', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
+beforeEach(() => { jest.clearAllMocks(); props.onSubmit.mockResolvedValue(true); });
 
-  test('renders input field', () => {
-    render(<GameInput {...defaultProps} />);
-    
-    const input = screen.getByRole('textbox');
-    expect(input).toBeInTheDocument();
-    expect(input).toHaveAttribute('placeholder', 'Enter Pokemon name...');
-  });
+test('uses an accessible combobox with image, translated name and national number', async () => {
+  render(<GameInput {...props} />);
+  await userEvent.type(screen.getByRole('combobox'), 'フシギダネ');
+  const option = await screen.findByRole('option', { name: /Bulbasaur/ });
+  expect(option).toHaveTextContent('#0001');
+  expect(option.querySelector('img')).toBeInTheDocument();
+  await userEvent.click(option);
+  expect(screen.getByRole('combobox')).toHaveValue('Bulbasaur');
+  expect(props.onSubmit).not.toHaveBeenCalled();
+});
 
-  test('shows autocomplete suggestions on typing', async () => {
-    const user = userEvent.setup();
-    render(<GameInput {...defaultProps} />);
-    
-    const input = screen.getByRole('textbox');
-    
-    await act(async () => {
-      await user.type(input, 'Bulb');
-    });
-    
-    await waitFor(() => {
-      expect(screen.getByText('Bulbasaur')).toBeInTheDocument();
-    });
-  });
+test('supports keyboard selection and submission', async () => {
+  render(<GameInput {...props} />);
+  const input = screen.getByRole('combobox');
+  await userEvent.type(input, 'Bulb');
+  await screen.findByRole('option', { name: /Bulbasaur/ });
+  await userEvent.keyboard('{ArrowDown}{Enter}');
+  expect(input).toHaveValue('Bulbasaur');
+  expect(props.onSubmit).not.toHaveBeenCalled();
+  await userEvent.keyboard('{Enter}');
+  await waitFor(() => expect(props.onSubmit).toHaveBeenCalledWith('bulbasaur'));
+  await waitFor(() => expect(input).toHaveValue(''));
+});
 
-  test('filters suggestions based on input', async () => {
-    const user = userEvent.setup();
-    render(<GameInput {...defaultProps} />);
-    
-    const input = screen.getByRole('textbox');
-    
-    await act(async () => {
-      await user.type(input, 'Char');
-    });
-    
-    await waitFor(() => {
-      expect(screen.getByText('Charmander')).toBeInTheDocument();
-      expect(screen.queryByText('Bulbasaur')).not.toBeInTheDocument();
-    });
-  });
+test('accepts a unique national number and keeps failed input available for retry', async () => {
+  props.onSubmit.mockResolvedValueOnce(false);
+  render(<GameInput {...props} />);
+  const input = screen.getByRole('combobox');
+  await userEvent.type(input, '#0001');
+  await userEvent.click(screen.getByRole('button', { name: 'Submit' }));
+  expect(props.onSubmit).toHaveBeenCalledWith('bulbasaur');
+  await waitFor(() => expect(input).toBeEnabled());
+  expect(input).toHaveValue('#0001');
+  await userEvent.click(screen.getByRole('button', { name: 'Submit' }));
+  await waitFor(() => expect(input).toHaveValue(''));
+  expect(props.onSubmit).toHaveBeenCalledTimes(2);
+});
 
-  test('calls onSubmit when valid Pokemon is submitted via Enter', async () => {
-    const user = userEvent.setup();
-    render(<GameInput {...defaultProps} />);
-    
-    const input = screen.getByRole('textbox');
-    
-    await act(async () => {
-      await user.type(input, 'Bulbasaur');
-      await user.keyboard('{Enter}');
-    });
-    
-    expect(mockOnSubmit).toHaveBeenCalledWith('Bulbasaur');
-  });
+test('does not submit while confirming IME input', async () => {
+  render(<GameInput {...props} />);
+  const input = screen.getByRole('combobox');
+  fireEvent.compositionStart(input);
+  fireEvent.change(input, { target: { value: '妙蛙种子' } });
+  fireEvent.keyDown(input, { key: 'Enter', code: 'Enter', isComposing: true });
+  expect(props.onSubmit).not.toHaveBeenCalled();
+  fireEvent.compositionEnd(input);
+  await userEvent.click(screen.getByRole('button', { name: 'Submit' }));
+  expect(props.onSubmit).toHaveBeenCalledWith('bulbasaur');
+});
 
-  test('calls onSubmit when submit button is clicked', async () => {
-    const user = userEvent.setup();
-    render(<GameInput {...defaultProps} />);
-    
-    const input = screen.getByRole('textbox');
-    const submitButton = screen.getByText('Submit');
-    
-    await act(async () => {
-      await user.type(input, 'Bulbasaur');
-      await user.click(submitButton);
-    });
-    
-    expect(mockOnSubmit).toHaveBeenCalledWith('Bulbasaur');
-  });
+test('prevents repeated submissions while a request is outstanding', async () => {
+  let resolve!: (value: boolean) => void;
+  props.onSubmit.mockReturnValue(new Promise<boolean>((done) => { resolve = done; }));
+  render(<GameInput {...props} />);
+  await userEvent.type(screen.getByRole('combobox'), 'Bulbasaur');
+  await userEvent.dblClick(screen.getByRole('button', { name: 'Submit' }));
+  expect(props.onSubmit).toHaveBeenCalledTimes(1);
+  expect(screen.getByRole('combobox')).toBeDisabled();
+  await act(async () => resolve(true));
+  expect(screen.getByRole('combobox')).toHaveValue('');
+});
 
-  test('does not call onSubmit for empty input', async () => {
-    const user = userEvent.setup();
-    render(<GameInput {...defaultProps} />);
-    
-    const input = screen.getByRole('textbox');
-    
-    await act(async () => {
-      await user.click(input);
-      await user.keyboard('{Enter}');
-    });
-    
-    expect(mockOnSubmit).not.toHaveBeenCalled();
-  });
+test('a rejected request also preserves the input', async () => {
+  props.onSubmit.mockRejectedValue(new Error('Connection lost'));
+  render(<GameInput {...props} />);
+  await userEvent.type(screen.getByRole('combobox'), 'Bulbasaur');
+  await userEvent.click(screen.getByRole('button', { name: 'Submit' }));
+  expect(await screen.findByRole('alert')).toHaveTextContent('game.requestFailed');
+  expect(screen.getByRole('combobox')).toHaveValue('Bulbasaur');
+});
 
-  test('disables input when disabled prop is true', () => {
-    render(<GameInput {...defaultProps} disabled={true} />);
-    
-    const input = screen.getByRole('textbox');
-    expect(input).toBeDisabled();
-  });
+test.each(['Give Up', 'Restart'])('requires confirmation before %s ends an active game', async (name) => {
+  render(<GameInput {...props} gameStarted />);
+  await userEvent.click(screen.getByRole('button', { name }));
+  expect(props.onGiveUp).not.toHaveBeenCalled();
+  expect(props.onRestart).not.toHaveBeenCalled();
+  await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+  expect(screen.queryByRole('button', { name: 'Confirm' })).not.toBeInTheDocument();
+  await userEvent.click(screen.getByRole('button', { name }));
+  await userEvent.click(screen.getByRole('button', { name: 'Confirm' }));
+  expect(name === 'Give Up' ? props.onGiveUp : props.onRestart).toHaveBeenCalledTimes(1);
+});
 
-  test('disables input when game is over', () => {
-    render(<GameInput {...defaultProps} gameOver={true} />);
-    
-    const input = screen.getByRole('textbox');
-    expect(input).toBeDisabled();
-  });
-
-  test('clears input after successful guess', async () => {
-    const user = userEvent.setup();
-    render(<GameInput {...defaultProps} />);
-    
-    const input = screen.getByRole('textbox') as HTMLInputElement;
-    
-    await act(async () => {
-      await user.type(input, 'Bulbasaur');
-      await user.keyboard('{Enter}');
-    });
-    
-    expect(input.value).toBe('');
-  });
-
-  test('handles keyboard navigation in suggestions', async () => {
-    const user = userEvent.setup();
-    render(<GameInput {...defaultProps} />);
-    
-    const input = screen.getByRole('textbox');
-    
-    await act(async () => {
-      await user.type(input, 'B');
-    });
-    
-    // Wait for suggestions to appear
-    await waitFor(() => {
-      expect(screen.getByText('Bulbasaur')).toBeInTheDocument();
-    });
-    
-    // Check that we have suggestions visible
-    const bulbasaurSuggestion = screen.getByText('Bulbasaur');
-    expect(bulbasaurSuggestion).toBeInTheDocument();
-    
-    await act(async () => {
-      // Navigate with arrow keys to select first suggestion
-      await user.keyboard('{ArrowDown}');
-    });
-    
-    // Wait a bit for the selection to take effect
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
-    await act(async () => {
-      // Press Enter to select the highlighted suggestion
-      await user.keyboard('{Enter}');
-    });
-    
-    // Wait for the input value to be updated
-    await waitFor(() => {
-      expect((input as HTMLInputElement).value).toBe('Bulbasaur');
-    }, { timeout: 1000 });
-    
-    // Suggestions should be hidden after selection
-    await waitFor(() => {
-      expect(screen.queryByText('Bulbasaur')).not.toBeInTheDocument();
-    });
-  });
-
-  test('handles suggestion click', async () => {
-    const user = userEvent.setup();
-    render(<GameInput {...defaultProps} />);
-    
-    const input = screen.getByRole('textbox');
-    
-    await act(async () => {
-      await user.type(input, 'Bulb');
-    });
-    
-    await waitFor(() => {
-      expect(screen.getByText('Bulbasaur')).toBeInTheDocument();
-    });
-    
-    await act(async () => {
-      await user.click(screen.getByText('Bulbasaur'));
-    });
-    
-    expect((input as HTMLInputElement).value).toBe('Bulbasaur');
-  });
-
-  test('trims whitespace from input', async () => {
-    const user = userEvent.setup();
-    render(<GameInput {...defaultProps} />);
-    
-    const input = screen.getByRole('textbox');
-    
-    await act(async () => {
-      await user.type(input, '  Bulbasaur  ');
-      await user.keyboard('{Enter}');
-    });
-    
-    expect(mockOnSubmit).toHaveBeenCalledWith('Bulbasaur');
-  });
-
-  test('shows random start button when game not started', () => {
-    render(<GameInput {...defaultProps} gameStarted={false} />);
-    
-    const randomStartButton = screen.getByText('Random Start');
-    expect(randomStartButton).toBeInTheDocument();
-  });
-
-  test('shows give up button when game started', () => {
-    render(<GameInput {...defaultProps} gameStarted={true} />);
-    
-    const giveUpButton = screen.getByText('Give Up');
-    expect(giveUpButton).toBeInTheDocument();
-  });
-
-  test('calls onRandomStart when random start button clicked', async () => {
-    const user = userEvent.setup();
-    render(<GameInput {...defaultProps} gameStarted={false} />);
-    
-    const randomStartButton = screen.getByText('Random Start');
-    
-    await act(async () => {
-      await user.click(randomStartButton);
-    });
-    
-    expect(mockOnRandomStart).toHaveBeenCalled();
-  });
-
-  test('calls onGiveUp when give up button clicked', async () => {
-    const user = userEvent.setup();
-    render(<GameInput {...defaultProps} gameStarted={true} />);
-    
-    const giveUpButton = screen.getByText('Give Up');
-    
-    await act(async () => {
-      await user.click(giveUpButton);
-    });
-    
-    expect(mockOnGiveUp).toHaveBeenCalled();
-  });
-
-  test('calls onRestart when restart button clicked', async () => {
-    const user = userEvent.setup();
-    render(<GameInput {...defaultProps} />);
-    
-    const restartButton = screen.getByText('Restart');
-    
-    await act(async () => {
-      await user.click(restartButton);
-    });
-    
-    expect(mockOnRestart).toHaveBeenCalled();
-  });
-
-  test('submit button is disabled when input is empty', () => {
-    render(<GameInput {...defaultProps} />);
-    
-    const submitButton = screen.getByText('Submit');
-    expect(submitButton).toBeDisabled();
-  });
-
-  test('submit button is enabled when input has text', async () => {
-    const user = userEvent.setup();
-    render(<GameInput {...defaultProps} />);
-    
-    const input = screen.getByRole('textbox');
-    const submitButton = screen.getByText('Submit');
-    
-    await act(async () => {
-      await user.type(input, 'Bulbasaur');
-    });
-    
-    expect(submitButton).not.toBeDisabled();
-  });
-}); 
+test('starts a random guess and restarts a finished game directly', async () => {
+  const { rerender } = render(<GameInput {...props} />);
+  await userEvent.click(screen.getByRole('button', { name: 'Random Guess' }));
+  expect(props.onRandomStart).toHaveBeenCalledTimes(1);
+  rerender(<GameInput {...props} gameStarted gameOver />);
+  expect(screen.getByRole('combobox')).toBeDisabled();
+  await userEvent.click(screen.getByRole('button', { name: 'Restart' }));
+  expect(props.onRestart).toHaveBeenCalledTimes(1);
+});

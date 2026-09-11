@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import { test, expect, type Page } from '@playwright/test';
 import { version as datasetVersion } from '../../src/data/dataset.json';
 import pokemon from '../../src/data/pokemon_data.json';
@@ -13,11 +14,11 @@ const settings = {
 };
 
 async function guess(page: Page, name: string) {
-  await page.getByRole('textbox').fill(name);
+  await page.getByRole('combobox').fill(name);
   const response = page.waitForResponse('/api/checkGuess');
-  await page.getByRole('textbox').press('Enter');
+  await page.getByRole('button', { name: 'Submit', exact: true }).click();
   expect((await response).ok()).toBeTruthy();
-  await expect(page.getByRole('textbox')).toBeEnabled();
+  await expect(page.getByRole('combobox')).toBeEnabled();
 }
 
 test.beforeEach(async ({ page }) => {
@@ -33,18 +34,6 @@ test.beforeEach(async ({ page }) => {
   );
   await page.addInitScript(
     ({ target, settings, datasetVersion }) => {
-      for (const locale of [
-        'en',
-        'ja',
-        'zh-hans',
-        'zh-hant',
-        'fr',
-        'de',
-        'es',
-        'it',
-        'ko',
-      ])
-        localStorage.setItem(`hasSeenAbout_${locale}`, 'true');
       localStorage.setItem('cookie-consent', 'declined');
       if (!localStorage.getItem('poke-wordle-progress')) {
         localStorage.setItem('poke-wordle-settings', JSON.stringify(settings));
@@ -89,7 +78,7 @@ test('old dataset progress is cleared without losing settings', async ({ page })
     localStorage.setItem('poke-wordle-progress', JSON.stringify(progress));
   });
   await page.reload();
-  await expect(page.getByRole('textbox')).toBeEnabled();
+  await expect(page.getByRole('combobox')).toBeEnabled();
   await expect(page.locator('.guess-table-card')).toHaveCount(0);
   expect(await page.evaluate(() => localStorage.getItem('poke-wordle-progress'))).toBeNull();
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('poke-wordle-settings')!).maxGuesses)).toBe(10);
@@ -103,24 +92,24 @@ test('an open page reloads when the server data changes', async ({ page }) => {
     await route.fulfill({ status: 409, contentType: 'application/json', body: JSON.stringify({ code: 'DATASET_CHANGED' }) });
   }, { times: 1 });
   const reloaded = page.waitForEvent('framenavigated', (frame) => frame === page.mainFrame());
-  await page.getByRole('textbox').fill('Pikachu');
-  await page.getByRole('textbox').press('Enter');
+  await page.getByRole('combobox').fill('Pikachu');
+  await page.getByRole('button', { name: 'Submit', exact: true }).click();
   await reloaded;
-  await expect(page.getByRole('textbox')).toBeEnabled();
+  await expect(page.getByRole('combobox')).toBeEnabled();
   await expect(page.locator('.guess-table-card')).toHaveCount(0);
   await guess(page, 'Pikachu');
 });
 
 test('autocomplete supports keyboard selection', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('textbox').fill('Pikachu');
+  await page.getByRole('combobox').fill('Pikachu');
   await expect(
-    page.getByRole('button', { name: 'Pikachu', exact: true }),
+    page.getByRole('option', { name: /Pikachu/ }),
   ).toBeVisible();
-  await page.getByRole('textbox').press('ArrowDown');
-  await page.getByRole('textbox').press('Enter');
-  await expect(page.getByRole('textbox')).toHaveValue('Pikachu');
-  await page.getByRole('textbox').press('Enter');
+  await page.getByRole('combobox').press('ArrowDown');
+  await page.getByRole('combobox').press('Enter');
+  await expect(page.getByRole('combobox')).toHaveValue('Pikachu');
+  await page.getByRole('combobox').press('Enter');
   await expect(page.locator('.guess-table-card')).toHaveCount(1);
 });
 
@@ -154,15 +143,15 @@ test('changing settings cancels an outstanding guess', async ({ page }) => {
     await route.fulfill({ response }).catch(() => {});
   });
   await page.goto('/');
-  await page.getByRole('textbox').fill('Charmander');
+  await page.getByRole('combobox').fill('Charmander');
   const request = page.waitForRequest('**/api/checkGuess');
-  await page.getByRole('textbox').press('Enter');
+  await page.getByRole('button', { name: 'Submit', exact: true }).click();
   await request;
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
   await page.getByRole('button', { name: '5', exact: true }).click();
   await page.getByRole('button', { name: 'Save', exact: true }).click();
   release();
-  await expect(page.getByRole('textbox')).toBeEnabled();
+  await expect(page.getByRole('combobox')).toBeEnabled();
   await expect(page.locator('.guess-table-card')).toHaveCount(0);
   await expect(page.getByRole('dialog')).toHaveCount(0);
 });
@@ -171,8 +160,8 @@ test('winning reveals the answer and restart enables input', async ({
   page,
 }) => {
   await page.goto('/');
-  await page.getByRole('textbox').fill('Charmander');
-  await page.getByRole('textbox').press('Enter');
+  await page.getByRole('combobox').fill('Charmander');
+  await page.getByRole('button', { name: 'Submit', exact: true }).click();
   await expect(
     page
       .getByRole('dialog')
@@ -180,13 +169,14 @@ test('winning reveals the answer and restart enables input', async ({
   ).toBeVisible();
   await expect(page.getByRole('dialog')).toContainText('Charmander');
   await page.getByRole('button', { name: 'Play Again', exact: true }).click();
-  await expect(page.getByRole('textbox')).toBeEnabled();
+  await expect(page.getByRole('combobox')).toBeEnabled();
   await expect(page.locator('.guess-table-card')).toHaveCount(0);
-  await page.getByRole('textbox').fill('Pikachu');
+  await page.getByRole('combobox').fill('Pikachu');
   const nextGuess = page.waitForResponse('/api/checkGuess');
-  await page.getByRole('textbox').press('Enter');
+  await page.getByRole('button', { name: 'Submit', exact: true }).click();
   if (!(await (await nextGuess).json()).isCorrect) {
     await page.getByRole('button', { name: 'Give Up', exact: true }).click();
+    await page.getByRole('button', { name: 'Confirm', exact: true }).click();
   }
   await expect(page.getByRole('dialog')).toContainText('Play Again');
 });
@@ -194,6 +184,7 @@ test('winning reveals the answer and restart enables input', async ({
 test('giving up reveals the answer', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Give Up', exact: true }).click();
+  await page.getByRole('button', { name: 'Confirm', exact: true }).click();
   await expect(page.getByRole('dialog')).toContainText('Charmander');
 });
 
@@ -205,7 +196,7 @@ test('language switch updates the route and document language', async ({
   await page.getByRole('button', { name: 'Switch to 简体中文' }).click();
   await expect(page).toHaveURL('/zh-hans');
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-hans');
-  await expect(page.getByRole('textbox')).toHaveAttribute(
+  await expect(page.getByRole('combobox')).toHaveAttribute(
     'placeholder',
     /宝可梦/,
   );
@@ -255,6 +246,14 @@ test('English prefixes redirect and unknown locales return 404', async ({
 test('game layout fits the viewport', async ({ page }, testInfo) => {
   await page.goto('/');
   await guess(page, 'Pikachu');
+  for (const status of ['exact', 'close', 'nope']) {
+    const style = await page.locator(`.color-legend .tag-${status}`).evaluate((node) => {
+      const style = getComputedStyle(node);
+      return { background: style.backgroundColor, color: style.color };
+    });
+    expect(style.background).not.toBe('rgba(0, 0, 0, 0)');
+    expect(style.color).not.toBe('rgb(0, 0, 0)');
+  }
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -264,4 +263,61 @@ test('game layout fits the viewport', async ({ page }, testInfo) => {
     path: testInfo.outputPath('gameplay.png'),
     fullPage: true,
   });
+});
+
+
+test('failed guesses preserve input and retry without spending a turn', async ({ page }) => {
+  let attempts = 0;
+  await page.route('**/api/checkGuess', (route) => ++attempts === 1
+    ? route.fulfill({ status: 503, contentType: 'application/json', body: '{}' })
+    : route.continue());
+  await page.goto('/');
+  await page.getByRole('combobox').fill('Pikachu');
+  await page.getByRole('button', { name: 'Submit', exact: true }).click();
+  await expect(page.locator('main').getByRole('alert')).toContainText('Please try again');
+  await expect(page.getByRole('combobox')).toHaveValue('Pikachu');
+  await expect(page.locator('.guess-table-card')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Submit', exact: true }).click();
+  await expect(page.locator('.guess-table-card')).toHaveCount(1);
+  await expect(page.getByRole('combobox')).toHaveValue('');
+  expect(attempts).toBe(2);
+});
+
+test('localized navigation, footer and typography work in all nine languages', async ({ page, request }) => {
+  for (const locale of ['en', 'zh-hans', 'zh-hant', 'ja', 'ko', 'fr', 'de', 'it', 'es']) {
+    const messages = JSON.parse(await readFile(`src/messages/${locale}.json`, 'utf8'));
+    const prefix = locale === 'en' ? '' : `/${locale}`;
+    await page.goto(prefix || '/');
+    await expect(page.locator('header a svg')).toHaveAttribute('aria-hidden', 'true');
+    await expect(page.locator('footer')).toContainText('2025–2026');
+    if (['en', 'zh-hans', 'zh-hant', 'ja'].includes(locale)) {
+      const knowledgeHref = `${prefix}/knowledge`;
+      await expect(page.locator('footer').getByRole('link', { name: messages.knowledge.title, exact: true })).toHaveAttribute('href', knowledgeHref);
+      expect((await request.get(knowledgeHref)).status()).toBe(200);
+    } else {
+      await expect(page.locator('footer a[href$="/knowledge"]')).toHaveCount(0);
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await page.evaluate(() => document.fonts.ready);
+    expect(await page.locator('body').evaluate((node) => getComputedStyle(node).fontFamily.toLowerCase())).toContain('inter');
+  }
+});
+
+test('first visit stays in the game and About explains colors inline', async ({ browser }, testInfo) => {
+  const context = await browser.newContext({ viewport: testInfo.project.use.viewport });
+  const page = await context.newPage();
+  try {
+    await page.route('**/_vercel/**', (route) => route.fulfill({ body: '', contentType: 'application/javascript' }));
+    await page.goto('http://localhost:3317/');
+    await expect(page.getByRole('combobox')).toBeEnabled();
+    await expect(page.getByRole('dialog')).toHaveCount(0);
+    await expect(page.getByText('Guess a Pokémon, compare the clues, and narrow down the answer.')).toBeVisible();
+    await page.getByRole('button', { name: 'About', exact: true }).click();
+    const guide = page.getByRole('dialog').locator('li').filter({ hasText: 'Green Tag' });
+    await expect(guide).toHaveCount(1);
+    await expect(guide).toContainText('Green Tag Indicates');
+    await expect(guide.locator('strong.tag-exact')).toHaveText('Green Tag');
+    await expect(guide.locator('[style]')).toHaveCount(0);
+    await expect(page.getByRole('dialog').getByRole('link', { name: 'pokeapi.co' })).toHaveAttribute('href', 'https://pokeapi.co');
+  } finally { await context.close(); }
 });

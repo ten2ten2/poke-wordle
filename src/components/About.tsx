@@ -37,7 +37,7 @@ export default function About({ isOpen, onClose }: AboutProps) {
         </header>
 
         {/* Content */}
-        <main className="space-y-6">
+        <div className="space-y-6 leading-relaxed">
           {/* 主标题和描述 */}
           <section>
             <p className="text-gray-600">{t('about.description')}</p>
@@ -82,49 +82,18 @@ export default function About({ isOpen, onClose }: AboutProps) {
             <h3 className="text-lg font-semibold text-gray-900 mb-3">
               {t('about.colorGuide.title')}
             </h3>
-            <ul className="space-y-2 text-sm" role="list">
-              <li className="flex gap-1 items-center">
-                <span className="tag tag-exact">
-                  {t('about.colorGuide.greenTag')}
-                </span>
-                <span
-                  className="text-gray-600"
-                  dangerouslySetInnerHTML={{
-                    __html: t('about.colorGuide.green').replace(
-                      /\*\*(.*?)\*\*/g,
-                      '<strong>$1</strong>',
+            <ul className="space-y-3 text-sm leading-relaxed">
+              {(['green', 'yellow', 'gray'] as const).map((color) => (
+                <li key={color} className="text-gray-600">
+                  {t.rich(`about.colorGuide.${color}`, {
+                    tag: (chunks) => (
+                      <strong className={`tag font-semibold tag-${{ green: 'exact', yellow: 'close', gray: 'nope' }[color]}`}>
+                        {chunks}
+                      </strong>
                     ),
-                  }}
-                />
-              </li>
-              <li className="flex gap-1 items-center">
-                <span className="tag tag-close">
-                  {t('about.colorGuide.yellowTag')}
-                </span>
-                <span
-                  className="text-gray-600"
-                  dangerouslySetInnerHTML={{
-                    __html: t('about.colorGuide.yellow').replace(
-                      /\*\*(.*?)\*\*/g,
-                      '<strong>$1</strong>',
-                    ),
-                  }}
-                />
-              </li>
-              <li className="flex gap-1 items-center">
-                <span className="tag tag-nope">
-                  {t('about.colorGuide.grayTag')}
-                </span>
-                <span
-                  className="text-gray-600"
-                  dangerouslySetInnerHTML={{
-                    __html: t('about.colorGuide.gray').replace(
-                      /\*\*(.*?)\*\*/g,
-                      '<strong>$1</strong>',
-                    ),
-                  }}
-                />
-              </li>
+                  })}
+                </li>
+              ))}
             </ul>
           </section>
 
@@ -145,17 +114,14 @@ export default function About({ isOpen, onClose }: AboutProps) {
             <h3 className="text-xl font-semibold text-gray-900 mb-3">
               {t('about.dataSource.title')}
             </h3>
-            <div
-              className="text-gray-600"
-              dangerouslySetInnerHTML={{
-                __html: t('about.dataSource.description').replace(
-                  /\[([^\]]+)\]\(([^)]+)\s+"([^"]+)"\)/g,
-                  '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-red-400 hover:text-red-600 underline inline-flex items-center gap-1" title="$3">$1<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a>',
-                ),
-              }}
-            />
+            <p className="text-gray-600">
+              {t.rich('about.dataSource.description', {
+                pokeapi: (chunks) => <a href="https://pokeapi.co" target="_blank" rel="noopener noreferrer" className="text-red-700 underline underline-offset-2">{chunks}</a>,
+                bulbapedia: (chunks) => <a href="https://bulbapedia.bulbagarden.net/wiki/Main_Page" target="_blank" rel="noopener noreferrer" className="text-red-700 underline underline-offset-2">{chunks}</a>,
+              })}
+            </p>
           </section>
-        </main>
+        </div>
       </article>
     </Modal>
   );

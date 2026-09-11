@@ -184,3 +184,7 @@ export function getWikiUrl(name: string, locale: string = 'en'): string {
       return '';
   }
 }
+
+export function pokemonSearchNames(name: string): string[] {
+  return [name, ...Object.values(translations[name] ?? {})];
+}

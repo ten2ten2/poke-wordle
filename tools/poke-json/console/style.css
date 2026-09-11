@@ -1,4 +1,6 @@
-:root{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;color:#243e36;background:#f5f6f3;font-synthesis:none;--green:#286147;--border:#e0e6dd;--muted:#79867c;--gold:#a96b0d}
+@import url('/fonts/typography.css');
+@font-face{font-family:Inter;src:url('/fonts/inter-latin-variable.woff2') format('woff2');font-weight:400 700;font-style:normal;font-display:swap}
+:root{font-family:var(--font-ui);color:#243e36;background:#f5f6f3;font-synthesis:none;--green:#286147;--border:#e0e6dd;--muted:#79867c;--gold:#a96b0d}
 *{box-sizing:border-box}
 body{margin:0;font-size:14px}
 button,input,select,textarea{font:inherit}
@@ -210,3 +212,9 @@ h1{font-size:24px}
 #data-detail-body>img{display:block;margin:0 auto;width:140px;height:140px;object-fit:contain}
 @media(max-width:1200px){.data-record{grid-template-columns:minmax(180px,1.3fr) minmax(100px,1fr) minmax(120px,1fr) 40px;gap:10px;padding:14px 18px}}
 @media(max-width:760px){.data-nav{margin-bottom:16px;padding:10px 12px}.data-nav small{margin-top:3px}.data-record{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;padding:14px 16px}.data-record .data-lead{grid-column:1/-1}.data-record .data-open{grid-column:1/-1;justify-self:end}.data-record.translations,.data-record.knowledge{grid-template-columns:1fr}.data-gallery{grid-template-columns:repeat(2,minmax(0,1fr));padding:16px;gap:10px}.data-record.images .data-open{align-self:center}.data-filters>label:not(.search){flex:1;min-width:100px}.data-facts{grid-template-columns:95px minmax(0,1fr)}.data-hero{flex-direction:column;gap:14px;align-items:stretch}.data-hero>img{align-self:center}.data-actions{flex-wrap:wrap}.data-gallery .empty{grid-column:1/-1}}
+
+.review-progress{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:18px 0;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+.review-progress progress{width:min(280px,100%);height:8px;accent-color:var(--green)}
+.detail-navigation{display:flex;flex-wrap:wrap;gap:8px;padding:12px 24px;background:#f5f7f2;border-block:1px solid var(--border)}
+.data-facts,.value,.tag{font-size:14px;line-height:1.5;font-variant-numeric:tabular-nums}
+@media(max-width:760px){input,select,textarea{font-size:16px}.detail-navigation{padding-inline:16px}button,.button-link{min-height:44px}}

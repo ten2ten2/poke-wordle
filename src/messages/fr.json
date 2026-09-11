@@ -35,10 +35,26 @@
       "generation": "Génération",
       "abilities": "Capacités",
       "evolution": "Évolution",
-      "tags": "Étiquettes"
+      "tags": "Étiquettes",
+      "pokemon": "Pokémon"
     },
     "evolutionMethod": "Méthode d'Évolution",
-    "requestFailed": "Impossible de vérifier votre réponse. Réessayez."
+    "requestFailed": "Impossible de vérifier votre réponse. Réessayez.",
+    "searchHint": "Nom dans toute langue ou numéro du Pokédex",
+    "noMatches": "Aucun Pokémon correspondant",
+    "suggestionCount": "{shown} résultats sur {total}",
+    "intro": "Proposez un Pokémon et comparez les indices pour trouver la réponse.",
+    "matchExact": "Identique",
+    "matchClose": "Proche",
+    "matchNope": "Différent",
+    "answerHigher": "La réponse est supérieure",
+    "answerLower": "La réponse est inférieure",
+    "confirmGiveUp": "Révéler la réponse et terminer la partie ?",
+    "confirmRestart": "Effacer vos essais et recommencer ?",
+    "confirmAction": "Confirmer",
+    "latestGuess": "Dernier",
+    "guessNumber": "Essai {number}",
+    "hiddenField": "Masqué par le mode Farceur"
   },
   "settings": {
     "title": "Paramètres",
@@ -93,12 +109,9 @@
     },
     "colorGuide": {
       "title": "Guide des couleurs",
-      "greenTag": "Étiquette verte",
-      "yellowTag": "Étiquette jaune",
-      "grayTag": "Étiquette grise",
-      "green": "Indique que cette étiquette **correspond exactement** à l'étiquette correspondante du Pokémon cible",
-      "yellow": "Indique que cette étiquette est **proche** de l'étiquette correspondante du Pokémon cible",
-      "gray": "Indique que cette étiquette est **différente** de l'étiquette correspondante du Pokémon cible"
+      "green": "<tag>Étiquette verte</tag> Indique que cette étiquette correspond exactement à l'étiquette correspondante du Pokémon cible",
+      "yellow": "<tag>Étiquette jaune</tag> Indique que cette étiquette est proche de l'étiquette correspondante du Pokémon cible",
+      "gray": "<tag>Étiquette grise</tag> Indique que cette étiquette est différente de l'étiquette correspondante du Pokémon cible"
     },
     "yellowConditions": {
       "title": "Conditions des étiquettes jaunes",
@@ -108,7 +121,7 @@
     },
     "dataSource": {
       "title": "Source des données",
-      "description": "Les données du jeu proviennent principalement de [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\") et [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")."
+      "description": "Les données du jeu proviennent principalement de <pokeapi>pokeapi.co</pokeapi> et <bulbapedia>Bulbapedia</bulbapedia>."
     }
   },
   "navbar": {

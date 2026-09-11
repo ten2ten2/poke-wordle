@@ -275,8 +275,8 @@ describe('GuessTable', () => {
       expect(electricType).toBeDefined();
       
       // Check for status classes
-      expect(grassType).toHaveClass('tag-exact');
-      expect(electricType).toHaveClass('tag-nope');
+      expect(grassType.closest('.tag')).toHaveClass('tag-exact');
+      expect(electricType.closest('.tag')).toHaveClass('tag-nope');
     });
   });
 

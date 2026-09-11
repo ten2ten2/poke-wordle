@@ -35,10 +35,26 @@
       "generation": "세대",
       "abilities": "특성",
       "evolution": "진화",
-      "tags": "태그"
+      "tags": "태그",
+      "pokemon": "포켓몬"
     },
     "evolutionMethod": "진화 방법",
-    "requestFailed": "추측을 확인할 수 없습니다. 다시 시도해 주세요."
+    "requestFailed": "추측을 확인할 수 없습니다. 다시 시도해 주세요.",
+    "searchHint": "모든 언어의 이름 또는 전국도감 번호로 검색",
+    "noMatches": "일치하는 포켓몬이 없습니다",
+    "suggestionCount": "{total}개 중 {shown}개 표시",
+    "intro": "포켓몬을 추측하고 단서를 비교하며 정답을 좁혀 보세요.",
+    "matchExact": "일치",
+    "matchClose": "비슷함",
+    "matchNope": "다름",
+    "answerHigher": "정답이 더 높음",
+    "answerLower": "정답이 더 낮음",
+    "confirmGiveUp": "정답을 확인하고 게임을 끝낼까요?",
+    "confirmRestart": "현재 기록을 지우고 새 게임을 시작할까요?",
+    "confirmAction": "확인",
+    "latestGuess": "최신",
+    "guessNumber": "{number}번째 추측",
+    "hiddenField": "장난 모드로 숨겨짐"
   },
   "settings": {
     "title": "설정",
@@ -93,12 +109,9 @@
     },
     "colorGuide": {
       "title": "색상 가이드",
-      "greenTag": "초록색 태그",
-      "yellowTag": "노란색 태그",
-      "grayTag": "회색 태그",
-      "green": "이 태그가 목표 포켓몬의 해당 태그와 **정확히 일치**함을 나타냅니다",
-      "yellow": "이 태그가 목표 포켓몬의 해당 태그와 **가까움**을 나타냅니다",
-      "gray": "이 태그가 목표 포켓몬의 해당 태그와 **다름**을 나타냅니다"
+      "green": "<tag>초록색 태그</tag> 이 태그가 목표 포켓몬의 해당 태그와 정확히 일치함을 나타냅니다",
+      "yellow": "<tag>노란색 태그</tag> 이 태그가 목표 포켓몬의 해당 태그와 가까움을 나타냅니다",
+      "gray": "<tag>회색 태그</tag> 이 태그가 목표 포켓몬의 해당 태그와 다름을 나타냅니다"
     },
     "yellowConditions": {
       "title": "노란색 태그 판정 조건",
@@ -108,7 +121,7 @@
     },
     "dataSource": {
       "title": "데이터 출처",
-      "description": "게임 데이터는 주로 [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\")와 [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")에서 가져왔습니다."
+      "description": "게임 데이터는 주로 <pokeapi>pokeapi.co</pokeapi>와 <bulbapedia>Bulbapedia</bulbapedia>에서 가져왔습니다."
     }
   },
   "navbar": {
