@@ -71,7 +71,7 @@ export default function LanguageSwitcher({
             type="button"
             onClick={onClose}
             className="btn-icon"
-            aria-label={t('common.close') || 'Close dialog'}
+            aria-label={t('common.close')}
             title={t('common.close')}
           >
             <XMarkIcon aria-hidden="true" />

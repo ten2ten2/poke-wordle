@@ -290,9 +290,9 @@ func TestEvolutionConditions(t *testing.T) {
 		{"held-item-evolution", `{"trigger":{"name":"level-up"},"held_item":{"name":"oval-stone"}}`, "level-holding-item"},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			chain := make(map[string]any)
+			chain := make(map[string]EvolutionData)
 			parseEvolution(gjson.Parse(fmt.Sprintf(`{"species":{"name":%q},"evolution_details":[%s],"evolves_to":[]}`, tt.name, tt.detail)), chain, 2)
-			details := chain[tt.name].(map[string]any)["evolution_details"].([]map[string]any)
+			details := chain[tt.name].Details
 			method, detail := analyzeEvolutionMethod(details, tt.name)
 			if detail != tt.want {
 				t.Fatalf("got %s, want %s", detail, tt.want)

@@ -5,9 +5,7 @@ import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headl
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import type { Pokemon } from '@/types/pokemon';
-import { pokemonSearchNames, translateText } from '@/lib/pokemon';
-
-const normalize = (value: string) => value.trim().normalize('NFKC').toLowerCase();
+import { normalizePokemonName as normalize, pokemonSearchNames, translateText } from '@/lib/pokemon';
 
 interface GameInputProps {
   pokemon: Pokemon[];
@@ -29,11 +27,11 @@ export default function GameInput({ pokemon, onSubmit, onRandomStart, onGiveUp, 
   const [pending, setPending] = useState(false);
   const [failed, setFailed] = useState(false);
   const [confirm, setConfirm] = useState<'giveUp' | 'restart' | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
   const composing = useRef(false);
   const submission = useRef(0);
   const choices = useMemo(() => pokemon.map((row) => ({
-    ...row, label: translateText(row.name, locale), aliases: pokemonSearchNames(row.name).map(normalize),
+    id: row.id, name: row.name, profile: row.profile, pokedex_id_national: row.pokedex_id_national,
+    label: translateText(row.name, locale), aliases: pokemonSearchNames(row.name).map(normalize),
   })), [pokemon, locale]);
   const query = normalize(input);
   const dexPrefix = /^#?\d+$/.test(query) ? String(Number(query.replace('#', ''))) : null;
@@ -83,7 +81,6 @@ export default function GameInput({ pokemon, onSubmit, onRandomStart, onGiveUp, 
             <div className="min-w-0">
               <div className="guess-input-field">
                 <ComboboxInput
-                  ref={inputRef}
                   value={input}
                   aria-label={t('game.searchHint')}
                   onChange={(event) => setInput(event.target.value)}

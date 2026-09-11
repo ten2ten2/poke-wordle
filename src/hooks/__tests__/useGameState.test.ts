@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { version as datasetVersion } from '@/data/dataset.json';
+import { datasetVersion } from '@/config/dataset';
 import { renderHook, act } from '@testing-library/react';
 import { useGameState } from '../useGameState';
 import * as pokemonLib from '../../lib/pokemon';
@@ -99,6 +99,9 @@ describe('useGameState', () => {
     mockedPokemonLib.filterPokemonByGenerations.mockReturnValue(mockPokemon);
     mockedPokemonLib.getRandomPokemon.mockReturnValue(mockPokemon[0]);
     mockedPokemonLib.translateText.mockImplementation((name) => name);
+    mockedPokemonLib.normalizePokemonName.mockImplementation(
+      jest.requireActual<typeof pokemonLib>('../../lib/pokemon').normalizePokemonName,
+    );
     mockedStorage.loadGameSettings.mockReturnValue(null);
     mockedStorage.loadGameProgress.mockReturnValue(null);
     mockedStorage.saveGameSettings.mockImplementation(() => {});

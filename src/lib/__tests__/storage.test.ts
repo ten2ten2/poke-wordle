@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { version as datasetVersion } from '@/data/dataset.json';
+import { datasetVersion } from '@/config/dataset';
 import {
   saveGameSettings,
   loadGameSettings,

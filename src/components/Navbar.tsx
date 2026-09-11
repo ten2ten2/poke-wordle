@@ -1,19 +1,23 @@
 'use client';
 
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useTranslations, useLocale } from 'next-intl';
 import {
   Cog6ToothIcon,
   InformationCircleIcon,
   LanguageIcon,
 } from '@heroicons/react/24/outline';
-import { DynamicSettings, DynamicAbout } from './DynamicComponents';
-import LanguageSwitcher from './LanguageSwitcher';
 import { GameSettings } from '@/types/pokemon';
 import Link from 'next/link';
 import { KnowledgeArticle } from '@/config/knowledge';
 import Pokeball from './Pokeball';
 import ThemeToggle from './ThemeToggle';
+import { localePath } from '@/i18n/routing';
+
+const Settings = dynamic(() => import('./Settings'), { ssr: false });
+const About = dynamic(() => import('./About'), { ssr: false });
+const LanguageSwitcher = dynamic(() => import('./LanguageSwitcher'), { ssr: false });
 
 interface NavbarProps {
   onSettingsChange?: (settings: GameSettings) => void;
@@ -34,10 +38,10 @@ export default function Navbar({
 }: NavbarProps) {
   const t = useTranslations();
   const locale = useLocale();
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
-  const homeHref = locale === 'en' ? '/' : `/${locale}`;
+  // null defers loading until the first open; false preserves closing transitions.
+  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean | null>(null);
+  const [isLanguageOpen, setIsLanguageOpen] = useState<boolean | null>(null);
+  const [isAboutOpen, setIsAboutOpen] = useState<boolean | null>(null);
 
   return (
     <>
@@ -50,7 +54,7 @@ export default function Navbar({
           <div className="flex justify-between items-center gap-1 sm:gap-2 h-16 pl-1 pr-2 sm:pl-2 sm:pr-6">
             <div className="min-w-0">
               <Link
-                href={homeHref}
+                href={localePath(locale)}
                 title={t('title')}
                 className="flex min-w-0 items-center gap-1.5 sm:gap-3 hover:opacity-80 transition-opacity"
               >
@@ -112,26 +116,26 @@ export default function Navbar({
           </div>
         </nav>
       </header>
-      {showAbout && (
-        <DynamicAbout
+      {showAbout && isAboutOpen !== null && (
+        <About
           isOpen={isAboutOpen}
           onClose={() => setIsAboutOpen(false)}
         />
       )}
-      {showSettings && onSettingsChange && currentSettings && (
-        <DynamicSettings
+      {showSettings && isSettingsOpen !== null && onSettingsChange && currentSettings && (
+        <Settings
           isOpen={isSettingsOpen}
           onClose={() => setIsSettingsOpen(false)}
           onSettingsChange={onSettingsChange}
           currentSettings={currentSettings}
         />
       )}
-      <LanguageSwitcher
+      {isLanguageOpen !== null && <LanguageSwitcher
         isOpen={isLanguageOpen}
         onClose={() => setIsLanguageOpen(false)}
         availableLocales={availableLocales}
         currentArticle={currentArticle}
-      />
+      />}
     </>
   );
 }

@@ -14,6 +14,10 @@ export function translateText(key: string, locale: string = 'en'): string {
   return translations[key]?.[locale] || key;
 }
 
+export function normalizePokemonName(value: string): string {
+  return value.trim().normalize('NFKC').toLowerCase();
+}
+
 export function filterPokemonByGenerations(
   pokemon: Pokemon[],
   generations: number[],

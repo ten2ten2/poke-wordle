@@ -114,10 +114,10 @@ export async function generatorHashes() {
 async function sourceHashes(cacheDir) {
   const sources = [];
   for (const name of (await fs.readdir(cacheDir)).sort()) {
-    const file = path.join(cacheDir, name); const entry = await readJSON(file);
+    const bytes = await fs.readFile(path.join(cacheDir, name)); const entry = JSON.parse(bytes);
     // The Go cache verifies exact response bytes during replay. Here the full cache envelope is bound to the manifest.
     assert(entry.url && entry.fetched_at && /^[a-f0-9]{64}$/.test(entry.sha256) && entry.body, `缓存清单无效: ${name}`);
-    sources.push({ file: name, url: entry.url, fetched_at: entry.fetched_at, response_sha256: entry.sha256, cache_sha256: await fileHash(file) });
+    sources.push({ file: name, url: entry.url, fetched_at: entry.fetched_at, response_sha256: entry.sha256, cache_sha256: hash(bytes) });
   }
   assert(sources.length > 0, '来源为空'); return sources;
 }

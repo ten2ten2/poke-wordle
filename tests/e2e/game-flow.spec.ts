@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { test, expect, type Page } from '@playwright/test';
-import { version as datasetVersion } from '../../src/data/dataset.json';
+import { datasetVersion } from '../../src/config/dataset';
 import pokemon from '../../src/data/pokemon_data.json';
 import knowledgeData from '../../src/data/knowledge_data.json';
 import type { KnowledgeData } from '../../src/config/knowledge';

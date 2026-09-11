@@ -29,14 +29,12 @@ type SpeciesData struct {
 
 // VarietyData 宝可梦形态数据
 type VarietyData struct {
-	Name      string `json:"name"`
-	URL       string `json:"url"`
-	IsDefault bool   `json:"is_default"`
+	Name string
+	URL  string
 }
 
 // PokemonFormData 宝可梦形态详细数据
 type PokemonFormData struct {
-	SpeciesName           string         `json:"species_name"`
 	DisplayName           string         `json:"display_name"`
 	Profile               string         `json:"profile"`
 	EvolutionStage        int            `json:"evolution_stage"`
@@ -46,6 +44,31 @@ type PokemonFormData struct {
 	Abilities             []string       `json:"abilities"`
 	BaseStatsTotal        int            `json:"base_stats_total"`
 	BaseStats             map[string]int `json:"base_stats"`
+}
+
+type EvolutionData struct {
+	Stage   int
+	Details []EvolutionDetail
+}
+
+type EvolutionDetail struct {
+	EvolvedForm           string
+	IsDefault             bool
+	Trigger               string
+	MinLevel              int64
+	Item                  string
+	HeldItem              string
+	KnownMove             string
+	Location              string
+	MinHappiness          int64
+	NeedsOverworldRain    bool
+	PartySpecies          string
+	PartyType             string
+	RelativePhysicalStats int64
+	TimeOfDay             string
+	TradeSpecies          string
+	TurnUpsideDown        bool
+	Gender                int64
 }
 
 // I18nTranslation 多语言翻译数据

@@ -112,7 +112,7 @@ func fetchPokemonDetails(speciesID int) ([]Pokemon, error) {
 		return nil, err
 	}
 
-	speciesResult := gjson.Parse(string(speciesData))
+	speciesResult := gjson.ParseBytes(speciesData)
 	species := SpeciesData{
 		ID:          int(speciesResult.Get("id").Int()),
 		Name:        speciesResult.Get("name").String(),
@@ -148,12 +148,9 @@ func fetchPokemonDetails(speciesID int) ([]Pokemon, error) {
 	varieties.ForEach(func(key, value gjson.Result) bool {
 		pokemonName := value.Get("pokemon.name").String()
 		pokemonURL := value.Get("pokemon.url").String()
-		isDefault := value.Get("is_default").Bool()
-
 		allVarieties = append(allVarieties, VarietyData{
-			Name:      pokemonName,
-			URL:       pokemonURL,
-			IsDefault: isDefault,
+			Name: pokemonName,
+			URL:  pokemonURL,
 		})
 		return true
 	})
@@ -200,7 +197,6 @@ func fetchPokemonDetails(speciesID int) ([]Pokemon, error) {
 		if err != nil {
 			return nil, fmt.Errorf("获取形态详情失败 %s: %w", variety.Name, err)
 		}
-		detail.SpeciesName = species.Name
 		formDetails = append(formDetails, detail)
 	}
 	if len(formDetails) == 0 {
@@ -215,7 +211,7 @@ func fetchPokemonDetails(speciesID int) ([]Pokemon, error) {
 		// 确定宝可梦名称：对于仅外观差异的形态，使用species的基础名称
 		pokemonName := form.DisplayName
 		if len(uniqueForms) == 1 {
-			pokemonName = form.SpeciesName
+			pokemonName = species.Name
 		}
 
 		// 特殊宝可梦进化处理
@@ -416,19 +412,14 @@ func fetchPokemonFormDetails(pokemonURL string, pokemonName string, species Spec
 			return PokemonFormData{}, fmt.Errorf("获取 %s 进化链失败: %w", species.Name, err)
 		}
 		if speciesData, exists := chainData[species.Name]; exists {
-			if data, ok := speciesData.(map[string]any); ok {
-				evolutionStage = int(data["stage"].(int))
-				if details, ok := data["evolution_details"].([]map[string]any); ok {
-					evolutionMethod, evolutionMethodDetail = analyzeEvolutionMethod(details, pokemonName)
-				}
-			}
+			evolutionStage = speciesData.Stage
+			evolutionMethod, evolutionMethodDetail = analyzeEvolutionMethod(speciesData.Details, pokemonName)
 		} else {
 			return PokemonFormData{}, fmt.Errorf("进化链缺少种族 %s", species.Name)
 		}
 	}
 
 	// 获取图片
-	// sprite := result.Get("sprites.front_default").String()
 	artworkURLPrefix := "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"
 	artworkSprite := artworkURLPrefix + result.Get("id").String() + ".png"
 
@@ -446,14 +437,14 @@ func fetchPokemonFormDetails(pokemonURL string, pokemonName string, species Spec
 }
 
 // 获取进化链信息
-func fetchEvolutionChain(chainURL string) (map[string]any, error) {
+func fetchEvolutionChain(chainURL string) (map[string]EvolutionData, error) {
 	data, err := fetchURL(chainURL)
 	if err != nil {
 		return nil, err
 	}
 
 	result := gjson.ParseBytes(data)
-	chainData := make(map[string]any)
+	chainData := make(map[string]EvolutionData)
 	if result.Get("chain.species.name").String() == "" {
 		return nil, fmt.Errorf("进化链缺少根种族: %s", chainURL)
 	}
@@ -465,48 +456,36 @@ func fetchEvolutionChain(chainURL string) (map[string]any, error) {
 }
 
 // 递归解析进化链
-func parseEvolution(evolution gjson.Result, chainData map[string]any, stage int) {
+func parseEvolution(evolution gjson.Result, chainData map[string]EvolutionData, stage int) {
 	speciesName := evolution.Get("species.name").String()
-
-	chainData[speciesName] = map[string]any{
-		"stage":             stage,
-		"evolution_details": []map[string]any{},
-	}
+	data := EvolutionData{Stage: stage}
 	// 处理进化详情
 	evolutionDetails := evolution.Get("evolution_details")
 	if evolutionDetails.Exists() && evolutionDetails.IsArray() {
-		var details []map[string]any
 		evolutionDetails.ForEach(func(key, value gjson.Result) bool {
-			detail := map[string]any{
-				"evolved_form":            value.Get("evolved_form.name").String(),
-				"trigger":                 value.Get("trigger.name").String(),
-				"min_level":               value.Get("min_level").Int(),
-				"item":                    value.Get("item.name").String(),
-				"held_item":               value.Get("held_item.name").String(),
-				"known_move":              value.Get("known_move.name").String(),
-				"known_move_type":         value.Get("known_move_type.name").String(),
-				"location":                value.Get("location.name").String(),
-				"min_happiness":           value.Get("min_happiness").Int(),
-				"min_beauty":              value.Get("min_beauty").Int(),
-				"min_affection":           value.Get("min_affection").Int(),
-				"needs_overworld_rain":    value.Get("needs_overworld_rain").Bool(),
-				"party_species":           value.Get("party_species.name").String(),
-				"party_type":              value.Get("party_type.name").String(),
-				"relative_physical_stats": value.Get("relative_physical_stats").Int(),
-				"time_of_day":             value.Get("time_of_day").String(),
-				"trade_species":           value.Get("trade_species.name").String(),
-				"turn_upside_down":        value.Get("turn_upside_down").Bool(),
-				"gender":                  value.Get("gender").Int(),
-			}
-			detail["is_default"] = value.Get("is_default").Bool()
-			details = append(details, detail)
+			data.Details = append(data.Details, EvolutionDetail{
+				EvolvedForm:           value.Get("evolved_form.name").String(),
+				IsDefault:             value.Get("is_default").Bool(),
+				Trigger:               value.Get("trigger.name").String(),
+				MinLevel:              value.Get("min_level").Int(),
+				Item:                  value.Get("item.name").String(),
+				HeldItem:              value.Get("held_item.name").String(),
+				KnownMove:             value.Get("known_move.name").String(),
+				Location:              value.Get("location.name").String(),
+				MinHappiness:          value.Get("min_happiness").Int(),
+				NeedsOverworldRain:    value.Get("needs_overworld_rain").Bool(),
+				PartySpecies:          value.Get("party_species.name").String(),
+				PartyType:             value.Get("party_type.name").String(),
+				RelativePhysicalStats: value.Get("relative_physical_stats").Int(),
+				TimeOfDay:             value.Get("time_of_day").String(),
+				TradeSpecies:          value.Get("trade_species.name").String(),
+				TurnUpsideDown:        value.Get("turn_upside_down").Bool(),
+				Gender:                value.Get("gender").Int(),
+			})
 			return true
 		})
-		chainData[speciesName] = map[string]any{
-			"stage":             stage,
-			"evolution_details": details,
-		}
 	}
+	chainData[speciesName] = data
 
 	// 递归处理下一级进化
 	evolution.Get("evolves_to").ForEach(func(key, value gjson.Result) bool {
@@ -516,12 +495,13 @@ func parseEvolution(evolution gjson.Result, chainData map[string]any, stage int)
 }
 
 // 分析进化方式
-func analyzeEvolutionMethod(details []map[string]any, pokemonName string) (string, string) {
+func analyzeEvolutionMethod(details []EvolutionDetail, pokemonName string) (string, string) {
 	pokemonName = baseFormName(pokemonName)
-	var detail map[string]any
+	var detail *EvolutionDetail
 	formSpecific := false
-	for _, candidate := range details {
-		evolvedForm, _ := candidate["evolved_form"].(string)
+	for i := range details {
+		candidate := &details[i]
+		evolvedForm := candidate.EvolvedForm
 		if evolvedForm != "" && evolvedForm != pokemonName {
 			continue
 		}
@@ -529,7 +509,7 @@ func analyzeEvolutionMethod(details []map[string]any, pokemonName string) (strin
 		// A condition without evolved_form is the fallback for other forms.
 		matchesForm := evolvedForm == pokemonName
 		if detail == nil || (matchesForm && !formSpecific) ||
-			(matchesForm == formSpecific && candidate["is_default"] == true && detail["is_default"] != true) {
+			(matchesForm == formSpecific && candidate.IsDefault && !detail.IsDefault) {
 			detail = candidate
 			formSpecific = matchesForm
 		}
@@ -537,40 +517,37 @@ func analyzeEvolutionMethod(details []map[string]any, pokemonName string) (strin
 	if detail == nil {
 		return "", ""
 	}
-	trigger := detail["trigger"].(string)
-
-	switch trigger {
+	switch detail.Trigger {
 	case "level-up":
-		if detail["min_happiness"].(int64) > 0 {
+		if detail.MinHappiness > 0 {
 			return "level", "level-friendship"
 		}
-		if detail["known_move"].(string) != "" {
+		if detail.KnownMove != "" {
 			return "level", "level-move"
 		}
-		if detail["location"].(string) != "" {
+		if detail.Location != "" {
 			return "level", "level-location"
 		}
-		if detail["time_of_day"].(string) != "" {
+		if detail.TimeOfDay != "" {
 			return "level", "level-time"
 		}
-		if detail["held_item"].(string) != "" {
+		if detail.HeldItem != "" {
 			return "level", "level-holding-item"
 		}
-		if detail["gender"].(int64) > 0 {
+		if detail.Gender > 0 {
 			return "level", "level-gender"
 		}
-		if detail["party_species"].(string) != "" || detail["party_type"].(string) != "" ||
-			detail["needs_overworld_rain"].(bool) || detail["turn_upside_down"].(bool) ||
-			detail["relative_physical_stats"].(int64) != 0 {
+		if detail.PartySpecies != "" || detail.PartyType != "" ||
+			detail.NeedsOverworldRain || detail.TurnUpsideDown || detail.RelativePhysicalStats != 0 {
 			return "level", "level-unique"
 		}
-		if detail["min_level"].(int64) > 0 {
+		if detail.MinLevel > 0 {
 			return "level", "level-normal"
 		}
 		return "level", "level-unique"
 
 	case "use-item":
-		item := detail["item"].(string)
+		item := detail.Item
 		switch {
 		case strings.Contains(item, "fire"):
 			return "item", "item-stone-fire"
@@ -587,9 +564,9 @@ func analyzeEvolutionMethod(details []map[string]any, pokemonName string) (strin
 		case strings.Contains(item, "dusk"):
 			return "item", "item-stone-dusk"
 		case strings.Contains(item, "dawn"):
-			if detail["gender"].(int64) == 2 {
+			if detail.Gender == 2 {
 				return "item", "item-stone-dawn-male"
-			} else if detail["gender"].(int64) == 1 {
+			} else if detail.Gender == 1 {
 				return "item", "item-stone-dawn-female"
 			}
 			return "item", "item-stone-dawn-male"
@@ -600,10 +577,10 @@ func analyzeEvolutionMethod(details []map[string]any, pokemonName string) (strin
 		}
 
 	case "trade":
-		if detail["held_item"].(string) != "" {
+		if detail.HeldItem != "" {
 			return "trade", "trade-item"
 		}
-		if detail["trade_species"].(string) != "" {
+		if detail.TradeSpecies != "" {
 			return "trade", "trade-certain"
 		}
 		return "trade", "trade-normal"
@@ -781,41 +758,12 @@ func filterUniqueFormsBy(formDetails []PokemonFormData) []PokemonFormData {
 
 // 比较两个形态是否在关键属性上不同
 func formsAreDifferent(form1, form2 PokemonFormData) bool {
-	// 比较属性
-	if len(form1.Types) != len(form2.Types) {
-		return true
-	}
-	for i, t := range form1.Types {
-		if t != form2.Types[i] {
-			return true
-		}
-	}
-
-	// 比较特性
-	if len(form1.Abilities) != len(form2.Abilities) {
-		return true
-	}
-	slices.Sort(form1.Abilities)
-	slices.Sort(form2.Abilities)
-	for i, a := range form1.Abilities {
-		if a != form2.Abilities[i] {
-			return true
-		}
-	}
-
-	// 比较种族值总和
-	if form1.BaseStatsTotal != form2.BaseStatsTotal {
-		return true
-	}
-
-	// 比较具体进化方式
-	if form1.EvolutionMethod != form2.EvolutionMethod ||
-		form1.EvolutionMethodDetail != form2.EvolutionMethodDetail {
-		return true
-	}
-
-	// 如果所有关键属性都相同，则认为是同一种形态
-	return false
+	// Abilities are sorted and deduplicated when fetched; comparison must not mutate them.
+	return !slices.Equal(form1.Types, form2.Types) ||
+		!slices.Equal(form1.Abilities, form2.Abilities) ||
+		form1.BaseStatsTotal != form2.BaseStatsTotal ||
+		form1.EvolutionMethod != form2.EvolutionMethod ||
+		form1.EvolutionMethodDetail != form2.EvolutionMethodDetail
 }
 
 // 收集所有需要翻译的项目

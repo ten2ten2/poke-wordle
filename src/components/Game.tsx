@@ -1,20 +1,22 @@
 'use client';
 
-import { version as datasetVersion } from '@/data/dataset.json';
+import { datasetVersion } from '@/config/dataset';
+import dynamic from 'next/dynamic';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useGameState } from '@/hooks/useGameState';
-import { getRandomPranksterImage, translateText } from '@/lib/pokemon';
+import { getRandomPokemon, getRandomPranksterImage, translateText } from '@/lib/pokemon';
 import { GameSettings, GuessResult } from '@/types/pokemon';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import GameInput from '@/components/GameInput';
 import GuessTable from '@/components/GuessTable';
-import { DynamicGameOverModal } from '@/components/DynamicComponents';
 import RandomKnowledge from '@/components/RandomKnowledge';
 import { ColorLegend } from '@/components/StatusTag';
 import { useHydrated } from '@/hooks/useHydrated';
+
+const GameOverModal = dynamic(() => import('./GameOverModal'), { ssr: false });
 
 export default function GameClient() {
   const hydrated = useHydrated();
@@ -158,15 +160,9 @@ function Game({ ready }: { ready: boolean }) {
     setShowSettingsChangeNotice(false);
 
     if (availablePokemon.length > 0) {
-      const randomPokemon =
-        availablePokemon[Math.floor(Math.random() * availablePokemon.length)];
-      handleGuessSubmit(randomPokemon.name);
+      void handleGuessSubmit(getRandomPokemon(availablePokemon).name);
     }
   }, [availablePokemon, gameState.isGameOver, handleGuessSubmit]);
-
-  const handleGiveUp = useCallback(() => {
-    giveUp();
-  }, [giveUp]);
 
   const handleRestart = useCallback(() => {
     setShowSettingsChangeNotice(false);
@@ -232,7 +228,7 @@ function Game({ ready }: { ready: boolean }) {
               pokemon={availablePokemon}
               onSubmit={handleGuessSubmit}
               onRandomStart={handleRandomStart}
-              onGiveUp={handleGiveUp}
+              onGiveUp={giveUp}
               onRestart={handleRestart}
               disabled={!ready || isLoading}
               gameStarted={!!gameState.targetPokemon}
@@ -296,15 +292,15 @@ function Game({ ready }: { ready: boolean }) {
       </main>
 
       <Footer />
-      <DynamicGameOverModal
-        isOpen={gameState.isGameOver && !dismissedResult}
+      {gameState.isGameOver && <GameOverModal
+        isOpen={!dismissedResult}
         onClose={() => setDismissedResult(true)}
         onRestart={handleRestart}
         isWon={gameState.isWon}
         targetPokemon={gameState.targetPokemon}
         guessCount={gameState.guesses.length}
         maxGuesses={gameState.settings.maxGuesses}
-      />
+      />}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { version as datasetVersion } from '@/data/dataset.json';
+import { datasetVersion } from '@/config/dataset';
 import { GameSettings, Pokemon, GuessResult } from '@/types/pokemon';
 
 const STORAGE_KEYS = {

@@ -1,10 +1,11 @@
-import { version as datasetVersion } from '@/data/dataset.json';
+import { datasetVersion } from '@/config/dataset';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import type { GameState, GameSettings, GuessResult } from '@/types/pokemon';
 import {
   loadPokemonData,
   filterPokemonByGenerations,
   getRandomPokemon,
+  normalizePokemonName,
   translateText,
 } from '@/lib/pokemon';
 import {
@@ -161,12 +162,12 @@ export function useGameState(locale: string, restoreProgress = true) {
 
   const validNames = useMemo(
     () => new Set(
-      [...availablePokemon.map((p) => p.name), ...pokemonNames].map((name) => name.toLowerCase()),
+      [...availablePokemon.map((p) => p.name), ...pokemonNames].map(normalizePokemonName),
     ),
     [availablePokemon, pokemonNames],
   );
   const isPokemonNameValid = useCallback(
-    (name: string) => validNames.has(name.toLowerCase()),
+    (name: string) => validNames.has(normalizePokemonName(name)),
     [validNames],
   );
 

@@ -2,12 +2,13 @@
  * @jest-environment node
  */
 
-import { version as datasetVersion } from '@/data/dataset.json';
+import { datasetVersion } from '@/config/dataset';
 import { NextRequest } from 'next/server';
 import { POST } from '../checkGuess/route';
 
 // Mock the Pokemon library functions first
 jest.mock('@/lib/pokemon', () => ({
+  normalizePokemonName: jest.requireActual('@/lib/pokemon').normalizePokemonName,
   loadPokemonData: jest.fn(),
   translateText: jest.fn(),
   comparePokemon: jest.fn()
@@ -114,7 +115,7 @@ describe('/api/checkGuess', () => {
     );
   });
 
-  test('should return 400 for invalid guess name', async () => {
+  test('should return 404 for an unknown guess name', async () => {
     const requestBody = {
       dataset_version: datasetVersion,
       name: 'InvalidPokemon',
@@ -140,7 +141,7 @@ describe('/api/checkGuess', () => {
     expect(data.error).toBe('Pokemon not found');
   });
 
-  test('should return 400 for invalid target Pokemon ID', async () => {
+  test('should return 404 for an unknown target Pokemon ID', async () => {
     const requestBody = {
       dataset_version: datasetVersion,
       name: 'Bulbasaur',
@@ -177,7 +178,7 @@ describe('/api/checkGuess', () => {
     const response = await POST(request);
     const data = await response.json();
 
-    expect(response.status).toBe(500);
+    expect(response.status).toBe(400);
     expect(data.error).toBeDefined();
   });
 
