@@ -73,8 +73,3 @@ func writeJSONFile(filename string, value any) error {
 	}
 	return os.WriteFile(filename, append(data, '\n'), 0644)
 }
-func saveI18nToJSONSeparately(filename string, data map[string]I18nTranslation) error {
-	return writeJSONFile(filename, data)
-}
-func saveI18nToJSON(filename string) error { return writeJSONFile(filename, i18nData) }
-func saveToJSON(filename string) error     { return writeJSONFile(filename, pokemonData) }

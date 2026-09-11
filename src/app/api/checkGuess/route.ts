@@ -1,6 +1,6 @@
 import { version as datasetVersion } from '@/data/dataset.json';
 import { NextRequest, NextResponse } from 'next/server';
-import { loadPokemonData, comparePokemon, translatePokemon } from '@/lib/pokemon';
+import { loadPokemonData, comparePokemon, translateText } from '@/lib/pokemon';
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,16 +20,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Load Pokemon data
     const pokemonData = loadPokemonData();
-
-    // Find the guessed Pokemon by original name or translated name
+    const normalizedName = name.toLowerCase();
     const guessPokemon = pokemonData.find(
-      p => {
-        const translatedPokemon = translatePokemon(p, locale);
-        return p.name.toLowerCase() === name.toLowerCase() ||
-               translatedPokemon.name.toLowerCase() === name.toLowerCase();
-      }
+      (pokemon) => pokemon.name.toLowerCase() === normalizedName ||
+        translateText(pokemon.name, locale).toLowerCase() === normalizedName,
     );
 
     if (!guessPokemon) {

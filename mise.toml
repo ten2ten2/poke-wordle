@@ -38,9 +38,6 @@ run = "npm run check"
 dir = "tools/poke-json"
 run = ["go vet ./...", "go test -race ./...", "node --test pipeline.test.mjs review-state.test.mjs console.test.mjs", "node pipeline.mjs verify"]
 
-[tasks."data:run"]
-run = "node tools/poke-json/pipeline.mjs generate"
-
 [tasks."data:generate"]
 run = "node tools/poke-json/pipeline.mjs generate"
 

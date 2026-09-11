@@ -21,7 +21,7 @@ func fetchAllSpecies() error {
 		return err
 	}
 
-	results := gjson.Get(string(data), "results")
+	results := gjson.GetBytes(data, "results")
 	if !results.IsArray() || len(results.Array()) == 0 {
 		return fmt.Errorf("无法获取种族列表")
 	}
@@ -322,7 +322,7 @@ func fetchPokemonFormDetails(pokemonURL string, pokemonName string, species Spec
 		return PokemonFormData{}, err
 	}
 
-	result := gjson.Parse(string(data))
+	result := gjson.ParseBytes(data)
 
 	// 获取属性
 	var types []string
@@ -422,7 +422,7 @@ func fetchEvolutionChain(chainURL string) (map[string]any, error) {
 		return nil, err
 	}
 
-	result := gjson.Parse(string(data))
+	result := gjson.ParseBytes(data)
 	chainData := make(map[string]any)
 	if result.Get("chain.species.name").String() == "" {
 		return nil, fmt.Errorf("进化链缺少根种族: %s", chainURL)
@@ -779,7 +779,7 @@ func formsAreDifferent(form1, form2 PokemonFormData) bool {
 }
 
 // 收集所有需要翻译的项目
-func collectI18nItems(option5 bool) error {
+func collectI18nItems() error {
 	fmt.Println("正在收集多语言翻译数据...")
 	pokemonNames := make(map[string]int)
 	types := make(map[string]bool)
@@ -797,7 +797,7 @@ func collectI18nItems(option5 bool) error {
 	var tasks []func() error
 	for name, speciesID := range pokemonNames {
 		tasks = append(tasks, func() error {
-			if err := fetchPokemonI18n(name, speciesID, option5); err != nil {
+			if err := fetchPokemonI18n(name, speciesID); err != nil {
 				return fmt.Errorf("获取宝可梦翻译失败 %s: %w", name, err)
 			}
 			return nil
@@ -805,7 +805,7 @@ func collectI18nItems(option5 bool) error {
 	}
 	for name := range types {
 		tasks = append(tasks, func() error {
-			if err := fetchTypeI18n(name, option5); err != nil {
+			if err := fetchResourceI18n("type", name); err != nil {
 				return fmt.Errorf("获取属性翻译失败 %s: %w", name, err)
 			}
 			return nil
@@ -813,7 +813,7 @@ func collectI18nItems(option5 bool) error {
 	}
 	for name := range abilities {
 		tasks = append(tasks, func() error {
-			if err := fetchAbilityI18n(name, option5); err != nil {
+			if err := fetchResourceI18n("ability", name); err != nil {
 				return fmt.Errorf("获取特性翻译失败 %s: %w", name, err)
 			}
 			return nil
@@ -822,41 +822,9 @@ func collectI18nItems(option5 bool) error {
 	return runTasks(tasks, 5)
 }
 
-func collectMoveI18n() error {
-	return collectResourceI18n("move", fetchMoveI18n)
-}
-
-func collectItemI18n() error {
-	return collectResourceI18n("item", fetchItemI18n)
-}
-
-func collectResourceI18n(resource string, fetch func(string, string) error) error {
-	url := fmt.Sprintf("https://pokeapi.co/api/v2/%s?limit=10000", resource)
-	data, err := fetchURL(url)
-	if err != nil {
-		return err
-	}
-	results := gjson.GetBytes(data, "results")
-	if !results.IsArray() || len(results.Array()) == 0 {
-		return fmt.Errorf("无法获取 %s 列表", resource)
-	}
-	var tasks []func() error
-	for _, entry := range results.Array() {
-		name, url := entry.Get("name").String(), entry.Get("url").String()
-		tasks = append(tasks, func() error {
-			if err := fetch(name, url); err != nil {
-				return fmt.Errorf("获取 %s 翻译失败 %s: %w", resource, name, err)
-			}
-			return nil
-		})
-	}
-	return runTasks(tasks, 5)
-}
-
-// 获取宝可梦名称翻译（改进版，支持形态后缀翻译）
-func fetchPokemonI18n(pokemonName string, speciesID int, option5 bool) error {
+func fetchPokemonI18n(pokemonName string, speciesID int) error {
 	i18nMutex.RLock()
-	done := processedNames[pokemonName]
+	_, done := i18nData[pokemonName]
 	i18nMutex.RUnlock()
 	if done {
 		return nil
@@ -921,12 +889,7 @@ func fetchPokemonI18n(pokemonName string, speciesID int, option5 bool) error {
 	}
 	i18nMutex.Lock()
 	defer i18nMutex.Unlock()
-	if option5 {
-		i18nSpecies[pokemonName] = base
-	} else {
-		i18nData[pokemonName] = base
-	}
-	processedNames[pokemonName] = true
+	i18nData[pokemonName] = base
 	return nil
 }
 
@@ -984,52 +947,9 @@ func appendFormTranslation(name string, base, suffix I18nTranslation) I18nTransl
 	return base
 }
 
-// 获取属性翻译
-func fetchTypeI18n(typeName string, option5 bool) error {
-	i18nMutex.RLock()
-	if processedTypes[typeName] {
-		i18nMutex.RUnlock()
-		return nil
-	}
-	i18nMutex.RUnlock()
-
-	typeURL := fmt.Sprintf("https://pokeapi.co/api/v2/type/%s", typeName)
-	data, err := fetchURL(typeURL)
-	if err != nil {
-		return err
-	}
-
-	result := gjson.Parse(string(data))
-	names := result.Get("names")
-	if !names.IsArray() || len(names.Array()) == 0 {
-		return fmt.Errorf("响应缺少名称翻译")
-	}
-
-	translation := extractI18nNames(names)
-	i18nMutex.Lock()
-	if option5 {
-		i18nTypes[typeName] = translation
-	} else {
-		i18nData[typeName] = translation
-	}
-	i18nMutex.Unlock()
-
-	i18nMutex.Lock()
-	processedTypes[typeName] = true
-	i18nMutex.Unlock()
-	return nil
-}
-
-// 获取特性翻译
-func fetchAbilityI18n(abilityName string, option5 bool) error {
-	i18nMutex.RLock()
-	if processedAbilities[abilityName] {
-		i18nMutex.RUnlock()
-		return nil
-	}
-	i18nMutex.RUnlock()
-
-	data, err := fetchURL("https://pokeapi.co/api/v2/ability/" + abilityName)
+// 属性和特性使用相同的 names 结构；收集器按类别去重后并发获取。
+func fetchResourceI18n(resource, name string) error {
+	data, err := fetchURL("https://pokeapi.co/api/v2/" + resource + "/" + name)
 	if err != nil {
 		return err
 	}
@@ -1039,68 +959,7 @@ func fetchAbilityI18n(abilityName string, option5 bool) error {
 	}
 	translation := extractI18nNames(names)
 	i18nMutex.Lock()
-	if option5 {
-		i18nAbilities[abilityName] = translation
-	} else {
-		i18nData[abilityName] = translation
-	}
-	i18nMutex.Unlock()
-
-	i18nMutex.Lock()
-	processedAbilities[abilityName] = true
-	i18nMutex.Unlock()
-	return nil
-}
-
-// 获取 move 翻译；本地修正只覆盖非空字段，缺失语言回退到英文。
-func fetchMoveI18n(moveName string, moveURL string) error {
-	data, err := fetchURL(moveURL)
-	if err != nil {
-		return err
-	}
-	names := gjson.GetBytes(data, "names")
-	if !names.IsArray() || len(names.Array()) == 0 {
-		return fmt.Errorf("缺少招式名称: %s", moveName)
-	}
-	translation := extractI18nNames(names)
-	override := moveTranslations[moveName]
-	translation.En = cmp.Or(override.En, translation.En, moveName)
-	for _, field := range []struct {
-		value    *string
-		override string
-	}{
-		{&translation.Ja, override.Ja},
-		{&translation.Es, override.Es},
-		{&translation.De, override.De},
-		{&translation.It, override.It},
-		{&translation.Fr, override.Fr},
-		{&translation.ZhHant, override.ZhHant},
-		{&translation.ZhHans, override.ZhHans},
-		{&translation.Ko, override.Ko},
-	} {
-		*field.value = cmp.Or(field.override, *field.value, translation.En)
-	}
-	i18nMutex.Lock()
-	i18nMoves[moveName] = translation
-	i18nMutex.Unlock()
-	return nil
-}
-
-// 获取 item 翻译
-func fetchItemI18n(itemName string, itemURL string) error {
-	data, err := fetchURL(itemURL)
-	if err != nil {
-		return err
-	}
-	result := gjson.Parse(string(data))
-	names := result.Get("names")
-	if !names.IsArray() || len(names.Array()) == 0 {
-		return fmt.Errorf("响应缺少名称翻译")
-	}
-
-	translation := extractI18nNames(names)
-	i18nMutex.Lock()
-	i18nItems[itemName] = translation
+	i18nData[name] = translation
 	i18nMutex.Unlock()
 	return nil
 }

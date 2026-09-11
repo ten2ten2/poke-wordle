@@ -73,7 +73,7 @@ export async function listRuns() {
   return { runs: rows, published_run: current.metadata.run };
 }
 
-function referenceURLs(item, pokemon, manifest) {
+function referenceURLs(item, pokemon, sources) {
   if (item.category === 'image') return [];
   const urls = [];
   if (pokemon) {
@@ -86,8 +86,7 @@ function referenceURLs(item, pokemon, manifest) {
   } else {
     urls.push(`https://pokeapi.co/api/v2/ability/${item.entity}/`, `https://pokeapi.co/api/v2/type/${item.entity}/`);
   }
-  const index = new Map(manifest.sources.map((source) => [source.url, source]));
-  return urls.map((url) => index.get(url)).filter(Boolean);
+  return urls.map((url) => sources.get(url)).filter(Boolean);
 }
 export async function inspectRun(id) {
   const run = await findRun(id); const current = await currentState(); const state = runStatus(run, current);
@@ -108,13 +107,14 @@ export async function inspectRun(id) {
   const items = report ? reviewItems(report) : [];
   const rows = Array.isArray(candidate[0]) ? candidate[0] : baseline[0];
   const byName = new Map(rows.map((row) => [row.name, row]));
+  const sources = new Map((run.manifest?.sources ?? []).map((source) => [source.url, source]));
   const translations = candidate[1] ?? baseline[1];
   const messages = await readJSON(path.join(paths.root, 'src/messages/zh-hans.json'));
   for (const item of items) {
     const pokemon = byName.get(item.entity) ?? (item.after?.pokedex_id_national ? item.after : null);
     item.label = translations[item.entity]?.['zh-hans'] ?? item.entity;
     item.pokemon = pokemon ? { name: pokemon.name, national: pokemon.pokedex_id_national, profile: pokemon.profile } : null;
-    item.sources = run.manifest ? referenceURLs(item, pokemon, run.manifest) : [];
+    item.sources = referenceURLs(item, pokemon, sources);
     if (item.category === 'image') {
       const sprite = item.entity.match(/\/(\d+)\.gif$/)?.[1];
       const member = rows.find((row) => row.profile.endsWith(`/${sprite}.png`));

@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/url"
 	"os"
@@ -58,7 +59,7 @@ func (c *responseCache) fetch(rawURL string) ([]byte, error) {
 			return nil, fmt.Errorf("缓存校验失败: %s", key)
 		}
 		return entry.Body, nil
-	} else if !os.IsNotExist(err) {
+	} else if !errors.Is(err, os.ErrNotExist) {
 		return nil, err
 	}
 	if c.offline {
@@ -188,7 +189,7 @@ func snapshotCommand(args []string) error {
 	if err := os.Chdir(runDir); err != nil {
 		return err
 	}
-	if err := generatePokemonData(false); err != nil {
+	if err := generatePokemonData(); err != nil {
 		return err
 	}
 	if err := fetchPranksterImages(); err != nil {
@@ -200,11 +201,7 @@ func snapshotCommand(args []string) error {
 		return strings.Compare(string(left), string(right))
 	})
 	for name, value := range map[string]any{"id-registry.json": stableIDs, "translation-events.json": translationEvents} {
-		data, err := json.MarshalIndent(value, "", "  ")
-		if err != nil {
-			return err
-		}
-		if err := os.WriteFile(name, append(data, '\n'), 0644); err != nil {
+		if err := writeJSONFile(name, value); err != nil {
 			return err
 		}
 	}

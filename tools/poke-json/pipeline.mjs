@@ -2,11 +2,10 @@ import { createHash } from 'node:crypto';
 import { spawn, execFileSync } from 'node:child_process';
 import * as fs from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { assertApproved, withDecisionLock } from './review-state.mjs';
 
-const tool = path.dirname(fileURLToPath(import.meta.url));
+const tool = import.meta.dirname;
 const root = path.resolve(tool, '../..');
 const published = path.join(root, 'src/data');
 const runs = path.join(tool, 'output/runs');
@@ -177,7 +176,7 @@ async function review(id) {
   const events = await readJSON(path.join(dir, 'translation-events.json'));
   const corrected = new Set(events.filter((event) => event.kind === 'override').map((event) => `${event.entity}/${event.locale}`));
   const remainingFallbacks = events.filter((event) => event.kind === 'english-form-fallback' && !corrected.has(`${event.entity}/${event.locale}`));
-  const report = { id, reviewed_at: new Date().toISOString(), manifest_sha256: await fileHash(path.join(dir, 'manifest.json')), validator_sha256: await fileHash(fileURLToPath(import.meta.url)), counts, differences, high_risk: differences[0].filter((diff) => /^pokemon\.[^.]+$/.test(diff.path) || /\.(id|pokedex_id_national)$/.test(diff.path)), translation_events: events, remaining_english_fallbacks: remainingFallbacks, images: await checkImages(candidate, baseline), candidate: manifest.candidate };
+  const report = { id, reviewed_at: new Date().toISOString(), manifest_sha256: await fileHash(path.join(dir, 'manifest.json')), validator_sha256: await fileHash(import.meta.filename), counts, differences, high_risk: differences[0].filter((diff) => /^pokemon\.[^.]+$/.test(diff.path) || /\.(id|pokedex_id_national)$/.test(diff.path)), translation_events: events, remaining_english_fallbacks: remainingFallbacks, images: await checkImages(candidate, baseline), candidate: manifest.candidate };
   await withDecisionLock(dir, async () => {
     await fs.writeFile(path.join(dir, 'review.json'), json(report));
     const lines = [`# 数据校对 ${id}`, '', `记录 ${counts.pokemon}；种族 ${counts.species}；翻译 ${counts.translations}；图片 ${counts.prankster}。`, '', ...differences.flat().map((diff) => `- ${diff.path}: ${JSON.stringify(diff.before)} → ${JSON.stringify(diff.after)}`), '', `翻译覆盖/回退详见 review.json (${report.translation_events?.length ?? 0} 条)。`, `新增/删除/身份变化: ${report.high_risk.length} 条。`, ''];
@@ -215,7 +214,7 @@ async function apply(id, flag, reviewedHash) {
   assert.equal(await fileHash(path.join(dir, 'review.json')), reviewedHash, '校对报告已变化');
   const report = await readJSON(path.join(dir, 'review.json'));
   assert.equal(report.manifest_sha256, await fileHash(path.join(dir, 'manifest.json')), '校对对应另一候选');
-  assert.equal(report.validator_sha256, await fileHash(fileURLToPath(import.meta.url)), '校验实现已变化，请重新校对');
+  assert.equal(report.validator_sha256, await fileHash(import.meta.filename), '校验实现已变化，请重新校对');
   assert(equal(report.differences, differences), '差异报告不一致');
   await withDecisionLock(dir, async () => {
     assert.equal(await fileHash(path.join(dir, 'review.json')), reviewedHash, '校对报告已变化');
@@ -248,7 +247,7 @@ async function verify() {
   assert.equal(metadata.version, hash(files.map((file) => `${file}:${current[file]}`).join('\n')), '数据版本错误');
   console.log(validateDataset(...data, await readJSON(registryFile), await loadMessages()));
 }
-if (process.argv[1] && await fs.realpath(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (process.argv[1] && await fs.realpath(process.argv[1]) === import.meta.filename) {
   const [command, ...args] = process.argv.slice(2);
   try {
     if (command === 'generate') await generate(args);

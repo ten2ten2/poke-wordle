@@ -98,7 +98,7 @@ describe('useGameState', () => {
     mockedPokemonLib.loadPokemonData.mockReturnValue(mockPokemon);
     mockedPokemonLib.filterPokemonByGenerations.mockReturnValue(mockPokemon);
     mockedPokemonLib.getRandomPokemon.mockReturnValue(mockPokemon[0]);
-    mockedPokemonLib.translatePokemon.mockImplementation((pokemon) => pokemon);
+    mockedPokemonLib.translateText.mockImplementation((name) => name);
     mockedStorage.loadGameSettings.mockReturnValue(null);
     mockedStorage.loadGameProgress.mockReturnValue(null);
     mockedStorage.saveGameSettings.mockImplementation(() => {});
@@ -537,13 +537,8 @@ describe('useGameState', () => {
     });
 
     test('validates translated Pokemon names', () => {
+      mockedPokemonLib.translateText.mockReturnValue('妙蛙种子');
       const { result } = renderHook(() => useGameState('zh-hans'));
-
-      // Mock translation
-      mockedPokemonLib.translatePokemon.mockReturnValue({
-        ...mockPokemon[0],
-        name: '妙蛙种子',
-      });
 
       expect(result.current.isPokemonNameValid('妙蛙种子')).toBe(true);
       expect(result.current.isPokemonNameValid('Bulbasaur')).toBe(true); // original name should still work
@@ -564,16 +559,18 @@ describe('useGameState', () => {
       ]);
 
       // Mock translation for Chinese
-      mockedPokemonLib.translatePokemon.mockImplementation(
-        (pokemon, locale) => {
+      mockedPokemonLib.translateText.mockImplementation(
+        (name, locale) => {
           if (locale === 'zh-hans') {
-            return { ...pokemon, name: `${pokemon.name}_CN` };
+            return `${name}_CN`;
           }
-          return pokemon;
+          return name;
         },
       );
 
       rerender({ locale: 'zh-hans' });
+      expect(result.current.isPokemonNameValid('Bulbasaur_CN')).toBe(true);
+      expect(result.current.isPokemonNameValid('Bulbasaur')).toBe(true);
 
       expect(result.current.pokemonNames).toEqual([
         'Bulbasaur_CN',

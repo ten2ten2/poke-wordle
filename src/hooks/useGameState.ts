@@ -5,7 +5,7 @@ import {
   loadPokemonData,
   filterPokemonByGenerations,
   getRandomPokemon,
-  translatePokemon,
+  translateText,
 } from '@/lib/pokemon';
 import {
   saveGameSettings,
@@ -70,7 +70,7 @@ export function useGameState(locale: string, restoreProgress = true) {
     [gameState.settings.selectedGenerations],
   );
   const pokemonNames = useMemo(
-    () => availablePokemon.map((p) => translatePokemon(p, locale).name),
+    () => availablePokemon.map((p) => translateText(p.name, locale)),
     [availablePokemon, locale],
   );
 
@@ -126,7 +126,7 @@ export function useGameState(locale: string, restoreProgress = true) {
               guesses:
                 settings.guessOrder === previous.settings.guessOrder
                   ? previous.guesses
-                  : [...previous.guesses].reverse(),
+                  : previous.guesses.toReversed(),
             },
       );
       return invalidatesGame;
@@ -159,14 +159,15 @@ export function useGameState(locale: string, restoreProgress = true) {
     }
   }, [commit]);
 
+  const validNames = useMemo(
+    () => new Set(
+      [...availablePokemon.map((p) => p.name), ...pokemonNames].map((name) => name.toLowerCase()),
+    ),
+    [availablePokemon, pokemonNames],
+  );
   const isPokemonNameValid = useCallback(
-    (name: string) =>
-      availablePokemon.some(
-        (p) =>
-          p.name.toLowerCase() === name.toLowerCase() ||
-          translatePokemon(p, locale).name.toLowerCase() === name.toLowerCase(),
-      ),
-    [availablePokemon, locale],
+    (name: string) => validNames.has(name.toLowerCase()),
+    [validNames],
   );
 
   return {

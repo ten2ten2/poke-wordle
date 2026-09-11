@@ -1,6 +1,5 @@
 import { Pokemon, ComparisonStatus, GuessResult } from '@/types/pokemon';
 
-// Import data files
 import pokeData from '@/data/pokemon_data.json';
 import i18nData from '@/data/pokemon_i18n.json';
 import pranksterProfileData from '@/data/prankster_profile.json';
@@ -9,36 +8,10 @@ export function loadPokemonData(): Pokemon[] {
   return pokeData as Pokemon[];
 }
 
-export function loadTranslationData(): Record<string, Record<string, string>> {
-  return i18nData as Record<string, Record<string, string>>;
-}
+const translations: Record<string, Record<string, string>> = i18nData;
 
 export function translateText(key: string, locale: string = 'en'): string {
-  const translations = loadTranslationData();
   return translations[key]?.[locale] || key;
-}
-
-export function translatePokemon(
-  pokemon: Pokemon,
-  locale: string = 'en',
-): Pokemon {
-  const translations = loadTranslationData();
-
-  return {
-    ...pokemon,
-    name: translations[pokemon.name]?.[locale] || pokemon.name,
-    types:
-      pokemon.types?.map((type) => translations[type]?.[locale] || type) || [],
-    abilities:
-      pokemon.abilities?.map(
-        (ability) => translations[ability]?.[locale] || ability,
-      ) || [],
-    tags: pokemon.tags?.map((tag) => translations[tag]?.[locale] || tag) || [],
-  };
-}
-
-export function loadPranksterProfiles(): string[] {
-  return (pranksterProfileData as string[]) || [];
 }
 
 export function filterPokemonByGenerations(
@@ -166,7 +139,7 @@ function applyPranksterEffect(
 }
 
 export function getRandomPranksterImage(): string {
-  const pranksterProfiles = loadPranksterProfiles();
+  const pranksterProfiles = pranksterProfileData;
   if (pranksterProfiles.length === 0) {
     return '';
   }

@@ -8,7 +8,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"reflect"
 	"slices"
 	"strconv"
 	"strings"
@@ -27,14 +26,6 @@ func mockAPI(t *testing.T, respond func(*http.Request) (int, string)) {
 	pokemonData = nil
 	speciesMap = make(map[int]SpeciesData)
 	i18nData = make(map[string]I18nTranslation)
-	i18nSpecies = make(map[string]I18nTranslation)
-	i18nTypes = make(map[string]I18nTranslation)
-	i18nAbilities = make(map[string]I18nTranslation)
-	i18nMoves = make(map[string]I18nTranslation)
-	i18nItems = make(map[string]I18nTranslation)
-	processedNames = make(map[string]bool)
-	processedTypes = make(map[string]bool)
-	processedAbilities = make(map[string]bool)
 	previous := client
 	client = &http.Client{Transport: mockTransport(func(r *http.Request) (*http.Response, error) {
 		status, body := respond(r)
@@ -56,9 +47,7 @@ func fixtureResponse(r *http.Request) (int, string) {
 		return 200, fmt.Sprintf(`{"id":%d,"types":[{"type":{"name":"normal"}}],"abilities":[{"ability":{"name":"run-away"}}],"stats":[{"base_stat":50,"stat":{"name":"hp"}},{"base_stat":50,"stat":{"name":"attack"}},{"base_stat":50,"stat":{"name":"defense"}},{"base_stat":50,"stat":{"name":"special-attack"}},{"base_stat":50,"stat":{"name":"special-defense"}},{"base_stat":50,"stat":{"name":"speed"}}]}`, id)
 	case strings.HasPrefix(resource, "evolution-chain/"):
 		return 200, fmt.Sprintf(`{"chain":{"species":{"name":"pokemon-%d"},"evolution_details":[],"evolves_to":[]}}`, id)
-	case resource == "move" || resource == "item":
-		return 200, fmt.Sprintf(`{"results":[{"name":"fixture","url":"https://pokeapi.co/api/v2/%s/fixture"}]}`, resource)
-	case resource == "type/normal", resource == "ability/run-away", resource == "move/fixture", resource == "item/fixture":
+	case resource == "type/normal", resource == "ability/run-away":
 		return 200, `{"names":[{"language":{"name":"en"},"name":"Fixture"}]}`
 	default:
 		return 404, `{}`
@@ -66,7 +55,7 @@ func fixtureResponse(r *http.Request) (int, string) {
 }
 
 func TestGenerationRejectsFailedRequests(t *testing.T) {
-	for _, failure := range []string{"pokemon-species/1", "pokemon/1", "evolution-chain/1", "species-translation", "type/normal", "ability/run-away", "move/fixture", "item/fixture"} {
+	for _, failure := range []string{"pokemon-species/1", "pokemon/1", "evolution-chain/1", "species-translation", "type/normal", "ability/run-away"} {
 		t.Run(failure, func(t *testing.T) {
 			t.Chdir(t.TempDir())
 			var speciesCalls atomic.Int32
@@ -77,7 +66,7 @@ func TestGenerationRejectsFailedRequests(t *testing.T) {
 				}
 				return fixtureResponse(r)
 			})
-			files := []string{"pokemon_data.json", "pokemon_i18n.json", "species_i18n.json", "type_i18n.json", "ability_i18n.json", "move_i18n.json", "item_i18n.json"}
+			files := []string{"pokemon_data.json", "pokemon_i18n.json"}
 			if err := os.MkdirAll("output", 0755); err != nil {
 				t.Fatal(err)
 			}
@@ -86,8 +75,7 @@ func TestGenerationRejectsFailedRequests(t *testing.T) {
 					t.Fatal(err)
 				}
 			}
-			split := strings.HasPrefix(failure, "move/") || strings.HasPrefix(failure, "item/")
-			if err := generatePokemonData(split); err == nil || !strings.Contains(err.Error(), "503") {
+			if err := generatePokemonData(); err == nil || !strings.Contains(err.Error(), "503") {
 				t.Fatalf("expected HTTP failure, got %v", err)
 			}
 			for _, file := range files {
@@ -101,48 +89,41 @@ func TestGenerationRejectsFailedRequests(t *testing.T) {
 }
 
 func TestGenerationSuccess(t *testing.T) {
-	for _, split := range []bool{false, true} {
-		t.Run(fmt.Sprint(split), func(t *testing.T) {
-			t.Chdir(t.TempDir())
-			mockAPI(t, fixtureResponse)
-			if err := generatePokemonData(split); err != nil {
-				t.Fatal(err)
-			}
-			files := map[string]int{"pokemon_i18n.json": 3}
-			if split {
-				files = map[string]int{"species_i18n.json": 1, "type_i18n.json": 1, "ability_i18n.json": 1, "move_i18n.json": 1, "item_i18n.json": 1}
-			} else {
-				data, err := os.ReadFile("output/pokemon_data.json")
-				if err != nil {
-					t.Fatal(err)
-				}
-				var rows []Pokemon
-				if err := json.Unmarshal(data, &rows); err != nil {
-					t.Fatal(err)
-				}
-				if len(rows) != 1 || rows[0].ID != 1 || rows[0].EvolutionStage != 1 {
-					t.Fatalf("invalid records: %+v", rows)
-				}
-			}
-			for name, count := range files {
-				data, err := os.ReadFile(filepath.Join("output", name))
-				if err != nil {
-					t.Fatal(err)
-				}
-				var translations map[string]map[string]string
-				if err := json.Unmarshal(data, &translations); err != nil {
-					t.Fatal(err)
-				}
-				if len(translations) != count {
-					t.Fatalf("%s: expected %d entries, got %d", name, count, len(translations))
-				}
-				for _, entry := range translations {
-					if _, ok := entry["zh-hans"]; !ok {
-						t.Fatalf("missing normalized locale in %s", name)
-					}
-				}
-			}
-		})
+	t.Chdir(t.TempDir())
+	mockAPI(t, fixtureResponse)
+	if err := generatePokemonData(); err != nil {
+		t.Fatal(err)
+	}
+	data, err := os.ReadFile("output/pokemon_data.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var rows []Pokemon
+	if err := json.Unmarshal(data, &rows); err != nil {
+		t.Fatal(err)
+	}
+	if len(rows) != 1 || rows[0].ID != 1 || rows[0].EvolutionStage != 1 {
+		t.Fatalf("invalid records: %+v", rows)
+	}
+	data, err = os.ReadFile("output/pokemon_i18n.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var translations map[string]map[string]string
+	if err := json.Unmarshal(data, &translations); err != nil {
+		t.Fatal(err)
+	}
+	if len(translations) != 3 {
+		t.Fatalf("expected species, type and ability translations, got %d", len(translations))
+	}
+	for _, key := range []string{"pokemon-1", "normal", "run-away"} {
+		entry := translations[key]
+		if entry["en"] == "" {
+			t.Fatalf("missing translation: %s", key)
+		}
+		if _, ok := entry["zh-hans"]; !ok {
+			t.Fatalf("missing normalized locale: %s", key)
+		}
 	}
 }
 
@@ -233,7 +214,7 @@ func TestMegaTagsRespectEligibleBaseForms(t *testing.T) {
 func TestTranslationCollectorReturnsAllFailures(t *testing.T) {
 	mockAPI(t, func(*http.Request) (int, string) { return 503, `{}` })
 	pokemonData = []Pokemon{{Name: "fixture", PokedexIDNational: 1, Types: []string{"normal"}, Abilities: []string{"run-away"}}}
-	err := collectI18nItems(false)
+	err := collectI18nItems()
 	if err == nil {
 		t.Fatal("expected errors")
 	}
@@ -255,14 +236,14 @@ func TestPokemonFormTranslationFailureCanBeRetried(t *testing.T) {
 		}
 		return 200, `{"form_names":[{"language":{"name":"en"},"name":"Alolan Form"}]}`
 	})
-	if err := fetchPokemonI18n("vulpix-alola", 37, false); err == nil {
+	if err := fetchPokemonI18n("vulpix-alola", 37); err == nil {
 		t.Fatal("expected form error")
 	}
-	if processedNames["vulpix-alola"] || len(i18nData) != 0 {
+	if len(i18nData) != 0 {
 		t.Fatal("failed translation was stored")
 	}
 	fail = false
-	if err := fetchPokemonI18n("vulpix-alola", 37, false); err != nil {
+	if err := fetchPokemonI18n("vulpix-alola", 37); err != nil {
 		t.Fatal(err)
 	}
 	if got := i18nData["vulpix-alola"].En; got != "Vulpix (Alolan Form)" {
@@ -278,31 +259,11 @@ func TestCollapsedSpeciesDoesNotRequestNonexistentForm(t *testing.T) {
 		t.Errorf("unexpected request: %s", r.URL)
 		return 404, `{}`
 	})
-	if err := fetchPokemonI18n("deoxys", 386, false); err != nil {
+	if err := fetchPokemonI18n("deoxys", 386); err != nil {
 		t.Fatal(err)
 	}
 	if got := i18nData["deoxys"].En; got != "Deoxys" {
 		t.Fatalf("got %q", got)
-	}
-}
-
-func TestMoveTranslationMergesNonemptyOverrides(t *testing.T) {
-	var calls atomic.Int32
-	mockAPI(t, func(*http.Request) (int, string) {
-		calls.Add(1)
-		return 200, `{"names":[{"language":{"name":"en"},"name":"Upstream English"},{"language":{"name":"zh-Hans"},"name":"上菜"},{"language":{"name":"es"},"name":"Upstream Spanish"},{"language":{"name":"it"},"name":"Upstream Italian"}]}`
-	})
-	if err := fetchMoveI18n("order-up", "https://pokeapi.co/api/v2/move/order-up"); err != nil {
-		t.Fatal(err)
-	}
-	got := i18nMoves["order-up"]
-	if calls.Load() != 1 || got.ZhHans != "上菜" || got.Es != "Upstream Spanish" || got.It != "Alta Cucina" || got.De != "Order Up" {
-		t.Fatalf("incorrect merge: %+v, requests=%d", got, calls.Load())
-	}
-	for i := range reflect.ValueOf(got).NumField() {
-		if reflect.ValueOf(got).Field(i).String() == "" {
-			t.Fatal("empty language field")
-		}
 	}
 }
 

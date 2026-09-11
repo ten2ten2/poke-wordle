@@ -9,7 +9,7 @@ import { POST } from '../checkGuess/route';
 // Mock the Pokemon library functions first
 jest.mock('@/lib/pokemon', () => ({
   loadPokemonData: jest.fn(),
-  translatePokemon: jest.fn(),
+  translateText: jest.fn(),
   comparePokemon: jest.fn()
 }));
 
@@ -55,7 +55,7 @@ const mockGuessResult = {
 
 // Mock the pokemon library
 const mockLoadPokemonData = pokemonLib.loadPokemonData as jest.MockedFunction<typeof pokemonLib.loadPokemonData>;
-const mockTranslatePokemon = pokemonLib.translatePokemon as jest.MockedFunction<typeof pokemonLib.translatePokemon>;
+const mockTranslateText = pokemonLib.translateText as jest.MockedFunction<typeof pokemonLib.translateText>;
 const mockComparePokemon = pokemonLib.comparePokemon as jest.MockedFunction<typeof pokemonLib.comparePokemon>;
 
 describe('/api/checkGuess', () => {
@@ -65,7 +65,7 @@ describe('/api/checkGuess', () => {
     
     // Configure mock implementations
     mockLoadPokemonData.mockReturnValue([mockPokemon]);
-    mockTranslatePokemon.mockImplementation((pokemon) => pokemon);
+    mockTranslateText.mockImplementation((name) => name);
     mockComparePokemon.mockReturnValue(mockGuessResult);
   });
 

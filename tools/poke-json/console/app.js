@@ -1,12 +1,10 @@
+import { $, element, fields } from './shared.js';
 import { createDataBrowser } from './data-view.js';
-const $ = (id) => document.getElementById(id);
 const state = { token: '', runs: [], run: null, view: location.hash === '#data' ? 'data' : 'review', navigation: 0, tab: 'changes', page: 0, selected: new Set(), busy: false, saving: false, detail: null, lastJob: null };
 const statuses = { applied: '已应用 · 历史记录', archived: '历史记录', stale: '需要重建', incomplete: '生成未完成', needs_review: '待自动校对', reviewable: '待人工确认', accepted: '已接受', pending: '待确认', keep: '保留原值', fix: '要求修正', defer: '暂缓', running: '运行中', passed: '已完成', failed: '失败', interrupted: '已中断' };
 const categories = { pokemon: '游戏字段', translation: '名称翻译', formatting: '格式变化', image: '图片', correction: '人工修正', fallback: '英文回退' };
-const fields = { tags: '标签', abilities: '特性', types: '属性', base_stats_total: '种族值总和', evolution_stage: '进化阶段', evolution_method: '进化方式', evolution_method_detail: '进化分类', generation: '世代', id: '游戏 ID', pokedex_id_national: '全国图鉴编号', profile: '图片', en: '英语', ja: '日语', es: '西班牙语', de: '德语', it: '意大利语', fr: '法语', 'zh-hans': '简体中文', 'zh-hant': '繁体中文', ko: '韩语' };
 const historical = () => ['applied', 'archived'].includes(state.run?.status);
 const editable = () => state.run?.status === 'reviewable' && !state.busy && !state.saving;
-const element = (tag, text, className) => { const node = document.createElement(tag); if (text !== undefined) node.textContent = text; if (className) node.className = className; return node; };
 const date = (value) => value ? new Date(value).toLocaleString('zh-CN', { hour12: false }) : '未知时间';
 const badge = (value, label) => element('span', label ?? statuses[value] ?? value, `badge ${value}`);
 const notify = (message) => {

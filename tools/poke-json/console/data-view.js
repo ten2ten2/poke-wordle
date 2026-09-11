@@ -1,14 +1,6 @@
-const $ = (id) => document.getElementById(id);
-const element = (tag, text, className) => {
-  const node = document.createElement(tag);
-  if (text !== undefined) node.textContent = text;
-  if (className) node.className = className;
-  return node;
-};
-const languages = { 'zh-hans': '简体中文', 'zh-hant': '繁体中文', en: '英语', ja: '日语', ko: '韩语', es: '西班牙语', de: '德语', it: '意大利语', fr: '法语' };
+import { $, element, languages, fields } from './shared.js';
 const kinds = { pokemon: '宝可梦', ability: '特性', type: '属性', other: '其他' };
 const collections = { pokemon: '宝可梦', translations: '多语言名称', images: '恶作剧图片', knowledge: '知识文章索引' };
-const fields = { id: '游戏 ID', pokedex_id_national: '全国图鉴编号', name: '标识名称', generation: '世代', types: '属性', abilities: '特性', base_stats_total: '种族值总和', evolution_stage: '进化阶段', evolution_method: '进化方式', evolution_method_detail: '进化分类', tags: '标签', hp: 'HP', attack: '攻击', defense: '防御', sp_attack: '特攻', sp_defense: '特防', speed: '速度', slug: '路径名称', title: '标题', createdAt: '创建时间' };
 const searchText = (value) => String(value).normalize('NFKC').toLowerCase();
 const spriteID = (url) => url?.match(/\/(\d+)\.(?:png|gif)$/)?.[1];
 const jsonDetails = (data) => {
@@ -53,7 +45,7 @@ export function createDataBrowser({ api, notify }) {
     const abilities = new Set(pokemon.flatMap((row) => row.abilities));
     const types = new Set(pokemon.flatMap((row) => row.types));
     const bySprite = new Map(pokemon.map((row) => [spriteID(row.profile), row]));
-    state.rows.pokemon = [...pokemon].sort((a, b) => a.pokedex_id_national - b.pokedex_id_national || a.id - b.id).map((row) => ({ row, search: searchText([row.name, ...Object.values(names(row.name)), ...translatedWords(row.abilities), ...translatedWords(row.types), format('tags', row.tags), format('evolution_method_detail', row.evolution_method_detail)].join(' ')) }));
+    state.rows.pokemon = pokemon.toSorted((a, b) => a.pokedex_id_national - b.pokedex_id_national || a.id - b.id).map((row) => ({ row, search: searchText([row.name, ...Object.values(names(row.name)), ...translatedWords(row.abilities), ...translatedWords(row.types), format('tags', row.tags), format('evolution_method_detail', row.evolution_method_detail)].join(' ')) }));
     state.rows.translations = Object.entries(data['pokemon_i18n.json']).sort(([a], [b]) => a.localeCompare(b)).map(([key, row]) => ({ key, row, kind: pokemonNames.has(key) ? 'pokemon' : abilities.has(key) ? 'ability' : types.has(key) ? 'type' : 'other', search: searchText([key, ...Object.values(row)].join(' ')) }));
     state.rows.images = data['prankster_profile.json'].map((url) => {
       const pokemon = bySprite.get(spriteID(url));

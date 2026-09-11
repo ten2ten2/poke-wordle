@@ -1,7 +1,6 @@
 import http from 'node:http';
 import * as fs from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { randomBytes } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import assert from 'node:assert/strict';
@@ -12,7 +11,7 @@ export async function createConsole({ port = 3318 } = {}) {
   const token = randomBytes(32).toString('hex');
   const jobsDir = path.join(paths.tool, 'output/console-jobs'); await fs.mkdir(jobsDir, { recursive: true });
   const jobs = new Map(); let busy = false; let address;
-  const staticFiles = new Map([['/', ['index.html', 'text/html']], ['/app.js', ['app.js', 'text/javascript']], ['/data-view.js', ['data-view.js', 'text/javascript']], ['/style.css', ['style.css', 'text/css']]]);
+  const staticFiles = new Map([['/', ['index.html', 'text/html']], ['/app.js', ['app.js', 'text/javascript']], ['/data-view.js', ['data-view.js', 'text/javascript']], ['/shared.js', ['shared.js', 'text/javascript']], ['/style.css', ['style.css', 'text/css']]]);
   const persist = async (job) => {
     const file = path.join(jobsDir, `${job.id}.json`);
     await fs.writeFile(`${file}.tmp`, `${JSON.stringify(job, null, 2)}\n`);
@@ -134,7 +133,7 @@ export async function createConsole({ port = 3318 } = {}) {
   return { server, url: `http://127.0.0.1:${address.port}` };
 }
 
-if (process.argv[1] && await fs.realpath(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (process.argv[1] && await fs.realpath(process.argv[1]) === import.meta.filename) {
   const args = process.argv.slice(2);
   assert(args.length === 0 || (args.length === 2 && args[0] === '--port'), 'console [--port <端口>]');
   const port = args.length ? Number(args[1]) : 3318;
