@@ -6426,7 +6426,7 @@
     },
     "evolution_stage": 2,
     "evolution_method": "level",
-    "evolution_method_detail": "level-unique",
+    "evolution_method_detail": "level-friendship",
     "tags": null
   },
   {
@@ -8265,7 +8265,7 @@
     },
     "evolution_stage": 3,
     "evolution_method": "level",
-    "evolution_method_detail": "level-unique",
+    "evolution_method_detail": "level-friendship",
     "tags": null
   },
   {
@@ -15100,7 +15100,7 @@
     },
     "evolution_stage": 3,
     "evolution_method": "item",
-    "evolution_method_detail": "item-stone-dawn-female",
+    "evolution_method_detail": "item-stone-dawn-male",
     "tags": [
       "has-mega"
     ]
@@ -15186,7 +15186,7 @@
     },
     "evolution_stage": 2,
     "evolution_method": "item",
-    "evolution_method_detail": "item-stone-dawn-male",
+    "evolution_method_detail": "item-stone-dawn-female",
     "tags": null
   },
   {

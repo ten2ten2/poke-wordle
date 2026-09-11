@@ -128,6 +128,15 @@ describe('Data Integrity Tests', () => {
   });
 
   describe('Data Consistency', () => {
+    test.each([
+      ['gallade', 'item-stone-dawn-male'],
+      ['froslass', 'item-stone-dawn-female'],
+      ['marill', 'level-friendship'],
+      ['blissey', 'level-friendship'],
+    ])('should retain the correct evolution condition for %s', (name, detail) => {
+      expect(pokemon.find(p => p.name === name)?.evolution_method_detail).toBe(detail);
+    });
+
     test('should have consistent type names format', () => {
       const typeNames = new Set<string>();
       pokemon.forEach(p => {
@@ -185,4 +194,4 @@ describe('Data Integrity Tests', () => {
       });
     });
   });
-}); 
+});
