@@ -1,7 +1,5 @@
 import '@/styles/globals.css';
 import type { Metadata } from 'next';
-import { readFileSync } from 'node:fs';
-import path from 'node:path';
 import localFont from 'next/font/local';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
@@ -19,8 +17,6 @@ const inter = localFont({
   weight: '400 700',
   display: 'swap',
 });
-
-const themeScript = readFileSync(path.join(process.cwd(), 'public/theme.js'), 'utf8');
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -50,7 +46,8 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={inter.variable} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        {/* React deduplicates async scripts; apply the theme before the first paint. */}
+        <script src="/theme.js" async blocking="render" fetchPriority="high" />
       </head>
       <body>
         <NextIntlClientProvider>

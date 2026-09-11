@@ -9,7 +9,7 @@ const subscribe = (listener: () => void) => {
   return () => window.removeEventListener('poke-wordle-theme-change', listener);
 };
 const getSnapshot = () => document.documentElement.dataset.theme ?? 'light';
-const getServerSnapshot = () => 'light';
+const getServerSnapshot = () => null;
 
 export default function ThemeToggle() {
   const t = useTranslations('navbar');
@@ -20,6 +20,7 @@ export default function ThemeToggle() {
     <button
       type="button"
       className="btn-icon"
+      disabled={theme === null}
       aria-label={label}
       title={label}
       onClick={() => window.dispatchEvent(new Event('poke-wordle-theme-toggle'))}

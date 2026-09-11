@@ -7,27 +7,40 @@ test.beforeEach(async ({ page }) => {
 
 test('stored theme applies before React loads, even when it differs from the system', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'light' });
-  await page.addInitScript(() => localStorage.setItem('poke-wordle-theme', 'dark'));
+  await page.addInitScript(() => {
+    localStorage.setItem('poke-wordle-theme', 'dark');
+    window.addEventListener('poke-wordle-theme-change', () => performance.mark('theme-applied'), { once: true });
+  });
   await page.route('**/_next/static/**/*.js', (route) => route.abort());
+  await page.route('**/theme.js', async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    await route.continue();
+  });
   await page.goto('/', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await expect(page.locator('html')).toHaveCSS('background-color', 'rgb(17, 19, 24)');
   await expect(page.locator('header').first()).toHaveCSS('background-color', 'rgb(27, 30, 36)');
   await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#111318');
+  await expect(page.locator('button:has(.theme-sun)')).toBeDisabled();
+  await expect.poll(() => page.evaluate(() => performance.getEntriesByName('first-contentful-paint').length)).toBe(1);
+  const timing = await page.evaluate(() => ({
+    theme: performance.getEntriesByName('theme-applied')[0].startTime,
+    paint: performance.getEntriesByName('first-contentful-paint')[0].startTime,
+  }));
+  expect(timing.theme).toBeLessThanOrEqual(timing.paint);
 });
 
 test('theme persists across all page types, language changes and reloads', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  page.on('console', (message) => { if (message.type() === 'error' && /hydrat/i.test(message.text())) errors.push(message.text()); });
+  page.on('console', (message) => {
+    if (message.type() === 'error' && /hydrat|script tag while rendering React component/i.test(message.text())) errors.push(message.text());
+  });
   await page.emulateMedia({ colorScheme: 'light' });
   await page.goto('/');
   const toggle = page.getByRole('button', { name: 'Switch to dark mode', exact: true });
   await expect(toggle.locator('.theme-sun')).toBeVisible();
   await expect(toggle.locator('.theme-moon')).toBeHidden();
-  const toggleBox = await toggle.boundingBox();
-  const languageBox = await page.getByRole('button', { name: 'Language', exact: true }).boundingBox();
-  expect(toggleBox!.x + toggleBox!.width).toBeLessThanOrEqual(languageBox!.x);
   await toggle.click();
   await expect(page.getByRole('button', { name: 'Switch to light mode' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Switch to light mode' }).locator('.theme-moon')).toBeVisible();
@@ -39,6 +52,11 @@ test('theme persists across all page types, language changes and reloads', async
   await page.getByRole('button', { name: 'Switch to 简体中文', exact: true }).click();
   await expect(page).toHaveURL(/\/zh-hans\/knowledge\//);
   await expect(page.getByRole('button', { name: '切换到日间模式', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: '切换到日间模式', exact: true }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  await page.getByRole('button', { name: '切换到夜间模式', exact: true }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  expect(errors).toEqual([]);
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await expect(page.locator('.card').first()).toHaveCSS('background-color', 'rgb(27, 30, 36)');
@@ -87,12 +105,13 @@ test('the extra header control fits at 320px in every language', async ({ page }
     await page.goto(`/${locale}`);
     const nav = page.getByRole('navigation').first();
     await expect(nav.locator('button')).toHaveCount(4);
-    const buttons = await nav.locator('button').all();
-    const theme = await buttons[2].boundingBox();
-    const language = await buttons[3].boundingBox();
-    expect(theme!.width).toBeGreaterThanOrEqual(44);
-    expect(theme!.x + theme!.width).toBeLessThanOrEqual(language!.x);
-    expect(language!.x + language!.width).toBeLessThanOrEqual(320);
+    await expect(async () => {
+      const [, , theme, language] = await nav.locator('button').evaluateAll((buttons) => buttons.map((button) => button.getBoundingClientRect().toJSON()));
+      expect(theme.width).toBeGreaterThanOrEqual(44);
+      expect(language.width).toBeGreaterThanOrEqual(44);
+      expect(theme.right).toBeLessThanOrEqual(language.left);
+      expect(language.right).toBeLessThanOrEqual(320);
+    }).toPass();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   }
 });

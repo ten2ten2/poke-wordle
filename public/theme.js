@@ -1,4 +1,4 @@
-// Inline in the site head; parser-blocking in the console so preferences apply before paint.
+// Loaded in the site head and the console before displaying the selected theme.
 (() => {
   const key = 'poke-wordle-theme';
   const root = document.documentElement;
