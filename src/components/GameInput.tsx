@@ -123,10 +123,10 @@ export default function GameInput({ pokemon, onSubmit, onRandomStart, onGiveUp, 
             {t('game.guessCount', { current: guessCount, max: maxGuesses })}
           </p>
         )}
-        {!gameStarted && <button type="button" onClick={() => { resetInput(); onRandomStart(); }} disabled={blocked || gameOver} className="btn-ghost mr-auto">{t('game.randomStart')}</button>}
         <div className="flex flex-wrap items-center justify-end gap-1">
           {gameStarted && !gameOver && <button type="button" onClick={() => requestAction('giveUp')} disabled={blocked} className="btn-ghost">{t('game.giveUp')}</button>}
-          <button type="button" onClick={() => requestAction('restart')} disabled={blocked} className="btn-ghost">{t('game.restart')}</button>
+          {guessCount === 0 && <button type="button" onClick={() => { resetInput(); onRandomStart(); }} disabled={blocked || gameOver} className="btn-ghost">{t('game.randomStart')}</button>}
+          {guessCount > 0 && <button type="button" onClick={() => requestAction('restart')} disabled={blocked} className="btn-ghost">{t('game.restart')}</button>}
         </div>
       </div>
       {confirm && (

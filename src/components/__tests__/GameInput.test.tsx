@@ -94,7 +94,7 @@ test('a rejected request also preserves the input', async () => {
 });
 
 test.each(['Give Up', 'Restart'])('requires confirmation before %s ends an active game', async (name) => {
-  render(<GameInput {...props} gameStarted />);
+  render(<GameInput {...props} gameStarted guessCount={1} />);
   await userEvent.click(screen.getByRole('button', { name }));
   expect(props.onGiveUp).not.toHaveBeenCalled();
   expect(props.onRestart).not.toHaveBeenCalled();
@@ -107,9 +107,14 @@ test.each(['Give Up', 'Restart'])('requires confirmation before %s ends an activ
 
 test('starts a random guess and restarts a finished game directly', async () => {
   const { rerender } = render(<GameInput {...props} />);
+  expect(screen.queryByRole('button', { name: 'Restart' })).not.toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: 'Random Guess' }));
   expect(props.onRandomStart).toHaveBeenCalledTimes(1);
-  rerender(<GameInput {...props} gameStarted gameOver />);
+  rerender(<GameInput {...props} gameStarted />);
+  expect(screen.getByRole('button', { name: 'Random Guess' })).toBeEnabled();
+  expect(screen.queryByRole('button', { name: 'Restart' })).not.toBeInTheDocument();
+  rerender(<GameInput {...props} gameStarted gameOver guessCount={1} />);
+  expect(screen.queryByRole('button', { name: 'Random Guess' })).not.toBeInTheDocument();
   expect(screen.getByRole('combobox')).toBeDisabled();
   await userEvent.click(screen.getByRole('button', { name: 'Restart' }));
   expect(props.onRestart).toHaveBeenCalledTimes(1);
