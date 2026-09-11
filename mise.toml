@@ -35,32 +35,32 @@ depends = ["data:check", "knowledge:check"]
 run = "npm run check"
 
 [tasks."data:check"]
-dir = "tools/poke-json"
+dir = "tools"
 run = ["go vet ./...", "go test -race ./...", "node --test pipeline.test.mjs review-state.test.mjs console.test.mjs", "node pipeline.mjs verify"]
 
 [tasks."data:generate"]
-run = "node tools/poke-json/pipeline.mjs generate"
+run = "node tools/pipeline.mjs generate"
 
 [tasks."data:review"]
-run = "node tools/poke-json/pipeline.mjs review"
+run = "node tools/pipeline.mjs review"
 
 [tasks."data:apply"]
-run = "node tools/poke-json/pipeline.mjs apply"
+run = "node tools/pipeline.mjs apply"
 
 [tasks."data:verify"]
-run = "node tools/poke-json/pipeline.mjs verify"
+run = "node tools/pipeline.mjs verify"
 
 [tasks."data:console"]
-run = "node tools/poke-json/console.mjs"
+run = "node tools/console.mjs"
 
 [tasks."data:console:test"]
-run = "node --test tools/poke-json/console.browser.test.mjs tools/poke-json/knowledge.browser.test.mjs"
+run = "node --test tools/console.browser.test.mjs tools/knowledge.browser.test.mjs"
 
 [tasks."knowledge:check"]
-run = ["node tools/poke-json/knowledge-model.mjs check", "node --test tools/poke-json/knowledge.test.mjs"]
+run = ["node tools/knowledge-model.mjs check", "node --test tools/knowledge.test.mjs"]
 
 [tasks."knowledge:sync"]
-run = "node tools/poke-json/knowledge-model.mjs sync"
+run = "node tools/knowledge-model.mjs sync"
 
 [tasks."seo:check"]
 description = "Check production HTML, indexing metadata and redirects after building"

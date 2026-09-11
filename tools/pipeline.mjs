@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { assertApproved, withDecisionLock } from './review-state.mjs';
 
 const tool = import.meta.dirname;
-const root = path.resolve(tool, '../..');
+const root = path.resolve(tool, '..');
 const published = path.join(root, 'src/data');
 const runs = path.join(tool, 'output/runs');
 export const files = ['pokemon_data.json', 'pokemon_i18n.json', 'prankster_profile.json'];

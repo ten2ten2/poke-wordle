@@ -38,11 +38,11 @@ test('publication stages all files and restores every replaced file on I/O failu
 
 test('validator rejects incomplete coverage, ID reuse, missing translations, and evolution regressions', async () => {
   const read = async (relative) => JSON.parse(await fs.readFile(new URL(relative, import.meta.url), 'utf8'));
-  const data = await read('../../src/data/pokemon_data.json');
-  const translations = await read('../../src/data/pokemon_i18n.json');
-  const images = await read('../../src/data/prankster_profile.json');
+  const data = await read('../src/data/pokemon_data.json');
+  const translations = await read('../src/data/pokemon_i18n.json');
+  const images = await read('../src/data/prankster_profile.json');
   const registry = await read('./id-registry.json');
-  const messages = Object.fromEntries(await Promise.all(locales.map(async (locale) => [locale, await read(`../../src/messages/${locale}.json`)])));
+  const messages = Object.fromEntries(await Promise.all(locales.map(async (locale) => [locale, await read(`../src/messages/${locale}.json`)])));
   const validate = (rows = data, names = translations, ids = registry) => validateDataset(rows, names, images, ids, messages);
   assert.equal(validate().species, 1025);
   assert.throws(() => validate(data.slice(1)), /覆盖不完整/);

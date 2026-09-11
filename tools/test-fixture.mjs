@@ -7,13 +7,13 @@ import { registrySource } from './knowledge-model.mjs';
 
 export async function createFixture() {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'poke-review-'));
-  const tool = path.join(dir, 'tools/poke-json'); const data = path.join(dir, 'src/data');
+  const tool = path.join(dir, 'tools'); const data = path.join(dir, 'src/data');
   await fs.mkdir(tool, { recursive: true }); await fs.mkdir(data, { recursive: true });
   const originalTool = new URL('./', import.meta.url);
   const names = (await fs.readdir(originalTool)).filter((file) => file.endsWith('.go') || ['go.mod', 'go.sum', 'corrections.json', 'id-registry.json', 'pipeline.mjs', 'review-state.mjs', 'console-model.mjs', 'console.mjs', 'knowledge-model.mjs', 'knowledge-mdx.mjs'].includes(file));
   for (const name of names) await fs.copyFile(new URL(name, originalTool), path.join(tool, name));
   await fs.cp(new URL('./console', import.meta.url), path.join(tool, 'console'), { recursive: true });
-  await fs.symlink(path.resolve(import.meta.dirname, '../../node_modules'), path.join(dir, 'node_modules'), 'dir');
+  await fs.symlink(path.resolve(import.meta.dirname, '../node_modules'), path.join(dir, 'node_modules'), 'dir');
   // Console tests should not depend on which articles the editor has published.
   const articleTitles = { en: 'Example article', ja: 'サンプル記事', 'zh-hans': '示例文章', 'zh-hant': '範例文章' };
   const knowledge = {};
@@ -26,12 +26,12 @@ export async function createFixture() {
   await fs.writeFile(path.join(data, 'knowledge_data.json'), JSON.stringify(knowledge));
   await fs.writeFile(path.join(data, 'knowledge-loaders.ts'), registrySource(knowledge));
   await fs.writeFile(path.join(data, 'knowledge-redirects.json'), '[]\n');
-  await fs.cp(new URL('../../public/images', import.meta.url), path.join(dir, 'public/images'), { recursive: true });
-  await fs.cp(new URL('../../public/fonts', import.meta.url), path.join(dir, 'public/fonts'), { recursive: true });
-  await fs.cp(new URL('../../public/styles', import.meta.url), path.join(dir, 'public/styles'), { recursive: true });
+  await fs.cp(new URL('../public/images', import.meta.url), path.join(dir, 'public/images'), { recursive: true });
+  await fs.cp(new URL('../public/fonts', import.meta.url), path.join(dir, 'public/fonts'), { recursive: true });
+  await fs.cp(new URL('../public/styles', import.meta.url), path.join(dir, 'public/styles'), { recursive: true });
   const dataFiles = ['pokemon_data.json', 'pokemon_i18n.json', 'prankster_profile.json'];
-  for (const name of [...dataFiles, 'dataset.json']) await fs.copyFile(new URL(`../../src/data/${name}`, import.meta.url), path.join(data, name));
-  await fs.cp(new URL('../../src/messages', import.meta.url), path.join(dir, 'src/messages'), { recursive: true });
+  for (const name of [...dataFiles, 'dataset.json']) await fs.copyFile(new URL(`../src/data/${name}`, import.meta.url), path.join(data, name));
+  await fs.cp(new URL('../src/messages', import.meta.url), path.join(dir, 'src/messages'), { recursive: true });
   const run = path.join(tool, 'output/runs/fixture'); await fs.mkdir(path.join(run, 'cache'), { recursive: true });
   await fs.mkdir(path.join(run, 'output'));
   for (const name of dataFiles) await fs.copyFile(path.join(data, name), path.join(run, 'output', name));

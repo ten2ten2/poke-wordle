@@ -37,7 +37,7 @@ mise run dev
 - 页面、弹窗和数据控制台共用 `public/styles/buttons.css`，统一按钮尺寸与交互状态；组件仅指定操作类型和布局。
 - Next.js App Router、React、Tailwind CSS。`src/app/[locale]` 和 `src/proxy.ts` 统一语言路由；英文不带路径前缀。
 - `src/hooks/useGameState.ts` 管理游戏与持久化，`src/app/api/checkGuess/route.ts` 比较猜测。
-- `src/data/` 是游戏数据发布目录；`tools/poke-json/` 负责抓取、修正和校对。使用[数据控制台](tools/poke-json/README.md)浏览全量数据、审核候选；操作见[更新流程](tools/poke-json/UPDATE_WORKFLOW.md)。
+- `src/data/` 是游戏数据发布目录；`tools/` 负责抓取、修正、校对和知识文章管理。使用[数据控制台](tools/README.md)浏览全量数据、审核候选、编辑 MDX；操作见[更新流程](tools/UPDATE_WORKFLOW.md)。
 - 在[控制台的知识文章页面](http://127.0.0.1:3318/#knowledge)管理四种语言的 MDX、摘要、SEO 标题和分享图片。保存同步正文、索引、语言关联、加载清单和历史路径；通过 Git 和部署流程上线。
 - Google Analytics 在用户接受后加载；Vercel Analytics 和 Speed Insights 位于根布局。
 

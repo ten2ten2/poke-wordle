@@ -1,4 +1,4 @@
-# 宝可梦数据工具
+# 宝可梦数据与内容工具
 
 从 PokeAPI 生成主数据、九语言名称和恶作剧图片，经审核后发布到 `src/data/`。工具链使用仓库根目录的 mise 配置。
 
@@ -17,7 +17,7 @@ mise run data:console
 
 [更新、修正与离线重建流程](UPDATE_WORKFLOW.md) · [人工修正表](corrections.json) · [来源报告](reports/)
 
-`mise run data:check` 运行 Go 和数据流程回归；`mise run data:verify` 校验已发布数据；`mise run data:console:test` 运行控制台浏览器回归。浏览器安装见[根目录说明](../../README.md#开发)。
+`mise run data:check` 运行 Go 和数据流程回归；`mise run data:verify` 校验已发布数据；`mise run data:console:test` 运行控制台浏览器回归。浏览器安装见[根目录说明](../README.md#开发)。
 
 ## 知识文章
 
