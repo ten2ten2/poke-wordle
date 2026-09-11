@@ -1,17 +1,25 @@
+# Dependencies and generated application files
 node_modules/
-.next/
-out/
-build/
-coverage/
-playwright-report/
-test-results/
+/.next/
+/out/
+/build/
+/next-env.d.ts
 *.tsbuildinfo
-next-env.d.ts
-.env*
+
+# Test artifacts
+/coverage/
+/playwright-report/
+/test-results/
+
+# Local environment and deployment settings
+.env
+.env.*
 !.env.example
-mise.local.toml
-.vercel/
+/mise.local.toml
+/.vercel/
+*.pem
+
+# Editor, OS and runtime files
 .vscode/
 .DS_Store
 *.log
-*.pem
