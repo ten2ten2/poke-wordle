@@ -49,7 +49,7 @@ export default async function KnowledgeArticle({ article, locale }: KnowledgeArt
                 })}
               </time>
             </header>
-            <div className="prose knowledge-prose max-w-none">
+            <div className="prose content-prose max-w-none">
               <Suspense fallback={
                 <div className="flex justify-center py-8" aria-busy="true">
                   <span className="loading-spinner size-6" aria-hidden="true" />

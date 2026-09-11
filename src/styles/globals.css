@@ -162,7 +162,7 @@
 .knowledge-banner:hover { background: var(--color-red-100); border-color: var(--color-red-200); }
 .knowledge-list-link { display: flex; align-items: center; gap: .75rem; min-height: 44px; padding: .75rem; border-radius: .75rem; color: var(--color-gray-900); transition: background-color .15s, color .15s; }
 .knowledge-list-link:hover { background: var(--color-gray-50); color: var(--color-red-700); }
-.knowledge-prose {
+.content-prose {
   --tw-prose-body: var(--color-gray-700);
   --tw-prose-headings: var(--color-gray-900);
   --tw-prose-links: var(--color-red-700);
@@ -177,10 +177,10 @@
   font-size: 1rem;
   line-height: 1.75;
 }
-.knowledge-prose :where(h1, h2, h3, h4, strong) { font-weight: 600; }
-.knowledge-prose a { text-underline-offset: 3px; transition: color .15s; }
-.knowledge-prose a:hover { color: var(--color-red-800); }
-.knowledge-prose img { display: inline; width: auto; height: 2em; margin: 0; }
+.content-prose :where(h1, h2, h3, h4, strong) { font-weight: 600; }
+.content-prose a { text-underline-offset: 3px; transition: color .15s; }
+.content-prose a:hover { color: var(--color-red-800); }
+.content-prose img { display: inline; width: auto; height: 2em; margin: 0; }
 .game-intro { max-width: 46rem; margin-inline: auto; text-align: center; color: var(--color-gray-600); }
 .guess-input-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .75rem; align-items: center; }
 .guess-input-row button { min-width: 5rem; }
