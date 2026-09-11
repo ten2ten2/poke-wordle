@@ -13,6 +13,8 @@ mise run data:run
 
 输出保存在 `poke-json/output/`。生成前将现有对应文件移入 `backup/`；备份或生成失败会报错退出。比较报告写入 `compare_result_*.json`。首次生成没有旧文件时跳过比较。
 
+任何物种、形态、进化链或翻译请求失败都会中止本次数据生成，不写入残缺结果。招式翻译按语言合并 API 名称与非空的本地修正，缺失语言回退到英文。测试使用本地模拟响应，无需请求 PokeAPI。
+
 审核 JSON 差异后，将需要更新的 `pokemon_data.json`、`pokemon_i18n.json`、`prankster_profile.json` 复制到前端 `src/data/`，再运行 `mise run check`。输出和备份目录不提交到 Git。
 
-主数据区分属性、特性或种族值等不同的形态；翻译使用小写语言代码（例如 `zh-hans`）。数据结构见 `types.go`；比较实现见 `compare_json.go`。
+主数据按游戏使用的属性、特性、种族值总和及进化条件区分形态；翻译使用小写语言代码（例如 `zh-hans`）。数据结构见 `types.go`；比较实现见 `compare_json.go`，报告区分显式 `null` 与字段删除。

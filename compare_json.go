@@ -26,6 +26,20 @@ type Difference struct {
 	Description string `json:"description"`
 }
 
+// MarshalJSON 保留显式 null；只有新增或删除时才省略不存在的一侧。
+func (d Difference) MarshalJSON() ([]byte, error) {
+	fields := map[string]any{
+		"path": d.Path, "type": d.Type, "description": d.Description,
+	}
+	if d.Type != "added" {
+		fields["old_value"] = d.OldValue
+	}
+	if d.Type != "removed" {
+		fields["new_value"] = d.NewValue
+	}
+	return json.Marshal(fields)
+}
+
 // ComparisonSummary 比较摘要
 type ComparisonSummary struct {
 	TotalDifferences int `json:"total_differences"`
@@ -111,24 +125,6 @@ func compareValues(val1, val2 any, path string) []Difference {
 
 	// 处理nil值
 	if val1 == nil && val2 == nil {
-		return differences
-	}
-	if val1 == nil {
-		differences = append(differences, Difference{
-			Path:        path,
-			Type:        "added",
-			NewValue:    val2,
-			Description: fmt.Sprintf("在路径 '%s' 添加了新值", path),
-		})
-		return differences
-	}
-	if val2 == nil {
-		differences = append(differences, Difference{
-			Path:        path,
-			Type:        "removed",
-			OldValue:    val1,
-			Description: fmt.Sprintf("在路径 '%s' 删除了值", path),
-		})
 		return differences
 	}
 

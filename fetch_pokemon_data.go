@@ -1,13 +1,12 @@
 package main
 
 import (
+	"cmp"
 	"fmt"
 	"regexp"
 	"slices"
-	"sort"
 	"strconv"
 	"strings"
-	"sync"
 
 	"github.com/tidwall/gjson"
 )
@@ -23,32 +22,33 @@ func fetchAllSpecies() error {
 	}
 
 	results := gjson.Get(string(data), "results")
-	if !results.Exists() {
+	if !results.IsArray() || len(results.Array()) == 0 {
 		return fmt.Errorf("无法获取种族列表")
 	}
 
-	results.ForEach(func(key, value gjson.Result) bool {
+	species := make(map[int]SpeciesData)
+	re := regexp.MustCompile(`/(\d+)/$`)
+	for _, value := range results.Array() {
 		name := value.Get("name").String()
 		url := value.Get("url").String()
 
 		// 从URL中提取ID
-		re := regexp.MustCompile(`/(\d+)/$`)
 		matches := re.FindStringSubmatch(url)
-		if len(matches) < 2 {
-			return true
+		if name == "" || len(matches) < 2 {
+			return fmt.Errorf("无效的种族列表条目: %s", value.Raw)
 		}
 
 		id, err := strconv.Atoi(matches[1])
 		if err != nil {
-			return true
+			return err
 		}
 
-		speciesMap[id] = SpeciesData{
+		species[id] = SpeciesData{
 			ID:   id,
 			Name: name,
 		}
-		return true
-	})
+	}
+	speciesMap = species
 
 	fmt.Printf("获取到 %d 个宝可梦种族\n", len(speciesMap))
 	return nil
@@ -66,44 +66,32 @@ func processAllPokemon() error {
 		}
 	}
 
-	sort.Ints(speciesIDs)
+	slices.Sort(speciesIDs)
 
-	// 并发处理
-	const maxWorkers = 10
-	semaphore := make(chan struct{}, maxWorkers)
-	var wg sync.WaitGroup
-
-	for _, id := range speciesIDs {
-		wg.Add(1)
-		go func(pokemonID int) {
-			defer wg.Done()
-			semaphore <- struct{}{}
-			defer func() { <-semaphore }()
-
-			pokemon, err := fetchPokemonDetails(pokemonID)
-			if err != nil {
-				fmt.Printf("获取宝可梦详情失败 ID %d: %v\n", pokemonID, err)
-				return
-			}
-
-			mutex.Lock()
-			pokemonData = append(pokemonData, pokemon...)
-			mutex.Unlock()
-
-			if len(pokemonData)%50 == 0 {
-				fmt.Printf("已处理 %d 个宝可梦...\n", len(pokemonData))
-			}
-		}(id)
+	if len(speciesIDs) == 0 {
+		return fmt.Errorf("没有可处理的宝可梦种族")
 	}
-
-	wg.Wait()
+	// 每个任务只写入自己的结果，结束后再统一合并。
+	results := make([][]Pokemon, len(speciesIDs))
+	tasks := make([]func() error, len(speciesIDs))
+	for i, id := range speciesIDs {
+		tasks[i] = func() error {
+			pokemon, err := fetchPokemonDetails(id)
+			if err != nil {
+				return fmt.Errorf("获取宝可梦详情失败 ID %d: %w", id, err)
+			}
+			results[i] = pokemon
+			return nil
+		}
+	}
+	if err := runTasks(tasks, 10); err != nil {
+		return err
+	}
+	pokemonData = slices.Concat(results...)
 
 	// 按照全国图鉴编号排序
-	sort.Slice(pokemonData, func(i, j int) bool {
-		if pokemonData[i].PokedexIDNational == pokemonData[j].PokedexIDNational {
-			return pokemonData[i].Name < pokemonData[j].Name
-		}
-		return pokemonData[i].PokedexIDNational < pokemonData[j].PokedexIDNational
+	slices.SortFunc(pokemonData, func(a, b Pokemon) int {
+		return cmp.Or(cmp.Compare(a.PokedexIDNational, b.PokedexIDNational), strings.Compare(a.Name, b.Name))
 	})
 
 	// 重新分配ID
@@ -211,11 +199,13 @@ func fetchPokemonDetails(speciesID int) ([]Pokemon, error) {
 		}
 		detail, err := fetchPokemonFormDetails(variety.URL, variety.Name, species)
 		if err != nil {
-			fmt.Printf("获取形态详情失败 %s: %v\n", variety.Name, err)
-			continue
+			return nil, fmt.Errorf("获取形态详情失败 %s: %w", variety.Name, err)
 		}
 		detail.SpeciesName = species.Name
 		formDetails = append(formDetails, detail)
+	}
+	if len(formDetails) == 0 {
+		return nil, fmt.Errorf("种族 %d 没有可用形态", speciesID)
 	}
 
 	// 比较形态，决定是否要分开存储
@@ -292,7 +282,6 @@ func fetchPokemonDetails(speciesID int) ([]Pokemon, error) {
 		}
 
 		pokemon := Pokemon{
-			ID:                    len(pokemonData) + len(pokemonForms) + 1,
 			PokedexIDNational:     species.ID,
 			Name:                  pokemonName,
 			Profile:               form.Profile,
@@ -380,15 +369,18 @@ func fetchPokemonFormDetails(pokemonURL string, pokemonName string, species Spec
 
 	if species.EvolutionChain != "" {
 		chainData, err := fetchEvolutionChain(species.EvolutionChain)
-		if err == nil {
-			if speciesData, exists := chainData[species.Name]; exists {
-				if data, ok := speciesData.(map[string]any); ok {
-					evolutionStage = int(data["stage"].(int))
-					if details, ok := data["evolution_details"].([]map[string]any); ok {
-						evolutionMethod, evolutionMethodDetail = analyzeEvolutionMethod(details)
-					}
+		if err != nil {
+			return PokemonFormData{}, fmt.Errorf("获取 %s 进化链失败: %w", species.Name, err)
+		}
+		if speciesData, exists := chainData[species.Name]; exists {
+			if data, ok := speciesData.(map[string]any); ok {
+				evolutionStage = int(data["stage"].(int))
+				if details, ok := data["evolution_details"].([]map[string]any); ok {
+					evolutionMethod, evolutionMethodDetail = analyzeEvolutionMethod(details)
 				}
 			}
+		} else {
+			return PokemonFormData{}, fmt.Errorf("进化链缺少种族 %s", species.Name)
 		}
 	}
 
@@ -419,6 +411,9 @@ func fetchEvolutionChain(chainURL string) (map[string]any, error) {
 
 	result := gjson.Parse(string(data))
 	chainData := make(map[string]any)
+	if result.Get("chain.species.name").String() == "" {
+		return nil, fmt.Errorf("进化链缺少根种族: %s", chainURL)
+	}
 
 	// 解析进化链
 	parseEvolution(result.Get("chain"), chainData, 1)
@@ -486,30 +481,30 @@ func analyzeEvolutionMethod(details []map[string]any) (string, string) {
 
 	switch trigger {
 	case "level-up":
+		if detail["min_happiness"].(int64) > 0 {
+			return "level", "level-friendship"
+		}
+		if detail["known_move"].(string) != "" {
+			return "level", "level-move"
+		}
+		if detail["location"].(string) != "" {
+			return "level", "level-location"
+		}
+		if detail["time_of_day"].(string) != "" {
+			return "level", "level-time"
+		}
+		if detail["held_item"].(string) != "" {
+			return "level", "level-holding-item"
+		}
+		if detail["gender"].(int64) > 0 {
+			return "level", "level-gender"
+		}
+		if detail["party_species"].(string) != "" || detail["party_type"].(string) != "" ||
+			detail["needs_overworld_rain"].(bool) || detail["turn_upside_down"].(bool) ||
+			detail["relative_physical_stats"].(int64) != 0 {
+			return "level", "level-unique"
+		}
 		if detail["min_level"].(int64) > 0 {
-			if detail["min_happiness"].(int64) > 0 {
-				return "level", "level-friendship"
-			}
-			if detail["known_move"].(string) != "" {
-				return "level", "level-move"
-			}
-			if detail["location"].(string) != "" {
-				return "level", "level-location"
-			}
-			if detail["time_of_day"].(string) != "" {
-				return "level", "level-time"
-			}
-			if detail["held_item"].(string) != "" {
-				return "level", "level-holding-item"
-			}
-			if detail["gender"].(int64) > 0 {
-				return "level", "level-gender"
-			}
-			if detail["party_species"].(string) != "" || detail["party_type"].(string) != "" ||
-				detail["needs_overworld_rain"].(bool) || detail["turn_upside_down"].(bool) ||
-				detail["relative_physical_stats"].(int64) != 0 {
-				return "level", "level-unique"
-			}
 			return "level", "level-normal"
 		}
 		return "level", "level-unique"
@@ -532,9 +527,9 @@ func analyzeEvolutionMethod(details []map[string]any) (string, string) {
 		case strings.Contains(item, "dusk"):
 			return "item", "item-stone-dusk"
 		case strings.Contains(item, "dawn"):
-			if detail["gender"].(int64) == 1 {
+			if detail["gender"].(int64) == 2 {
 				return "item", "item-stone-dawn-male"
-			} else if detail["gender"].(int64) == 2 {
+			} else if detail["gender"].(int64) == 1 {
 				return "item", "item-stone-dawn-female"
 			}
 			return "item", "item-stone-dawn-male"
@@ -581,7 +576,7 @@ func specialPokemonEvoInfo(pokemonName string, evolutionStage int, evolutionMeth
 		pokemonName == "lickilicky" || pokemonName == "tangrowth" || pokemonName == "yanmega" {
 		return 2, "level", "level-move"
 	}
-	if pokemonName == "crobat" || pokemonName == "bilssey" {
+	if pokemonName == "crobat" || pokemonName == "blissey" {
 		return 3, "level", "level-friendship"
 	}
 	if pokemonName == "roselia" || pokemonName == "chimecho" {
@@ -740,8 +735,8 @@ func formsAreDifferent(form1, form2 PokemonFormData) bool {
 	if len(form1.Abilities) != len(form2.Abilities) {
 		return true
 	}
-	sort.Strings(form1.Abilities)
-	sort.Strings(form2.Abilities)
+	slices.Sort(form1.Abilities)
+	slices.Sort(form2.Abilities)
 	for i, a := range form1.Abilities {
 		if a != form2.Abilities[i] {
 			return true
@@ -766,141 +761,76 @@ func formsAreDifferent(form1, form2 PokemonFormData) bool {
 // 收集所有需要翻译的项目
 func collectI18nItems(option5 bool) error {
 	fmt.Println("正在收集多语言翻译数据...")
-
-	const maxWorkers = 5 // 降低并发数以避免过多API请求
-	semaphore := make(chan struct{}, maxWorkers)
-	var wg sync.WaitGroup
-
-	// 收集所有需要翻译的项目
 	pokemonNames := make(map[string]int)
 	types := make(map[string]bool)
 	abilities := make(map[string]bool)
-
 	for _, pokemon := range pokemonData {
 		pokemonNames[pokemon.Name] = pokemon.PokedexIDNational
-
-		for _, t := range pokemon.Types {
-			types[t] = true
+		for _, name := range pokemon.Types {
+			types[name] = true
 		}
-
-		for _, a := range pokemon.Abilities {
-			abilities[a] = true
+		for _, name := range pokemon.Abilities {
+			abilities[name] = true
 		}
 	}
 
-	// 获取宝可梦名称翻译
+	var tasks []func() error
 	for name, speciesID := range pokemonNames {
-		wg.Add(1)
-		go func(pokemonName string, sID int) {
-			defer wg.Done()
-			semaphore <- struct{}{}
-			defer func() { <-semaphore }()
-
-			if err := fetchPokemonI18n(pokemonName, sID, option5); err != nil {
-				fmt.Printf("获取宝可梦翻译失败 %s: %v\n", pokemonName, err)
+		tasks = append(tasks, func() error {
+			if err := fetchPokemonI18n(name, speciesID, option5); err != nil {
+				return fmt.Errorf("获取宝可梦翻译失败 %s: %w", name, err)
 			}
-		}(name, speciesID)
+			return nil
+		})
 	}
-
-	// 获取属性翻译
-	for typeName := range types {
-		wg.Add(1)
-		go func(t string) {
-			defer wg.Done()
-			semaphore <- struct{}{}
-			defer func() { <-semaphore }()
-
-			if err := fetchTypeI18n(t, option5); err != nil {
-				fmt.Printf("获取属性翻译失败 %s: %v\n", t, err)
+	for name := range types {
+		tasks = append(tasks, func() error {
+			if err := fetchTypeI18n(name, option5); err != nil {
+				return fmt.Errorf("获取属性翻译失败 %s: %w", name, err)
 			}
-		}(typeName)
+			return nil
+		})
 	}
-
-	// 获取特性翻译
-	for abilityName := range abilities {
-		wg.Add(1)
-		go func(a string) {
-			defer wg.Done()
-			semaphore <- struct{}{}
-			defer func() { <-semaphore }()
-
-			if err := fetchAbilityI18n(a, option5); err != nil {
-				fmt.Printf("获取特性翻译失败 %s: %v\n", a, err)
+	for name := range abilities {
+		tasks = append(tasks, func() error {
+			if err := fetchAbilityI18n(name, option5); err != nil {
+				return fmt.Errorf("获取特性翻译失败 %s: %w", name, err)
 			}
-		}(abilityName)
+			return nil
+		})
 	}
-
-	wg.Wait()
-	fmt.Printf("完成！共收集 %d 项翻译数据\n", len(i18nData))
-	return nil
+	return runTasks(tasks, 5)
 }
 
 func collectMoveI18n() error {
-	fmt.Println("正在收集 moves 翻译数据...")
-
-	const maxWorkers = 5 // 降低并发数以避免过多API请求
-	semaphore := make(chan struct{}, maxWorkers)
-	var wg sync.WaitGroup
-
-	moveURL := "https://pokeapi.co/api/v2/move?limit=10000"
-	data, err := fetchURL(moveURL)
-	if err != nil {
-		return err
-	}
-	result := gjson.Parse(string(data))
-	results := result.Get("results")
-	for _, move := range results.Array() {
-		moveName := move.Get("name").String()
-		moveURL := move.Get("url").String()
-		wg.Add(1)
-		go func(moveName string, moveURL string) {
-			defer wg.Done()
-			semaphore <- struct{}{}
-			defer func() { <-semaphore }()
-
-			if err := fetchMoveI18n(moveName, moveURL); err != nil {
-				fmt.Printf("获取 move 翻译失败 %s: %v\n", moveName, err)
-			}
-		}(moveName, moveURL)
-	}
-
-	wg.Wait()
-	fmt.Printf("完成！共收集 %d 项翻译数据\n", len(i18nMoves))
-	return nil
+	return collectResourceI18n("move", fetchMoveI18n)
 }
 
 func collectItemI18n() error {
-	fmt.Println("正在收集 items 翻译数据...")
+	return collectResourceI18n("item", fetchItemI18n)
+}
 
-	const maxWorkers = 5 // 降低并发数以避免过多API请求
-	semaphore := make(chan struct{}, maxWorkers)
-	var wg sync.WaitGroup
-
-	itemURL := "https://pokeapi.co/api/v2/item?limit=10000"
-	data, err := fetchURL(itemURL)
+func collectResourceI18n(resource string, fetch func(string, string) error) error {
+	url := fmt.Sprintf("https://pokeapi.co/api/v2/%s?limit=10000", resource)
+	data, err := fetchURL(url)
 	if err != nil {
 		return err
 	}
-	result := gjson.Parse(string(data))
-	results := result.Get("results")
-	for _, item := range results.Array() {
-		itemName := item.Get("name").String()
-		itemURL := item.Get("url").String()
-		wg.Add(1)
-		go func(itemName string, itemURL string) {
-			defer wg.Done()
-			semaphore <- struct{}{}
-			defer func() { <-semaphore }()
-
-			if err := fetchItemI18n(itemName, itemURL); err != nil {
-				fmt.Printf("获取 item 翻译失败 %s: %v\n", itemName, err)
-			}
-		}(itemName, itemURL)
+	results := gjson.GetBytes(data, "results")
+	if !results.IsArray() || len(results.Array()) == 0 {
+		return fmt.Errorf("无法获取 %s 列表", resource)
 	}
-
-	wg.Wait()
-	fmt.Printf("完成！共收集 %d 项翻译数据\n", len(i18nItems))
-	return nil
+	var tasks []func() error
+	for _, entry := range results.Array() {
+		name, url := entry.Get("name").String(), entry.Get("url").String()
+		tasks = append(tasks, func() error {
+			if err := fetch(name, url); err != nil {
+				return fmt.Errorf("获取 %s 翻译失败 %s: %w", resource, name, err)
+			}
+			return nil
+		})
+	}
+	return runTasks(tasks, 5)
 }
 
 // 获取宝可梦名称翻译（改进版，支持形态后缀翻译）
@@ -920,120 +850,112 @@ func fetchPokemonI18n(pokemonName string, speciesID int, option5 bool) error {
 	}
 	result := gjson.Parse(string(data))
 	names := result.Get("names")
+	if !names.IsArray() || len(names.Array()) == 0 {
+		return fmt.Errorf("响应缺少名称翻译")
+	}
 
-	if names.Exists() {
-		// 获取形态的翻译
-		// 从 translation.go 获取
-		if translation, exists := specialPokemonTranslations[pokemonName]; exists {
-			baseTranslation := I18nTranslation{
-				En:     translation.En,
-				Ja:     translation.Ja,
-				Es:     translation.Es,
-				De:     translation.De,
-				It:     translation.It,
-				Fr:     translation.Fr,
-				ZhHant: translation.ZhHant,
-				ZhHans: translation.ZhHans,
-				Ko:     translation.Ko,
-			}
-			i18nMutex.Lock()
-			if option5 {
-				i18nSpecies[pokemonName] = baseTranslation
-			} else {
-				i18nData[pokemonName] = baseTranslation
-			}
-			i18nMutex.Unlock()
+	// 获取形态的翻译
+	// 从 translation.go 获取
+	if translation, exists := specialPokemonTranslations[pokemonName]; exists {
+		baseTranslation := translation
+		i18nMutex.Lock()
+		if option5 {
+			i18nSpecies[pokemonName] = baseTranslation
 		} else {
-			// 从 PokeAPI 获取形态翻译
-			suffixTranslation := I18nTranslation{}
+			i18nData[pokemonName] = baseTranslation
+		}
+		i18nMutex.Unlock()
+	} else {
+		// 从 PokeAPI 获取形态翻译
+		suffixTranslation := I18nTranslation{}
+		if pokemonName != result.Get("name").String() {
 			formURL := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon-form/%s", pokemonName)
 			formData, err := fetchURL(formURL)
 			if err != nil {
-				fmt.Printf("获取形态翻译失败 %s: %v\n", pokemonName, err)
-			} else {
-				formResult := gjson.Parse(string(formData))
-				suffixTranslation = extractI18nNames(formResult.Get("form_names"))
+				return fmt.Errorf("获取形态翻译失败 %s: %w", pokemonName, err)
 			}
-
-			baseTranslation := extractI18nNames(names)
-			if suffixTranslation.En == "Hisuian Form" {
-				suffixTranslation.En = hisuianTranslations["en"]
-				suffixTranslation.Ja = hisuianTranslations["ja"]
-				suffixTranslation.Es = hisuianTranslations["es"]
-				suffixTranslation.De = hisuianTranslations["de"]
-				suffixTranslation.It = hisuianTranslations["it"]
-				suffixTranslation.Fr = hisuianTranslations["fr"]
-				suffixTranslation.ZhHant = hisuianTranslations["zh-Hant"]
-				suffixTranslation.ZhHans = hisuianTranslations["zh-Hans"]
-				suffixTranslation.Ko = hisuianTranslations["ko"]
-			} else if suffixTranslation.En == "Paldean Form" {
-				suffixTranslation.En = paldeanTranslations["en"]
-				suffixTranslation.Ja = paldeanTranslations["ja"]
-				suffixTranslation.Es = paldeanTranslations["es"]
-				suffixTranslation.De = paldeanTranslations["de"]
-				suffixTranslation.It = paldeanTranslations["it"]
-				suffixTranslation.Fr = paldeanTranslations["fr"]
-				suffixTranslation.ZhHant = paldeanTranslations["zh-Hant"]
-				suffixTranslation.ZhHans = paldeanTranslations["zh-Hans"]
-				suffixTranslation.Ko = paldeanTranslations["ko"]
-			}
-			if suffixTranslation.En != "" {
-				baseTranslation.En = baseTranslation.En + " (" + suffixTranslation.En + ")"
-				if suffixTranslation.Es == "" {
-					suffixTranslation.Es = suffixTranslation.En
-				}
-				if suffixTranslation.De == "" {
-					suffixTranslation.De = suffixTranslation.En
-				}
-				if suffixTranslation.It == "" {
-					suffixTranslation.It = suffixTranslation.En
-				}
-				if suffixTranslation.Fr == "" {
-					suffixTranslation.Fr = suffixTranslation.En
-				}
-				if suffixTranslation.ZhHant == "" {
-					suffixTranslation.ZhHant = suffixTranslation.En
-				}
-				if suffixTranslation.ZhHans == "" {
-					suffixTranslation.ZhHans = suffixTranslation.En
-				}
-				if suffixTranslation.Ko == "" {
-					suffixTranslation.Ko = suffixTranslation.En
-				}
-			}
-			if suffixTranslation.Ja != "" {
-				baseTranslation.Ja = baseTranslation.Ja + " (" + suffixTranslation.Ja + ")"
-			}
-			if suffixTranslation.Es != "" {
-				baseTranslation.Es = baseTranslation.Es + " (" + suffixTranslation.Es + ")"
-			}
-			if suffixTranslation.De != "" {
-				baseTranslation.De = baseTranslation.De + " (" + suffixTranslation.De + ")"
-			}
-			if suffixTranslation.It != "" {
-				baseTranslation.It = baseTranslation.It + " (" + suffixTranslation.It + ")"
-			}
-			if suffixTranslation.Fr != "" {
-				baseTranslation.Fr = baseTranslation.Fr + " (" + suffixTranslation.Fr + ")"
-			}
-			if suffixTranslation.ZhHant != "" {
-				baseTranslation.ZhHant = baseTranslation.ZhHant + " (" + suffixTranslation.ZhHant + ")"
-			}
-			if suffixTranslation.ZhHans != "" {
-				baseTranslation.ZhHans = baseTranslation.ZhHans + " (" + suffixTranslation.ZhHans + ")"
-			}
-			if suffixTranslation.Ko != "" {
-				baseTranslation.Ko = baseTranslation.Ko + " (" + suffixTranslation.Ko + ")"
-			}
-
-			i18nMutex.Lock()
-			if option5 {
-				i18nSpecies[pokemonName] = baseTranslation
-			} else {
-				i18nData[pokemonName] = baseTranslation
-			}
-			i18nMutex.Unlock()
+			formResult := gjson.Parse(string(formData))
+			suffixTranslation = extractI18nNames(formResult.Get("form_names"))
 		}
+
+		baseTranslation := extractI18nNames(names)
+		if suffixTranslation.En == "Hisuian Form" {
+			suffixTranslation.En = hisuianTranslations["en"]
+			suffixTranslation.Ja = hisuianTranslations["ja"]
+			suffixTranslation.Es = hisuianTranslations["es"]
+			suffixTranslation.De = hisuianTranslations["de"]
+			suffixTranslation.It = hisuianTranslations["it"]
+			suffixTranslation.Fr = hisuianTranslations["fr"]
+			suffixTranslation.ZhHant = hisuianTranslations["zh-Hant"]
+			suffixTranslation.ZhHans = hisuianTranslations["zh-Hans"]
+			suffixTranslation.Ko = hisuianTranslations["ko"]
+		} else if suffixTranslation.En == "Paldean Form" {
+			suffixTranslation.En = paldeanTranslations["en"]
+			suffixTranslation.Ja = paldeanTranslations["ja"]
+			suffixTranslation.Es = paldeanTranslations["es"]
+			suffixTranslation.De = paldeanTranslations["de"]
+			suffixTranslation.It = paldeanTranslations["it"]
+			suffixTranslation.Fr = paldeanTranslations["fr"]
+			suffixTranslation.ZhHant = paldeanTranslations["zh-Hant"]
+			suffixTranslation.ZhHans = paldeanTranslations["zh-Hans"]
+			suffixTranslation.Ko = paldeanTranslations["ko"]
+		}
+		if suffixTranslation.En != "" {
+			baseTranslation.En = baseTranslation.En + " (" + suffixTranslation.En + ")"
+			if suffixTranslation.Es == "" {
+				suffixTranslation.Es = suffixTranslation.En
+			}
+			if suffixTranslation.De == "" {
+				suffixTranslation.De = suffixTranslation.En
+			}
+			if suffixTranslation.It == "" {
+				suffixTranslation.It = suffixTranslation.En
+			}
+			if suffixTranslation.Fr == "" {
+				suffixTranslation.Fr = suffixTranslation.En
+			}
+			if suffixTranslation.ZhHant == "" {
+				suffixTranslation.ZhHant = suffixTranslation.En
+			}
+			if suffixTranslation.ZhHans == "" {
+				suffixTranslation.ZhHans = suffixTranslation.En
+			}
+			if suffixTranslation.Ko == "" {
+				suffixTranslation.Ko = suffixTranslation.En
+			}
+		}
+		if suffixTranslation.Ja != "" {
+			baseTranslation.Ja = baseTranslation.Ja + " (" + suffixTranslation.Ja + ")"
+		}
+		if suffixTranslation.Es != "" {
+			baseTranslation.Es = baseTranslation.Es + " (" + suffixTranslation.Es + ")"
+		}
+		if suffixTranslation.De != "" {
+			baseTranslation.De = baseTranslation.De + " (" + suffixTranslation.De + ")"
+		}
+		if suffixTranslation.It != "" {
+			baseTranslation.It = baseTranslation.It + " (" + suffixTranslation.It + ")"
+		}
+		if suffixTranslation.Fr != "" {
+			baseTranslation.Fr = baseTranslation.Fr + " (" + suffixTranslation.Fr + ")"
+		}
+		if suffixTranslation.ZhHant != "" {
+			baseTranslation.ZhHant = baseTranslation.ZhHant + " (" + suffixTranslation.ZhHant + ")"
+		}
+		if suffixTranslation.ZhHans != "" {
+			baseTranslation.ZhHans = baseTranslation.ZhHans + " (" + suffixTranslation.ZhHans + ")"
+		}
+		if suffixTranslation.Ko != "" {
+			baseTranslation.Ko = baseTranslation.Ko + " (" + suffixTranslation.Ko + ")"
+		}
+
+		i18nMutex.Lock()
+		if option5 {
+			i18nSpecies[pokemonName] = baseTranslation
+		} else {
+			i18nData[pokemonName] = baseTranslation
+		}
+		i18nMutex.Unlock()
 	}
 
 	i18nMutex.Lock()
@@ -1059,17 +981,18 @@ func fetchTypeI18n(typeName string, option5 bool) error {
 
 	result := gjson.Parse(string(data))
 	names := result.Get("names")
-
-	if names.Exists() {
-		translation := extractI18nNames(names)
-		i18nMutex.Lock()
-		if option5 {
-			i18nTypes[typeName] = translation
-		} else {
-			i18nData[typeName] = translation
-		}
-		i18nMutex.Unlock()
+	if !names.IsArray() || len(names.Array()) == 0 {
+		return fmt.Errorf("响应缺少名称翻译")
 	}
+
+	translation := extractI18nNames(names)
+	i18nMutex.Lock()
+	if option5 {
+		i18nTypes[typeName] = translation
+	} else {
+		i18nData[typeName] = translation
+	}
+	i18nMutex.Unlock()
 
 	i18nMutex.Lock()
 	processedTypes[typeName] = true
@@ -1087,17 +1010,7 @@ func fetchAbilityI18n(abilityName string, option5 bool) error {
 	i18nMutex.RUnlock()
 
 	if translation, exists := abilityTranslations[abilityName]; exists {
-		trans := I18nTranslation{
-			En:     translation.En,
-			Ja:     translation.Ja,
-			Es:     translation.Es,
-			De:     translation.De,
-			It:     translation.It,
-			Fr:     translation.Fr,
-			ZhHant: translation.ZhHant,
-			ZhHans: translation.ZhHans,
-			Ko:     translation.Ko,
-		}
+		trans := translation
 		i18nMutex.Lock()
 		if option5 {
 			i18nAbilities[abilityName] = trans
@@ -1114,17 +1027,18 @@ func fetchAbilityI18n(abilityName string, option5 bool) error {
 
 		result := gjson.Parse(string(data))
 		names := result.Get("names")
-
-		if names.Exists() {
-			translation := extractI18nNames(names)
-			i18nMutex.Lock()
-			if option5 {
-				i18nAbilities[abilityName] = translation
-			} else {
-				i18nData[abilityName] = translation
-			}
-			i18nMutex.Unlock()
+		if !names.IsArray() || len(names.Array()) == 0 {
+			return fmt.Errorf("响应缺少名称翻译")
 		}
+
+		translation := extractI18nNames(names)
+		i18nMutex.Lock()
+		if option5 {
+			i18nAbilities[abilityName] = translation
+		} else {
+			i18nData[abilityName] = translation
+		}
+		i18nMutex.Unlock()
 	}
 
 	i18nMutex.Lock()
@@ -1133,40 +1047,37 @@ func fetchAbilityI18n(abilityName string, option5 bool) error {
 	return nil
 }
 
-// 获取 move 翻译
+// 获取 move 翻译；本地修正只覆盖非空字段，缺失语言回退到英文。
 func fetchMoveI18n(moveName string, moveURL string) error {
-
-	if translation, exists := moveTranslations[moveName]; exists {
-		trans := I18nTranslation{
-			En:     translation.En,
-			Ja:     translation.Ja,
-			Es:     translation.Es,
-			De:     translation.De,
-			It:     translation.It,
-			Fr:     translation.Fr,
-			ZhHant: translation.ZhHant,
-			ZhHans: translation.ZhHans,
-			Ko:     translation.Ko,
-		}
-		i18nMutex.Lock()
-		i18nMoves[moveName] = trans
-		i18nMutex.Unlock()
-	} else {
-
-		data, err := fetchURL(moveURL)
-		if err != nil {
-			return err
-		}
-		result := gjson.Parse(string(data))
-		names := result.Get("names")
-
-		if names.Exists() {
-			translation := extractI18nNames(names)
-			i18nMutex.Lock()
-			i18nMoves[moveName] = translation
-			i18nMutex.Unlock()
-		}
+	data, err := fetchURL(moveURL)
+	if err != nil {
+		return err
 	}
+	names := gjson.GetBytes(data, "names")
+	if !names.IsArray() || len(names.Array()) == 0 {
+		return fmt.Errorf("缺少招式名称: %s", moveName)
+	}
+	translation := extractI18nNames(names)
+	override := moveTranslations[moveName]
+	translation.En = cmp.Or(override.En, translation.En, moveName)
+	for _, field := range []struct {
+		value    *string
+		override string
+	}{
+		{&translation.Ja, override.Ja},
+		{&translation.Es, override.Es},
+		{&translation.De, override.De},
+		{&translation.It, override.It},
+		{&translation.Fr, override.Fr},
+		{&translation.ZhHant, override.ZhHant},
+		{&translation.ZhHans, override.ZhHans},
+		{&translation.Ko, override.Ko},
+	} {
+		*field.value = cmp.Or(field.override, *field.value, translation.En)
+	}
+	i18nMutex.Lock()
+	i18nMoves[moveName] = translation
+	i18nMutex.Unlock()
 	return nil
 }
 
@@ -1178,13 +1089,14 @@ func fetchItemI18n(itemName string, itemURL string) error {
 	}
 	result := gjson.Parse(string(data))
 	names := result.Get("names")
-
-	if names.Exists() {
-		translation := extractI18nNames(names)
-		i18nMutex.Lock()
-		i18nItems[itemName] = translation
-		i18nMutex.Unlock()
+	if !names.IsArray() || len(names.Array()) == 0 {
+		return fmt.Errorf("响应缺少名称翻译")
 	}
+
+	translation := extractI18nNames(names)
+	i18nMutex.Lock()
+	i18nItems[itemName] = translation
+	i18nMutex.Unlock()
 	return nil
 }
 
