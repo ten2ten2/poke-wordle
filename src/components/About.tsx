@@ -30,6 +30,7 @@ export default function About({ isOpen, onClose }: AboutProps) {
               className="btn-icon"
               onClick={onClose}
               aria-label={t('common.close')}
+              title={t('common.close')}
             >
               <XMarkIcon aria-hidden="true" />
             </button>
@@ -116,8 +117,8 @@ export default function About({ isOpen, onClose }: AboutProps) {
             </h3>
             <p className="text-secondary">
               {t.rich('about.dataSource.description', {
-                pokeapi: (chunks) => <a href="https://pokeapi.co" target="_blank" rel="noopener noreferrer" className="text-accent-text underline underline-offset-2">{chunks}</a>,
-                bulbapedia: (chunks) => <a href="https://bulbapedia.bulbagarden.net/wiki/Main_Page" target="_blank" rel="noopener noreferrer" className="text-accent-text underline underline-offset-2">{chunks}</a>,
+                pokeapi: (chunks) => <a title="PokéAPI" href="https://pokeapi.co" target="_blank" rel="noopener noreferrer" className="text-accent-text underline underline-offset-2">{chunks}</a>,
+                bulbapedia: (chunks) => <a title="Bulbapedia" href="https://bulbapedia.bulbagarden.net/wiki/Main_Page" target="_blank" rel="noopener noreferrer" className="text-accent-text underline underline-offset-2">{chunks}</a>,
               })}
             </p>
           </section>

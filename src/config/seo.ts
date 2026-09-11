@@ -12,6 +12,35 @@ const ogLocales: Record<SiteLocale, string> = {
 
 export const absoluteUrl = (path: string) => new URL(path, SITE_URL).href;
 
+export const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': absoluteUrl('/#website'),
+  url: absoluteUrl('/'),
+  name: SITE_NAME,
+  alternateName: ['Poké Wordle', '宝可梦猜猜乐', '寶可夢猜猜樂'],
+  inLanguage: [...routing.locales],
+};
+
+const shareImageAlt: Record<SiteLocale, string> = {
+  en: 'Poke Wordle gameplay showing a Pokémon guess and attribute clues.',
+  ja: 'ポケワードルのプレイ画面。回答したポケモンと属性のヒント。',
+  fr: 'Partie de Poke Wordle avec un Pokémon proposé et les indices de ses attributs.',
+  de: 'Poke Wordle mit einem geratenen Pokémon und Hinweisen zu seinen Eigenschaften.',
+  it: 'Partita di Poke Wordle con un Pokémon proposto e indizi sui suoi attributi.',
+  es: 'Partida de Poke Wordle con un Pokémon propuesto y pistas sobre sus atributos.',
+  ko: '추측한 포켓몬과 속성 힌트가 표시된 포케 워들 게임 화면.',
+  'zh-hans': '宝可梦猜猜乐游戏画面，展示猜测的宝可梦及属性提示。',
+  'zh-hant': '寶可夢猜猜樂遊戲畫面，展示猜測的寶可夢及屬性提示。',
+};
+
+function twitterHandle(value: string | undefined) {
+  const handle = value?.trim();
+  if (!handle) return undefined;
+  if (!/^@[A-Za-z0-9_]{1,15}$/.test(handle)) throw new Error('Twitter metadata must use a real @username (1–15 letters, numbers or underscores).');
+  return handle;
+}
+
 export function pageAlternates(path: string, locales: readonly string[] = routing.locales) {
   return Object.fromEntries([
     ...locales.map((locale) => [locale, localePath(locale, path)]),
@@ -30,7 +59,9 @@ interface PageMetadata {
 }
 
 export function pageMetadata({ locale, title, description, path, languages, image, article }: PageMetadata): Metadata {
-  const images = [image || '/images/og-image.png'];
+  const images = [image
+    ? { url: absoluteUrl(image), alt: title }
+    : { url: absoluteUrl('/images/og-image.png'), width: 1200, height: 630, type: 'image/png', alt: shareImageAlt[locale] }];
   const common = {
     title, description, url: absoluteUrl(path), siteName: SITE_NAME,
     images, locale: ogLocales[locale],
@@ -40,11 +71,21 @@ export function pageMetadata({ locale, title, description, path, languages, imag
   };
   return {
     title, description,
+    applicationName: SITE_NAME,
+    authors: [{ name: SITE_NAME, url: SITE_URL }],
+    creator: SITE_NAME,
+    publisher: SITE_NAME,
+    robots: { 'max-image-preview': 'large' },
     alternates: { canonical: absoluteUrl(path), languages },
     openGraph: article
-      ? { ...common, type: 'article', publishedTime: article.createdAt, modifiedTime: article.updatedAt ?? article.createdAt }
+      ? { ...common, type: 'article', publishedTime: article.createdAt, modifiedTime: article.updatedAt ?? article.createdAt, authors: [SITE_URL] }
       : { ...common, type: 'website' },
-    twitter: { card: 'summary_large_image', title, description, images: image ? [image] : ['/images/twitter-image.png'] },
+    twitter: {
+      card: 'summary_large_image', title, description,
+      site: twitterHandle(process.env.TWITTER_SITE),
+      creator: twitterHandle(process.env.TWITTER_CREATOR),
+      images: image ? images : [{ url: absoluteUrl('/images/twitter-image.png'), alt: shareImageAlt[locale] }],
+    },
   };
 }
 

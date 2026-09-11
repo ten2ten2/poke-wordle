@@ -110,13 +110,17 @@ export function createDataBrowser({ api, notify }) {
       node.append(lead, nameBlock(words(row.types), `第 ${row.generation} 世代`), nameBlock(words(row.abilities), `种族值 ${row.base_stats_total}`));
       node.setAttribute('aria-label', `查看 ${title}`);
     } else if (state.tab === 'translations') {
+      node.setAttribute('aria-label', `查看 ${label(item.key)} 的多语言名称`);
       node.append(nameBlock(label(item.key), `${kinds[item.kind]} · ${item.key}`), nameBlock(item.row.en ?? '—', item.row.ja ?? '—'));
     } else if (state.tab === 'images') {
       const title = item.pokemon ? label(item.pokemon.name) : `图片 ${spriteID(item.url) ?? ''}`;
+      node.setAttribute('aria-label', `查看 ${title}`);
       node.append(image(item.url, ''), nameBlock(title, item.pokemon?.name ?? item.url));
     } else {
+      node.setAttribute('aria-label', `查看 ${item.row.title}`);
       node.append(nameBlock(item.row.title, item.row.slug), nameBlock(languages[item.locale] ?? item.locale, item.row.id));
     }
+    node.title = node.getAttribute('aria-label');
     node.append(element('span', '查看 ›', 'data-open')); node.addEventListener('click', () => openDetail(item)); return node;
   }
   function render() {

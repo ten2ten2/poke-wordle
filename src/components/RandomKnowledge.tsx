@@ -40,6 +40,7 @@ function KnowledgeBanner({ articles, randomize }: { articles: KnowledgeArticle[]
     <div className="container-responsive w-full py-2">
       <Link
         href={href}
+        title={`${t('knowledge.randomPrefix')}${article.title}`}
         className="knowledge-banner"
       >
         <QuestionMarkCircleIcon className="size-5 shrink-0 text-accent-text" aria-hidden="true" />

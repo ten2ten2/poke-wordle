@@ -6,7 +6,7 @@ import { get as httpsGet } from 'node:https';
 import { setTimeout as delay } from 'node:timers/promises';
 import { once } from 'node:events';
 import { routing, localePath } from '@/i18n/routing';
-import { absoluteUrl, SITE_URL } from '@/config/seo';
+import { absoluteUrl, SITE_URL, SITE_NAME } from '@/config/seo';
 import { knowledgeData, knowledgeArticlePath, KNOWLEDGE_SUPPORTED_LOCALES } from '@/config/knowledge';
 import redirects from '@/data/knowledge-redirects.json';
 
@@ -127,12 +127,28 @@ test.each(paths)('%s renders indexable HTML with canonical, reciprocal languages
   expect(content(doc, 'og:description')).toBe(content(doc, 'description'));
   expect(new URL(content(doc, 'og:url')!).href).toBe(canonical);
   expect(content(doc, 'og:locale')).toBeTruthy();
+  expect(content(doc, 'og:site_name')).toBe(SITE_NAME);
+  expect(content(doc, 'application-name')).toBe(SITE_NAME);
+  expect(content(doc, 'author')).toBe(SITE_NAME);
+  expect(content(doc, 'robots')).toContain('max-image-preview:large');
   expect(content(doc, 'twitter:card')).toBe('summary_large_image');
+  expect(content(doc, 'twitter:title')).toBe(doc.title);
+  expect(content(doc, 'twitter:description')).toBe(content(doc, 'description'));
+  for (const key of ['twitter:site', 'twitter:creator']) {
+    const handle = content(doc, key);
+    if (handle !== undefined) expect(handle).toMatch(/^@[A-Za-z0-9_]{1,15}$/);
+  }
   for (const key of ['og:image', 'twitter:image']) {
     const image = content(doc, key); expect(image).toBeTruthy();
+    expect(content(doc, `${key}:alt`)?.trim().length).toBeGreaterThan(0);
     const result = await response(image!);
     expect({ image, status: result.status }).toEqual({ image, status: 200 });
     expect(result.headers['content-type']).toMatch(/^image\//);
+  }
+  if (content(doc, 'og:image') === absoluteUrl('/images/og-image.png')) {
+    expect(content(doc, 'og:image:width')).toBe('1200');
+    expect(content(doc, 'og:image:height')).toBe('630');
+    expect(content(doc, 'og:image:type')).toBe('image/png');
   }
   const language = doc.documentElement.lang.toLowerCase();
   const languages = alternates(doc);
@@ -155,9 +171,17 @@ test.each(paths)('%s renders indexable HTML with canonical, reciprocal languages
     }
   }
   for (const link of doc.querySelectorAll('a[href]')) {
+    expect({ href: link.getAttribute('href'), title: !!link.getAttribute('title')?.trim() }).toEqual({ href: link.getAttribute('href'), title: true });
     const url = new URL(link.getAttribute('href')!, canonical);
     if (url.origin === SITE_URL && url.pathname.includes('/knowledge')) await page(url.href);
   }
+  for (const button of doc.querySelectorAll('button')) expect(button.getAttribute('title')?.trim().length).toBeGreaterThan(0);
+});
+
+test('the canonical root describes the website with its actual name and URL', async () => {
+  const websites = schema(await page('/')).filter((item) => item['@type'] === 'WebSite');
+  expect(websites).toHaveLength(1);
+  expect(websites[0]).toMatchObject({ '@id': absoluteUrl('/#website'), name: SITE_NAME, url: absoluteUrl('/'), inLanguage: [...routing.locales] });
 });
 
 test.each(articleEntries)('$locale / $article.slug uses the localized index for its metadata and Article schema', async ({ locale, article, path }) => {

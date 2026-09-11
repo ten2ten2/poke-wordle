@@ -113,7 +113,7 @@ export default function GameInput({ pokemon, onSubmit, onRandomStart, onGiveUp, 
                 </ComboboxOptions>
               )}
             </div>
-            <button type="submit" disabled={blocked || gameOver || !query} className="btn-primary" aria-busy={pending}>
+            <button title={t(blocked ? 'game.submitting' : 'game.submit')} type="submit" disabled={blocked || gameOver || !query} className="btn-primary" aria-busy={pending}>
               {blocked ? <span className="inline-flex items-center gap-2"><span className="loading-spinner size-4" aria-hidden="true" />{t('game.submitting')}</span> : t('game.submit')}
             </button>
           </div>
@@ -127,17 +127,17 @@ export default function GameInput({ pokemon, onSubmit, onRandomStart, onGiveUp, 
           </p>
         )}
         <div className="flex flex-wrap items-center justify-end gap-1">
-          {gameStarted && !gameOver && <button type="button" onClick={() => requestAction('giveUp')} disabled={blocked} className="btn-ghost">{t('game.giveUp')}</button>}
-          {guessCount === 0 && <button type="button" onClick={() => { resetInput(); onRandomStart(); }} disabled={blocked || gameOver} className="btn-ghost">{t('game.randomStart')}</button>}
-          {guessCount > 0 && <button type="button" onClick={() => requestAction('restart')} disabled={blocked} className="btn-ghost">{t('game.restart')}</button>}
+          {gameStarted && !gameOver && <button title={t('game.giveUp')} type="button" onClick={() => requestAction('giveUp')} disabled={blocked} className="btn-ghost">{t('game.giveUp')}</button>}
+          {guessCount === 0 && <button title={t('game.randomStart')} type="button" onClick={() => { resetInput(); onRandomStart(); }} disabled={blocked || gameOver} className="btn-ghost">{t('game.randomStart')}</button>}
+          {guessCount > 0 && <button title={t('game.restart')} type="button" onClick={() => requestAction('restart')} disabled={blocked} className="btn-ghost">{t('game.restart')}</button>}
         </div>
       </div>
       {confirm && (
         <div className="action-confirmation" role="group" aria-label={t(`game.${confirm === 'giveUp' ? 'confirmGiveUp' : 'confirmRestart'}`)}>
           <p>{t(`game.${confirm === 'giveUp' ? 'confirmGiveUp' : 'confirmRestart'}`)}</p>
           <div className="flex gap-2">
-            <button type="button" className="btn-secondary" onClick={() => setConfirm(null)}>{t('common.cancel')}</button>
-            <button type="button" className="btn-danger" onClick={() => {
+            <button title={t('common.cancel')} type="button" className="btn-secondary" onClick={() => setConfirm(null)}>{t('common.cancel')}</button>
+            <button title={t('game.confirmAction')} type="button" className="btn-danger" onClick={() => {
               const action = confirm; resetInput();
               if (action === 'giveUp') onGiveUp(); else onRestart();
             }}>{t('game.confirmAction')}</button>

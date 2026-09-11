@@ -126,6 +126,8 @@
     "about": "关于",
     "settings": "设置",
     "language": "语言",
+    "switchLanguage": "切换到{language}",
+    "languageDescription": "从下方列表中选择语言",
     "knowledge": "知识库",
     "lightMode": "切换到日间模式",
     "darkMode": "切换到夜间模式",

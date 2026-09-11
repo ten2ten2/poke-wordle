@@ -196,7 +196,11 @@ test('language switch updates the route and document language', async ({
 }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Language', exact: true }).click();
-  await page.getByRole('button', { name: 'Switch to 简体中文' }).click();
+  const languageLink = page.getByRole('link', { name: 'Switch to 简体中文' });
+  await expect(languageLink).toHaveAttribute('href', '/zh-hans');
+  await expect(languageLink).toHaveAttribute('hreflang', 'zh-hans');
+  await languageLink.focus();
+  await page.keyboard.press('Enter');
   await expect(page).toHaveURL('/zh-hans');
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-hans');
   await expect(page.getByRole('combobox')).toHaveAttribute(

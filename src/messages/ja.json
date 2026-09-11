@@ -126,6 +126,8 @@
     "about": "について",
     "settings": "設定",
     "language": "言語",
+    "switchLanguage": "{language}に切り替える",
+    "languageDescription": "以下の一覧から言語を選択してください",
     "knowledge": "ナレッジ",
     "lightMode": "ライトモードに切り替え",
     "darkMode": "ダークモードに切り替え",

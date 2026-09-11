@@ -134,6 +134,15 @@ test('static MDX preview supports existing components and never runs embedded Ja
   assert.equal(globalThis.injected, undefined);
 });
 
+test('MDX link hints preserve authored titles and derive missing titles from formatted labels', async () => {
+  const html = await inspectMdx('[**宝可梦**资料](https://example.com)\n\n[资料](https://example.com "官方资料")\n\n<a href="/knowledge"><strong>知识</strong>文章</a>\n\n<a href="/knowledge" title="作者提示">文章</a>\n\n[![图鉴](/images/og-image.png)](/knowledge)');
+  assert.match(html, /title="宝可梦资料"/);
+  assert.match(html, /title="官方资料"/);
+  assert.match(html, /title="知识文章"/);
+  assert.match(html, /title="作者提示"/);
+  assert.match(html, /title="图鉴"/);
+});
+
 test('console exposes knowledge editing and isolated preview with the existing session protection', async (t) => {
   const fixture = await createFixture(); t.after(fixture.cleanup);
   const { createConsole } = await import(pathToFileURL(path.join(fixture.tool, 'console.mjs')));

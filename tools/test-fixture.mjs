@@ -10,7 +10,7 @@ export async function createFixture() {
   const tool = path.join(dir, 'tools'); const data = path.join(dir, 'src/data');
   await fs.mkdir(tool, { recursive: true }); await fs.mkdir(data, { recursive: true });
   const originalTool = new URL('./', import.meta.url);
-  const names = (await fs.readdir(originalTool)).filter((file) => file.endsWith('.go') || ['go.mod', 'go.sum', 'corrections.json', 'id-registry.json', 'pipeline.mjs', 'review-state.mjs', 'console-model.mjs', 'console.mjs', 'knowledge-model.mjs', 'knowledge-mdx.mjs'].includes(file));
+  const names = (await fs.readdir(originalTool)).filter((file) => file.endsWith('.go') || ['go.mod', 'go.sum', 'corrections.json', 'id-registry.json', 'pipeline.mjs', 'review-state.mjs', 'console-model.mjs', 'console.mjs', 'knowledge-model.mjs', 'knowledge-mdx.mjs', 'rehype-link-titles.mjs'].includes(file));
   for (const name of names) await fs.copyFile(new URL(name, originalTool), path.join(tool, name));
   await fs.cp(new URL('./console', import.meta.url), path.join(tool, 'console'), { recursive: true });
   await fs.symlink(path.resolve(import.meta.dirname, '../node_modules'), path.join(dir, 'node_modules'), 'dir');

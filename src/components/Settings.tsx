@@ -95,6 +95,7 @@ function SettingsForm({
               className="btn-icon"
               onClick={handleCancel}
               aria-label={t('common.close')}
+              title={t('common.close')}
             >
               <XMarkIcon aria-hidden="true" />
             </button>
@@ -112,6 +113,7 @@ function SettingsForm({
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
+                  title={t('settings.reverseOrderDesc')}
                   aria-pressed={localSettings.guessOrder === 'reverse'}
                   onClick={() =>
                     setLocalSettings((prev) => ({
@@ -132,6 +134,7 @@ function SettingsForm({
                 </button>
                 <button
                   type="button"
+                  title={t('settings.normalOrderDesc')}
                   aria-pressed={localSettings.guessOrder === 'normal'}
                   onClick={() =>
                     setLocalSettings((prev) => ({
@@ -163,6 +166,7 @@ function SettingsForm({
                 {guessOptions.map((value) => (
                   <button
                     key={value}
+                    title={`${t('settings.maxGuesses')}: ${value}`}
                     type="button"
                     aria-pressed={localSettings.maxGuesses === value}
                     onClick={() => handleMaxGuessesChange(value)}
@@ -184,6 +188,7 @@ function SettingsForm({
                   <button
                     type="button"
                     onClick={handleSelectAllGenerations}
+                    title={t('settings.selectAll')}
                     className="btn-ghost"
                   >
                     {t('settings.selectAll')}
@@ -192,6 +197,7 @@ function SettingsForm({
                   <button
                     type="button"
                     onClick={handleDeselectAllGenerations}
+                    title={t('settings.deselectAll')}
                     className="btn-ghost"
                   >
                     {t('settings.deselectAll')}
@@ -202,6 +208,7 @@ function SettingsForm({
                 {generations.map((gen) => (
                   <button
                     key={gen}
+                    title={t(`generation.Gen${gen}`)}
                     type="button"
                     aria-pressed={localSettings.selectedGenerations.includes(
                       gen,
@@ -226,6 +233,7 @@ function SettingsForm({
                 <div className="flex items-center h-5">
                   <input
                     id="genArrow"
+                    title={t('settings.genArrowDesc')}
                     type="checkbox"
                     checked={localSettings.isGenArrow}
                     onChange={handleGenArrowToggle}
@@ -249,6 +257,7 @@ function SettingsForm({
                 <div className="flex items-center h-5">
                   <input
                     id="prankster"
+                    title={t('settings.pranksterModeDesc')}
                     type="checkbox"
                     checked={localSettings.isPrankster}
                     onChange={handlePranksterToggle}
@@ -273,6 +282,7 @@ function SettingsForm({
               <button
                 type="button"
                 onClick={handleCancel}
+                title={t('common.cancel')}
                 className="btn-secondary w-full sm:w-auto"
               >
                 {t('common.cancel')}
@@ -280,6 +290,7 @@ function SettingsForm({
               <button
                 type="button"
                 onClick={handleSave}
+                title={t('common.save')}
                 disabled={localSettings.selectedGenerations.length === 0}
                 className="btn-primary w-full sm:w-auto"
               >

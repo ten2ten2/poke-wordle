@@ -38,6 +38,7 @@ export default function KnowledgeArchive() {
                   <li key={article.id}>
                     <Link
                       href={`${prefix}/knowledge/${encodeURIComponent(article.slug)}`}
+                      title={article.title}
                       className="knowledge-list-link"
                     >
                       <Pokeball className="size-6 shrink-0" />

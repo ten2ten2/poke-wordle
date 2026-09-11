@@ -43,6 +43,7 @@ export function createKnowledgeEditor({ api, notify }) {
       && (!query || Object.values(item.versions).some((value) => `${value.title} ${value.slug}`.toLowerCase().includes(query))));
     $('knowledge-list').replaceChildren(...rows.map((item) => {
       const button = element('button', undefined, 'knowledge-article-button btn-option');
+      button.title = `编辑 ${item.title}`;
       button.setAttribute('aria-current', item.id === state.id ? 'page' : 'false');
       button.append(element('strong', item.title));
       const chips = element('span', undefined, 'knowledge-language-chips');

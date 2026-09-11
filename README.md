@@ -48,7 +48,9 @@ GitHub Actions 在 `dev`、`main` 推送及 Pull Request 时执行 `mise run che
 
 SEO 校验会临时启动生产服务器，逐页检查构建后的输出，不需要浏览器安装。单独运行时先执行 `mise run build`。部署后可运行 `SEO_BASE_URL=https://www.pokewordle.app mise run seo:check`，核对线上页面是否与当前索引一致；自定义外部分享图片需要网络访问。
 
-文章摘要必须使用对应语言；Article 和面包屑结构化数据自动生成。改名会把历史地址直接永久跳转到最新地址，删除版本后对应地址返回 404。重复保存不刷新 `updatedAt`；手动实质修改正文或摘要时同步更新索引日期。sitemap 不使用 `priority`、`changefreq`，也不随构建或版权年份刷新日期。
+分享元数据统一生成，包含图片描述；`TWITTER_SITE` 和 `TWITTER_CREATOR` 仅填写真实的 `@账号`，没有账号时留空，不输出对应标签，修改后需重新构建。根首页输出 WebSite 结构化数据。
+
+文章摘要必须使用对应语言；Article 和面包屑结构化数据自动生成。MDX 链接缺少 `title` 时从链接文字自动补齐，已有提示保留，控制台预览与网站一致。改名会把历史地址直接永久跳转到最新地址，删除版本后对应地址返回 404。重复保存不刷新 `updatedAt`；手动实质修改正文或摘要时同步更新索引日期。sitemap 不使用 `priority`、`changefreq`，也不随构建或版权年份刷新日期。
 
 上线后在 Google Search Console 提交 `/sitemap.xml`，对重点修改的页面使用 URL 检查，查看收录状态、Google 选择的规范网址和 404。自动校验通过表示页面技术条件正常，不等于搜索引擎已经收录。[重新抓取流程](https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl)。
 

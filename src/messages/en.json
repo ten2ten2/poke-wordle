@@ -126,6 +126,8 @@
     "about": "About",
     "settings": "Settings",
     "language": "Language",
+    "switchLanguage": "Switch to {language}",
+    "languageDescription": "Select your preferred language from the list below",
     "knowledge": "Knowledge",
     "lightMode": "Switch to light mode",
     "darkMode": "Switch to dark mode",

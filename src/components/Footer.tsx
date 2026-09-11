@@ -28,7 +28,7 @@ export default function Footer() {
             {/* Links */}
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
               {isKnowledgeSupported(locale) && (
-                <Link href={`${prefix}/knowledge`} className="footer-link">
+                <Link href={`${prefix}/knowledge`} title={t('knowledge.title')} className="footer-link">
                   {t('knowledge.title')}
                 </Link>
               )}

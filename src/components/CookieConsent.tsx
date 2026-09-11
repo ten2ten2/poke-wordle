@@ -53,15 +53,16 @@ export default function CookieConsent({
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <button onClick={() => choose('declined')} className="btn-secondary">
+          <button title={t('decline')} onClick={() => choose('declined')} className="btn-secondary">
             {t('decline')}
           </button>
-          <button onClick={() => choose('accepted')} className="btn-primary">
+          <button title={t('accept')} onClick={() => choose('accepted')} className="btn-primary">
             {t('accept')}
           </button>
           <button
             onClick={() => setDismissed(true)}
             aria-label={t('close')}
+            title={t('close')}
             className="btn-icon"
           >
             <XMarkIcon aria-hidden="true" />

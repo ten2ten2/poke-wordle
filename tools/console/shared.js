@@ -2,6 +2,7 @@ export const $ = (id) => document.getElementById(id);
 export const element = (tag, text, className) => {
   const node = document.createElement(tag);
   if (text !== undefined) node.textContent = text;
+  if (text !== undefined && ['a', 'button'].includes(tag)) node.title = text;
   if (className) node.className = className;
   return node;
 };

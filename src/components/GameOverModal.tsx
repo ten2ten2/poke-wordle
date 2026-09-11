@@ -49,6 +49,7 @@ export default function GameOverModal({
             className="btn-icon"
             onClick={onClose}
             aria-label={t('common.close')}
+            title={t('common.close')}
           >
             <XMarkIcon aria-hidden="true" />
           </button>
@@ -243,6 +244,7 @@ export default function GameOverModal({
           <button
             type="button"
             onClick={onRestart}
+            title={t('game.playAgain')}
             className="btn-primary flex-1"
           >
             {t('game.playAgain')}

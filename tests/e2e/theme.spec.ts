@@ -49,7 +49,7 @@ test('theme persists across all page types, language changes and reloads', async
   await page.getByRole('link', { name: /Why do forms have different Mega Evolution tags/ }).click();
   await expect(page).toHaveURL(/\/knowledge\//);
   await page.getByRole('button', { name: 'Language', exact: true }).click();
-  await page.getByRole('button', { name: 'Switch to 简体中文', exact: true }).click();
+  await page.getByRole('link', { name: 'Switch to 简体中文', exact: true }).click();
   await expect(page).toHaveURL(/\/zh-hans\/knowledge\//);
   await expect(page.getByRole('button', { name: '切换到日间模式', exact: true })).toBeVisible();
   await page.getByRole('button', { name: '切换到日间模式', exact: true }).click();

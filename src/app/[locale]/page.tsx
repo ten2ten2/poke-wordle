@@ -1,5 +1,7 @@
 import { setRequestLocale } from 'next-intl/server';
 import Game from '@/components/Game';
+import JsonLd from '@/components/mdx/JsonLd';
+import { websiteSchema } from '@/config/seo';
 
 export default async function GamePage({
   params,
@@ -8,5 +10,8 @@ export default async function GamePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <Game />;
+  return <>
+    {locale === 'en' && <JsonLd data={websiteSchema} />}
+    <Game />
+  </>;
 }

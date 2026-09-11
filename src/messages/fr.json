@@ -126,6 +126,8 @@
     "about": "À propos",
     "settings": "Paramètres",
     "language": "Langue",
+    "switchLanguage": "Passer en {language}",
+    "languageDescription": "Sélectionnez votre langue dans la liste ci-dessous",
     "lightMode": "Passer au mode clair",
     "darkMode": "Passer au mode sombre",
     "main_navigation": "Navigation Principale"

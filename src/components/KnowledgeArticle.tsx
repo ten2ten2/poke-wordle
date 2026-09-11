@@ -77,7 +77,7 @@ export default async function KnowledgeArticle({ article, locale }: KnowledgeArt
             <nav aria-label={t('relatedArticles')} className="space-y-3">
               <h2 className="text-lg font-semibold text-foreground">{t('relatedArticles')}</h2>
               {relatedArticles.map((related) => (
-                <Link key={related.id} href={knowledgeArticlePath(locale, related.slug)} className="knowledge-banner">
+                <Link key={related.id} href={knowledgeArticlePath(locale, related.slug)} title={related.title} className="knowledge-banner">
                   <span className="min-w-0 flex-1">{related.title}</span>
                   <ArrowRightIcon className="size-4 shrink-0 text-accent-text" aria-hidden="true" />
                 </Link>

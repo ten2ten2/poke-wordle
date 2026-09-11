@@ -65,6 +65,7 @@ export default function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
                 {item.href && !item.current ? (
                   <Link
                     href={item.href}
+                    title={item.label}
                     className="ml-2 text-sm font-medium text-muted hover:text-secondary transition-colors duration-200"
                     aria-current={item.current ? 'page' : undefined}
                   >

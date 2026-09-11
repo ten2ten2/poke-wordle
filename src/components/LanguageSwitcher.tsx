@@ -1,10 +1,11 @@
 'use client';
 
-import { DialogTitle } from '@headlessui/react';
+import { Description, DialogTitle } from '@headlessui/react';
 import Modal from './Modal';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useTranslations, useLocale } from 'next-intl';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { localePath } from '@/i18n/routing';
 import { KnowledgeArticle } from '@/config/knowledge';
 
@@ -35,7 +36,6 @@ export default function LanguageSwitcher({
 }: LanguageSwitcherProps) {
   const t = useTranslations();
   const locale = useLocale();
-  const router = useRouter();
   const pathname = usePathname();
 
   // Filter languages based on availableLocales prop, or show all if not provided
@@ -43,11 +43,8 @@ export default function LanguageSwitcher({
     ? languages.filter((lang) => availableLocales.includes(lang.code))
     : languages;
 
-  const handleLanguageChange = (newLocale: string) => {
-    if (newLocale === locale) {
-      onClose();
-      return;
-    }
+  const languageHref = (newLocale: string) => {
+    if (newLocale === locale) return pathname;
     let path =
       locale === 'en' ? pathname : pathname.slice(locale.length + 1) || '/';
     if (currentArticle) {
@@ -56,9 +53,7 @@ export default function LanguageSwitcher({
         ? `/knowledge/${encodeURIComponent(translated.slug)}`
         : '/knowledge';
     }
-    router.push(localePath(newLocale, path));
-
-    onClose();
+    return localePath(newLocale, path);
   };
 
   return (
@@ -77,36 +72,40 @@ export default function LanguageSwitcher({
             onClick={onClose}
             className="btn-icon"
             aria-label={t('common.close') || 'Close dialog'}
+            title={t('common.close')}
           >
             <XMarkIcon aria-hidden="true" />
           </button>
         </header>
 
-        <main>
-          <p id="language-switcher-description" className="sr-only">
-            Select your preferred language from the list below
-          </p>
-          <nav aria-label="Language selection">
+        <div>
+          <Description id="language-switcher-description" className="sr-only">
+            {t('navbar.languageDescription')}
+          </Description>
+          <nav aria-label={t('navbar.language')}>
             <ul className="space-y-2" role="list">
               {filteredLanguages.map((language) => (
                 <li key={language.code}>
-                  <button
-                    type="button"
-                    onClick={() => handleLanguageChange(language.code)}
-                    className="btn-option w-full justify-start text-left"
-                    aria-current={locale === language.code ? 'true' : 'false'}
-                    aria-label={`Switch to ${language.name}`}
+                  <Link
+                    href={languageHref(language.code)}
+                    hrefLang={language.code}
+                    prefetch={false}
+                    onNavigate={(event) => {
+                      if (language.code === locale) event.preventDefault();
+                      onClose();
+                    }}
+                    className="button-link btn-option w-full justify-start text-left"
+                    aria-current={locale === language.code ? 'page' : undefined}
+                    aria-label={t('navbar.switchLanguage', { language: language.name })}
+                    title={t('navbar.switchLanguage', { language: language.name })}
                   >
-                    <span aria-hidden="true">{language.name}</span>
-                    {locale === language.code && (
-                      <span className="sr-only"> (current language)</span>
-                    )}
-                  </button>
+                    <span lang={language.code}>{language.name}</span>
+                  </Link>
                 </li>
               ))}
             </ul>
           </nav>
-        </main>
+        </div>
       </div>
     </Modal>
   );

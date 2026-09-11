@@ -64,6 +64,7 @@ async function loadRuns(preferred) {
 function renderRuns(id) {
   $('runs').replaceChildren(...state.runs.map((run) => {
     const button = element('button', undefined, 'run-button btn-option');
+    button.title = `查看批次 ${run.id} · ${date(run.started_at)}`;
     button.setAttribute('aria-current', run.id === id ? 'page' : 'false');
     button.append(element('span', date(run.started_at), 'run-date'), element('span', run.id.slice(-16), 'run-short'), badge(run.status));
     button.addEventListener('click', () => loadRun(run.id).catch((error) => notify(error.message)));
@@ -153,13 +154,15 @@ function renderItems() {
     const row = element('article', undefined, 'item-row'); const name = element('div', undefined, 'item-name');
     if (editable() && item.requiresDecision && !item.highRisk) {
       const input = element('input'); input.type = 'checkbox'; input.checked = state.selected.has(item.id); input.setAttribute('aria-label', `选择 ${item.label} ${fields[item.field] ?? item.field}`);
+      input.title = input.getAttribute('aria-label');
       input.addEventListener('change', () => { if (input.checked) state.selected.add(item.id); else state.selected.delete(item.id); renderSelection(visible); }); name.append(input);
     }
     const open = element('button', undefined, 'btn-ghost'); open.append(element('strong', item.label), element('small', item.category === 'image' ? 'prankster' : item.entity), element('span', `${fields[item.field] ?? (item.field || '整条记录')}${item.highRisk ? ' · 身份变更' : ''}`, 'field-label'));
+    open.title = `查看 ${item.label} · ${fields[item.field] ?? (item.field || '整条记录')}`;
     open.addEventListener('click', () => showDetail(item)); name.append(open);
     const action = element('div', undefined, 'item-decision');
     const status = !item.requiresDecision ? 'correction' : historical() ? 'applied' : item.decision?.status ?? 'pending';
-    const button = element('button', undefined, 'btn-ghost'); button.append(badge(status, !item.requiresDecision ? '查看依据' : historical() ? '查看' : statuses[status])); button.addEventListener('click', () => showDetail(item)); action.append(button);
+    const button = element('button', undefined, 'btn-ghost'); button.append(badge(status, !item.requiresDecision ? '查看依据' : historical() ? '查看' : statuses[status])); button.title = `查看 ${item.label} · ${button.textContent}`; button.addEventListener('click', () => showDetail(item)); action.append(button);
     row.append(name, valueNode(item, item.before, 'before'), valueNode(item, item.after, 'after'), action); $('items').append(row);
   }
   $('result-count').textContent = `${matches.length} 项`;
