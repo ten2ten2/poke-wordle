@@ -27,7 +27,7 @@ export default function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
       className={`flex ${className}`}
       aria-label={t('common.breadcrumb', { defaultValue: 'Breadcrumb' })}
     >
-      <ol role="list" className="flex items-center space-x-2">
+      <ol role="list" className="flex flex-wrap items-center gap-y-2 space-x-2">
         {/* Home link */}
         <li>
           <div>

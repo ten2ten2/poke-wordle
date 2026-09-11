@@ -1,6 +1,7 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
+import { ArrowRightIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { KnowledgeData, isKnowledgeSupported } from '@/config/knowledge';
 import knowledgeDataRaw from '@/data/knowledge_data.json';
@@ -34,16 +35,18 @@ export default function RandomKnowledge() {
       : `/${locale}/knowledge/${encodedSlug}`;
 
   return (
-    <div className="py-5">
-      <div className="container-responsive px-4 py-2">
-        <Link
-          href={href}
-          className="block text-center text-sm text-gray-500 hover:text-red-700 transition-colors"
-        >
-          <span className="font-medium">{t('knowledge.randomPrefix')}</span>
-          <span className="hover:underline">{article.title}</span>
-        </Link>
-      </div>
+    <div className="container-responsive w-full py-2">
+      <Link
+        href={href}
+        className="knowledge-banner"
+      >
+        <QuestionMarkCircleIcon className="size-5 shrink-0 text-red-600" aria-hidden="true" />
+        <span className="min-w-0 flex-1">
+          <span className="font-semibold text-red-700">{t('knowledge.randomPrefix')}</span>
+          <span>{article.title}</span>
+        </span>
+        <ArrowRightIcon className="size-4 shrink-0 text-red-600" aria-hidden="true" />
+      </Link>
     </div>
   );
 }

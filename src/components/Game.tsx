@@ -236,6 +236,8 @@ function Game({ ready }: { ready: boolean }) {
               disabled={!ready || isLoading}
               gameStarted={!!gameState.targetPokemon}
               gameOver={gameState.isGameOver}
+              guessCount={gameState.guesses.length}
+              maxGuesses={gameState.settings.maxGuesses}
             />
 
             {error && (
@@ -248,63 +250,40 @@ function Game({ ready }: { ready: boolean }) {
               </div>
             )}
           </section>
-          <section
-            className="text-center"
-            aria-labelledby="game-status-heading"
-          >
-            <h2 id="game-status-heading" className="sr-only">
-              {t('game.statusSection')}
-            </h2>
-            {gameState.targetPokemon ? (
-              <div className="space-y-3">
-                <p
-                  className="text-base font-medium tabular-nums text-gray-700"
-                  aria-live="polite"
-                >
-                  {t('game.guessCount', {
-                    current: gameState.guesses.length,
-                    max: gameState.settings.maxGuesses,
-                  })}
+          {gameState.targetPokemon && gameState.isGameOver && (
+            <section
+              className="text-center animate-bounce-subtle"
+              aria-labelledby="game-status-heading"
+              aria-live="assertive"
+            >
+              <h2 id="game-status-heading" className="sr-only">
+                {t('game.statusSection')}
+              </h2>
+              {gameState.isWon ? (
+                <p className="text-responsive-lg font-bold text-green-600">
+                  {t('game.gameWon')}
                 </p>
-
-                {gameState.isGameOver && (
-                  <div
-                    className="mt-4 animate-bounce-subtle"
-                    aria-live="assertive"
-                  >
-                    {gameState.isWon ? (
-                      <p className="text-responsive-lg font-bold text-green-600">
-                        {t('game.gameWon')}
-                      </p>
-                    ) : (
-                      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-                        <p className="text-responsive-lg font-bold text-red-600">
-                          {t('game.gameLost', {
-                            pokemon: gameState.targetPokemon
-                              ? translateText(
-                                  gameState.targetPokemon.name,
-                                  locale,
-                                )
-                              : '',
-                          })}
-                        </p>
-                        <div className="relative w-12 h-12 sm:w-16 sm:h-16 overflow-hidden rounded-lg">
-                          <Image
-                            src={gameState.targetPokemon?.profile || ''}
-                            alt={`${gameState.targetPokemon ? translateText(gameState.targetPokemon.name, locale) : ''} - ${t('game.correctAnswer')}`}
-                            fill
-                            className="object-contain"
-                            sizes="(max-width: 640px) 48px, 64px"
-                            loading="eager"
-                          />
-                        </div>
-                      </div>
-                    )}
+              ) : (
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+                  <p className="text-responsive-lg font-bold text-red-600">
+                    {t('game.gameLost', {
+                      pokemon: translateText(gameState.targetPokemon.name, locale),
+                    })}
+                  </p>
+                  <div className="relative w-12 h-12 sm:w-16 sm:h-16 overflow-hidden rounded-lg">
+                    <Image
+                      src={gameState.targetPokemon.profile}
+                      alt={`${translateText(gameState.targetPokemon.name, locale)} - ${t('game.correctAnswer')}`}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 640px) 48px, 64px"
+                      loading="eager"
+                    />
                   </div>
-                )}
-              </div>
-            ) : null}
-          </section>
+                </div>
+              )}
+            </section>
+          )}
           <section aria-labelledby="game-results-heading">
             <h2 id="game-results-heading" className="sr-only">
               {t('game.resultsSection')}

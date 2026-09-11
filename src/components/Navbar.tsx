@@ -46,7 +46,7 @@ export default function Navbar({
           role="navigation"
           aria-label={t('navbar.main_navigation')}
         >
-          <div className="flex justify-between items-center gap-1 sm:gap-2 h-16 px-2 sm:px-6">
+          <div className="flex justify-between items-center gap-1 sm:gap-2 h-16 pl-1 pr-2 sm:pl-2 sm:pr-6">
             <div className="min-w-0">
               <Link
                 href={homeHref}

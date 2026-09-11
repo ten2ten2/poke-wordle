@@ -17,6 +17,7 @@ const props = {
   onSubmit: jest.fn<Promise<boolean>, [string]>(),
   onRandomStart: jest.fn(), onGiveUp: jest.fn(), onRestart: jest.fn(),
   disabled: false, gameStarted: false, gameOver: false,
+  guessCount: 0, maxGuesses: 10,
 };
 
 beforeEach(() => { jest.clearAllMocks(); props.onSubmit.mockResolvedValue(true); });

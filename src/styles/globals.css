@@ -158,9 +158,34 @@
 
 .footer-link { display: inline-flex; align-items: center; min-height: 44px; font-size: .875rem; color: var(--color-gray-600); }
 .footer-link:hover { color: var(--color-red-700); }
+.knowledge-banner { display: flex; align-items: center; gap: .75rem; min-height: 48px; padding: .625rem .875rem; border: 1px solid var(--color-red-100); border-radius: .75rem; background: var(--color-red-50); color: var(--color-gray-700); font-size: .875rem; transition: background-color .15s, border-color .15s; }
+.knowledge-banner:hover { background: var(--color-red-100); border-color: var(--color-red-200); }
+.knowledge-list-link { display: flex; align-items: center; gap: .75rem; min-height: 44px; padding: .75rem; border-radius: .75rem; color: var(--color-gray-900); transition: background-color .15s, color .15s; }
+.knowledge-list-link:hover { background: var(--color-gray-50); color: var(--color-red-700); }
+.knowledge-prose {
+  --tw-prose-body: var(--color-gray-700);
+  --tw-prose-headings: var(--color-gray-900);
+  --tw-prose-links: var(--color-red-700);
+  --tw-prose-bold: var(--color-gray-900);
+  --tw-prose-counters: var(--color-gray-500);
+  --tw-prose-bullets: var(--color-gray-300);
+  --tw-prose-hr: var(--color-gray-200);
+  --tw-prose-quotes: var(--color-gray-700);
+  --tw-prose-quote-borders: var(--color-red-200);
+  --tw-prose-th-borders: var(--color-gray-200);
+  --tw-prose-td-borders: var(--color-gray-100);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.knowledge-prose :where(h1, h2, h3, h4, strong) { font-weight: 600; }
+.knowledge-prose a { text-underline-offset: 3px; transition: color .15s; }
+.knowledge-prose a:hover { color: var(--color-red-800); }
+.knowledge-prose img { display: inline; width: auto; height: 2em; margin: 0; }
 .game-intro { max-width: 46rem; margin-inline: auto; text-align: center; color: var(--color-gray-600); }
 .guess-input-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .75rem; align-items: center; }
 .guess-input-row button { min-width: 5rem; }
+.guess-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: .25rem; border-top: 1px solid var(--color-gray-100); padding-top: .25rem; }
+.guess-actions > p { flex: 1 1 5rem; }
 .pokemon-suggestions { z-index: 50; width: var(--input-width); max-height: min(22rem, 45dvh); overflow-y: auto; border: 1px solid var(--color-gray-200); border-radius: .75rem; background: white; box-shadow: 0 8px 24px #11182714; --anchor-padding: 1rem; }
 .pokemon-option { display: flex; align-items: center; gap: .625rem; padding: .5rem .75rem; font-size: .875rem; cursor: pointer; overflow-wrap: anywhere; }
 .pokemon-option[data-focus] { background: var(--color-red-50); color: var(--color-red-900); }
@@ -180,6 +205,15 @@
 .guess-field dt { margin-bottom: .375rem; }
 .guess-field dd { display: flex; flex-wrap: wrap; align-items: flex-start; gap: .25rem; }
 .guess-field .tag { max-width: 100%; overflow-wrap: anywhere; text-align: left; }
+@media (width < 40rem) {
+  .guess-identity { flex-direction: row; justify-content: flex-start; gap: .75rem; padding: .75rem 2.5rem .75rem .75rem; text-align: left; }
+  .guess-identity h3 { min-width: 0; }
+  .guess-number { right: .5rem; left: auto; }
+  .guess-fields { grid-template-columns: minmax(0, 1fr); }
+  .guess-field { display: grid; grid-template-columns: 5rem minmax(0, 1fr); align-items: center; gap: .5rem; padding: .5rem .75rem; border-top-style: dashed; }
+  .guess-field dt { margin: 0; text-align: center; font-size: .875rem; font-weight: 500; }
+  .guess-field dd { min-width: 0; }
+}
 @media (width >= 40rem) {
   .guess-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
