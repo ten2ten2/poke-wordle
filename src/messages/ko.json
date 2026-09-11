@@ -1,7 +1,7 @@
 {
   "title": "포케 워들",
   "game": {
-    "inputPlaceholder": "이름 / 도감 번호",
+    "inputPlaceholder": "모든 언어의 이름 / 도감 번호",
     "submit": "제출",
     "submitting": "제출 중...",
     "randomStart": "랜덤 추측",

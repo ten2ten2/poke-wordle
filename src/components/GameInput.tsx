@@ -81,23 +81,26 @@ export default function GameInput({ pokemon, onSubmit, onRandomStart, onGiveUp, 
         <Combobox value={input} onChange={(name: string | null) => setInput(name ?? '')} disabled={blocked || gameOver}>
           <div className="guess-input-row">
             <div className="min-w-0">
-              <ComboboxInput
-                ref={inputRef}
-                value={input}
-                aria-label={t('game.searchHint')}
-                onChange={(event) => setInput(event.target.value)}
-                onCompositionStart={() => { composing.current = true; }}
-                onCompositionEnd={() => { composing.current = false; }}
-                onKeyDownCapture={(event) => {
-                  if (event.key === 'Enter' && (event.nativeEvent.isComposing || composing.current)) {
-                    event.preventDefault(); event.stopPropagation();
-                  }
-                }}
-                placeholder={t('game.inputPlaceholder')}
-                title={t('game.searchHint')}
-                className="input-primary"
-                autoComplete="off" autoCapitalize="off" autoCorrect="off" spellCheck={false}
-              />
+              <div className="guess-input-field">
+                <ComboboxInput
+                  ref={inputRef}
+                  value={input}
+                  aria-label={t('game.searchHint')}
+                  onChange={(event) => setInput(event.target.value)}
+                  onCompositionStart={() => { composing.current = true; }}
+                  onCompositionEnd={() => { composing.current = false; }}
+                  onKeyDownCapture={(event) => {
+                    if (event.key === 'Enter' && (event.nativeEvent.isComposing || composing.current)) {
+                      event.preventDefault(); event.stopPropagation();
+                    }
+                  }}
+                  placeholder={t('game.inputPlaceholder')}
+                  title={t('game.searchHint')}
+                  className="input-primary"
+                  autoComplete="off" autoCapitalize="off" autoCorrect="off" spellCheck={false}
+                />
+                <span className="guess-input-hint" aria-hidden="true">{t('game.inputPlaceholder')}</span>
+              </div>
               {query && (
                 <ComboboxOptions anchor={{ to: 'bottom start', gap: 6 }} className="pokemon-suggestions" modal={false}>
                   {suggestions.map((row) => (

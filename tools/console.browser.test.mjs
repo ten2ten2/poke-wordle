@@ -50,11 +50,11 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
     await detail.getByText('关联语言', { exact: true }).waitFor();
     await page.getByRole('button', { name: '关闭数据详情' }).click();
     const index = await (await fetch(`${app.url}/api/runs/fixture`)).json();
-    await page.locator('#runs button').first().click();
+    await page.getByRole('button', { name: '更新数据', exact: true }).click();
     await page.locator('.item-name button').first().click();
     await page.getByRole('button', { name: '接受变更', exact: true }).click();
     await page.locator('#detail').waitFor({ state: 'hidden' });
-    await page.getByRole('button', { name: '当前数据 浏览全部已发布数据' }).click();
+    await page.getByRole('button', { name: '当前数据' }).click();
     fixture.execute('apply', 'fixture', '--review', index.report_hash);
     await page.getByRole('button', { name: '刷新数据', exact: true }).click();
     await page.getByRole('button', { name: '宝可梦', exact: true }).click();
@@ -66,8 +66,8 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
     const requested = new Promise((resolve) => { started = resolve; });
     const delayedRoute = async (route) => { started(); await delayed; await route.continue(); };
     await page.route('**/api/runs/fixture', delayedRoute);
-    await page.locator('#runs button').first().click(); await requested;
-    await page.getByRole('button', { name: '当前数据 浏览全部已发布数据' }).click();
+    await page.getByRole('button', { name: '更新数据', exact: true }).click(); await requested;
+    await page.getByRole('button', { name: '当前数据' }).click();
     const response = page.waitForResponse('**/api/runs/fixture'); release(); await response;
     await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
     assert.equal(await page.locator('#current-data').isVisible(), true);

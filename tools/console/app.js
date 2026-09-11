@@ -39,9 +39,19 @@ function renderView() {
   $('workspace').hidden = !review || !state.run;
   $('empty').hidden = !review || Boolean(state.runs.length);
   $('job').hidden = !state.lastJob || (!review && !state.busy);
+  $('console-layout').dataset.view = state.view;
+  $('review-sidebar').hidden = !review;
+  $('update-data').setAttribute('aria-current', review ? 'page' : 'false');
   $('browse-data').setAttribute('aria-current', current ? 'page' : 'false');
   $('manage-knowledge').setAttribute('aria-current', knowledge ? 'page' : 'false');
   renderRuns(review ? state.run?.id : null);
+}
+async function showReview() {
+  if (state.view === 'knowledge' && !knowledgeEditor.canLeave()) return;
+  knowledgeEditor.deactivate(); state.navigation++;
+  state.view = 'review'; history.replaceState(null, '', state.run ? `#${state.run.id}` : '#review');
+  renderView(); renderRun();
+  await loadRuns(state.run?.id);
 }
 async function showData() {
   if (state.view === 'knowledge' && !knowledgeEditor.canLeave()) return;
@@ -277,6 +287,7 @@ async function pollJobs() {
   if (wasBusy !== state.busy && !state.saving && !$('detail').open) renderRun();
 }
 $('knowledge-check').addEventListener('click', () => job('knowledge-check'));
+$('update-data').addEventListener('click', () => showReview().catch((error) => notify(error.message)));
 $('manage-knowledge').addEventListener('click', () => showKnowledge().catch((error) => notify(error.message)));
 $('generate').addEventListener('click', () => job('generate', 'live'));
 $('browse-data').addEventListener('click', () => showData().catch((error) => notify(error.message)));

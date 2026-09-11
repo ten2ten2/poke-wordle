@@ -1,7 +1,7 @@
 {
   "title": "Poke Wordle",
   "game": {
-    "inputPlaceholder": "Nom / Pokédex nº",
+    "inputPlaceholder": "Nom dans toute langue / Pokédex nº",
     "submit": "Soumettre",
     "submitting": "Envoi en cours...",
     "randomStart": "Supposition Aléatoire",

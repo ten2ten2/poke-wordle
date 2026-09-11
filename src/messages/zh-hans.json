@@ -1,7 +1,7 @@
 {
   "title": "宝可梦猜猜乐",
   "game": {
-    "inputPlaceholder": "名称 / 图鉴编号",
+    "inputPlaceholder": "任意语言名称 / 图鉴编号",
     "submit": "提交",
     "submitting": "提交中...",
     "randomStart": "随机开局",

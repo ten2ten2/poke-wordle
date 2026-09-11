@@ -1,7 +1,7 @@
 {
   "title": "寶可夢猜猜樂",
   "game": {
-    "inputPlaceholder": "名稱 / 圖鑑編號",
+    "inputPlaceholder": "任意語言名稱 / 圖鑑編號",
     "submit": "提交",
     "submitting": "提交中...",
     "randomStart": "隨機開局",

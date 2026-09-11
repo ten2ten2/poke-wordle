@@ -220,6 +220,11 @@
 .game-intro { max-width: 46rem; margin-inline: auto; text-align: center; color: var(--secondary); }
 .guess-input-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .75rem; align-items: center; }
 .guess-input-row button { min-width: 5rem; }
+.guess-input-field { display: grid; grid-template-columns: minmax(0, 1fr); min-width: 0; }
+.guess-input-field .input-primary { grid-area: 1 / 1; min-width: 0; height: 100%; min-height: 2.75rem; }
+.guess-input-field .input-primary::placeholder { color: transparent; }
+.guess-input-hint { grid-area: 1 / 1; align-self: center; z-index: 1; min-width: 0; padding: .5rem .75rem; color: var(--muted); font-size: .875rem; line-height: 1.4; overflow-wrap: anywhere; pointer-events: none; }
+.guess-input-field .input-primary:not(:placeholder-shown) + .guess-input-hint { visibility: hidden; }
 .guess-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: .25rem; border-top: 1px solid var(--line-subtle); padding-top: .25rem; }
 .guess-actions > p { flex: 1 1 5rem; }
 .pokemon-suggestions { z-index: 50; width: var(--input-width); max-height: min(22rem, 45dvh); overflow-y: auto; border: 1px solid var(--line); border-radius: .75rem; background: var(--surface); box-shadow: 0 8px 24px var(--shadow); --anchor-padding: 1rem; }

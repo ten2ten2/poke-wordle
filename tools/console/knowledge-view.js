@@ -79,6 +79,10 @@ export function createKnowledgeEditor({ api, notify }) {
   async function load() {
     const generation = ++state.generation;
     const initial = state.editing ? JSON.stringify(values()) : null;
+    if (!state.editing) {
+      $('knowledge-editor').hidden = true;
+      $('knowledge-empty').hidden = false;
+    }
     const model = await api('/api/knowledge'); if (generation !== state.generation) return;
     if (initial !== null && state.editing && JSON.stringify(values()) !== initial) { notify('载入期间有新修改，已保留编辑内容。请保存或导出后重试。'); return; }
     setModel(model);

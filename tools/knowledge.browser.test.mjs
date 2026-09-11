@@ -66,7 +66,7 @@ for (const width of [1440, 390]) {
     await expect(page.locator('#knowledge-redirect-list')).toContainText('/knowledge/new-english-article');
     await page.getByLabel('MDX 正文').fill('## Unsaved version\n');
     page.once('dialog', (dialog) => dialog.dismiss());
-    await page.getByRole('button', { name: '当前数据 浏览全部已发布数据', exact: true }).click();
+    await page.getByRole('button', { name: '当前数据', exact: true }).click();
     await expect(page.locator('#knowledge-manager')).toBeVisible();
     await expect(page.getByLabel('MDX 正文')).toHaveValue('## Unsaved version\n');
     const download = page.waitForEvent('download'); await page.getByRole('button', { name: '导出 MDX', exact: true }).click();
