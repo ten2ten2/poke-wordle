@@ -1,5 +1,6 @@
 'use client';
 
+import { version as datasetVersion } from '@/data/dataset.json';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -91,6 +92,7 @@ function Game({ ready }: { ready: boolean }) {
           body: JSON.stringify({
             name,
             target_id: target.id,
+            dataset_version: datasetVersion,
             is_prankster: gameState.settings.isPrankster,
             is_gen_arrow: gameState.settings.isGenArrow,
             locale,
@@ -100,6 +102,12 @@ function Game({ ready }: { ready: boolean }) {
                 : gameState.guesses[gameState.guesses.length - 1]?.fieldToHide,
           }),
         });
+
+        if (response.status === 409 && !controller.signal.aborted) {
+          resetGame();
+          window.location.reload();
+          return;
+        }
 
         if (!response.ok) {
           throw new Error('Failed to check guess');
@@ -133,6 +141,7 @@ function Game({ ready }: { ready: boolean }) {
       locale,
       t,
       startNewGame,
+      resetGame,
     ],
   );
 

@@ -56,7 +56,7 @@ type I18nTranslation struct {
 	De     string `json:"de"`
 	It     string `json:"it"`
 	Fr     string `json:"fr"`
-	ZhHant string `json:"zh-Hant"`
-	ZhHans string `json:"zh-Hans"`
+	ZhHant string `json:"zh-hant"`
+	ZhHans string `json:"zh-hans"`
 	Ko     string `json:"ko"`
 }

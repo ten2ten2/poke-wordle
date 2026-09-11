@@ -78,9 +78,6 @@ func generatePokemonData(option5 bool) error {
 			if err := saveI18nToJSONSeparately(filename, data); err != nil {
 				return fmt.Errorf("保存 %s 翻译失败: %w", category, err)
 			}
-			if err := fixI18nData(filename); err != nil {
-				return err
-			}
 		}
 		return nil
 	}
@@ -91,9 +88,6 @@ func generatePokemonData(option5 bool) error {
 		return err
 	}
 	fmt.Println("翻译数据已成功保存到 pokemon_i18n.json 文件")
-	if err := fixI18nData("output/pokemon_i18n.json"); err != nil {
-		return err
-	}
 
 	// 保存数据到JSON文件
 	if err := saveToJSON("output/pokemon_data.json"); err != nil {
@@ -176,7 +170,13 @@ func run() error {
 }
 
 func main() {
-	if err := run(); err != nil {
+	var err error
+	if len(os.Args) > 1 {
+		err = snapshotCommand(os.Args[1:])
+	} else {
+		err = run()
+	}
+	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}

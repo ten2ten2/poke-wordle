@@ -1,3 +1,4 @@
+import { version as datasetVersion } from '@/data/dataset.json';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import type { GameState, GameSettings, GuessResult } from '@/types/pokemon';
 import {
@@ -38,6 +39,7 @@ function initialState(): GameState {
   const state = emptyGame(settings);
   if (
     !progress?.targetPokemon?.id ||
+    progress.datasetVersion !== datasetVersion ||
     !Array.isArray(progress.guesses) ||
     !Array.isArray(progress.selectedGenerations) ||
     progress.selectedGenerations.length !==
@@ -50,7 +52,7 @@ function initialState(): GameState {
   const targetPokemon = filterPokemonByGenerations(
     loadPokemonData(),
     settings.selectedGenerations,
-  ).find((pokemon) => pokemon.id === progress.targetPokemon.id);
+  ).find((pokemon) => pokemon.id === progress.targetPokemon.id && pokemon.name === progress.targetPokemon.name);
   return targetPokemon ? { ...state, ...progress, targetPokemon } : state;
 }
 
@@ -77,6 +79,7 @@ export function useGameState(locale: string, restoreProgress = true) {
     setGameState(next);
     if (next.targetPokemon) {
       saveGameProgress({
+        datasetVersion,
         targetPokemon: next.targetPokemon,
         guesses: next.guesses,
         selectedGenerations: next.settings.selectedGenerations,

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"time"
 )
 
 // Ability API response structure
@@ -53,8 +52,9 @@ func fetchPranksterImages() error {
 		}
 		if sprite := pokemon.Sprites.Other.Showdown.FrontDefault; sprite != "" {
 			sprites = append(sprites, sprite)
+		} else {
+			return fmt.Errorf("缺少恶作剧图片: %s", entry.Pokemon.Name)
 		}
-		time.Sleep(100 * time.Millisecond)
 	}
 	if err := os.MkdirAll("output", 0755); err != nil {
 		return err

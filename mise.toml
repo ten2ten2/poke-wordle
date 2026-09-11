@@ -36,8 +36,19 @@ run = "npm run check"
 
 [tasks."data:check"]
 dir = "tools/poke-json"
-run = ["go vet ./...", "go test -race ./..."]
+run = ["go vet ./...", "go test -race ./...", "node --test pipeline.test.mjs", "node pipeline.mjs verify"]
 
 [tasks."data:run"]
-dir = "tools/poke-json"
-run = "go run ."
+run = "node tools/poke-json/pipeline.mjs generate"
+
+[tasks."data:generate"]
+run = "node tools/poke-json/pipeline.mjs generate"
+
+[tasks."data:review"]
+run = "node tools/poke-json/pipeline.mjs review"
+
+[tasks."data:apply"]
+run = "node tools/poke-json/pipeline.mjs apply"
+
+[tasks."data:verify"]
+run = "node tools/poke-json/pipeline.mjs verify"

@@ -1,20 +1,22 @@
 # 宝可梦数据工具
 
-使用 PokeAPI 生成游戏数据、九种语言的名称与属性翻译，以及恶作剧模式图片。Go 版本由仓库根目录的 `mise.toml` 固定。
+从 PokeAPI 生成游戏主数据、九语言名称和恶作剧模式图片。工具链由根目录 `mise.toml` 固定。
 
 在仓库根目录运行：
 
 ```sh
-mise run data:check
-mise run data:run
+mise run data:generate
+mise run data:review -- <run-id>
+mise run data:apply -- <run-id> --review <报告输出的 SHA-256>
+mise run check
 ```
 
-交互菜单提供完整生成、基础数据、恶作剧图片、JSON 比较和分类翻译五种操作。抓取需要联网，耗时取决于 PokeAPI 响应。
+生成隔离候选并缓存响应，校对以 `src/data/` 为基准。应用时核验来源、基准、候选和报告哈希，并同步稳定 ID 与数据版本。不会自动提交或推送。
 
-输出保存在 `tools/poke-json/output/`。生成前将现有对应文件移入工具目录下的 `backup/`；备份或生成失败会报错退出。比较报告写入工具目录下的 `compare_result_*.json`。首次生成没有旧文件时跳过比较。
+- [更新、修正、离线重建与发布流程](UPDATE_WORKFLOW.md)
+- [本次数据更新报告](reports/2026-09-11.md)
+- [按语言维护的人工修正表](corrections.json)
 
-任何物种、形态、进化链或翻译请求失败都会中止本次数据生成，不写入残缺结果。招式翻译按语言合并 API 名称与非空的本地修正，缺失语言回退到英文。测试使用本地模拟响应，无需请求 PokeAPI。
+`mise run data:check` 包含 Go 静态/竞态检查、流程回归和发布数据校验；`mise run data:verify` 只校验已发布数据。两个命令均不访问上游。
 
-审核 JSON 差异后，将需要更新的 `pokemon_data.json`、`pokemon_i18n.json`、`prankster_profile.json` 复制到前端 `src/data/`，再运行 `mise run check`。输出和备份目录不提交到 Git。
-
-主数据按游戏使用的属性、特性、种族值总和及进化条件区分形态；翻译使用小写语言代码（例如 `zh-hans`）。数据结构见 `types.go`；比较实现见 `compare_json.go`，报告区分显式 `null` 与字段删除。
+直接在工具目录运行 `go run .` 仍提供历史交互导出/比较功能，其 `output/`、`backup/` 和分类翻译只供临时用途，不能用作发布基准。正式更新统一使用上面的批次命令。

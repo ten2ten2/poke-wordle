@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 
+import { version as datasetVersion } from '@/data/dataset.json';
 import { NextRequest } from 'next/server';
 import { POST } from '../checkGuess/route';
 
@@ -68,8 +69,21 @@ describe('/api/checkGuess', () => {
     mockComparePokemon.mockReturnValue(mockGuessResult);
   });
 
+  test.each([undefined, 'previous-dataset'])('rejects stale clients before comparing IDs (%s)', async (version) => {
+    const request = new NextRequest('http://localhost:3000/api/checkGuess', {
+      method: 'POST',
+      body: JSON.stringify({ name: 'Bulbasaur', target_id: 1, dataset_version: version }),
+    });
+    const response = await POST(request);
+    expect(response.status).toBe(409);
+    expect(await response.json()).toMatchObject({ code: 'DATASET_CHANGED' });
+    expect(mockLoadPokemonData).not.toHaveBeenCalled();
+    expect(mockComparePokemon).not.toHaveBeenCalled();
+  });
+
   test('should return comparison result for valid request', async () => {
     const requestBody = {
+      dataset_version: datasetVersion,
       name: 'Bulbasaur',
       target_id: 1,
       is_prankster: false,
@@ -102,6 +116,7 @@ describe('/api/checkGuess', () => {
 
   test('should return 400 for invalid guess name', async () => {
     const requestBody = {
+      dataset_version: datasetVersion,
       name: 'InvalidPokemon',
       target_id: 1,
       is_prankster: false,
@@ -127,6 +142,7 @@ describe('/api/checkGuess', () => {
 
   test('should return 400 for invalid target Pokemon ID', async () => {
     const requestBody = {
+      dataset_version: datasetVersion,
       name: 'Bulbasaur',
       target_id: 999,
       is_prankster: false,
@@ -167,6 +183,7 @@ describe('/api/checkGuess', () => {
 
   test('should handle prankster mode', async () => {
     const requestBody = {
+      dataset_version: datasetVersion,
       name: 'Bulbasaur',
       target_id: 1,
       is_prankster: true,
@@ -197,6 +214,7 @@ describe('/api/checkGuess', () => {
 
   test('should handle generation arrow mode', async () => {
     const requestBody = {
+      dataset_version: datasetVersion,
       name: 'Bulbasaur',
       target_id: 1,
       is_prankster: false,
@@ -224,4 +242,4 @@ describe('/api/checkGuess', () => {
       null
     );
   });
-}); 
+});

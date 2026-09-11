@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { version as datasetVersion } from '../../src/data/dataset.json';
 import pokemon from '../../src/data/pokemon_data.json';
 import knowledge from '../../src/data/knowledge_data.json';
 
@@ -31,7 +32,7 @@ test.beforeEach(async ({ page }) => {
     route.fulfill({ body: '', contentType: 'application/javascript' }),
   );
   await page.addInitScript(
-    ({ target, settings }) => {
+    ({ target, settings, datasetVersion }) => {
       for (const locale of [
         'en',
         'ja',
@@ -50,6 +51,7 @@ test.beforeEach(async ({ page }) => {
         localStorage.setItem(
           'poke-wordle-progress',
           JSON.stringify({
+            datasetVersion,
             targetPokemon: target,
             guesses: [],
             selectedGenerations: settings.selectedGenerations,
@@ -59,7 +61,7 @@ test.beforeEach(async ({ page }) => {
         );
       }
     },
-    { target, settings },
+    { target, settings, datasetVersion },
   );
 });
 
@@ -76,6 +78,37 @@ test('guesses survive refresh with the same target', async ({ page }) => {
           .id,
     ),
   ).toBe(target.id);
+});
+
+test('old dataset progress is cleared without losing settings', async ({ page }) => {
+  await page.goto('/');
+  await guess(page, 'Pikachu');
+  await page.evaluate(() => {
+    const progress = JSON.parse(localStorage.getItem('poke-wordle-progress')!);
+    progress.datasetVersion = 'old-data';
+    localStorage.setItem('poke-wordle-progress', JSON.stringify(progress));
+  });
+  await page.reload();
+  await expect(page.getByRole('textbox')).toBeEnabled();
+  await expect(page.locator('.guess-table-card')).toHaveCount(0);
+  expect(await page.evaluate(() => localStorage.getItem('poke-wordle-progress'))).toBeNull();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('poke-wordle-settings')!).maxGuesses)).toBe(10);
+  await guess(page, 'Pikachu');
+});
+
+test('an open page reloads when the server data changes', async ({ page }) => {
+  await page.goto('/');
+  await page.route('**/api/checkGuess', async (route) => {
+    expect(route.request().postDataJSON().dataset_version).toBe(datasetVersion);
+    await route.fulfill({ status: 409, contentType: 'application/json', body: JSON.stringify({ code: 'DATASET_CHANGED' }) });
+  }, { times: 1 });
+  const reloaded = page.waitForEvent('framenavigated', (frame) => frame === page.mainFrame());
+  await page.getByRole('textbox').fill('Pikachu');
+  await page.getByRole('textbox').press('Enter');
+  await reloaded;
+  await expect(page.getByRole('textbox')).toBeEnabled();
+  await expect(page.locator('.guess-table-card')).toHaveCount(0);
+  await guess(page, 'Pikachu');
 });
 
 test('autocomplete supports keyboard selection', async ({ page }) => {

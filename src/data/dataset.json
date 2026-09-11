@@ -1,0 +1,10 @@
+{
+  "version": "b0116a2d4cfcd8cc7c7a7141ae2b5e65aba669e661968b6f08a289a6e5267bda",
+  "files": {
+    "pokemon_data.json": "1885a6687f6c259e4e9a64cb092a64f475681ff15c12c3db55ebd437d4d4c579",
+    "pokemon_i18n.json": "a099c15f0ee73f0a9cac299f1b6a6914b0217bec7a4dcbc053a09d066fcf34cf",
+    "prankster_profile.json": "9ff1445c6373f95f0d8707c0bda79d68af19106f63c291dff8bf8bdd0104ba7b"
+  },
+  "run": "20260911T154524775Z-21205",
+  "sources": "380b43c972ff3d96b22a0af0db63b078695828b3fb2d2980865cb1d5731d3bda"
+}

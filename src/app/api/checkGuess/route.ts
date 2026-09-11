@@ -1,14 +1,22 @@
+import { version as datasetVersion } from '@/data/dataset.json';
 import { NextRequest, NextResponse } from 'next/server';
 import { loadPokemonData, comparePokemon, translatePokemon } from '@/lib/pokemon';
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, target_id, is_prankster, is_gen_arrow, locale = 'en', previousFieldToHide = null } = await request.json();
+    const { name, target_id, dataset_version, is_prankster, is_gen_arrow, locale = 'en', previousFieldToHide = null } = await request.json();
 
     if (!name || !target_id) {
       return NextResponse.json(
         { error: 'Missing required parameters' },
         { status: 400 }
+      );
+    }
+
+    if (dataset_version !== datasetVersion) {
+      return NextResponse.json(
+        { error: 'Pokemon data updated', code: 'DATASET_CHANGED' },
+        { status: 409 },
       );
     }
 

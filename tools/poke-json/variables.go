@@ -70,13 +70,13 @@ var (
 	languageMapping = map[string]string{
 		"en":      "en",
 		"ja":      "ja",
-		"ja-Hrkt": "ja",
+		"ja-hrkt": "ja",
 		"es":      "es",
 		"de":      "de",
 		"it":      "it",
 		"fr":      "fr",
-		"zh-Hant": "zh-Hant",
-		"zh-Hans": "zh-Hans",
+		"zh-hant": "zh-Hant",
+		"zh-hans": "zh-Hans",
 		"ko":      "ko",
 	}
 )

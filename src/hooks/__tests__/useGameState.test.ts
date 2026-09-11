@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  */
 
+import { version as datasetVersion } from '@/data/dataset.json';
 import { renderHook, act } from '@testing-library/react';
 import { useGameState } from '../useGameState';
 import * as pokemonLib from '../../lib/pokemon';
@@ -140,6 +141,7 @@ describe('useGameState', () => {
 
     test('restores game progress when available', () => {
       const mockProgress: GameProgress = {
+        datasetVersion,
         targetPokemon: mockPokemon[0],
         guesses: [],
         selectedGenerations: [1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -167,6 +169,7 @@ describe('useGameState', () => {
 
     test('does not restore progress if generations do not match', () => {
       const mockProgress: GameProgress = {
+        datasetVersion,
         targetPokemon: mockPokemon[0],
         guesses: [],
         selectedGenerations: [1, 2], // Different from default [1,2,3,4,5,6,7,8,9]

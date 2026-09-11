@@ -1,3 +1,4 @@
+import { version as datasetVersion } from '@/data/dataset.json';
 import { GameSettings, Pokemon, GuessResult } from '@/types/pokemon';
 
 const STORAGE_KEYS = {
@@ -7,6 +8,7 @@ const STORAGE_KEYS = {
 
 // 游戏进度数据结构
 export interface GameProgress {
+  datasetVersion: string;
   targetPokemon: Pokemon;
   guesses: GuessResult[];
   selectedGenerations: number[];
@@ -79,7 +81,9 @@ export function loadGameProgress(): GameProgress | null {
     try {
       const stored = localStorage.getItem(STORAGE_KEYS.GAME_PROGRESS);
       if (stored) {
-        return JSON.parse(stored) as GameProgress;
+        const progress = JSON.parse(stored) as GameProgress | null;
+        if (progress?.datasetVersion === datasetVersion) return progress;
+        clearGameProgress();
       }
     } catch (error) {
       console.warn('Failed to load game progress:', error);

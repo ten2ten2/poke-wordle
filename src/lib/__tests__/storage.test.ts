@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  */
 
+import { version as datasetVersion } from '@/data/dataset.json';
 import {
   saveGameSettings,
   loadGameSettings,
@@ -97,6 +98,7 @@ describe('storage.ts', () => {
 
   describe('Game Progress', () => {
     const mockProgress = {
+      datasetVersion,
       targetPokemon: mockPokemon,
       guesses: [],
       selectedGenerations: [1, 2, 3],
@@ -114,6 +116,14 @@ describe('storage.ts', () => {
     test('should return null when no progress saved', () => {
       const loaded = loadGameProgress();
       expect(loaded).toBeNull();
+    });
+
+    test.each([undefined, 'previous-dataset'])('clears incompatible progress (%s) and preserves settings', (version) => {
+      saveGameSettings(mockSettings);
+      mockLocalStorage['poke-wordle-progress'] = JSON.stringify({ ...mockProgress, datasetVersion: version });
+      expect(loadGameProgress()).toBeNull();
+      expect(mockLocalStorage['poke-wordle-progress']).toBeUndefined();
+      expect(loadGameSettings()).toEqual(mockSettings);
     });
 
     test('should handle corrupted progress data', () => {

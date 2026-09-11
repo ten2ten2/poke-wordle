@@ -61,9 +61,10 @@ func processAllPokemon() error {
 	// 获取所有种族ID
 	var speciesIDs []int
 	for id := range speciesMap {
-		if id <= 1025 { // 限制在当前已知的宝可梦范围内
-			speciesIDs = append(speciesIDs, id)
+		if id > 1025 {
+			return fmt.Errorf("上游新增种族 %d，请先审核答案范围", id)
 		}
+		speciesIDs = append(speciesIDs, id)
 	}
 
 	slices.Sort(speciesIDs)
@@ -94,9 +95,8 @@ func processAllPokemon() error {
 		return cmp.Or(cmp.Compare(a.PokedexIDNational, b.PokedexIDNational), strings.Compare(a.Name, b.Name))
 	})
 
-	// 重新分配ID
-	for i := range pokemonData {
-		pokemonData[i].ID = i + 1
+	if err := assignStableIDs(pokemonData); err != nil {
+		return err
 	}
 
 	fmt.Printf("完成！共获取 %d 个宝可梦数据\n", len(pokemonData))
@@ -454,6 +454,7 @@ func parseEvolution(evolution gjson.Result, chainData map[string]any, stage int)
 				"turn_upside_down":        value.Get("turn_upside_down").Bool(),
 				"gender":                  value.Get("gender").Int(),
 			}
+			detail["is_default"] = value.Get("is_default").Bool()
 			details = append(details, detail)
 			return true
 		})
@@ -477,6 +478,12 @@ func analyzeEvolutionMethod(details []map[string]any) (string, string) {
 	}
 
 	detail := details[0]
+	for _, candidate := range details {
+		if candidate["is_default"] == true {
+			detail = candidate
+			break
+		}
+	}
 	trigger := detail["trigger"].(string)
 
 	switch trigger {
@@ -836,132 +843,132 @@ func collectResourceI18n(resource string, fetch func(string, string) error) erro
 // 获取宝可梦名称翻译（改进版，支持形态后缀翻译）
 func fetchPokemonI18n(pokemonName string, speciesID int, option5 bool) error {
 	i18nMutex.RLock()
-	if processedNames[pokemonName] {
-		i18nMutex.RUnlock()
+	done := processedNames[pokemonName]
+	i18nMutex.RUnlock()
+	if done {
 		return nil
 	}
-	i18nMutex.RUnlock()
-
-	// 获取species的翻译
-	speciesURL := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon-species/%d", speciesID)
-	data, err := fetchURL(speciesURL)
+	data, err := fetchURL(fmt.Sprintf("https://pokeapi.co/api/v2/pokemon-species/%d", speciesID))
 	if err != nil {
 		return err
 	}
-	result := gjson.Parse(string(data))
+	result := gjson.ParseBytes(data)
 	names := result.Get("names")
 	if !names.IsArray() || len(names.Array()) == 0 {
 		return fmt.Errorf("响应缺少名称翻译")
 	}
-
-	// 获取形态的翻译
-	// 从 translation.go 获取
-	if translation, exists := specialPokemonTranslations[pokemonName]; exists {
-		baseTranslation := translation
-		i18nMutex.Lock()
-		if option5 {
-			i18nSpecies[pokemonName] = baseTranslation
-		} else {
-			i18nData[pokemonName] = baseTranslation
-		}
-		i18nMutex.Unlock()
+	base := extractI18nNames(names)
+	formURL := ""
+	if pokemonName != result.Get("name").String() {
+		formURL = fmt.Sprintf("https://pokeapi.co/api/v2/pokemon-form/%s", pokemonName)
 	} else {
-		// 从 PokeAPI 获取形态翻译
-		suffixTranslation := I18nTranslation{}
-		if pokemonName != result.Get("name").String() {
-			formURL := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon-form/%s", pokemonName)
-			formData, err := fetchURL(formURL)
-			if err != nil {
-				return fmt.Errorf("获取形态翻译失败 %s: %w", pokemonName, err)
-			}
-			formResult := gjson.Parse(string(formData))
-			suffixTranslation = extractI18nNames(formResult.Get("form_names"))
-		}
-
-		baseTranslation := extractI18nNames(names)
-		if suffixTranslation.En == "Hisuian Form" {
-			suffixTranslation.En = hisuianTranslations["en"]
-			suffixTranslation.Ja = hisuianTranslations["ja"]
-			suffixTranslation.Es = hisuianTranslations["es"]
-			suffixTranslation.De = hisuianTranslations["de"]
-			suffixTranslation.It = hisuianTranslations["it"]
-			suffixTranslation.Fr = hisuianTranslations["fr"]
-			suffixTranslation.ZhHant = hisuianTranslations["zh-Hant"]
-			suffixTranslation.ZhHans = hisuianTranslations["zh-Hans"]
-			suffixTranslation.Ko = hisuianTranslations["ko"]
-		} else if suffixTranslation.En == "Paldean Form" {
-			suffixTranslation.En = paldeanTranslations["en"]
-			suffixTranslation.Ja = paldeanTranslations["ja"]
-			suffixTranslation.Es = paldeanTranslations["es"]
-			suffixTranslation.De = paldeanTranslations["de"]
-			suffixTranslation.It = paldeanTranslations["it"]
-			suffixTranslation.Fr = paldeanTranslations["fr"]
-			suffixTranslation.ZhHant = paldeanTranslations["zh-Hant"]
-			suffixTranslation.ZhHans = paldeanTranslations["zh-Hans"]
-			suffixTranslation.Ko = paldeanTranslations["ko"]
-		}
-		if suffixTranslation.En != "" {
-			baseTranslation.En = baseTranslation.En + " (" + suffixTranslation.En + ")"
-			if suffixTranslation.Es == "" {
-				suffixTranslation.Es = suffixTranslation.En
-			}
-			if suffixTranslation.De == "" {
-				suffixTranslation.De = suffixTranslation.En
-			}
-			if suffixTranslation.It == "" {
-				suffixTranslation.It = suffixTranslation.En
-			}
-			if suffixTranslation.Fr == "" {
-				suffixTranslation.Fr = suffixTranslation.En
-			}
-			if suffixTranslation.ZhHant == "" {
-				suffixTranslation.ZhHant = suffixTranslation.En
-			}
-			if suffixTranslation.ZhHans == "" {
-				suffixTranslation.ZhHans = suffixTranslation.En
-			}
-			if suffixTranslation.Ko == "" {
-				suffixTranslation.Ko = suffixTranslation.En
+		answerForms := 0
+		for _, row := range pokemonData {
+			if row.PokedexIDNational == speciesID {
+				answerForms++
 			}
 		}
-		if suffixTranslation.Ja != "" {
-			baseTranslation.Ja = baseTranslation.Ja + " (" + suffixTranslation.Ja + ")"
+		if answerForms > 1 {
+			for _, variety := range result.Get("varieties").Array() {
+				if variety.Get("pokemon.name").String() != pokemonName {
+					continue
+				}
+				body, err := fetchURL(variety.Get("pokemon.url").String())
+				if err != nil {
+					return err
+				}
+				// Pokémon names and form names differ for species such as Floette.
+				for _, form := range gjson.GetBytes(body, "forms").Array() {
+					if form.Get("name").String() == pokemonName {
+						formURL = fmt.Sprintf("https://pokeapi.co/api/v2/pokemon-form/%s", pokemonName)
+					}
+				}
+			}
 		}
-		if suffixTranslation.Es != "" {
-			baseTranslation.Es = baseTranslation.Es + " (" + suffixTranslation.Es + ")"
-		}
-		if suffixTranslation.De != "" {
-			baseTranslation.De = baseTranslation.De + " (" + suffixTranslation.De + ")"
-		}
-		if suffixTranslation.It != "" {
-			baseTranslation.It = baseTranslation.It + " (" + suffixTranslation.It + ")"
-		}
-		if suffixTranslation.Fr != "" {
-			baseTranslation.Fr = baseTranslation.Fr + " (" + suffixTranslation.Fr + ")"
-		}
-		if suffixTranslation.ZhHant != "" {
-			baseTranslation.ZhHant = baseTranslation.ZhHant + " (" + suffixTranslation.ZhHant + ")"
-		}
-		if suffixTranslation.ZhHans != "" {
-			baseTranslation.ZhHans = baseTranslation.ZhHans + " (" + suffixTranslation.ZhHans + ")"
-		}
-		if suffixTranslation.Ko != "" {
-			baseTranslation.Ko = baseTranslation.Ko + " (" + suffixTranslation.Ko + ")"
-		}
-
-		i18nMutex.Lock()
-		if option5 {
-			i18nSpecies[pokemonName] = baseTranslation
-		} else {
-			i18nData[pokemonName] = baseTranslation
-		}
-		i18nMutex.Unlock()
 	}
-
+	if formURL != "" {
+		body, err := fetchURL(formURL)
+		if err != nil {
+			return fmt.Errorf("获取形态翻译失败 %s: %w", pokemonName, err)
+		}
+		suffix := extractI18nNames(gjson.GetBytes(body, "form_names"))
+		if suffix.En == "Hisuian Form" {
+			suffix = fillRegionalTranslation(pokemonName, suffix, hisuianTranslations)
+		}
+		if suffix.En == "Paldean Form" {
+			suffix = fillRegionalTranslation(pokemonName, suffix, paldeanTranslations)
+		}
+		base = appendFormTranslation(pokemonName, base, suffix)
+	}
+	if override, exists := specialPokemonTranslations[pokemonName]; exists {
+		base, err = correctPokemonTranslation(pokemonName, base, override)
+		if err != nil {
+			return err
+		}
+	}
 	i18nMutex.Lock()
+	defer i18nMutex.Unlock()
+	if option5 {
+		i18nSpecies[pokemonName] = base
+	} else {
+		i18nData[pokemonName] = base
+	}
 	processedNames[pokemonName] = true
-	i18nMutex.Unlock()
 	return nil
+}
+
+func fillRegionalTranslation(name string, base I18nTranslation, names map[string]string) I18nTranslation {
+	override := I18nTranslation{En: names["en"], Ja: names["ja"], Es: names["es"], De: names["de"], It: names["it"], Fr: names["fr"], ZhHans: names["zh-Hans"], ZhHant: names["zh-Hant"], Ko: names["ko"]}
+	if base.En != "" {
+		override.En = ""
+	}
+	if base.Ja != "" {
+		override.Ja = ""
+	}
+	if base.Es != "" {
+		override.Es = ""
+	}
+	if base.De != "" {
+		override.De = ""
+	}
+	if base.It != "" {
+		override.It = ""
+	}
+	if base.Fr != "" {
+		override.Fr = ""
+	}
+	if base.ZhHans != "" {
+		override.ZhHans = ""
+	}
+	if base.ZhHant != "" {
+		override.ZhHant = ""
+	}
+	if base.Ko != "" {
+		override.Ko = ""
+	}
+	return mergeTranslation("form:"+name, base, override)
+}
+
+func appendFormTranslation(name string, base, suffix I18nTranslation) I18nTranslation {
+	for _, field := range []struct {
+		locale string
+		base   *string
+		suffix string
+	}{
+		{"en", &base.En, suffix.En}, {"ja", &base.Ja, suffix.Ja}, {"es", &base.Es, suffix.Es},
+		{"de", &base.De, suffix.De}, {"it", &base.It, suffix.It}, {"fr", &base.Fr, suffix.Fr},
+		{"zh-hant", &base.ZhHant, suffix.ZhHant}, {"zh-hans", &base.ZhHans, suffix.ZhHans}, {"ko", &base.Ko, suffix.Ko},
+	} {
+		value := field.suffix
+		if value == "" && suffix.En != "" && field.locale != "ja" {
+			value = translationFallback(name, field.locale, suffix.En)
+		}
+		// An absent species name must remain absent for validation; never hide it behind a suffix.
+		if value != "" && *field.base != "" {
+			*field.base += " (" + value + ")"
+		}
+	}
+	return base
 }
 
 // 获取属性翻译
@@ -1009,37 +1016,22 @@ func fetchAbilityI18n(abilityName string, option5 bool) error {
 	}
 	i18nMutex.RUnlock()
 
-	if translation, exists := abilityTranslations[abilityName]; exists {
-		trans := translation
-		i18nMutex.Lock()
-		if option5 {
-			i18nAbilities[abilityName] = trans
-		} else {
-			i18nData[abilityName] = trans
-		}
-		i18nMutex.Unlock()
-	} else {
-		abilityURL := fmt.Sprintf("https://pokeapi.co/api/v2/ability/%s", abilityName)
-		data, err := fetchURL(abilityURL)
-		if err != nil {
-			return err
-		}
-
-		result := gjson.Parse(string(data))
-		names := result.Get("names")
-		if !names.IsArray() || len(names.Array()) == 0 {
-			return fmt.Errorf("响应缺少名称翻译")
-		}
-
-		translation := extractI18nNames(names)
-		i18nMutex.Lock()
-		if option5 {
-			i18nAbilities[abilityName] = translation
-		} else {
-			i18nData[abilityName] = translation
-		}
-		i18nMutex.Unlock()
+	data, err := fetchURL("https://pokeapi.co/api/v2/ability/" + abilityName)
+	if err != nil {
+		return err
 	}
+	names := gjson.GetBytes(data, "names")
+	if !names.IsArray() || len(names.Array()) == 0 {
+		return fmt.Errorf("响应缺少名称翻译")
+	}
+	translation := extractI18nNames(names)
+	i18nMutex.Lock()
+	if option5 {
+		i18nAbilities[abilityName] = translation
+	} else {
+		i18nData[abilityName] = translation
+	}
+	i18nMutex.Unlock()
 
 	i18nMutex.Lock()
 	processedAbilities[abilityName] = true
@@ -1105,8 +1097,8 @@ func extractI18nNames(namesArray gjson.Result) I18nTranslation {
 	translation := I18nTranslation{}
 
 	namesArray.ForEach(func(key, value gjson.Result) bool {
-		languageCode := value.Get("language.name").String()
-		name := value.Get("name").String()
+		languageCode := strings.ToLower(value.Get("language.name").String())
+		name := strings.TrimSpace(value.Get("name").String())
 
 		if mappedLang, exists := languageMapping[languageCode]; exists {
 			switch mappedLang {
