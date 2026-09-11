@@ -37,7 +37,8 @@
       "evolution": "Évolution",
       "tags": "Étiquettes"
     },
-    "evolutionMethod": "Méthode d'Évolution"
+    "evolutionMethod": "Méthode d'Évolution",
+    "requestFailed": "Impossible de vérifier votre réponse. Réessayez."
   },
   "settings": {
     "title": "Paramètres",
@@ -248,5 +249,14 @@
         "description": "Si vous avez des questions sur ces conditions ou notre politique de confidentialité, veuillez nous contacter via notre dépôt GitHub."
       }
     }
+  },
+  "cookieConsent": {
+    "title": "Préférences de confidentialité",
+    "description": "Nous enregistrons votre progression et vos réglages dans ce navigateur. En acceptant, vous autorisez aussi Google Analytics pour nous aider à améliorer le site.",
+    "learnMore": "En savoir plus",
+    "accept": "Accepter",
+    "decline": "Refuser",
+    "close": "Fermer",
+    "privacyAndTerms": "Politique de confidentialité et conditions d'utilisation"
   }
 }

@@ -2,78 +2,9 @@
  * @jest-environment jsdom
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @next/next/no-img-element */
-
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
-// Define proper types for mock components
-interface MockProps {
-  children?: React.ReactNode;
-  as?: any; // Keep as any for flexibility in mock components
-  [key: string]: any;
-}
-
-interface DialogProps extends MockProps {
-  onClose?: () => void;
-}
-
-interface TransitionProps extends MockProps {
-  show?: boolean;
-}
-
-interface IconProps {
-  className?: string;
-  'aria-hidden'?: boolean;
-  [key: string]: any;
-}
-
-interface ImageProps {
-  src: string;
-  alt: string;
-  fill?: boolean;
-  className?: string;
-  sizes?: string;
-  priority?: boolean;
-  [key: string]: any;
-}
-
-// Mock Headless UI components to avoid animation warnings
-jest.mock('@headlessui/react', () => ({
-  Dialog: ({ children, as = 'div', onClose, ...props }: DialogProps) => 
-    React.createElement(as, { role: 'dialog', onClose, ...props }, children),
-  DialogPanel: ({ children, as = 'div', ...props }: MockProps) => 
-    React.createElement(as, { ...props }, children),
-  DialogTitle: ({ children, as = 'h2', ...props }: MockProps) => 
-    React.createElement(as, { ...props }, children),
-  Transition: ({ show, children, as = 'div', ...props }: TransitionProps) => {
-    if (as === React.Fragment || as === 'Fragment' || as === 'react.fragment') {
-      return show ? children : null;
-    }
-    return show ? React.createElement(as, { ...props }, children) : null;
-  },
-  TransitionChild: ({ children, as = 'div', ...props }: MockProps) => {
-    if (as === React.Fragment || as === 'Fragment' || as === 'react.fragment') {
-      return children;
-    }
-    return React.createElement(as, { ...props }, children);
-  },
-  Fragment: React.Fragment,
-}));
-
-// Mock Heroicons
-jest.mock('@heroicons/react/24/outline', () => ({
-  XMarkIcon: (props: IconProps) => <svg {...props} data-testid="x-mark-icon" />,
-}));
-
-// Mock Next.js Image component
-jest.mock('next/image', () => {
-  return function MockImage({ src, alt, ...props }: ImageProps) {
-    return <img src={src} alt={alt} {...props} />;
-  };
-});
 
 // Mock modules with direct object approach
 jest.mock('next-intl', () => ({
@@ -93,17 +24,17 @@ jest.mock('next-intl', () => ({
       'game.evolutionStage': 'Evolution Stage',
       'game.evolutionMethod': 'Evolution Method',
       'game.tags': 'Tags',
-      'common.close': 'Close'
+      'common.close': 'Close',
     };
     return translations[key] || key;
   }),
-  useLocale: jest.fn(() => 'en')
+  useLocale: jest.fn(() => 'en'),
 }));
 
 // Mock translateText function
 jest.mock('../../lib/pokemon', () => ({
   translateText: jest.fn((text) => text),
-  getWikiUrl: jest.fn((name) => `https://example.com/wiki/${name}`)
+  getWikiUrl: jest.fn((name) => `https://example.com/wiki/${name}`),
 }));
 
 // Now import components and types
@@ -125,7 +56,7 @@ const mockPokemon: Pokemon = {
     hp: 45,
     sp_attack: 65,
     sp_defense: 65,
-    speed: 45
+    speed: 45,
   },
   evolution_stage: 1,
   evolution_method: 'level',
@@ -143,8 +74,14 @@ const defaultProps = {
   isWon: false,
   targetPokemon: mockPokemon,
   guessCount: 5,
-  maxGuesses: 10
+  maxGuesses: 10,
 };
+
+async function renderModal(element: React.ReactElement) {
+  await act(async () => {
+    render(element);
+  });
+}
 
 describe('GameOverModal', () => {
   beforeEach(() => {
@@ -153,22 +90,22 @@ describe('GameOverModal', () => {
 
   describe('Rendering - Game Lost', () => {
     test('renders game over modal when game is lost', async () => {
-      render(<GameOverModal {...defaultProps} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       expect(screen.getByText('Game Over')).toBeDefined();
       expect(screen.getByText('Bulbasaur')).toBeDefined();
     });
 
     test('shows target Pokemon details when game is lost', async () => {
-      render(<GameOverModal {...defaultProps} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       expect(screen.getByText('Bulbasaur')).toBeDefined();
       // Note: The component might format generation differently
     });
 
     test('shows play again button when game is lost', async () => {
-      render(<GameOverModal {...defaultProps} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       const restartButton = screen.getByRole('button', { name: /play again/i });
       expect(restartButton).toBeDefined();
     });
@@ -176,14 +113,16 @@ describe('GameOverModal', () => {
 
   describe('Rendering - Game Won', () => {
     test('renders congratulations when game is won', async () => {
-      render(<GameOverModal {...defaultProps} isWon={true} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} isWon={true} />);
+
       expect(screen.getByText('Congratulations!')).toBeDefined();
     });
 
     test('shows correct guess count when won', async () => {
-      render(<GameOverModal {...defaultProps} isWon={true} guessCount={3} />);
-      
+      await renderModal(
+        <GameOverModal {...defaultProps} isWon={true} guessCount={3} />,
+      );
+
       // Look specifically in the guesses used section
       expect(screen.getByText('3 / 10')).toBeDefined();
     });
@@ -191,32 +130,32 @@ describe('GameOverModal', () => {
 
   describe('Pokemon Display', () => {
     test('displays Pokemon name', async () => {
-      render(<GameOverModal {...defaultProps} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       expect(screen.getByText('Bulbasaur')).toBeDefined();
     });
 
     test('displays Pokemon types with correct styling', async () => {
-      render(<GameOverModal {...defaultProps} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       // Types should be displayed with appropriate colors
       const grassType = screen.getByText('Grass');
       const poisonType = screen.getByText('Poison');
-      
+
       expect(grassType).toBeDefined();
       expect(poisonType).toBeDefined();
     });
 
     test('displays Pokemon abilities', async () => {
-      render(<GameOverModal {...defaultProps} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       expect(screen.getByText('Overgrow')).toBeDefined();
       expect(screen.getByText('Chlorophyll')).toBeDefined();
     });
 
     test('displays Pokemon stats', async () => {
-      render(<GameOverModal {...defaultProps} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       expect(screen.getByText('318')).toBeDefined(); // Total stats
     });
   });
@@ -224,106 +163,65 @@ describe('GameOverModal', () => {
   describe('Modal Actions', () => {
     test('calls onRestart when restart button is clicked', async () => {
       const user = userEvent.setup();
-      
-      render(<GameOverModal {...defaultProps} />);
-      
+
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       const restartButton = screen.getByRole('button', { name: /play again/i });
-      
+
       await user.click(restartButton);
-      
+
       expect(mockOnRestart).toHaveBeenCalled();
     });
 
     test('calls onClose when close button is clicked', async () => {
       const user = userEvent.setup();
-      
-      render(<GameOverModal {...defaultProps} />);
-      
+
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       const closeButton = screen.getByLabelText('Close');
-      
+
       await user.click(closeButton);
-      
+
       expect(mockOnClose).toHaveBeenCalled();
     });
 
-    test('closes modal when restart is triggered', async () => {
+    test('restart does not also dismiss the next result', async () => {
       const user = userEvent.setup();
-      
-      render(<GameOverModal {...defaultProps} />);
-      
+
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       const restartButton = screen.getByRole('button', { name: /play again/i });
-      
+
       await user.click(restartButton);
-      
-      expect(mockOnClose).toHaveBeenCalled();
-    });
-  });
 
-  describe('Share Functionality', () => {
-    test('copies result to clipboard when share button is clicked', async () => {
-      const user = userEvent.setup();
-      
-      // Mock clipboard after userEvent.setup()
-      Object.defineProperty(navigator, 'clipboard', {
-        value: {
-          writeText: jest.fn().mockResolvedValue(undefined)
-        },
-        writable: true
-      });
-      
-      render(<GameOverModal {...defaultProps} />);
-      
-      const shareButton = screen.queryByText(/share|copy/i);
-      if (shareButton) {
-        await user.click(shareButton);
-        expect(navigator.clipboard.writeText).toHaveBeenCalled();
-      }
-    });
-
-    test('handles clipboard copy failure gracefully', async () => {
-      const user = userEvent.setup();
-      
-      // Mock clipboard after userEvent.setup()
-      Object.defineProperty(navigator, 'clipboard', {
-        value: {
-          writeText: jest.fn().mockRejectedValue(new Error('Clipboard failed'))
-        },
-        writable: true
-      });
-      
-      render(<GameOverModal {...defaultProps} />);
-      
-      const shareButton = screen.queryByText(/share|copy/i);
-      if (shareButton) {
-        await user.click(shareButton);
-        expect(navigator.clipboard.writeText).toHaveBeenCalled();
-      }
+      expect(mockOnRestart).toHaveBeenCalledTimes(1);
+      expect(mockOnClose).not.toHaveBeenCalled();
     });
   });
 
   describe('Modal Visibility', () => {
     test('does not render when closed', async () => {
-      render(<GameOverModal {...defaultProps} isOpen={false} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} isOpen={false} />);
+
       expect(screen.queryByText('Game Over')).toBeNull();
       expect(screen.queryByText('Congratulations!')).toBeNull();
     });
 
     test('renders when open', async () => {
-      render(<GameOverModal {...defaultProps} isOpen={true} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} isOpen={true} />);
+
       // Should render either game over or congratulations
       const gameOverText = screen.queryByText('Game Over');
       const congratsText = screen.queryByText('Congratulations!');
-      
+
       expect(gameOverText || congratsText).toBeDefined();
     });
   });
 
   describe('Pokemon Image', () => {
     test('displays Pokemon image', async () => {
-      render(<GameOverModal {...defaultProps} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       const pokemonImage = screen.getByAltText('Bulbasaur');
       expect(pokemonImage).toBeDefined();
     });
@@ -331,11 +229,13 @@ describe('GameOverModal', () => {
     test('handles missing Pokemon image gracefully', async () => {
       const pokemonWithoutImage = {
         ...mockPokemon,
-        profile: ''
+        profile: '',
       };
-      
-      render(<GameOverModal {...defaultProps} targetPokemon={pokemonWithoutImage} />);
-      
+
+      await renderModal(
+        <GameOverModal {...defaultProps} targetPokemon={pokemonWithoutImage} />,
+      );
+
       // Should still render the modal without throwing error
       expect(screen.getByText('Bulbasaur')).toBeDefined();
     });
@@ -343,22 +243,22 @@ describe('GameOverModal', () => {
 
   describe('Accessibility', () => {
     test('modal has proper ARIA attributes', async () => {
-      render(<GameOverModal {...defaultProps} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       const dialog = screen.getByRole('dialog');
       expect(dialog).toBeDefined();
     });
 
     test('close button has proper label', async () => {
-      render(<GameOverModal {...defaultProps} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       const closeButton = screen.getByLabelText('Close');
       expect(closeButton).toBeDefined();
     });
 
     test('buttons have proper types', async () => {
-      render(<GameOverModal {...defaultProps} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       const restartButton = screen.getByRole('button', { name: /play again/i });
       expect(restartButton.getAttribute('type')).toBe('button');
     });
@@ -371,49 +271,57 @@ describe('GameOverModal', () => {
         name: 'Pikachu',
         profile: '/pikachu.png',
         types: ['Electric'],
-        abilities: ['Static', 'Lightning Rod']
+        abilities: ['Static', 'Lightning Rod'],
       };
-      
-      render(<GameOverModal {...defaultProps} targetPokemon={electricPokemon} />);
-      
+
+      await renderModal(
+        <GameOverModal {...defaultProps} targetPokemon={electricPokemon} />,
+      );
+
       expect(screen.getByText('Pikachu')).toBeDefined();
       expect(screen.getByText('Electric')).toBeDefined();
       expect(screen.getByText('Static')).toBeDefined();
     });
 
     test('handles Pokemon with multiple abilities', async () => {
-      render(<GameOverModal {...defaultProps} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       expect(screen.getByText('Overgrow')).toBeDefined();
       expect(screen.getByText('Chlorophyll')).toBeDefined();
     });
 
     test('handles Pokemon with multiple tags', async () => {
-      render(<GameOverModal {...defaultProps} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       // Look for translation keys since that's what the component actually shows
       expect(screen.getByText('tags.Starter')).toBeDefined();
       expect(screen.getByText('tags.Quadruped')).toBeDefined();
     });
 
     test('handles different guess counts', async () => {
-      render(<GameOverModal {...defaultProps} guessCount={1} maxGuesses={10} />);
-      
+      await renderModal(
+        <GameOverModal {...defaultProps} guessCount={1} maxGuesses={10} />,
+      );
+
       // Look specifically in the guesses used section
       expect(screen.getByText('1 / 10')).toBeDefined();
     });
 
     test('handles max guesses reached scenario', async () => {
-      render(<GameOverModal {...defaultProps} guessCount={10} maxGuesses={10} />);
-      
+      await renderModal(
+        <GameOverModal {...defaultProps} guessCount={10} maxGuesses={10} />,
+      );
+
       expect(screen.getByText('10 / 10')).toBeDefined();
     });
   });
 
   describe('Edge Cases', () => {
     test('handles null target Pokemon gracefully', async () => {
-      render(<GameOverModal {...defaultProps} targetPokemon={null} />);
-      
+      await renderModal(
+        <GameOverModal {...defaultProps} targetPokemon={null} />,
+      );
+
       // Component should handle null Pokemon without crashing
       // It might not render anything or show an error state
     });
@@ -422,28 +330,34 @@ describe('GameOverModal', () => {
       const longNamePokemon: Pokemon = {
         ...mockPokemon,
         name: 'Pneumonoultramicroscopicsilicovolcanoconiosismon',
-        profile: '/long-name-pokemon.png'
+        profile: '/long-name-pokemon.png',
       };
-      
-      render(<GameOverModal {...defaultProps} targetPokemon={longNamePokemon} />);
-      
-      expect(screen.getByText('Pneumonoultramicroscopicsilicovolcanoconiosismon')).toBeDefined();
+
+      await renderModal(
+        <GameOverModal {...defaultProps} targetPokemon={longNamePokemon} />,
+      );
+
+      expect(
+        screen.getByText('Pneumonoultramicroscopicsilicovolcanoconiosismon'),
+      ).toBeDefined();
     });
 
     test('handles empty abilities array', async () => {
       const noAbilitiesPokemon: Pokemon = {
         ...mockPokemon,
-        abilities: []
+        abilities: [],
       };
-      
-      render(<GameOverModal {...defaultProps} targetPokemon={noAbilitiesPokemon} />);
-      
+
+      await renderModal(
+        <GameOverModal {...defaultProps} targetPokemon={noAbilitiesPokemon} />,
+      );
+
       expect(screen.getByText('Bulbasaur')).toBeDefined();
     });
 
     test('handles zero guess count', async () => {
-      render(<GameOverModal {...defaultProps} guessCount={0} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} guessCount={0} />);
+
       // Should handle zero guesses gracefully
       expect(screen.getByText('0 / 10')).toBeDefined();
     });
@@ -451,19 +365,19 @@ describe('GameOverModal', () => {
 
   describe('Localization', () => {
     test('uses correct locale for translations', async () => {
-      render(<GameOverModal {...defaultProps} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       // Check if translations are working
       expect(screen.getByText('Game Over')).toBeDefined();
       expect(screen.getByText('Play Again')).toBeDefined();
     });
 
     test('displays translated Pokemon details', async () => {
-      render(<GameOverModal {...defaultProps} />);
-      
+      await renderModal(<GameOverModal {...defaultProps} />);
+
       // The component displays translation keys, not translated text
       expect(screen.getByText('game.columns.generation')).toBeDefined();
       expect(screen.getByText('game.columns.abilities')).toBeDefined();
     });
   });
-}); 
+});

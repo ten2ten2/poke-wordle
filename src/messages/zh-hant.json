@@ -37,7 +37,8 @@
       "evolution": "進化",
       "tags": "其它標籤"
     },
-    "evolutionMethod": "進化方式"
+    "evolutionMethod": "進化方式",
+    "requestFailed": "無法檢查猜測，請重試。"
   },
   "settings": {
     "title": "設定",
@@ -257,5 +258,14 @@
         "description": "如果您對這些條款或我們的隱私政策有任何疑問，請透過我們的 GitHub 聯絡我們。"
       }
     }
+  },
+  "cookieConsent": {
+    "title": "隱私偏好",
+    "description": "我們在此瀏覽器中儲存遊戲進度和設定。選擇接受後，還會啟用 Google Analytics，協助我們改善網站。",
+    "learnMore": "了解更多",
+    "accept": "接受",
+    "decline": "拒絕",
+    "close": "關閉",
+    "privacyAndTerms": "隱私政策和服務條款"
   }
 }

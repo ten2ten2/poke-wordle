@@ -2,7 +2,6 @@
  * @jest-environment jsdom
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-require-imports */
 
 import '@testing-library/jest-dom';
@@ -15,7 +14,7 @@ const createMockT = (translations: Record<string, string> = {}) => {
   return (key: string, options?: { defaultValue?: string }) => {
     const defaultTranslations: Record<string, string> = {
       'common.breadcrumb': 'Breadcrumb',
-      'common.home': 'Home'
+      'common.home': 'Home',
     };
     const allTranslations = { ...defaultTranslations, ...translations };
     return allTranslations[key] || options?.defaultValue || key;
@@ -25,7 +24,7 @@ const createMockT = (translations: Record<string, string> = {}) => {
 // Mock next-intl
 jest.mock('next-intl', () => ({
   useTranslations: jest.fn(),
-  useLocale: jest.fn()
+  useLocale: jest.fn(),
 }));
 
 // Mock Next.js Link component
@@ -37,8 +36,14 @@ jest.mock('next/link', () => {
     title?: string;
     [key: string]: unknown;
   }
-  
-  return function MockLink({ children, href, className, title, ...props }: MockLinkProps) {
+
+  return function MockLink({
+    children,
+    href,
+    className,
+    title,
+    ...props
+  }: MockLinkProps) {
     return (
       <a href={href} className={className} title={title} {...props}>
         {children}
@@ -49,12 +54,26 @@ jest.mock('next/link', () => {
 
 // Mock Heroicons
 jest.mock('@heroicons/react/20/solid', () => ({
-  ChevronRightIcon: function MockChevronRightIcon({ className, ...props }: { className?: string; [key: string]: unknown }) {
-    return <svg data-testid="chevron-right-icon" className={className} {...props} />;
+  ChevronRightIcon: function MockChevronRightIcon({
+    className,
+    ...props
+  }: {
+    className?: string;
+    [key: string]: unknown;
+  }) {
+    return (
+      <svg data-testid="chevron-right-icon" className={className} {...props} />
+    );
   },
-  HomeIcon: function MockHomeIcon({ className, ...props }: { className?: string; [key: string]: unknown }) {
+  HomeIcon: function MockHomeIcon({
+    className,
+    ...props
+  }: {
+    className?: string;
+    [key: string]: unknown;
+  }) {
     return <svg data-testid="home-icon" className={className} {...props} />;
-  }
+  },
 }));
 
 // Import the mocked functions after mocking
@@ -63,10 +82,10 @@ const { useTranslations, useLocale } = require('next-intl');
 describe('Breadcrumb', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     // Mock useTranslations to return our mock translation function
     useTranslations.mockReturnValue(createMockT());
-    
+
     // Mock useLocale to return English by default
     useLocale.mockReturnValue('en');
   });
@@ -74,13 +93,13 @@ describe('Breadcrumb', () => {
   describe('Rendering', () => {
     test('renders breadcrumb navigation with proper ARIA attributes', () => {
       const items: BreadcrumbItem[] = [];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       const nav = screen.getByRole('navigation');
       expect(nav).toBeInTheDocument();
       expect(nav).toHaveAttribute('aria-label', 'Breadcrumb');
-      
+
       const list = screen.getByRole('list');
       expect(list).toBeInTheDocument();
     });
@@ -88,9 +107,9 @@ describe('Breadcrumb', () => {
     test('renders home link with correct href for English locale', () => {
       useLocale.mockReturnValue('en');
       const items: BreadcrumbItem[] = [];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       const homeLink = screen.getByRole('link');
       expect(homeLink).toHaveAttribute('href', '/');
       expect(homeLink).toHaveAttribute('title', 'Home');
@@ -99,29 +118,29 @@ describe('Breadcrumb', () => {
     test('renders home link with correct href for non-English locale', () => {
       useLocale.mockReturnValue('zh-hans');
       const items: BreadcrumbItem[] = [];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       const homeLink = screen.getByRole('link');
       expect(homeLink).toHaveAttribute('href', '/zh-hans');
     });
 
     test('renders home icon with proper accessibility attributes', () => {
       const items: BreadcrumbItem[] = [];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       const homeIcon = screen.getByTestId('home-icon');
       expect(homeIcon).toBeInTheDocument();
       expect(homeIcon).toHaveAttribute('aria-hidden', 'true');
-      expect(homeIcon).toHaveClass('h-5', 'w-5', 'flex-shrink-0');
+      expect(homeIcon).toHaveClass('h-5', 'w-5', 'shrink-0');
     });
 
     test('renders screen reader text for home link', () => {
       const items: BreadcrumbItem[] = [];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       const screenReaderText = screen.getByText('Home');
       expect(screenReaderText).toBeInTheDocument();
       expect(screenReaderText).toHaveClass('sr-only');
@@ -130,9 +149,9 @@ describe('Breadcrumb', () => {
     test('applies custom className to navigation element', () => {
       const items: BreadcrumbItem[] = [];
       const customClass = 'custom-breadcrumb-class';
-      
+
       render(<Breadcrumb items={items} className={customClass} />);
-      
+
       const nav = screen.getByRole('navigation');
       expect(nav).toHaveClass('flex', customClass);
     });
@@ -141,79 +160,106 @@ describe('Breadcrumb', () => {
   describe('Breadcrumb Items', () => {
     test('renders single breadcrumb item as link when href provided and not current', () => {
       const items: BreadcrumbItem[] = [
-        { label: 'Category', href: '/category' }
+        { label: 'Category', href: '/category' },
       ];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       const categoryLink = screen.getByRole('link', { name: 'Category' });
       expect(categoryLink).toBeInTheDocument();
       expect(categoryLink).toHaveAttribute('href', '/category');
-      expect(categoryLink).toHaveClass('ml-2', 'text-sm', 'font-medium', 'text-gray-500', 'hover:text-gray-700', 'transition-colors', 'duration-200');
+      expect(categoryLink).toHaveClass(
+        'ml-2',
+        'text-sm',
+        'font-medium',
+        'text-gray-500',
+        'hover:text-gray-700',
+        'transition-colors',
+        'duration-200',
+      );
       expect(categoryLink).not.toHaveAttribute('aria-current');
     });
 
     test('renders single breadcrumb item as span when current is true', () => {
       const items: BreadcrumbItem[] = [
-        { label: 'Current Page', href: '/current', current: true }
+        { label: 'Current Page', href: '/current', current: true },
       ];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       const currentItem = screen.getByText('Current Page');
       expect(currentItem).toBeInTheDocument();
       expect(currentItem.tagName).toBe('SPAN');
       expect(currentItem).toHaveAttribute('aria-current', 'page');
-      expect(currentItem).toHaveClass('ml-2', 'text-sm', 'font-medium', 'text-gray-900');
+      expect(currentItem).toHaveClass(
+        'ml-2',
+        'text-sm',
+        'font-medium',
+        'text-gray-900',
+      );
     });
 
     test('renders single breadcrumb item as span when no href provided', () => {
-      const items: BreadcrumbItem[] = [
-        { label: 'Non-linkable Item' }
-      ];
-      
+      const items: BreadcrumbItem[] = [{ label: 'Non-linkable Item' }];
+
       render(<Breadcrumb items={items} />);
-      
+
       const item = screen.getByText('Non-linkable Item');
       expect(item).toBeInTheDocument();
       expect(item.tagName).toBe('SPAN');
-      expect(item).toHaveClass('ml-2', 'text-sm', 'font-medium', 'text-gray-500');
+      expect(item).toHaveClass(
+        'ml-2',
+        'text-sm',
+        'font-medium',
+        'text-gray-500',
+      );
     });
 
     test('renders multiple breadcrumb items with separators', () => {
       const items: BreadcrumbItem[] = [
         { label: 'Category', href: '/category' },
         { label: 'Subcategory', href: '/category/subcategory' },
-        { label: 'Current Page', current: true }
+        { label: 'Current Page', current: true },
       ];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       // Check that all items are rendered
-      expect(screen.getByRole('link', { name: 'Category' })).toBeInTheDocument();
-      expect(screen.getByRole('link', { name: 'Subcategory' })).toBeInTheDocument();
+      expect(
+        screen.getByRole('link', { name: 'Category' }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('link', { name: 'Subcategory' }),
+      ).toBeInTheDocument();
       expect(screen.getByText('Current Page')).toBeInTheDocument();
-      
+
       // Check that separators are rendered
       const separators = screen.getAllByTestId('chevron-right-icon');
       expect(separators).toHaveLength(3); // One for each breadcrumb item
-      separators.forEach(separator => {
+      separators.forEach((separator) => {
         expect(separator).toHaveAttribute('aria-hidden', 'true');
-        expect(separator).toHaveClass('h-5', 'w-5', 'flex-shrink-0', 'text-gray-400');
+        expect(separator).toHaveClass(
+          'h-5',
+          'w-5',
+          'shrink-0',
+          'text-gray-400',
+        );
       });
     });
 
     test('handles empty items array', () => {
       const items: BreadcrumbItem[] = [];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       // Should still render home link
       const homeLink = screen.getByRole('link');
       expect(homeLink).toBeInTheDocument();
-      
+
       // Should not render any separators
-      expect(screen.queryByTestId('chevron-right-icon')).not.toBeInTheDocument();
+      expect(
+        screen.queryByTestId('chevron-right-icon'),
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -225,18 +271,18 @@ describe('Breadcrumb', () => {
         { locale: 'ja', expectedHref: '/ja' },
         { locale: 'es', expectedHref: '/es' },
         { locale: 'fr', expectedHref: '/fr' },
-        { locale: 'de', expectedHref: '/de' }
+        { locale: 'de', expectedHref: '/de' },
       ];
 
       testCases.forEach(({ locale, expectedHref }) => {
         useLocale.mockReturnValue(locale);
         const items: BreadcrumbItem[] = [];
-        
+
         const { unmount } = render(<Breadcrumb items={items} />);
-        
+
         const homeLink = screen.getByRole('link');
         expect(homeLink).toHaveAttribute('href', expectedHref);
-        
+
         unmount();
       });
     });
@@ -244,31 +290,35 @@ describe('Breadcrumb', () => {
 
   describe('Translation Integration', () => {
     test('uses translations for accessibility labels', () => {
-      useTranslations.mockReturnValue(createMockT({
-        'common.breadcrumb': 'Navigation en miettes',
-        'common.home': 'Accueil'
-      }));
-      
+      useTranslations.mockReturnValue(
+        createMockT({
+          'common.breadcrumb': 'Navigation en miettes',
+          'common.home': 'Accueil',
+        }),
+      );
+
       const items: BreadcrumbItem[] = [];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       const nav = screen.getByRole('navigation');
       expect(nav).toHaveAttribute('aria-label', 'Navigation en miettes');
     });
 
     test('falls back to default values when translations are missing', () => {
-      useTranslations.mockReturnValue((key: string, options?: { defaultValue?: string }) => {
-        return options?.defaultValue || key;
-      });
-      
+      useTranslations.mockReturnValue(
+        (key: string, options?: { defaultValue?: string }) => {
+          return options?.defaultValue || key;
+        },
+      );
+
       const items: BreadcrumbItem[] = [];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       const nav = screen.getByRole('navigation');
       expect(nav).toHaveAttribute('aria-label', 'Breadcrumb');
-      
+
       const homeLink = screen.getByRole('link');
       expect(homeLink).toHaveAttribute('title', 'Home');
     });
@@ -278,20 +328,20 @@ describe('Breadcrumb', () => {
     test('has proper ARIA structure', () => {
       const items: BreadcrumbItem[] = [
         { label: 'Category', href: '/category' },
-        { label: 'Current Page', current: true }
+        { label: 'Current Page', current: true },
       ];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       const nav = screen.getByRole('navigation');
       expect(nav).toHaveAttribute('aria-label');
-      
+
       const list = screen.getByRole('list');
       expect(list).toBeInTheDocument();
-      
+
       const listItems = screen.getAllByRole('listitem');
       expect(listItems).toHaveLength(3); // Home + 2 breadcrumb items
-      
+
       const currentPageItem = screen.getByText('Current Page');
       expect(currentPageItem).toHaveAttribute('aria-current', 'page');
     });
@@ -300,15 +350,15 @@ describe('Breadcrumb', () => {
       const items: BreadcrumbItem[] = [
         { label: 'Category', href: '/category' },
         { label: 'Subcategory', href: '/category/subcategory' },
-        { label: 'Current Page', current: true }
+        { label: 'Current Page', current: true },
       ];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       const categoryLink = screen.getByRole('link', { name: 'Category' });
       const subcategoryLink = screen.getByRole('link', { name: 'Subcategory' });
       const currentPageSpan = screen.getByText('Current Page');
-      
+
       expect(categoryLink).not.toHaveAttribute('aria-current');
       expect(subcategoryLink).not.toHaveAttribute('aria-current');
       expect(currentPageSpan).toHaveAttribute('aria-current', 'page');
@@ -316,14 +366,14 @@ describe('Breadcrumb', () => {
 
     test('icons are hidden from screen readers', () => {
       const items: BreadcrumbItem[] = [
-        { label: 'Category', href: '/category' }
+        { label: 'Category', href: '/category' },
       ];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       const homeIcon = screen.getByTestId('home-icon');
       const chevronIcon = screen.getByTestId('chevron-right-icon');
-      
+
       expect(homeIcon).toHaveAttribute('aria-hidden', 'true');
       expect(chevronIcon).toHaveAttribute('aria-hidden', 'true');
     });
@@ -332,34 +382,42 @@ describe('Breadcrumb', () => {
   describe('CSS Classes', () => {
     test('applies correct classes to navigation wrapper', () => {
       const items: BreadcrumbItem[] = [];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       const nav = screen.getByRole('navigation');
       expect(nav).toHaveClass('flex');
     });
 
     test('applies correct classes to breadcrumb list', () => {
       const items: BreadcrumbItem[] = [];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       const list = screen.getByRole('list');
       expect(list).toHaveClass('flex', 'items-center', 'space-x-2');
     });
 
     test('applies correct hover styles to links', () => {
       const items: BreadcrumbItem[] = [
-        { label: 'Category', href: '/category' }
+        { label: 'Category', href: '/category' },
       ];
-      
+
       render(<Breadcrumb items={items} />);
-      
+
       const homeLink = screen.getByTitle('Home');
       const categoryLink = screen.getByRole('link', { name: 'Category' });
-      
-      expect(homeLink).toHaveClass('hover:text-gray-500', 'transition-colors', 'duration-200');
-      expect(categoryLink).toHaveClass('hover:text-gray-700', 'transition-colors', 'duration-200');
+
+      expect(homeLink).toHaveClass(
+        'hover:text-gray-500',
+        'transition-colors',
+        'duration-200',
+      );
+      expect(categoryLink).toHaveClass(
+        'hover:text-gray-700',
+        'transition-colors',
+        'duration-200',
+      );
     });
   });
-}); 
+});

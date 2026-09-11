@@ -1,31 +1,21 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import KnowledgeArticle from '@/components/KnowledgeArticle';
-import { isKnowledgeSupported, KNOWLEDGE_SUPPORTED_LOCALES, KnowledgeData } from '@/config/knowledge';
+import {
+  getArticleAlternates,
+  findKnowledgeArticle,
+  isKnowledgeSupported,
+  KNOWLEDGE_SUPPORTED_LOCALES,
+  KnowledgeData,
+} from '@/config/knowledge';
 import knowledgeDataRaw from '@/data/knowledge_data.json';
+import { localePath } from '@/i18n/routing';
 
 const knowledgeData = knowledgeDataRaw as KnowledgeData;
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
-};
-
-// Generate language alternates dynamically from supported locales
-const generateLanguageAlternates = (locale: string, slug: string): Record<string, string> => {
-  const languages: Record<string, string> = {
-    'x-default': `/knowledge/${slug}`,
-  };
-
-  KNOWLEDGE_SUPPORTED_LOCALES.forEach(supportedLocale => {
-    const langCode = supportedLocale === 'zh-hans' ? 'zh-Hans' :
-      supportedLocale === 'zh-hant' ? 'zh-Hant' :
-        supportedLocale;
-    const langUrl = supportedLocale === 'en' ? `/knowledge/${slug}` : `/${supportedLocale}/knowledge/${slug}`;
-    languages[langCode] = langUrl;
-  });
-
-  return languages;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -37,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   // Find the article in the locale's data
-  const article = knowledgeData[locale as keyof KnowledgeData]?.find(item => item.slug === slug);
+  const article = findKnowledgeArticle(locale, slug);
 
   if (!article) {
     return {};
@@ -45,9 +35,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const t = await getTranslations({ locale, namespace: 'knowledge' });
 
-  // Generate correct URLs for English vs other locales
-  const canonicalUrl = locale === 'en' ? `/knowledge/${slug}` : `/${locale}/knowledge/${slug}`;
-  const ogUrl = locale === 'en' ? `https://www.pokewordle.app/knowledge/${slug}` : `https://www.pokewordle.app/${locale}/knowledge/${slug}`;
+  const canonicalUrl = localePath(
+    locale,
+    `/knowledge/${encodeURIComponent(article.slug)}`,
+  );
+  const ogUrl = `https://www.pokewordle.app${canonicalUrl}`;
 
   return {
     title: `${article.title} - ${t('title')} - Poke Wordle`,
@@ -61,7 +53,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       'nintendo',
       'pokemon go',
       'pokemon training card game',
-      article.title.toLowerCase()
+      article.title.toLowerCase(),
     ],
     robots: {
       index: true,
@@ -69,7 +61,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     alternates: {
       canonical: canonicalUrl,
-      languages: generateLanguageAlternates(locale, slug),
+      languages: getArticleAlternates(locale, article),
     },
     openGraph: {
       title: `${article.title} - ${t('title')} - Poke Wordle`,
@@ -87,23 +79,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export async function generateStaticParams() {
-  const params: { locale: string; slug: string }[] = [];
-
-  // Generate static params for all supported locales and their articles
-  KNOWLEDGE_SUPPORTED_LOCALES.forEach(locale => {
-    if (locale !== 'en') { // Skip English as it's handled by the root route
-      const articles = knowledgeData[locale as keyof KnowledgeData] || [];
-      articles.forEach(article => {
-        params.push({
-          locale,
-          slug: article.slug,
-        });
-      });
-    }
-  });
-
-  return params;
+export function generateStaticParams() {
+  return KNOWLEDGE_SUPPORTED_LOCALES.flatMap((locale) =>
+    knowledgeData[locale].map((article) => ({ locale, slug: article.slug })),
+  );
 }
 
 export default async function KnowledgeArticlePage({ params }: Props) {
@@ -114,15 +93,13 @@ export default async function KnowledgeArticlePage({ params }: Props) {
     notFound();
   }
 
-  // URL decode the slug to handle Chinese characters properly
-  const decodedSlug = decodeURIComponent(slug);
-
   // Find the article in the locale's data
-  const article = knowledgeData[locale as keyof KnowledgeData]?.find(item => item.slug === decodedSlug);
+  const article = findKnowledgeArticle(locale, slug);
 
   if (!article) {
     notFound();
   }
 
+  setRequestLocale(locale);
   return <KnowledgeArticle article={article} locale={locale} />;
-} 
+}

@@ -23,18 +23,23 @@ export default function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
   const homeHref = locale === 'en' ? '/' : `/${locale}`;
 
   return (
-    <nav className={`flex ${className}`} aria-label={t('common.breadcrumb', { defaultValue: 'Breadcrumb' })}>
+    <nav
+      className={`flex ${className}`}
+      aria-label={t('common.breadcrumb', { defaultValue: 'Breadcrumb' })}
+    >
       <ol role="list" className="flex items-center space-x-2">
         {/* Home link */}
         <li>
           <div>
-            <Link 
-              href={homeHref} 
+            <Link
+              href={homeHref}
               className="text-gray-400 hover:text-gray-500 transition-colors duration-200"
               title={t('common.home', { defaultValue: 'Home' })}
             >
-              <HomeIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
-              <span className="sr-only">{t('common.home', { defaultValue: 'Home' })}</span>
+              <HomeIcon className="h-5 w-5 shrink-0" aria-hidden="true" />
+              <span className="sr-only">
+                {t('common.home', { defaultValue: 'Home' })}
+              </span>
             </Link>
           </div>
         </li>
@@ -43,7 +48,10 @@ export default function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
         {items.map((item, index) => (
           <li key={index}>
             <div className="flex items-center">
-              <ChevronRightIcon className="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+              <ChevronRightIcon
+                className="h-5 w-5 shrink-0 text-gray-400"
+                aria-hidden="true"
+              />
               {item.href && !item.current ? (
                 <Link
                   href={item.href}
@@ -55,9 +63,7 @@ export default function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
               ) : (
                 <span
                   className={`ml-2 text-sm font-medium ${
-                    item.current
-                      ? 'text-gray-900'
-                      : 'text-gray-500'
+                    item.current ? 'text-gray-900' : 'text-gray-500'
                   }`}
                   aria-current={item.current ? 'page' : undefined}
                 >
@@ -70,4 +76,4 @@ export default function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
       </ol>
     </nav>
   );
-} 
+}
