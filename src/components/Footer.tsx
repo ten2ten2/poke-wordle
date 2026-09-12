@@ -4,6 +4,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import { useHydrated } from '@/hooks/useHydrated';
 import { localePath } from '@/i18n/routing';
+import { openCookiePreferences } from '@/lib/consent';
 
 export default function Footer() {
   const t = useTranslations();
@@ -32,6 +33,14 @@ export default function Footer() {
               >
                 {t('footer.privacyAndTerms')}
               </Link>
+              <button
+                type="button"
+                onClick={openCookiePreferences}
+                title={t('cookieConsent.title')}
+                className="btn-ghost footer-link px-0 font-normal"
+              >
+                {t('cookieConsent.title')}
+              </button>
             </div>
           </div>
         </div>

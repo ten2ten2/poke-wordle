@@ -201,22 +201,22 @@
           "Spieleinstellungen und -präferenzen (lokal in Ihrem Browser gespeichert)",
           "Spielstatistiken und -fortschritt (lokal in Ihrem Browser gespeichert)",
           "Sprachpräferenzen (lokal in Ihrem Browser gespeichert)",
-          "Grundlegende Nutzungsanalysen (anonymisiert)"
+          "Nutzungsanalysen, darunter besuchte Seiten sowie Geräte- und Browserinformationen"
         ]
       },
       "dataStorage": {
         "title": "Wie wir Ihre Daten speichern",
         "description": "Ihre Spieldaten werden lokal in Ihrem Browser mit localStorage gespeichert. Das bedeutet:",
         "items": [
-          "Ihre Daten verlassen niemals Ihr Gerät",
-          "Wir können nicht auf Ihre persönlichen Spielstatistiken zugreifen",
+          "Gespeicherter Spielfortschritt und Einstellungen bleiben in diesem Browser",
+          "Deine Tipps werden zur Überprüfung der Antworten an unseren Server gesendet",
           "Das Löschen Ihrer Browserdaten setzt Ihren Spielfortschritt zurück",
-          "Ihre Daten werden nicht mit Dritten geteilt"
+          "Nutzungsanalysen werden separat von den unten beschriebenen Drittanbietern verarbeitet"
         ]
       },
       "cookies": {
         "title": "Cookies und lokaler Speicher",
-        "description": "Wir verwenden Browser-localStorage, um Ihre Spielpräferenzen und Ihren Fortschritt zu speichern. Es werden keine Tracking-Cookies verwendet."
+        "description": "Die Spielfunktionen speichern Fortschritt und Einstellungen im localStorage des Browsers, ohne Cookies zu verwenden. Die Analysedienste von Drittanbietern werden unten beschrieben."
       },
       "thirdParty": {
         "title": "Drittanbieter-Services",
@@ -227,7 +227,7 @@
         "description": "Sie haben das Recht:",
         "items": [
           "Ihre lokalen Spieldaten jederzeit zu löschen",
-          "JavaScript zu deaktivieren, um Datenspeicherung zu verhindern",
+          "Deine Auswahl zu Google Analytics jederzeit über die Datenschutzeinstellungen in der Fußzeile ändern",
           "Uns bei Datenschutzbedenken zu kontaktieren"
         ]
       }

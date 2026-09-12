@@ -3,9 +3,16 @@ import { useSyncExternalStore } from 'react';
 export type CookieConsentStatus = 'accepted' | 'declined' | null;
 const key = 'cookie-consent';
 const changeEvent = 'poke-wordle-consent';
+export const cookiePreferencesEvent = 'poke-wordle-cookie-preferences';
+let sessionConsent: CookieConsentStatus | undefined;
+
+export function openCookiePreferences() {
+  window.dispatchEvent(new Event(cookiePreferencesEvent));
+}
 
 export function getCookieConsentStatus(): CookieConsentStatus {
   if (typeof window === 'undefined') return null;
+  if (sessionConsent !== undefined) return sessionConsent;
   try {
     const value = localStorage.getItem(key);
     return value === 'accepted' || value === 'declined' ? value : null;
@@ -19,7 +26,10 @@ export function setCookieConsentStatus(
 ) {
   try {
     localStorage.setItem(key, value);
+    sessionConsent = undefined;
   } catch (error) {
+    // Honor opt-out for this visit even when browser storage is unavailable.
+    sessionConsent = value;
     console.warn('Error saving cookie consent:', error);
   }
   window.dispatchEvent(new Event(changeEvent));

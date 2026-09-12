@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useHydrated } from '@/hooks/useHydrated';
 import { localePath } from '@/i18n/routing';
-import { setCookieConsentStatus, useCookieConsent } from '@/lib/consent';
+import { cookiePreferencesEvent, setCookieConsentStatus, useCookieConsent } from '@/lib/consent';
 
 interface CookieConsentProps {
   onAccept?: () => void;
@@ -22,11 +22,24 @@ export default function CookieConsent({
   const hydrated = useHydrated();
   const consent = useCookieConsent();
   const [dismissed, setDismissed] = useState(false);
-  if (!hydrated || consent || dismissed) return null;
+  const [requested, setRequested] = useState(false);
+
+  useEffect(() => {
+    const open = () => setRequested(true);
+    window.addEventListener(cookiePreferencesEvent, open);
+    return () => window.removeEventListener(cookiePreferencesEvent, open);
+  }, []);
+
+  if (!hydrated || (!requested && (consent || dismissed))) return null;
+
+  function close() {
+    setDismissed(true);
+    setRequested(false);
+  }
 
   function choose(value: 'accepted' | 'declined') {
     setCookieConsentStatus(value);
-    setDismissed(true);
+    close();
     if (value === 'accepted') onAccept?.();
     else onDecline?.();
   }
@@ -60,7 +73,7 @@ export default function CookieConsent({
             {t('accept')}
           </button>
           <button
-            onClick={() => setDismissed(true)}
+            onClick={close}
             aria-label={t('close')}
             title={t('close')}
             className="btn-icon"

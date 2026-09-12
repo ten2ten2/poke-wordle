@@ -47,7 +47,9 @@ GitHub Actions 在 `dev`、`main` 推送及 Pull Request 时执行 `mise run che
 
 TypeScript 6、ESLint 9 受当前插件的 peer 依赖范围约束；升级时重新核验兼容性，不用 `--force` 或 `--legacy-peer-deps` 绕过约束。
 
-Google Analytics 在用户接受后加载；Vercel Analytics 和 Speed Insights 位于根布局。
+配置 `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-...` 后，Google Analytics 默认启用；明确拒绝后停止采集并清除 GA Cookie。用户可通过页脚「隐私偏好」更改选择。GA4 数据流的增强型衡量应开启「基于浏览器历史记录事件的网页更改」，由 Google 标签自动统计站内跳转，避免重复上报。Vercel Analytics 和 Speed Insights 位于根布局，不受此 GA4 开关控制。
+
+验证真实 Google 标签：先用上述 ID 构建，再运行 `GA4_E2E_MEASUREMENT_ID=G-... mise run e2e -- tests/e2e/analytics.spec.ts`（两个 ID 必须一致）。此检查需要联网，所有 GA 上报均被拦截，不会污染正式统计；未设置测试 ID 时跳过真实标签检查。
 
 SEO 校验检查实际构建输出，无需安装浏览器。部署后可运行 `SEO_BASE_URL=https://www.pokewordle.app mise run seo:check`。文章元数据、语言互链和历史地址由索引生成，sitemap 日期只随实际内容更新；编辑约定见[知识文章](tools/README.md#知识文章)。
 

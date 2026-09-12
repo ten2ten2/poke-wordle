@@ -201,22 +201,22 @@
           "Paramètres et préférences du jeu (stockés localement dans votre navigateur)",
           "Statistiques et progression du jeu (stockées localement dans votre navigateur)",
           "Préférences de langue (stockées localement dans votre navigateur)",
-          "Analyses d'utilisation de base (anonymisées)"
+          "Analyse de fréquentation, notamment les pages consultées et les informations sur l’appareil et le navigateur"
         ]
       },
       "dataStorage": {
         "title": "Comment Nous Stockons Vos Données",
         "description": "Vos données de jeu sont stockées localement dans votre navigateur en utilisant localStorage. Cela signifie :",
         "items": [
-          "Vos données ne quittent jamais votre appareil",
-          "Nous ne pouvons pas accéder à vos statistiques personnelles de jeu",
+          "La progression et les préférences enregistrées restent dans ce navigateur",
+          "Vos propositions sont envoyées à notre serveur pour vérifier les réponses",
           "Effacer les données de votre navigateur réinitialisera votre progression de jeu",
-          "Vos données ne sont pas partagées avec des tiers"
+          "Les données de fréquentation sont traitées séparément par les services tiers décrits ci-dessous"
         ]
       },
       "cookies": {
         "title": "Cookies et Stockage Local",
-        "description": "Nous utilisons le localStorage du navigateur pour sauvegarder vos préférences et progression de jeu. Aucun cookie de suivi n'est utilisé."
+        "description": "Les fonctionnalités du jeu enregistrent la progression et les préférences dans le localStorage du navigateur, sans utiliser de cookies. Les services d’analyse tiers sont décrits ci-dessous."
       },
       "thirdParty": {
         "title": "Services Tiers",
@@ -227,7 +227,7 @@
         "description": "Vous avez le droit de :",
         "items": [
           "Effacer vos données locales de jeu à tout moment",
-          "Désactiver JavaScript pour empêcher le stockage de données",
+          "Modifier à tout moment votre choix concernant Google Analytics dans les préférences de confidentialité du pied de page",
           "Nous contacter pour toute préoccupation de confidentialité"
         ]
       }

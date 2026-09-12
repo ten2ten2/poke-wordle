@@ -201,22 +201,22 @@
           "Impostazioni e preferenze del gioco (memorizzate localmente nel tuo browser)",
           "Statistiche e progressi del gioco (memorizzate localmente nel tuo browser)",
           "Preferenze di lingua (memorizzate localmente nel tuo browser)",
-          "Analisi di utilizzo di base (anonimizzate)"
+          "Analisi di utilizzo, incluse le pagine visitate e le informazioni sul dispositivo e sul browser"
         ]
       },
       "dataStorage": {
         "title": "Come Memorizziamo i Tuoi Dati",
         "description": "I tuoi dati di gioco sono memorizzati localmente nel tuo browser utilizzando localStorage. Questo significa:",
         "items": [
-          "I tuoi dati non lasciano mai il tuo dispositivo",
-          "Non possiamo accedere alle tue statistiche personali di gioco",
+          "I progressi e le preferenze salvati restano in questo browser",
+          "I tuoi tentativi vengono inviati al nostro server per verificare le risposte",
           "Cancellare i dati del browser resetterà il tuo progresso di gioco",
-          "I tuoi dati non sono condivisi con terze parti"
+          "I dati di utilizzo sono trattati separatamente dai servizi di terze parti descritti di seguito"
         ]
       },
       "cookies": {
         "title": "Cookie e Memorizzazione Locale",
-        "description": "Utilizziamo localStorage del browser per salvare le tue preferenze e progressi di gioco. Non vengono utilizzati cookie di tracciamento."
+        "description": "Le funzionalità del gioco salvano i progressi e le preferenze nel localStorage del browser, senza utilizzare cookie. I servizi di analisi di terze parti sono descritti di seguito."
       },
       "thirdParty": {
         "title": "Servizi di Terze Parti",
@@ -227,7 +227,7 @@
         "description": "Hai il diritto di:",
         "items": [
           "Cancellare i tuoi dati locali di gioco in qualsiasi momento",
-          "Disabilitare JavaScript per prevenire la memorizzazione dei dati",
+          "Modificare in qualsiasi momento la preferenza relativa a Google Analytics dalle preferenze sulla privacy a piè di pagina",
           "Contattarci per qualsiasi preoccupazione sulla privacy"
         ]
       }

@@ -57,7 +57,7 @@ test.each([
   ).not.toBeInTheDocument();
 });
 
-test('dismissal does not grant consent', async () => {
+test('dismissal does not change the saved preference', async () => {
   render(<CookieConsent />);
   await userEvent.click(screen.getByRole('button', { name: 'Close' }));
   expect(getCookieConsentStatus()).toBeNull();

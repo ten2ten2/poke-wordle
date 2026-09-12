@@ -201,22 +201,22 @@
           "Configuraciones y preferencias del juego (almacenadas localmente en su navegador)",
           "Estadísticas y progreso del juego (almacenadas localmente en su navegador)",
           "Preferencias de idioma (almacenadas localmente en su navegador)",
-          "Análisis básicos de uso (anonimizados)"
+          "Análisis de uso, incluidas las páginas visitadas y la información del dispositivo y del navegador"
         ]
       },
       "dataStorage": {
         "title": "Cómo Almacenamos sus Datos",
         "description": "Sus datos del juego se almacenan localmente en su navegador usando localStorage. Esto significa:",
         "items": [
-          "Sus datos nunca salen de su dispositivo",
-          "No podemos acceder a sus estadísticas personales del juego",
+          "El progreso y las preferencias guardados permanecen en este navegador",
+          "Tus intentos se envían a nuestro servidor para comprobar las respuestas",
           "Limpiar los datos de su navegador reiniciará su progreso del juego",
-          "Sus datos no se comparten con terceros"
+          "Los datos de uso se procesan por separado mediante los servicios de terceros descritos a continuación"
         ]
       },
       "cookies": {
         "title": "Cookies y Almacenamiento Local",
-        "description": "Usamos localStorage del navegador para guardar sus preferencias y progreso del juego. No se usan cookies de seguimiento."
+        "description": "Las funciones del juego guardan el progreso y las preferencias en el localStorage del navegador, sin utilizar cookies. Los servicios de análisis de terceros se describen a continuación."
       },
       "thirdParty": {
         "title": "Servicios de Terceros",
@@ -227,7 +227,7 @@
         "description": "Usted tiene el derecho de:",
         "items": [
           "Limpiar sus datos locales del juego en cualquier momento",
-          "Deshabilitar JavaScript para prevenir el almacenamiento de datos",
+          "Cambiar en cualquier momento tu preferencia de Google Analytics desde las preferencias de privacidad del pie de página",
           "Contactarnos con cualquier preocupación de privacidad"
         ]
       }

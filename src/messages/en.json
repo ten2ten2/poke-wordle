@@ -211,22 +211,22 @@
           "Game settings and preferences (stored locally in your browser)",
           "Game statistics and progress (stored locally in your browser)",
           "Language preferences (stored locally in your browser)",
-          "Basic usage analytics (anonymized)"
+          "Usage analytics, including visited pages and device and browser information"
         ]
       },
       "dataStorage": {
         "title": "How We Store Your Data",
         "description": "Your game data is stored locally in your browser using localStorage. This means:",
         "items": [
-          "Your data never leaves your device",
-          "We cannot access your personal game statistics",
+          "Saved progress and preferences are kept in this browser",
+          "Guesses are sent to our server to check answers",
           "Clearing your browser data will reset your game progress",
-          "Your data is not shared with third parties"
+          "Usage analytics are handled separately by the third-party services described below"
         ]
       },
       "cookies": {
         "title": "Cookies and Local Storage",
-        "description": "We use browser localStorage to save your game preferences and progress. No tracking cookies are used."
+        "description": "Our game features use browser localStorage to save progress and preferences, without using cookies. Third-party analytics are described below."
       },
       "thirdParty": {
         "title": "Third-Party Services",
@@ -237,7 +237,7 @@
         "description": "You have the right to:",
         "items": [
           "Clear your local game data at any time",
-          "Disable JavaScript to prevent data storage",
+          "Change your Google Analytics preference at any time using Privacy preferences in the footer",
           "Contact us with any privacy concerns"
         ]
       }
