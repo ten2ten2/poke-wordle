@@ -1,7 +1,7 @@
 {
   "title": "宝可梦猜猜乐",
   "game": {
-    "inputPlaceholder": "输入宝可梦名称...",
+    "inputPlaceholder": "任意语言名称 / 图鉴编号",
     "submit": "提交",
     "submitting": "提交中...",
     "randomStart": "随机开局",
@@ -14,11 +14,8 @@
     "gameLost": "游戏结束！答案是 {pokemon}",
     "congratulations": "恭喜！",
     "betterLuckNextTime": "下次加油！",
-    "guessedIn": "你用了 {count} 次猜测",
+    "guessedIn": "你用了 {count} 次猜测找到了答案",
     "playAgain": "再来一局",
-    "startPrompt": "输入宝可梦名称或点击\"随机开局\"来开始游戏！",
-    "languageChanged": "语言已更改",
-    "languageChangedDesc": "语言已更改。宝可梦数据已更新为新语言。请开始新游戏以继续游玩。",
     "settingsChanged": "设置已更改",
     "settingsChangedDesc": "游戏设置已更改。当前游戏已重置以匹配新设置。请开始新游戏以继续游玩。",
     "inputSection": "游戏输入区域",
@@ -29,6 +26,8 @@
     "guessesUsed": "已使用猜测次数",
     "result": "结果",
     "defeat": "失败",
+    "victory": "胜利",
+    "baseStatsTotal": "种族值总和",
     "columns": {
       "type": "属性",
       "baseStats": "种族值",
@@ -38,17 +37,30 @@
       "tags": "其它标签"
     },
     "evolutionMethod": "进化方式",
-    "requestFailed": "无法检查猜测，请重试。"
+    "requestFailed": "无法检查猜测，请重试。",
+    "searchHint": "搜索任意语言名称或全国图鉴编号",
+    "noMatches": "没有匹配的宝可梦",
+    "suggestionCount": "显示 {shown} / {total} 个结果",
+    "intro": "猜一只宝可梦，根据属性提示逐步找到答案。",
+    "matchExact": "相同",
+    "matchClose": "接近",
+    "matchNope": "不同",
+    "answerHigher": "答案更高",
+    "answerLower": "答案更低",
+    "confirmGiveUp": "查看答案并结束本局？",
+    "confirmRestart": "清除当前猜测，开始新一局？",
+    "confirmAction": "确认",
+    "guessNumber": "第 {number} 次",
+    "hiddenField": "已被恶作剧之心模式隐藏"
   },
   "settings": {
     "title": "设置",
     "maxGuesses": "本轮可猜测次数",
-    "times": "次",
     "generationSelection": "世代选择",
     "selectAll": "全选",
     "deselectAll": "全不选",
     "generationRequired": "至少需要选择一个世代",
-    "pranksterMode": "恶作剧之心开关",
+    "pranksterMode": "恶作剧之心模式",
     "pranksterModeDesc": "开启后，每次猜测会有恶作剧之心的宝可梦随机遮盖一项数据",
     "genArrow": "世代箭头开关",
     "genArrowDesc": "开启后，每次猜测会提示世代高低",
@@ -93,12 +105,9 @@
     },
     "colorGuide": {
       "title": "标签颜色说明",
-      "greenTag": "绿色标签",
-      "yellowTag": "黄色标签",
-      "grayTag": "灰色标签",
-      "green": "表示该标签与目标宝可梦的对应标签**相同**",
-      "yellow": "表示该标签与目标宝可梦的对应标签**接近**",
-      "gray": "表示该标签与目标宝可梦的对应标签**不同**"
+      "green": "<tag>绿色标签</tag> 表示该标签与目标宝可梦的对应标签相同",
+      "yellow": "<tag>黄色标签</tag> 表示该标签与目标宝可梦的对应标签接近",
+      "gray": "<tag>灰色标签</tag> 表示该标签与目标宝可梦的对应标签不同"
     },
     "yellowConditions": {
       "title": "黄色标签判断条件",
@@ -108,23 +117,28 @@
     },
     "dataSource": {
       "title": "数据来源",
-      "description": "本游戏数据主要来源于 [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\") 和 [Bulbagpedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")。"
+      "description": "本游戏数据主要来源于 <pokeapi>pokeapi.co</pokeapi> 和 <bulbapedia>Bulbapedia</bulbapedia>。"
     }
   },
   "navbar": {
     "about": "关于",
     "settings": "设置",
     "language": "语言",
+    "switchLanguage": "切换到{language}",
+    "languageDescription": "从下方列表中选择语言",
     "knowledge": "知识库",
+    "lightMode": "切换到日间模式",
+    "darkMode": "切换到夜间模式",
     "main_navigation": "主导航"
   },
   "knowledge": {
     "title": "知识库",
-    "description": "你可能感兴趣的宝可梦知识",
+    "description": "了解宝可梦形态、进化与世代知识，掌握宝可梦猜猜乐的颜色标签、数值箭头和筛选规则。",
     "comingSoon": "即将推出！我们正在构建一个全面的宝可梦知识库，帮助您成为更好的宝可梦猜测者。",
     "readMore": "阅读更多",
-    "readNext": "继续阅读",
-    "randomPrefix": "宝可梦问答："
+    "randomPrefix": "宝可梦问答：",
+    "seoTitle": "宝可梦知识库与猜谜指南 - 宝可梦猜猜乐",
+    "relatedArticles": "相关文章"
   },
   "footer": {
     "privacyAndTerms": "隐私与条款"
@@ -159,12 +173,12 @@
     "item-stone-water": "使用水之石",
     "item-stone-thunder": "使用雷之石",
     "item-stone-leaf": "使用叶之石",
-    "item-stone-sun": "使用太阳石",
+    "item-stone-sun": "使用日之石",
     "item-stone-moon": "使用月之石",
     "item-stone-shiny": "使用光之石",
     "item-stone-dusk": "使用暗之石",
-    "item-stone-dawn-male": "雄性使用觉醒石",
-    "item-stone-dawn-female": "雌性使用觉醒石",
+    "item-stone-dawn-male": "雄性使用觉醒之石",
+    "item-stone-dawn-female": "雌性使用觉醒之石",
     "item-stone-ice": "使用冰之石",
     "item-unique": "使用特殊道具",
     "trade-normal": "通信交换",
@@ -174,7 +188,7 @@
   },
   "tags": {
     "starter": "最初的伙伴",
-    "legendary": "传说中的宝可梦",
+    "legendary": "传说的宝可梦",
     "mythical": "幻之宝可梦",
     "fossil": "化石宝可梦",
     "regional": "有地区形态",

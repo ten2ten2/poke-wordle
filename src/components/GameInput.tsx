@@ -1,237 +1,153 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import { useTranslations } from 'next-intl';
+import { useMemo, useRef, useState } from 'react';
+import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react';
+import { useLocale, useTranslations } from 'next-intl';
+import Image from 'next/image';
+import type { Pokemon } from '@/types/pokemon';
+import { normalizePokemonName as normalize, pokemonSearchNames, translateText } from '@/lib/pokemon';
 
 interface GameInputProps {
-  pokemonNames: string[];
-  onSubmit: (name: string) => void;
+  pokemon: Pokemon[];
+  onSubmit: (name: string) => Promise<boolean>;
   onRandomStart: () => void;
   onGiveUp: () => void;
   onRestart: () => void;
   disabled: boolean;
   gameStarted: boolean;
   gameOver: boolean;
+  guessCount: number;
+  maxGuesses: number;
 }
 
-export default function GameInput({
-  pokemonNames,
-  onSubmit,
-  onRandomStart,
-  onGiveUp,
-  onRestart,
-  disabled,
-  gameStarted,
-  gameOver,
-}: GameInputProps) {
+export default function GameInput({ pokemon, onSubmit, onRandomStart, onGiveUp, onRestart, disabled, gameStarted, gameOver, guessCount, maxGuesses }: GameInputProps) {
   const t = useTranslations();
+  const locale = useLocale();
   const [input, setInput] = useState('');
-
-  const [selectedIndex, setSelectedIndex] = useState(-1);
-  const [shouldShowSuggestions, setShouldShowSuggestions] = useState(false);
-  const [debouncedInput, setDebouncedInput] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  // Debounce input changes
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedInput(input);
-    }, 150);
-
-    return () => clearTimeout(timer);
-  }, [input]);
-
-  // Memoize filtered suggestions to avoid recalculation on every render
-  const suggestions = useMemo(() => {
-    if (debouncedInput.length === 0 || !shouldShowSuggestions) {
-      return [];
+  const [pending, setPending] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const [confirm, setConfirm] = useState<'giveUp' | 'restart' | null>(null);
+  const composing = useRef(false);
+  const submission = useRef(0);
+  const choices = useMemo(() => pokemon.map((row) => ({
+    id: row.id, name: row.name, profile: row.profile, pokedex_id_national: row.pokedex_id_national,
+    dex: String(row.pokedex_id_national),
+    label: translateText(row.name, locale), aliases: pokemonSearchNames(row.name).map(normalize),
+  })), [pokemon, locale]);
+  const dexChoices = useMemo(() => choices.toSorted((a, b) => a.pokedex_id_national - b.pokedex_id_national), [choices]);
+  const query = normalize(input);
+  const dexPrefix = /^#?\d+$/.test(query) ? String(Number(query.replace('#', ''))) : null;
+  const matches = useMemo(() => {
+    if (!query) return [];
+    const exact: typeof choices = [];
+    const partial: typeof choices = [];
+    for (const row of dexPrefix === null ? choices : dexChoices) {
+      if (!(dexPrefix === null ? row.aliases.some((name) => name.includes(query)) : row.dex.startsWith(dexPrefix))) continue;
+      const isExact = dexPrefix === null ? row.aliases.includes(query) : row.dex === dexPrefix;
+      (isExact ? exact : partial).push(row);
     }
+    return exact.concat(partial);
+  }, [choices, dexChoices, query, dexPrefix]);
+  const suggestions = matches.slice(0, 12);
+  const blocked = disabled || pending;
 
-    const lowercaseInput = debouncedInput.toLowerCase();
-    return pokemonNames.filter((name) =>
-      name.toLowerCase().includes(lowercaseInput),
-    );
-  }, [debouncedInput, pokemonNames, shouldShowSuggestions]);
+  async function submit() {
+    if (blocked || gameOver || !query || composing.current) return;
+    const request = ++submission.current;
+    const exact = choices.filter((row) => dexPrefix !== null ? row.dex === dexPrefix : row.aliases.includes(query));
+    const name = exact.length === 1 ? exact[0].name : matches.length === 1 && dexPrefix !== null ? matches[0].name : input.trim();
+    setPending(true); setFailed(false);
+    try {
+      const accepted = await onSubmit(name);
+      if (accepted && request === submission.current) setInput('');
+    } catch {
+      if (request === submission.current) setFailed(true);
+    } finally {
+      if (request === submission.current) setPending(false);
+    }
+  }
 
-  const showSuggestions = suggestions.length > 0 && shouldShowSuggestions;
+  function resetInput() {
+    submission.current++;
+    setPending(false); setFailed(false); setInput(''); setConfirm(null);
+  }
 
-  const handleSubmit = useCallback(
-    (name?: string) => {
-      if (gameOver || disabled) return;
-
-      const submittedName = name || input;
-      if (submittedName.trim()) {
-        onSubmit(submittedName.trim());
-        setInput('');
-        setShouldShowSuggestions(false);
-        setSelectedIndex(-1);
-      }
-    },
-    [gameOver, disabled, input, onSubmit],
-  );
-
-  const handleInputChange = useCallback((value: string) => {
-    setInput(value);
-    setSelectedIndex(-1);
-    setShouldShowSuggestions(value.length > 0);
-  }, []);
-
-  const handleSuggestionClick = useCallback(
-    (suggestion: string) => {
-      if (gameOver || disabled) return;
-
-      setInput(suggestion);
-      setShouldShowSuggestions(false);
-      setSelectedIndex(-1);
-      inputRef.current?.focus();
-    },
-    [gameOver, disabled],
-  );
-
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.nativeEvent.isComposing || e.keyCode === 229) return;
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        if (selectedIndex >= 0 && suggestions[selectedIndex]) {
-          setInput(suggestions[selectedIndex]);
-          setShouldShowSuggestions(false);
-          setSelectedIndex(-1);
-        } else {
-          handleSubmit();
-        }
-      } else if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        setSelectedIndex((prev) => Math.min(prev + 1, suggestions.length - 1));
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        setSelectedIndex((prev) => Math.max(prev - 1, -1));
-      } else if (e.key === 'Escape') {
-        setShouldShowSuggestions(false);
-        setSelectedIndex(-1);
-      }
-    },
-    [selectedIndex, suggestions, handleSubmit],
-  );
-
-  const handleRandomStart = useCallback(() => {
-    onRandomStart();
-    setInput('');
-    setShouldShowSuggestions(false);
-    setSelectedIndex(-1);
-  }, [onRandomStart]);
-
-  const handleGiveUp = useCallback(() => {
-    onGiveUp();
-    setInput('');
-    setShouldShowSuggestions(false);
-    setSelectedIndex(-1);
-  }, [onGiveUp]);
-
-  const handleRestart = useCallback(() => {
-    onRestart();
-    setInput('');
-    setShouldShowSuggestions(false);
-    setSelectedIndex(-1);
-  }, [onRestart]);
+  function requestAction(action: 'giveUp' | 'restart') {
+    if (gameStarted && !gameOver) setConfirm(action);
+    else { resetInput(); onRestart(); }
+  }
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      {/* Input and Submit */}
-      <div className="relative">
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-          <div className="flex-1 relative">
-            <input
-              ref={inputRef}
-              type="text"
-              aria-label={t('game.inputPlaceholder')}
-              value={input}
-              onChange={(e) => handleInputChange(e.target.value)}
-              onKeyDown={handleKeyDown}
-              onFocus={() => {
-                if (input.length > 0) {
-                  setShouldShowSuggestions(true);
-                }
-              }}
-              onBlur={() => {
-                // Delay hiding to allow click events on suggestions
-                setTimeout(() => {
-                  setShouldShowSuggestions(false);
-                }, 150);
-              }}
-              placeholder={t('game.inputPlaceholder')}
-              disabled={disabled || gameOver}
-              className="input-primary text-base"
-              autoComplete="off"
-              autoCapitalize="off"
-              autoCorrect="off"
-              spellCheck="false"
-            />
-
-            {showSuggestions && !gameOver && (
-              <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 sm:max-h-80 overflow-y-auto">
-                {suggestions.map((suggestion, index) => (
-                  <button
-                    key={suggestion}
-                    onClick={() => handleSuggestionClick(suggestion)}
-                    className={`w-full text-left px-4 py-3 sm:py-2 hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden transition-colors duration-150 ${
-                      index === selectedIndex ? 'bg-red-100' : ''
-                    } ${index === 0 ? 'rounded-t-lg' : ''} ${index === suggestions.length - 1 ? 'rounded-b-lg' : ''}`}
-                  >
-                    <span className="text-responsive-sm">{suggestion}</span>
-                  </button>
-                ))}
+    <div className="space-y-3">
+      <form onSubmit={(event) => { event.preventDefault(); void submit(); }}>
+        <Combobox value={input} onChange={(name: string | null) => setInput(name ?? '')} disabled={blocked || gameOver}>
+          <div className="guess-input-row">
+            <div className="min-w-0">
+              <div className="guess-input-field">
+                <ComboboxInput
+                  value={input}
+                  aria-label={t('game.searchHint')}
+                  onChange={(event) => setInput(event.target.value)}
+                  onCompositionStart={() => { composing.current = true; }}
+                  onCompositionEnd={() => { composing.current = false; }}
+                  onKeyDownCapture={(event) => {
+                    if (event.key === 'Enter' && (event.nativeEvent.isComposing || composing.current)) {
+                      event.preventDefault(); event.stopPropagation();
+                    }
+                  }}
+                  placeholder={t('game.inputPlaceholder')}
+                  title={t('game.searchHint')}
+                  className="input-primary"
+                  autoComplete="off" autoCapitalize="off" autoCorrect="off" spellCheck={false}
+                />
+                <span className="guess-input-hint" aria-hidden="true">{t('game.inputPlaceholder')}</span>
               </div>
-            )}
+              {query && (
+                <ComboboxOptions anchor={{ to: 'bottom start', gap: 6 }} className="pokemon-suggestions" modal={false}>
+                  {suggestions.map((row) => (
+                    <ComboboxOption key={row.id} value={row.label} className="pokemon-option">
+                      <Image src={row.profile} alt="" width={36} height={36} className="size-9 shrink-0 object-contain" />
+                      <span className="min-w-0 flex-1">{row.label}</span>
+                      <span className="text-[13px] tabular-nums text-muted">#{String(row.pokedex_id_national).padStart(4, '0')}</span>
+                    </ComboboxOption>
+                  ))}
+                  <p className="px-3 py-2 text-[13px] text-secondary" role="status">
+                    {matches.length ? t('game.suggestionCount', { shown: suggestions.length, total: matches.length }) : t('game.noMatches')}
+                  </p>
+                </ComboboxOptions>
+              )}
+            </div>
+            <button title={t(blocked ? 'game.submitting' : 'game.submit')} type="submit" disabled={blocked || gameOver || !query} className="btn-primary" aria-busy={pending}>
+              {blocked ? <span className="inline-flex items-center gap-2"><span className="loading-spinner size-4" aria-hidden="true" />{t('game.submitting')}</span> : t('game.submit')}
+            </button>
           </div>
-
-          <button
-            onClick={() => handleSubmit()}
-            disabled={disabled || gameOver || !input.trim()}
-            className="btn-primary shrink-0 min-w-[100px] sm:min-w-[120px]"
-          >
-            {disabled ? (
-              <div className="flex items-center justify-center">
-                <div className="loading-spinner w-4 h-4 mr-2"></div>
-                <span className="mobile-hidden">{t('game.submitting')}</span>
-              </div>
-            ) : (
-              t('game.submit')
-            )}
-          </button>
+        </Combobox>
+      </form>
+      {failed && <p role="alert" className="text-sm text-accent-text">{t('game.requestFailed')}</p>}
+      <div className="guess-actions">
+        {gameStarted && (
+          <p className="text-sm font-medium tabular-nums text-secondary" aria-live="polite" aria-atomic="true">
+            {t('game.guessCount', { current: guessCount, max: maxGuesses })}
+          </p>
+        )}
+        <div className="flex flex-wrap items-center justify-end gap-1">
+          {gameStarted && !gameOver && <button title={t('game.giveUp')} type="button" onClick={() => requestAction('giveUp')} disabled={blocked} className="btn-ghost">{t('game.giveUp')}</button>}
+          {guessCount === 0 && <button title={t('game.randomStart')} type="button" onClick={() => { resetInput(); onRandomStart(); }} disabled={blocked || gameOver} className="btn-ghost">{t('game.randomStart')}</button>}
+          {guessCount > 0 && <button title={t('game.restart')} type="button" onClick={() => requestAction('restart')} disabled={blocked} className="btn-ghost">{t('game.restart')}</button>}
         </div>
       </div>
-
-      {/* Control Buttons */}
-      <div className="flex flex-wrap gap-3 sm:gap-4 justify-center">
-        {!gameStarted && (
-          <button
-            onClick={handleRandomStart}
-            disabled={disabled || gameOver}
-            className="btn-success flex-1 sm:flex-none min-w-[140px]"
-          >
-            <span className="text-responsive-sm">{t('game.randomStart')}</span>
-          </button>
-        )}
-
-        {gameStarted && !gameOver && (
-          <button
-            onClick={handleGiveUp}
-            disabled={disabled}
-            className="btn-danger flex-1 sm:flex-none min-w-[100px]"
-          >
-            <span className="text-responsive-sm">{t('game.giveUp')}</span>
-          </button>
-        )}
-
-        <button
-          onClick={handleRestart}
-          disabled={disabled}
-          className="btn-secondary flex-1 sm:flex-none min-w-[100px]"
-        >
-          <span className="text-responsive-sm">{t('game.restart')}</span>
-        </button>
-      </div>
+      {confirm && (
+        <div className="action-confirmation" role="group" aria-label={t(`game.${confirm === 'giveUp' ? 'confirmGiveUp' : 'confirmRestart'}`)}>
+          <p>{t(`game.${confirm === 'giveUp' ? 'confirmGiveUp' : 'confirmRestart'}`)}</p>
+          <div className="flex gap-2">
+            <button title={t('common.cancel')} type="button" className="btn-secondary" onClick={() => setConfirm(null)}>{t('common.cancel')}</button>
+            <button title={t('game.confirmAction')} type="button" className="btn-danger" onClick={() => {
+              const action = confirm; resetInput();
+              if (action === 'giveUp') onGiveUp(); else onRestart();
+            }}>{t('game.confirmAction')}</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

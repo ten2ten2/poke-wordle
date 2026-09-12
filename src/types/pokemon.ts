@@ -18,7 +18,7 @@ export interface Pokemon {
   evolution_stage: number;
   evolution_method: string;
   evolution_method_detail: string;
-  tags: string[];
+  tags: string[] | null;
 }
 
 export type ComparisonStatus = 'exact' | 'close' | 'nope';

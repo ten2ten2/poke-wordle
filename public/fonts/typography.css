@@ -1,0 +1,17 @@
+:root {
+  --font-cjk: system-ui;
+  --font-ui: var(--font-inter, Inter), var(--font-cjk), system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji";
+}
+html:lang(zh-hans), html:lang(zh-CN) {
+  --font-cjk: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC";
+}
+html:lang(zh-hant), html:lang(zh-TW) {
+  --font-cjk: "PingFang TC", "Microsoft JhengHei", "Noto Sans CJK TC";
+}
+html:lang(ja) {
+  --font-cjk: "Hiragino Sans", "Yu Gothic UI", "Noto Sans CJK JP";
+}
+html:lang(ko) {
+  --font-cjk: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans CJK KR";
+}

@@ -798,7 +798,7 @@
     "de": "Barschuft (Weißlinienform)",
     "it": "Basculin (Forma Linea Bianca)",
     "fr": "Bargantua (Motif Blanc)",
-    "zh-hant": "野蠻鱸魚 (白条纹的樣子)",
+    "zh-hant": "野蠻鱸魚 (白條紋的樣子)",
     "zh-hans": "野蛮鲈鱼 (白条纹的样子)",
     "ko": "배쓰나이 (흰색근의 모습)"
   },
@@ -2722,7 +2722,7 @@
     "es": "Darmanitan (Forma de Galar/Modo Daruma)",
     "de": "Flampivian (Galar-Form/Trance-Modus)",
     "it": "Darmanitan (Forma di Galar/Stato Zen)",
-    "fr": "Darumacho (Forme de Gala/Mode Transe)",
+    "fr": "Darumacho (Forme de Galar/Mode Transe)",
     "zh-hant": "達摩狒狒 (伽勒爾的樣子/達摩模式)",
     "zh-hans": "达摩狒狒 (伽勒尔的样子/达摩模式)",
     "ko": "불비달마 (가라르의 모습/달마모드)"
@@ -3019,7 +3019,7 @@
     "es": "Diglett (Forma de Alola)",
     "de": "Digda (Alola-Form)",
     "it": "Diglett (Forma di Alola)",
-    "fr": "Taupiqueur (Forme d'Alola)",
+    "fr": "Taupiqueur (Forme d’Alola)",
     "zh-hant": "地鼠 (阿羅拉的樣子)",
     "zh-hans": "地鼠 (阿罗拉的样子)",
     "ko": "디그다 (알로라의 모습)"
@@ -3448,7 +3448,7 @@
     "es": "Dugtrio (Forma de Alola)",
     "de": "Digdri (Alola-Form)",
     "it": "Dugtrio (Forma di Alola)",
-    "fr": "Triopikeur (Forme d'Alola)",
+    "fr": "Triopikeur (Forme d’Alola)",
     "zh-hant": "三地鼠 (阿羅拉的樣子)",
     "zh-hans": "三地鼠 (阿罗拉的样子)",
     "ko": "닥트리오 (알로라의 모습)"
@@ -3932,7 +3932,7 @@
     "es": "Exeggutor (Forma de Alola)",
     "de": "Kokowei (Alola-Form)",
     "it": "Exeggutor (Forma di Alola)",
-    "fr": "Noadkoko (Forme d'Alola)",
+    "fr": "Noadkoko (Forme d’Alola)",
     "zh-hant": "椰蛋樹 (阿羅拉的樣子)",
     "zh-hans": "椰蛋树 (阿罗拉的样子)",
     "ko": "나시 (알로라의 모습)"
@@ -4768,7 +4768,7 @@
     "es": "Geodude (Forma de Alola)",
     "de": "Kleinstein (Alola-Form)",
     "it": "Geodude (Forma di Alola)",
-    "fr": "Racaillou (Forme d'Alola)",
+    "fr": "Racaillou (Forme d’Alola)",
     "zh-hant": "小拳石 (阿羅拉的樣子)",
     "zh-hans": "小拳石 (阿罗拉的样子)",
     "ko": "꼬마돌 (알로라의 모습)"
@@ -5032,7 +5032,7 @@
     "es": "Golem (Forma de Alola)",
     "de": "Geowaz (Alola-Form)",
     "it": "Golem (Forma di Alola)",
-    "fr": "Grolem (Forme d'Alola)",
+    "fr": "Grolem (Forme d’Alola)",
     "zh-hant": "隆隆岩 (阿羅拉的樣子)",
     "zh-hans": "隆隆岩 (阿罗拉的样子)",
     "ko": "딱구리 (알로라의 모습)"
@@ -5296,7 +5296,7 @@
     "es": "Graveler (Forma de Alola)",
     "de": "Georok (Alola-Form)",
     "it": "Graveler (Forma di Alola)",
-    "fr": "Gravalanch (Forme d'Alola)",
+    "fr": "Gravalanch (Forme d’Alola)",
     "zh-hant": "隆隆石 (阿羅拉的樣子)",
     "zh-hans": "隆隆石 (阿罗拉的样子)",
     "ko": "데구리 (알로라의 모습)"
@@ -5373,7 +5373,7 @@
     "es": "Grimer (Forma de Alola)",
     "de": "Sleima (Alola-Form)",
     "it": "Grimer (Forma di Alola)",
-    "fr": "Tadmorv (Forme d'Alola)",
+    "fr": "Tadmorv (Forme d’Alola)",
     "zh-hant": "臭泥 (阿羅拉的樣子)",
     "zh-hans": "臭泥 (阿罗拉的样子)",
     "ko": "질퍽이 (알로라의 모습)"
@@ -6294,7 +6294,7 @@
   "inner-focus": {
     "en": "Inner Focus",
     "ja": "せいしんりょく",
-    "es": "Foco Interno",
+    "es": "Fuerza Mental",
     "de": "Konzentrator",
     "it": "Forza Interiore",
     "fr": "Attention",
@@ -6364,8 +6364,8 @@
     "de": "Eisenfels",
     "it": "Massoferreo",
     "fr": "Roc-de-Fer",
-    "zh-hant": "铁磐岩",
-    "zh-hans": "鐵磐岩",
+    "zh-hant": "鐵磐岩",
+    "zh-hans": "铁磐岩",
     "ko": "무쇠암석"
   },
   "iron-bundle": {
@@ -7947,7 +7947,7 @@
     "es": "Marowak (Forma de Alola)",
     "de": "Knogga (Alola-Form)",
     "it": "Marowak (Forma di Alola)",
-    "fr": "Ossatueur (Forme d'Alola)",
+    "fr": "Ossatueur (Forme d’Alola)",
     "zh-hant": "嘎啦嘎啦 (阿羅拉的樣子)",
     "zh-hans": "嘎啦嘎啦 (阿罗拉的样子)",
     "ko": "텅구리 (알로라의 모습)"
@@ -8167,7 +8167,7 @@
     "es": "Meowth (Forma de Alola)",
     "de": "Mauzi (Alola-Form)",
     "it": "Meowth (Forma di Alola)",
-    "fr": "Miaouss (Forme d'Alola)",
+    "fr": "Miaouss (Forme d’Alola)",
     "zh-hant": "喵喵 (阿羅拉的樣子)",
     "zh-hans": "喵喵 (阿罗拉的样子)",
     "ko": "나옹 (알로라의 모습)"
@@ -8371,11 +8371,11 @@
     "ko": "치라미"
   },
   "minds-eye": {
-    "en": "Mind's Eye",
+    "en": "Mind’s Eye",
     "ja": "しんがん",
-    "es": "Ojo Mental ",
+    "es": "Ojo Mental",
     "de": "Geistiges Auge",
-    "it": "Occhio Interiore ",
+    "it": "Occhio Interiore",
     "fr": "Œil Révélateur",
     "zh-hant": "心眼",
     "zh-hans": "心眼",
@@ -8684,7 +8684,7 @@
     "es": "Muk (Forma de Alola)",
     "de": "Sleimok (Alola-Form)",
     "it": "Muk (Forma di Alola)",
-    "fr": "Grotadmorv (Forme d'Alola)",
+    "fr": "Grotadmorv (Forme d’Alola)",
     "zh-hant": "臭臭泥 (阿羅拉的樣子)",
     "zh-hans": "臭臭泥 (阿罗拉的样子)",
     "ko": "질뻐기 (알로라의 모습)"
@@ -8860,7 +8860,7 @@
     "es": "Necrozma (Alas del Alba)",
     "de": "Necrozma (Morgenschwingen)",
     "it": "Necrozma (Ali dell’Aurora)",
-    "fr": "Necrozma (Ailes de l'Aurore)",
+    "fr": "Necrozma (Ailes de l’Aurore)",
     "zh-hant": "奈克洛茲瑪 (拂曉之翼)",
     "zh-hans": "奈克洛兹玛 (拂晓之翼)",
     "ko": "네크로즈마 (새벽의 날개)"
@@ -9025,7 +9025,7 @@
     "es": "Ninetales (Forma de Alola)",
     "de": "Vulnona (Alola-Form)",
     "it": "Ninetales (Forma di Alola)",
-    "fr": "Feunard (Forme d'Alola)",
+    "fr": "Feunard (Forme d’Alola)",
     "zh-hant": "九尾 (阿羅拉的樣子)",
     "zh-hans": "九尾 (阿罗拉的样子)",
     "ko": "나인테일 (알로라의 모습)"
@@ -10664,7 +10664,7 @@
     "es": "Raichu (Forma de Alola)",
     "de": "Raichu (Alola-Form)",
     "it": "Raichu (Forma di Alola)",
-    "fr": "Raichu (Forme d'Alola)",
+    "fr": "Raichu (Forme d’Alola)",
     "zh-hant": "雷丘 (阿羅拉的樣子)",
     "zh-hans": "雷丘 (阿罗拉的样子)",
     "ko": "라이츄 (알로라의 모습)"
@@ -10752,7 +10752,7 @@
     "es": "Raticate (Forma de Alola)",
     "de": "Rattikarl (Alola-Form)",
     "it": "Raticate (Forma di Alola)",
-    "fr": "Rattatac (Forme d'Alola)",
+    "fr": "Rattatac (Forme d’Alola)",
     "zh-hant": "拉達 (阿羅拉的樣子)",
     "zh-hans": "拉达 (阿罗拉的样子)",
     "ko": "레트라 (알로라의 모습)"
@@ -10774,7 +10774,7 @@
     "es": "Rattata (Forma de Alola)",
     "de": "Rattfratz (Alola-Form)",
     "it": "Rattata (Forma di Alola)",
-    "fr": "Rattata (Forme d'Alola)",
+    "fr": "Rattata (Forme d’Alola)",
     "zh-hant": "小拉達 (阿羅拉的樣子)",
     "zh-hans": "小拉达 (阿罗拉的样子)",
     "ko": "꼬렛 (알로라의 모습)"
@@ -11467,7 +11467,7 @@
     "es": "Sandshrew (Forma de Alola)",
     "de": "Sandan (Alola-Form)",
     "it": "Sandshrew (Forma di Alola)",
-    "fr": "Sabelette (Forme d'Alola)",
+    "fr": "Sabelette (Forme d’Alola)",
     "zh-hant": "穿山鼠 (阿羅拉的樣子)",
     "zh-hans": "穿山鼠 (阿罗拉的样子)",
     "ko": "모래두지 (알로라의 모습)"
@@ -11489,7 +11489,7 @@
     "es": "Sandslash (Forma de Alola)",
     "de": "Sandamer (Alola-Form)",
     "it": "Sandslash (Forma di Alola)",
-    "fr": "Sablaireau (Forme d'Alola)",
+    "fr": "Sablaireau (Forme d’Alola)",
     "zh-hant": "穿山王 (阿羅拉的樣子)",
     "zh-hans": "穿山王 (阿罗拉的样子)",
     "ko": "고지 (알로라의 모습)"
@@ -11875,8 +11875,8 @@
     "de": "Scharfkantig",
     "it": "Affilama",
     "fr": "Incisif",
-    "zh-hant": "锋锐",
-    "zh-hans": "鋒銳",
+    "zh-hant": "鋒銳",
+    "zh-hans": "锋锐",
     "ko": "예리함"
   },
   "shaymin-land": {
@@ -13048,7 +13048,7 @@
   "static": {
     "en": "Static",
     "ja": "せいでんき",
-    "es": "Elec. Estática",
+    "es": "Electricidad Estática",
     "de": "Statik",
     "it": "Statico",
     "fr": "Statik",
@@ -13747,7 +13747,7 @@
     "fr": "Tauros (Forme de Paldea/Race Combative)",
     "zh-hant": "肯泰羅 (帕底亞的樣子/鬥戰種)",
     "zh-hans": "肯泰罗 (帕底亚的样子/斗战种)",
-    "ko": "켄타로스 (Paldean Form/컴뱃종)"
+    "ko": "켄타로스 (팔데아 모습/컴뱃종)"
   },
   "technician": {
     "en": "Technician",
@@ -13906,7 +13906,7 @@
   "thermal-exchange": {
     "en": "Thermal Exchange",
     "ja": "ねつこうかん",
-    "es": "Termoscambio",
+    "es": "Termoconversión",
     "de": "Thermowandel",
     "it": "Termoscambio",
     "fr": "Thermodynamique",
@@ -14324,7 +14324,7 @@
   "trace": {
     "en": "Trace",
     "ja": "トレース",
-    "es": "Rastro",
+    "es": "Calco",
     "de": "Erfassen",
     "it": "Traccia",
     "fr": "Calque",
@@ -15006,7 +15006,7 @@
   "volt-absorb": {
     "en": "Volt Absorb",
     "ja": "ちくでん",
-    "es": "Absorbe Elec",
+    "es": "Absorbe Electricidad",
     "de": "Voltabsorber",
     "it": "Assorbivolt",
     "fr": "Absorbe-Volt",
@@ -15064,7 +15064,7 @@
     "es": "Vulpix (Forma de Alola)",
     "de": "Vulpix (Alola-Form)",
     "it": "Vulpix (Forma di Alola)",
-    "fr": "Goupix (Forme d'Alola)",
+    "fr": "Goupix (Forme d’Alola)",
     "zh-hant": "六尾 (阿羅拉的樣子)",
     "zh-hans": "六尾 (阿罗拉的样子)",
     "ko": "식스테일 (알로라의 모습)"
@@ -15526,7 +15526,7 @@
     "es": "Wooper (Forma de Paldea)",
     "de": "Felino (Paldea-Form)",
     "it": "Wooper (Forma di Paldea)",
-    "fr": "Axoloto (Forme de Paldea)",
+    "fr": "Axoloto (Forme de Paldéa)",
     "zh-hant": "烏波 (帕底亞的樣子)",
     "zh-hans": "乌波 (帕底亚的样子)",
     "ko": "우파 (팔데아 모습)"
@@ -15857,8 +15857,8 @@
     "de": "Superwechsel",
     "it": "Supercambio",
     "fr": "Supermutation",
-    "zh-hant": "全能變換",
-    "zh-hans": "全能变换",
+    "zh-hant": "全能變身",
+    "zh-hans": "全能变身",
     "ko": "마이티체인지"
   },
   "zigzagoon": {

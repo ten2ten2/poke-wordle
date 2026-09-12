@@ -1,0 +1,22 @@
+[
+  {
+    "locale": "en",
+    "slug": "late-bloomer-pokemon",
+    "articleId": "k-en-1"
+  },
+  {
+    "locale": "ja",
+    "slug": "大器晩成なポケモン",
+    "articleId": "k-ja-1"
+  },
+  {
+    "locale": "zh-hans",
+    "slug": "大器晚成的宝可梦",
+    "articleId": "k-zh-hans-1"
+  },
+  {
+    "locale": "zh-hant",
+    "slug": "大器晚成的寶可夢",
+    "articleId": "k-zh-hant-1"
+  }
+]

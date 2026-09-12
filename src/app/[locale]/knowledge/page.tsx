@@ -1,11 +1,10 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { hasLocale } from 'next-intl';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import KnowledgeArchive from '@/components/KnowledgeArchive';
-import {
-  isKnowledgeSupported,
-  KNOWLEDGE_SUPPORTED_LOCALES,
-} from '@/config/knowledge';
+import { pageAlternates, pageMetadata } from '@/config/seo';
+import { localePath, routing } from '@/i18n/routing';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -14,67 +13,23 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
 
-  // Check if locale supports knowledge page
-  if (!isKnowledgeSupported(locale)) {
-    return {};
-  }
+  if (!hasLocale(routing.locales, locale)) return {};
 
   const t = await getTranslations({ locale, namespace: 'knowledge' });
 
-  const title = t('title');
+  const title = t('seoTitle');
   const description = t('description');
-
-  // Generate correct URLs for English vs other locales
-  const canonicalUrl = locale === 'en' ? '/knowledge' : `/${locale}/knowledge`;
-  const ogUrl =
-    locale === 'en'
-      ? 'https://www.pokewordle.app/knowledge'
-      : `https://www.pokewordle.app/${locale}/knowledge`;
-
-  // Generate language alternates only for supported locales
-  const languages: Record<string, string> = {
-    'x-default': '/knowledge',
-  };
-
-  KNOWLEDGE_SUPPORTED_LOCALES.forEach((supportedLocale) => {
-    const langCode =
-      supportedLocale === 'zh-hans'
-        ? 'zh-Hans'
-        : supportedLocale === 'zh-hant'
-          ? 'zh-Hant'
-          : supportedLocale;
-    const langUrl =
-      supportedLocale === 'en' ? '/knowledge' : `/${supportedLocale}/knowledge`;
-    languages[langCode] = langUrl;
+  return pageMetadata({
+    locale, title, description, path: localePath(locale, '/knowledge'),
+    languages: pageAlternates('/knowledge'),
   });
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: canonicalUrl,
-      languages,
-    },
-    openGraph: {
-      title,
-      description,
-      url: ogUrl,
-    },
-    twitter: {
-      title,
-      description,
-    },
-  };
 }
 
 export default async function KnowledgePage({ params }: Props) {
   const { locale } = await params;
 
-  // Check if locale supports knowledge page, return 404 if not
-  if (!isKnowledgeSupported(locale)) {
-    notFound();
-  }
+  if (!hasLocale(routing.locales, locale)) notFound();
 
   setRequestLocale(locale);
-  return <KnowledgeArchive />;
+  return <KnowledgeArchive locale={locale} />;
 }

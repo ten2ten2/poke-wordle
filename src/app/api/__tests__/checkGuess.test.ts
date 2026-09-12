@@ -2,13 +2,15 @@
  * @jest-environment node
  */
 
+import { datasetVersion } from '@/config/dataset';
 import { NextRequest } from 'next/server';
 import { POST } from '../checkGuess/route';
 
 // Mock the Pokemon library functions first
 jest.mock('@/lib/pokemon', () => ({
+  normalizePokemonName: jest.requireActual('@/lib/pokemon').normalizePokemonName,
   loadPokemonData: jest.fn(),
-  translatePokemon: jest.fn(),
+  translateText: jest.fn(),
   comparePokemon: jest.fn()
 }));
 
@@ -54,7 +56,7 @@ const mockGuessResult = {
 
 // Mock the pokemon library
 const mockLoadPokemonData = pokemonLib.loadPokemonData as jest.MockedFunction<typeof pokemonLib.loadPokemonData>;
-const mockTranslatePokemon = pokemonLib.translatePokemon as jest.MockedFunction<typeof pokemonLib.translatePokemon>;
+const mockTranslateText = pokemonLib.translateText as jest.MockedFunction<typeof pokemonLib.translateText>;
 const mockComparePokemon = pokemonLib.comparePokemon as jest.MockedFunction<typeof pokemonLib.comparePokemon>;
 
 describe('/api/checkGuess', () => {
@@ -64,12 +66,25 @@ describe('/api/checkGuess', () => {
     
     // Configure mock implementations
     mockLoadPokemonData.mockReturnValue([mockPokemon]);
-    mockTranslatePokemon.mockImplementation((pokemon) => pokemon);
+    mockTranslateText.mockImplementation((name) => name);
     mockComparePokemon.mockReturnValue(mockGuessResult);
+  });
+
+  test.each([undefined, 'previous-dataset'])('rejects stale clients before comparing IDs (%s)', async (version) => {
+    const request = new NextRequest('http://localhost:3000/api/checkGuess', {
+      method: 'POST',
+      body: JSON.stringify({ name: 'Bulbasaur', target_id: 1, dataset_version: version }),
+    });
+    const response = await POST(request);
+    expect(response.status).toBe(409);
+    expect(await response.json()).toMatchObject({ code: 'DATASET_CHANGED' });
+    expect(mockLoadPokemonData).not.toHaveBeenCalled();
+    expect(mockComparePokemon).not.toHaveBeenCalled();
   });
 
   test('should return comparison result for valid request', async () => {
     const requestBody = {
+      dataset_version: datasetVersion,
       name: 'Bulbasaur',
       target_id: 1,
       is_prankster: false,
@@ -100,8 +115,9 @@ describe('/api/checkGuess', () => {
     );
   });
 
-  test('should return 400 for invalid guess name', async () => {
+  test('should return 404 for an unknown guess name', async () => {
     const requestBody = {
+      dataset_version: datasetVersion,
       name: 'InvalidPokemon',
       target_id: 1,
       is_prankster: false,
@@ -125,8 +141,9 @@ describe('/api/checkGuess', () => {
     expect(data.error).toBe('Pokemon not found');
   });
 
-  test('should return 400 for invalid target Pokemon ID', async () => {
+  test('should return 404 for an unknown target Pokemon ID', async () => {
     const requestBody = {
+      dataset_version: datasetVersion,
       name: 'Bulbasaur',
       target_id: 999,
       is_prankster: false,
@@ -161,12 +178,13 @@ describe('/api/checkGuess', () => {
     const response = await POST(request);
     const data = await response.json();
 
-    expect(response.status).toBe(500);
+    expect(response.status).toBe(400);
     expect(data.error).toBeDefined();
   });
 
   test('should handle prankster mode', async () => {
     const requestBody = {
+      dataset_version: datasetVersion,
       name: 'Bulbasaur',
       target_id: 1,
       is_prankster: true,
@@ -197,6 +215,7 @@ describe('/api/checkGuess', () => {
 
   test('should handle generation arrow mode', async () => {
     const requestBody = {
+      dataset_version: datasetVersion,
       name: 'Bulbasaur',
       target_id: 1,
       is_prankster: false,
@@ -224,4 +243,4 @@ describe('/api/checkGuess', () => {
       null
     );
   });
-}); 
+});

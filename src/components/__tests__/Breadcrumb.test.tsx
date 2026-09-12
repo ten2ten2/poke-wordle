@@ -172,8 +172,8 @@ describe('Breadcrumb', () => {
         'ml-2',
         'text-sm',
         'font-medium',
-        'text-gray-500',
-        'hover:text-gray-700',
+        'text-muted',
+        'hover:text-secondary',
         'transition-colors',
         'duration-200',
       );
@@ -195,7 +195,7 @@ describe('Breadcrumb', () => {
         'ml-2',
         'text-sm',
         'font-medium',
-        'text-gray-900',
+        'text-foreground',
       );
     });
 
@@ -211,7 +211,7 @@ describe('Breadcrumb', () => {
         'ml-2',
         'text-sm',
         'font-medium',
-        'text-gray-500',
+        'text-muted',
       );
     });
 
@@ -242,7 +242,7 @@ describe('Breadcrumb', () => {
           'h-5',
           'w-5',
           'shrink-0',
-          'text-gray-400',
+          'text-muted',
         );
       });
     });
@@ -409,12 +409,12 @@ describe('Breadcrumb', () => {
       const categoryLink = screen.getByRole('link', { name: 'Category' });
 
       expect(homeLink).toHaveClass(
-        'hover:text-gray-500',
+        'hover:text-muted',
         'transition-colors',
         'duration-200',
       );
       expect(categoryLink).toHaveClass(
-        'hover:text-gray-700',
+        'hover:text-secondary',
         'transition-colors',
         'duration-200',
       );

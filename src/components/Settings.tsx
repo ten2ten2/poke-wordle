@@ -1,11 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { DialogTitle } from '@headlessui/react';
-import Modal from './Modal';
 import { useTranslations } from 'next-intl';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import { GameSettings } from '@/types/pokemon';
+import type { GameSettings } from '@/types/pokemon';
+import Modal, { ModalHeader } from './Modal';
+
+const generations = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const guessOptions = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+const modes = [
+  { key: 'isGenArrow', id: 'genArrow', label: 'genArrow', description: 'genArrowDesc' },
+  { key: 'isPrankster', id: 'prankster', label: 'pranksterMode', description: 'pranksterModeDesc' },
+] as const;
 
 interface SettingsProps {
   isOpen: boolean;
@@ -15,298 +20,151 @@ interface SettingsProps {
 }
 
 export default function Settings(props: SettingsProps) {
-  return (
-    <SettingsForm
-      key={`${props.isOpen}-${JSON.stringify(props.currentSettings)}`}
-      {...props}
-    />
-  );
+  return <SettingsForm key={`${props.isOpen}-${JSON.stringify(props.currentSettings)}`} {...props} />;
 }
 
-function SettingsForm({
-  isOpen,
-  onClose,
-  onSettingsChange,
-  currentSettings,
-}: SettingsProps) {
+function SettingsForm({ isOpen, onClose, onSettingsChange, currentSettings }: SettingsProps) {
   const t = useTranslations();
-  const [localSettings, setLocalSettings] =
-    useState<GameSettings>(currentSettings);
-
-  const handleSave = () => {
-    onSettingsChange(localSettings);
-    onClose();
-  };
+  const [localSettings, setLocalSettings] = useState(currentSettings);
+  const hasGenerations = localSettings.selectedGenerations.length > 0;
 
   const handleCancel = () => {
     setLocalSettings(currentSettings);
     onClose();
   };
 
-  const handleMaxGuessesChange = (value: number) => {
-    setLocalSettings((prev) => ({ ...prev, maxGuesses: value }));
-  };
-
   const handleGenerationToggle = (generation: number) => {
-    setLocalSettings((prev) => {
-      const newGenerations = prev.selectedGenerations.includes(generation)
-        ? prev.selectedGenerations.filter((g) => g !== generation)
-        : [...prev.selectedGenerations, generation].sort((a, b) => a - b);
-      return { ...prev, selectedGenerations: newGenerations };
-    });
-  };
-
-  const handleSelectAllGenerations = () => {
     setLocalSettings((prev) => ({
       ...prev,
-      selectedGenerations: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      selectedGenerations: prev.selectedGenerations.includes(generation)
+        ? prev.selectedGenerations.filter((value) => value !== generation)
+        : [...prev.selectedGenerations, generation].sort((a, b) => a - b),
     }));
   };
 
-  const handleDeselectAllGenerations = () => {
-    setLocalSettings((prev) => ({ ...prev, selectedGenerations: [] }));
-  };
-
-  const handlePranksterToggle = () => {
-    setLocalSettings((prev) => ({ ...prev, isPrankster: !prev.isPrankster }));
-  };
-
-  const handleGenArrowToggle = () => {
-    setLocalSettings((prev) => ({ ...prev, isGenArrow: !prev.isGenArrow }));
-  };
-
-  const generations = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const guessOptions = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-
   return (
     <Modal isOpen={isOpen} onClose={handleCancel} className="max-w-2xl">
-      <article className="card-padding">
-        {/* Header */}
-        <header className="flex items-center justify-between mb-6">
-          <DialogTitle
-            as="h2"
-            className="text-responsive-lg font-medium leading-6 text-gray-900"
-          >
-            {t('settings.title')}
-          </DialogTitle>
-          <nav aria-label={t('common.close')}>
-            <button
-              type="button"
-              className="touch-target rounded-md text-gray-400 hover:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-red-300"
-              onClick={handleCancel}
-              aria-label={t('common.close')}
-            >
-              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+      <div className="card-padding space-y-5">
+        <ModalHeader title={t('settings.title')} onClose={handleCancel} />
+        <form
+          className="space-y-6 text-sm [overflow-wrap:anywhere] hyphens-auto"
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (!hasGenerations) return;
+            onSettingsChange(localSettings);
+            onClose();
+          }}
+        >
+          <fieldset className="min-w-0 space-y-3">
+            <legend className="font-semibold text-foreground">{t('settings.guessOrder')}</legend>
+            <div className="grid grid-cols-2 gap-3">
+              {(['reverse', 'normal'] as const).map((order) => (
+                <button
+                  key={order}
+                  type="button"
+                  title={t(`settings.${order}OrderDesc`)}
+                  aria-pressed={localSettings.guessOrder === order}
+                  onClick={() => setLocalSettings((prev) => ({ ...prev, guessOrder: order }))}
+                  className="btn-option min-w-0"
+                >
+                  <span>
+                    <span className="block">{t(`settings.${order}Order`)}</span>
+                    <span className="mt-1 block text-xs font-normal opacity-75">{t(`settings.${order}OrderDesc`)}</span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset className="min-w-0 space-y-3">
+            <legend className="font-semibold text-foreground">
+              {t('settings.maxGuesses')} ({localSettings.maxGuesses})
+            </legend>
+            <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8">
+              {guessOptions.map((value) => (
+                <button
+                  key={value}
+                  type="button"
+                  title={`${t('settings.maxGuesses')}: ${value}`}
+                  aria-pressed={localSettings.maxGuesses === value}
+                  onClick={() => setLocalSettings((prev) => ({ ...prev, maxGuesses: value }))}
+                  className="btn-option"
+                >
+                  {value}
+                </button>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset className="min-w-0 space-y-3" aria-describedby={!hasGenerations ? 'generation-required' : undefined}>
+            <legend className="font-semibold text-foreground">{t('settings.generationSelection')}</legend>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => setLocalSettings((prev) => ({ ...prev, selectedGenerations: generations }))}
+                title={t('settings.selectAll')}
+                className="btn-ghost"
+              >
+                {t('settings.selectAll')}
+              </button>
+              <button
+                type="button"
+                onClick={() => setLocalSettings((prev) => ({ ...prev, selectedGenerations: [] }))}
+                title={t('settings.deselectAll')}
+                className="btn-ghost"
+              >
+                {t('settings.deselectAll')}
+              </button>
+            </div>
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
+              {generations.map((gen) => (
+                <button
+                  key={gen}
+                  type="button"
+                  title={t(`generation.Gen${gen}`)}
+                  aria-pressed={localSettings.selectedGenerations.includes(gen)}
+                  onClick={() => handleGenerationToggle(gen)}
+                  className="btn-option px-2"
+                >
+                  {t(`generation.Gen${gen}`)}
+                </button>
+              ))}
+            </div>
+            {!hasGenerations && <p id="generation-required" role="alert" className="text-danger">{t('settings.generationRequired')}</p>}
+          </fieldset>
+
+          {modes.map(({ key, id, label, description }) => (
+            <label key={key} htmlFor={id} className="flex cursor-pointer items-start gap-3 rounded-xl border border-line p-3">
+              <input
+                id={id}
+                title={t(`settings.${description}`)}
+                aria-labelledby={`${id}-label`}
+                aria-describedby={`${id}-description`}
+                type="checkbox"
+                checked={localSettings[key]}
+                onChange={(event) => {
+                  const checked = event.currentTarget.checked;
+                  setLocalSettings((prev) => ({ ...prev, [key]: checked }));
+                }}
+                className="mt-1 size-4 shrink-0 accent-accent"
+              />
+              <span className="min-w-0">
+                <span id={`${id}-label`} className="block font-semibold text-foreground">{t(`settings.${label}`)}</span>
+                <span id={`${id}-description`} className="mt-1 block text-muted">{t(`settings.${description}`)}</span>
+              </span>
+            </label>
+          ))}
+
+          <div className="flex flex-col-reverse gap-3 border-t border-line pt-5 sm:flex-row sm:justify-end">
+            <button type="button" onClick={handleCancel} title={t('common.cancel')} className="btn-secondary w-full sm:w-auto">
+              {t('common.cancel')}
             </button>
-          </nav>
-        </header>
-
-        {/* Content */}
-        <main className="space-y-6">
-          <form className="space-y-6">
-            {/* Guess Order */}
-            <fieldset className="space-y-3">
-              <legend className="block text-responsive-sm font-medium text-gray-700">
-                {t('settings.guessOrder')}
-              </legend>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  aria-pressed={localSettings.guessOrder === 'reverse'}
-                  onClick={() =>
-                    setLocalSettings((prev) => ({
-                      ...prev,
-                      guessOrder: 'reverse',
-                    }))
-                  }
-                  className={`touch-target px-4 py-3 text-responsive-sm font-medium rounded-md border transition-colors duration-200 ${
-                    localSettings.guessOrder === 'reverse'
-                      ? 'bg-red-500 text-white border-red-500 shadow-xs'
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
-                  }`}
-                >
-                  <div className="text-center">
-                    <div className="font-medium">
-                      {t('settings.reverseOrder')}
-                    </div>
-                    <div className="text-xs opacity-75 mt-1">
-                      {t('settings.reverseOrderDesc')}
-                    </div>
-                  </div>
-                </button>
-                <button
-                  type="button"
-                  aria-pressed={localSettings.guessOrder === 'normal'}
-                  onClick={() =>
-                    setLocalSettings((prev) => ({
-                      ...prev,
-                      guessOrder: 'normal',
-                    }))
-                  }
-                  className={`touch-target px-4 py-3 text-responsive-sm font-medium rounded-md border transition-colors duration-200 ${
-                    localSettings.guessOrder === 'normal'
-                      ? 'bg-red-500 text-white border-red-500 shadow-xs'
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
-                  }`}
-                >
-                  <div className="text-center">
-                    <div className="font-medium">
-                      {t('settings.normalOrder')}
-                    </div>
-                    <div className="text-xs opacity-75 mt-1">
-                      {t('settings.normalOrderDesc')}
-                    </div>
-                  </div>
-                </button>
-              </div>
-            </fieldset>
-
-            {/* Max Guesses */}
-            <fieldset className="space-y-3">
-              <legend className="block text-responsive-sm font-medium text-gray-700">
-                {t('settings.maxGuesses')} ({localSettings.maxGuesses}{' '}
-                {t('settings.times')})
-              </legend>
-              <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-2">
-                {guessOptions.map((value) => (
-                  <button
-                    key={value}
-                    type="button"
-                    aria-pressed={localSettings.maxGuesses === value}
-                    onClick={() => handleMaxGuessesChange(value)}
-                    className={`touch-target px-2 py-2 text-responsive-sm font-medium rounded-md border transition-colors duration-200 ${
-                      localSettings.maxGuesses === value
-                        ? 'bg-red-500 text-white border-red-500 shadow-xs'
-                        : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
-                    }`}
-                  >
-                    {value}
-                  </button>
-                ))}
-              </div>
-            </fieldset>
-
-            {/* Generation Selection */}
-            <fieldset className="space-y-3">
-              <div className="flex items-center justify-between">
-                <legend className="block text-responsive-sm font-medium text-gray-700">
-                  {t('settings.generationSelection')}
-                </legend>
-                <div className="flex gap-3">
-                  <button
-                    type="button"
-                    onClick={handleSelectAllGenerations}
-                    className="text-sm text-red-500 hover:text-red-600 font-medium"
-                  >
-                    {t('settings.selectAll')}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleDeselectAllGenerations}
-                    className="text-sm text-red-500 hover:text-red-600 font-medium"
-                  >
-                    {t('settings.deselectAll')}
-                  </button>
-                </div>
-              </div>
-              <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
-                {generations.map((gen) => (
-                  <button
-                    key={gen}
-                    type="button"
-                    aria-pressed={localSettings.selectedGenerations.includes(
-                      gen,
-                    )}
-                    onClick={() => handleGenerationToggle(gen)}
-                    className={`touch-target px-3 py-2 text-responsive-sm font-medium rounded-md border transition-colors duration-200 ${
-                      localSettings.selectedGenerations.includes(gen)
-                        ? 'bg-red-500 text-white border-red-500 shadow-xs'
-                        : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
-                    }`}
-                  >
-                    {t(`generation.Gen${gen}`)}
-                  </button>
-                ))}
-              </div>
-              {localSettings.selectedGenerations.length === 0 && (
-                <p className="text-xs text-red-600">
-                  {t('settings.generationRequired')}
-                </p>
-              )}
-            </fieldset>
-
-            {/* Generation Arrow */}
-            <fieldset className="space-y-3">
-              <div className="flex items-start space-x-3">
-                <div className="flex items-center h-5">
-                  <input
-                    id="genArrow"
-                    type="checkbox"
-                    checked={localSettings.isGenArrow}
-                    onChange={handleGenArrowToggle}
-                    className="h-4 w-4 accent-red-500 text-red-500 focus:ring-red-500 border-gray-300 rounded"
-                  />
-                </div>
-                <div className="flex-1">
-                  <legend className="text-responsive-sm font-medium text-gray-700">
-                    <label htmlFor="genArrow">{t('settings.genArrow')}</label>
-                  </legend>
-                  <p className="text-responsive-sm text-gray-500 mt-1">
-                    {t('settings.genArrowDesc')}
-                  </p>
-                </div>
-              </div>
-            </fieldset>
-
-            {/* Prankster Mode */}
-            <fieldset className="space-y-3">
-              <div className="flex items-start space-x-3">
-                <div className="flex items-center h-5">
-                  <input
-                    id="prankster"
-                    type="checkbox"
-                    checked={localSettings.isPrankster}
-                    onChange={handlePranksterToggle}
-                    className="h-4 w-4 accent-red-500 text-red-500 focus:ring-red-500 border-gray-300 rounded"
-                  />
-                </div>
-                <div className="flex-1">
-                  <legend className="text-responsive-sm font-medium text-gray-700">
-                    <label htmlFor="prankster">
-                      {t('settings.pranksterMode')}
-                    </label>
-                  </legend>
-                  <p className="text-responsive-sm text-gray-500 mt-1">
-                    {t('settings.pranksterModeDesc')}
-                  </p>
-                </div>
-              </div>
-            </fieldset>
-
-            {/* Action Buttons */}
-            <section className="mt-8 flex flex-col-reverse sm:flex-row sm:justify-end gap-3 sm:gap-4">
-              <button
-                type="button"
-                onClick={handleCancel}
-                className="btn-secondary w-full sm:w-auto"
-              >
-                {t('common.cancel')}
-              </button>
-              <button
-                type="button"
-                onClick={handleSave}
-                disabled={localSettings.selectedGenerations.length === 0}
-                className="btn-primary w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed
-                          bg-red-500 text-white border-red-500 shadow-xs
-                          hover:bg-red-600 hover:border-red-600"
-              >
-                {t('common.save')}
-              </button>
-            </section>
-          </form>
-        </main>
-      </article>
+            <button type="submit" title={t('common.save')} disabled={!hasGenerations} className="btn-primary w-full sm:w-auto">
+              {t('common.save')}
+            </button>
+          </div>
+        </form>
+      </div>
     </Modal>
   );
 }

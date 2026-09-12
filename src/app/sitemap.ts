@@ -1,39 +1,30 @@
 import type { MetadataRoute } from 'next';
 import {
-  KNOWLEDGE_SUPPORTED_LOCALES,
   getArticleAlternates,
+  knowledgeData,
+  knowledgeArticlePath,
 } from '@/config/knowledge';
-import knowledgeData from '@/data/knowledge_data.json';
-import { routing, localePath } from '@/i18n/routing';
+import { routing } from '@/i18n/routing';
+import { absoluteUrl, pageAlternates } from '@/config/seo';
 
-const baseUrl = 'https://www.pokewordle.app';
 const absolute = (paths: Record<string, string>) =>
   Object.fromEntries(
-    Object.entries(paths).map(([locale, path]) => [locale, baseUrl + path]),
+    Object.entries(paths).map(([locale, path]) => [locale, absoluteUrl(path)]),
   );
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
   for (const path of ['/', '/privacy-and-terms', '/knowledge']) {
-    const locales =
-      path === '/knowledge' ? KNOWLEDGE_SUPPORTED_LOCALES : routing.locales;
-    const languages = absolute(
-      Object.fromEntries(
-        locales.map((locale) => [locale, localePath(locale, path)]),
-      ),
-    );
-    languages['x-default'] = languages.en;
-    for (const locale of locales) {
+    const languages = absolute(pageAlternates(path));
+    for (const locale of routing.locales) {
       entries.push({ url: languages[locale], alternates: { languages } });
     }
   }
-  for (const locale of KNOWLEDGE_SUPPORTED_LOCALES) {
+  for (const locale of routing.locales) {
     for (const article of knowledgeData[locale]) {
       entries.push({
-        url:
-          baseUrl +
-          localePath(locale, `/knowledge/${encodeURIComponent(article.slug)}`),
-        lastModified: article.createdAt,
+        url: absoluteUrl(knowledgeArticlePath(locale, article.slug)),
+        lastModified: article.updatedAt ?? article.createdAt,
         alternates: {
           languages: absolute(getArticleAlternates(locale, article)),
         },

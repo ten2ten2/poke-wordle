@@ -1,18 +1,17 @@
 'use client';
 
-import { DialogTitle } from '@headlessui/react';
-import Modal from './Modal';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { Description } from '@headlessui/react';
+import Modal, { ModalHeader } from './Modal';
 import { useTranslations, useLocale } from 'next-intl';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { localePath } from '@/i18n/routing';
-import { KnowledgeArticle } from '@/config/knowledge';
+import type { KnowledgeArticle } from '@/config/knowledge';
 
 interface LanguageSwitcherProps {
   isOpen: boolean;
   onClose: () => void;
-  availableLocales?: string[]; // Optional prop to filter available languages
-  currentArticle?: KnowledgeArticle; // Current knowledge article if on article page
+  currentArticle?: KnowledgeArticle;
 }
 
 const languages = [
@@ -30,24 +29,14 @@ const languages = [
 export default function LanguageSwitcher({
   isOpen,
   onClose,
-  availableLocales,
   currentArticle,
 }: LanguageSwitcherProps) {
   const t = useTranslations();
   const locale = useLocale();
-  const router = useRouter();
   const pathname = usePathname();
 
-  // Filter languages based on availableLocales prop, or show all if not provided
-  const filteredLanguages = availableLocales
-    ? languages.filter((lang) => availableLocales.includes(lang.code))
-    : languages;
-
-  const handleLanguageChange = (newLocale: string) => {
-    if (newLocale === locale) {
-      onClose();
-      return;
-    }
+  const languageHref = (newLocale: string) => {
+    if (newLocale === locale) return pathname;
     let path =
       locale === 'en' ? pathname : pathname.slice(locale.length + 1) || '/';
     if (currentArticle) {
@@ -56,61 +45,42 @@ export default function LanguageSwitcher({
         ? `/knowledge/${encodeURIComponent(translated.slug)}`
         : '/knowledge';
     }
-    router.push(localePath(newLocale, path));
-
-    onClose();
+    return localePath(newLocale, path);
   };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} className="max-w-md">
-      <div className="p-6">
-        <header className="flex justify-between items-center mb-4">
-          <DialogTitle
-            as="h2"
-            id="language-switcher-title"
-            className="text-lg font-medium leading-6 text-gray-900"
-          >
-            {t('navbar.language')}
-          </DialogTitle>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-md text-gray-400 hover:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-red-300"
-            aria-label={t('common.close') || 'Close dialog'}
-          >
-            <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-          </button>
-        </header>
+      <div className="card-padding space-y-5">
+        <ModalHeader title={t('navbar.language')} onClose={onClose} />
 
-        <main>
-          <p id="language-switcher-description" className="sr-only">
-            Select your preferred language from the list below
-          </p>
-          <nav aria-label="Language selection">
+        <div>
+          <Description id="language-switcher-description" className="sr-only">
+            {t('navbar.languageDescription')}
+          </Description>
+          <nav aria-label={t('navbar.language')}>
             <ul className="space-y-2" role="list">
-              {filteredLanguages.map((language) => (
+              {languages.map((language) => (
                 <li key={language.code}>
-                  <button
-                    type="button"
-                    onClick={() => handleLanguageChange(language.code)}
-                    className={`w-full text-left px-4 py-2 rounded-md transition-colors ${
-                      locale === language.code
-                        ? 'bg-red-100 text-red-900'
-                        : 'hover:bg-gray-100 text-gray-700'
-                    }`}
-                    aria-current={locale === language.code ? 'true' : 'false'}
-                    aria-label={`Switch to ${language.name}`}
+                  <Link
+                    href={languageHref(language.code)}
+                    hrefLang={language.code}
+                    prefetch={false}
+                    onNavigate={(event) => {
+                      if (language.code === locale) event.preventDefault();
+                      onClose();
+                    }}
+                    className="button-link btn-option w-full justify-start text-left"
+                    aria-current={locale === language.code ? 'page' : undefined}
+                    aria-label={t('navbar.switchLanguage', { language: language.name })}
+                    title={t('navbar.switchLanguage', { language: language.name })}
                   >
-                    <span aria-hidden="true">{language.name}</span>
-                    {locale === language.code && (
-                      <span className="sr-only"> (current language)</span>
-                    )}
-                  </button>
+                    <span lang={language.code}>{language.name}</span>
+                  </Link>
                 </li>
               ))}
             </ul>
           </nav>
-        </main>
+        </div>
       </div>
     </Modal>
   );

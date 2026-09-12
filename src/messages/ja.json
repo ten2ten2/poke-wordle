@@ -1,7 +1,7 @@
 {
   "title": "ポケワードル",
   "game": {
-    "inputPlaceholder": "ポケモン名を入力...",
+    "inputPlaceholder": "各言語の名前・図鑑番号",
     "submit": "決定",
     "submitting": "送信中...",
     "randomStart": "ランダム推測",
@@ -16,9 +16,6 @@
     "betterLuckNextTime": "次回頑張って！",
     "guessedIn": "{count}回で正解しました",
     "playAgain": "もう一度",
-    "startPrompt": "ポケモン名を入力するか「ランダム推測」をクリックしてゲームを始めよう！",
-    "languageChanged": "言語が変更されました",
-    "languageChangedDesc": "言語が変更されました。ポケモンデータが新しい言語に更新されました。ゲームを続けるには新しいゲームを開始してください。",
     "settingsChanged": "設定が変更されました",
     "settingsChangedDesc": "ゲーム設定が変更されました。現在のゲームは新しい設定に合わせてリセットされました。ゲームを続けるには新しいゲームを開始してください。",
     "inputSection": "ゲーム入力エリア",
@@ -29,6 +26,8 @@
     "guessesUsed": "使用した推測回数",
     "result": "結果",
     "defeat": "敗北",
+    "victory": "勝利",
+    "baseStatsTotal": "種族値合計",
     "columns": {
       "type": "タイプ",
       "baseStats": "種族値",
@@ -38,17 +37,30 @@
       "tags": "タグ"
     },
     "evolutionMethod": "進化方法",
-    "requestFailed": "回答を確認できませんでした。もう一度お試しください。"
+    "requestFailed": "回答を確認できませんでした。もう一度お試しください。",
+    "searchHint": "各言語の名前・全国図鑑番号で検索",
+    "noMatches": "一致するポケモンがいません",
+    "suggestionCount": "{total} 件中 {shown} 件を表示",
+    "intro": "ポケモンを予想し、ヒントを比べて正解を絞り込もう。",
+    "matchExact": "一致",
+    "matchClose": "近い",
+    "matchNope": "異なる",
+    "answerHigher": "正解の方が高い",
+    "answerLower": "正解の方が低い",
+    "confirmGiveUp": "正解を表示して終了しますか？",
+    "confirmRestart": "これまでの予想を消して最初から始めますか？",
+    "confirmAction": "確認",
+    "guessNumber": "{number} 回目",
+    "hiddenField": "いたずらごころモードで非表示"
   },
   "settings": {
     "title": "設定",
     "maxGuesses": "最大推測回数",
-    "times": "回",
     "generationSelection": "世代選択",
     "selectAll": "すべて選択",
     "deselectAll": "すべて解除",
     "generationRequired": "少なくとも一つの世代を選択する必要があります",
-    "pranksterMode": "いたずらモード",
+    "pranksterMode": "いたずらごころモード",
     "pranksterModeDesc": "推測ごとにランダムで一つの属性を隠す",
     "genArrow": "世代矢印",
     "genArrowDesc": "世代の高低を示す矢印を表示",
@@ -86,19 +98,16 @@
         "gen5": "第5世代：ブラック ｜ ホワイト ｜ ブラック2 ｜ ホワイト2",
         "gen6": "第6世代：X ｜ Y ｜ オメガルビー ｜ アルファサファイア",
         "gen7": "第7世代：サン ｜ ムーン ｜ ウルトラサン ｜ ウルトラムーン ｜ Let's Go！ピカチュウ ｜ Let's Go！イーブイ",
-        "gen8": "第8世代：ソード ｜ シールド ｜ ブリリアントダイヤモンド ｜ シャイニングパール ｜ レジェンズ アルセウス",
-        "gen9": "第9世代：スカーレット ｜ バイオレット ｜ レジェンズ Z-A"
+        "gen8": "第8世代：ソード ｜ シールド ｜ ブリリアントダイヤモンド ｜ シャイニングパール ｜ Pokémon LEGENDS アルセウス",
+        "gen9": "第9世代：スカーレット ｜ バイオレット ｜ Pokémon LEGENDS Z-A"
       },
       "note": "設定から推測するポケモンの範囲を変更できます。"
     },
     "colorGuide": {
       "title": "色の説明",
-      "greenTag": "緑のタグ",
-      "yellowTag": "黄色のタグ",
-      "grayTag": "灰色のタグ",
-      "green": "このタグがターゲットポケモンの対応するタグと**完全に一致**していることを示します",
-      "yellow": "このタグがターゲットポケモンの対応するタグと**近い**ことを示します",
-      "gray": "このタグがターゲットポケモンの対応するタグと**異なる**ことを示します"
+      "green": "<tag>緑のタグ</tag> このタグがターゲットポケモンの対応するタグと完全に一致していることを示します",
+      "yellow": "<tag>黄色のタグ</tag> このタグがターゲットポケモンの対応するタグと近いことを示します",
+      "gray": "<tag>灰色のタグ</tag> このタグがターゲットポケモンの対応するタグと異なることを示します"
     },
     "yellowConditions": {
       "title": "黄色タグの判定条件",
@@ -108,23 +117,28 @@
     },
     "dataSource": {
       "title": "データソース",
-      "description": "ゲームデータは主に [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\") と [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\") から取得しています。"
+      "description": "ゲームデータは主に <pokeapi>pokeapi.co</pokeapi> と <bulbapedia>Bulbapedia</bulbapedia> から取得しています。"
     }
   },
   "navbar": {
     "about": "について",
     "settings": "設定",
     "language": "言語",
+    "switchLanguage": "{language}に切り替える",
+    "languageDescription": "以下の一覧から言語を選択してください",
     "knowledge": "ナレッジ",
+    "lightMode": "ライトモードに切り替え",
+    "darkMode": "ダークモードに切り替え",
     "main_navigation": "メインナビゲーション"
   },
   "knowledge": {
     "title": "ナレッジ",
-    "description": "あなたが興味を持つかもしれないポケモンの知識",
+    "description": "ポケモンの姿・進化・世代と、ポケワードルのヒントを使った推理の方法を紹介します。",
     "comingSoon": "近日公開！より良いポケモン推測者になるための包括的なナレッジベースを構築中です。",
     "readMore": "続きを読む",
-    "readNext": "次を読む",
-    "randomPrefix": "ポケモンQ&A："
+    "randomPrefix": "ポケモンQ&A：",
+    "seoTitle": "ポケモン知識・推理ガイド - ポケワードル",
+    "relatedArticles": "関連記事"
   },
   "footer": {
     "privacyAndTerms": "プライバシーと利用規約"
@@ -159,7 +173,7 @@
     "item-stone-water": "みずのいしを使用",
     "item-stone-thunder": "かみなりのいしを使用",
     "item-stone-leaf": "リーフのいしを使用",
-    "item-stone-sun": "ひかりのいしを使用",
+    "item-stone-sun": "たいようのいしを使用",
     "item-stone-moon": "つきのいしを使用",
     "item-stone-shiny": "ひかりのいしを使用",
     "item-stone-dusk": "やみのいしを使用",
@@ -177,8 +191,8 @@
     "legendary": "伝説のポケモン",
     "mythical": "幻のポケモン",
     "fossil": "化石ポケモン",
-    "regional": "リージョンフォーム",
-    "has-mega": "メガ進化あり",
+    "regional": "リージョンフォームあり",
+    "has-mega": "メガシンカあり",
     "has-gmax": "キョダイマックスあり",
     "ultra": "ウルトラビースト",
     "paradox": "パラドックスポケモン",

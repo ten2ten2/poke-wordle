@@ -1,5 +1,14 @@
-import { getArticleAlternates, findKnowledgeArticle } from '../knowledge';
-import knowledge from '@/data/knowledge_data.json';
+import { getArticleAlternates, findKnowledgeArticle, knowledgeData as knowledge } from '../knowledge';
+
+jest.unmock('next-intl');
+
+jest.mock('@/data/knowledge_data.json', () => {
+  const slugs = { en: 'test-article', ja: 'テスト記事', 'zh-hans': '测试文章', 'zh-hant': '測試文章' };
+  return Object.fromEntries(Object.entries(slugs).map(([locale, slug]) => [locale, [{
+    id: locale, title: slug, slug, createdAt: '2025-01-01T00:00:00Z',
+    translations: Object.fromEntries(Object.entries(slugs).filter(([language]) => language !== locale).map(([language, translated]) => [language, { slug: translated }])),
+  }]]));
+});
 
 for (const [locale, articles] of Object.entries(knowledge)) {
   test(`${locale} article alternates use the translated slugs`, () => {
@@ -22,4 +31,15 @@ for (const [locale, articles] of Object.entries(knowledge)) {
 test('unknown article paths do not throw URI decoding errors', () => {
   expect(findKnowledgeArticle('en', '%')).toBeUndefined();
   expect(findKnowledgeArticle('invalid', 'article')).toBeUndefined();
+});
+
+test('removed language versions have no article or alternate link', () => {
+  const japanese = knowledge.ja;
+  knowledge.ja = [];
+  try {
+    expect(findKnowledgeArticle('ja', japanese[0].slug)).toBeUndefined();
+    expect(getArticleAlternates('en', knowledge.en[0])).not.toHaveProperty('ja');
+  } finally {
+    knowledge.ja = japanese;
+  }
 });

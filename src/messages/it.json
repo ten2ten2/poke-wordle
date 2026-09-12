@@ -1,7 +1,7 @@
 {
   "title": "Poke Wordle",
   "game": {
-    "inputPlaceholder": "Inserisci il nome del Pokémon...",
+    "inputPlaceholder": "Nome in qualsiasi lingua / Pokédex nº",
     "submit": "Invia",
     "submitting": "Invio in corso...",
     "randomStart": "Tentativo Casuale",
@@ -14,11 +14,8 @@
     "gameLost": "Gioco finito! La risposta era {pokemon}",
     "congratulations": "Congratulazioni!",
     "betterLuckNextTime": "Buona fortuna la prossima volta!",
-    "guessedIn": "Hai indovinato in {count} tentativi",
+    "guessedIn": "Hai indovinato in {count, plural, one {# tentativo} other {# tentativi}}.",
     "playAgain": "Gioca ancora",
-    "startPrompt": "Inserisci un nome di Pokémon o clicca \"Tentativo Casuale\" per iniziare!",
-    "languageChanged": "Lingua Cambiata",
-    "languageChangedDesc": "La lingua è stata cambiata. I dati Pokémon sono stati aggiornati alla nuova lingua. Inizia un nuovo gioco per continuare a giocare.",
     "settingsChanged": "Impostazioni Cambiate",
     "settingsChangedDesc": "Le impostazioni del gioco sono state cambiate. Il gioco attuale è stato resettato per corrispondere alle nuove impostazioni. Inizia un nuovo gioco per continuare a giocare.",
     "inputSection": "Sezione input del gioco",
@@ -29,6 +26,8 @@
     "guessesUsed": "Tentativi utilizzati",
     "result": "Risultato",
     "defeat": "Sconfitta",
+    "victory": "Vittoria",
+    "baseStatsTotal": "Totale delle statistiche di base",
     "columns": {
       "type": "Tipo",
       "baseStats": "Statistiche Base",
@@ -38,17 +37,30 @@
       "tags": "Tag"
     },
     "evolutionMethod": "Metodo di Evoluzione",
-    "requestFailed": "Impossibile verificare la risposta. Riprova."
+    "requestFailed": "Impossibile verificare la risposta. Riprova.",
+    "searchHint": "Nome in qualsiasi lingua o numero del Pokédex",
+    "noMatches": "Nessun Pokémon corrispondente",
+    "suggestionCount": "{shown} risultati su {total}",
+    "intro": "Proponi un Pokémon e confronta gli indizi per trovare la risposta.",
+    "matchExact": "Uguale",
+    "matchClose": "Vicino",
+    "matchNope": "Diverso",
+    "answerHigher": "La risposta è più alta",
+    "answerLower": "La risposta è più bassa",
+    "confirmGiveUp": "Mostrare la risposta e terminare la partita?",
+    "confirmRestart": "Cancellare i tentativi e ricominciare?",
+    "confirmAction": "Conferma",
+    "guessNumber": "Tentativo {number}",
+    "hiddenField": "Nascosto dalla modalità Burla"
   },
   "settings": {
     "title": "Impostazioni",
     "maxGuesses": "Tentativi Massimi",
-    "times": "volte",
     "generationSelection": "Selezione Generazione",
     "selectAll": "Seleziona Tutto",
     "deselectAll": "Deseleziona Tutto",
     "generationRequired": "Almeno una generazione deve essere selezionata",
-    "pranksterMode": "Modalità Burlone",
+    "pranksterMode": "Modalità Burla",
     "pranksterModeDesc": "Nascondi casualmente un attributo per tentativo",
     "genArrow": "Frecce Generazione",
     "genArrowDesc": "Mostra frecce per suggerimenti di generazione",
@@ -93,12 +105,9 @@
     },
     "colorGuide": {
       "title": "Guida ai colori",
-      "greenTag": "Tag verde",
-      "yellowTag": "Tag giallo",
-      "grayTag": "Tag grigio",
-      "green": "Indica che questo tag **corrisponde esattamente** al tag corrispondente del Pokémon obiettivo",
-      "yellow": "Indica che questo tag è **vicino** al tag corrispondente del Pokémon obiettivo",
-      "gray": "Indica che questo tag è **diverso** dal tag corrispondente del Pokémon obiettivo"
+      "green": "<tag>Tag verde</tag> Indica che questo tag corrisponde esattamente al tag corrispondente del Pokémon obiettivo",
+      "yellow": "<tag>Tag giallo</tag> Indica che questo tag è vicino al tag corrispondente del Pokémon obiettivo",
+      "gray": "<tag>Tag grigio</tag> Indica che questo tag è diverso dal tag corrispondente del Pokémon obiettivo"
     },
     "yellowConditions": {
       "title": "Condizioni per i tag gialli",
@@ -108,28 +117,32 @@
     },
     "dataSource": {
       "title": "Fonte dei dati",
-      "description": "I dati del gioco provengono principalmente da [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\") e [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")"
+      "description": "I dati del gioco provengono principalmente da <pokeapi>pokeapi.co</pokeapi> e <bulbapedia>Bulbapedia</bulbapedia>"
     }
   },
   "navbar": {
     "about": "Informazioni",
     "settings": "Impostazioni",
     "language": "Lingua",
+    "switchLanguage": "Passa a {language}",
+    "languageDescription": "Seleziona la tua lingua dall’elenco seguente",
+    "lightMode": "Passa alla modalità chiara",
+    "darkMode": "Passa alla modalità scura",
     "main_navigation": "Navigazione Principale"
   },
   "footer": {
     "privacyAndTerms": "Privacy e Termini"
   },
   "generation": {
-    "Gen1": "Generazione 1",
-    "Gen2": "Generazione 2",
-    "Gen3": "Generazione 3",
-    "Gen4": "Generazione 4",
-    "Gen5": "Generazione 5",
-    "Gen6": "Generazione 6",
-    "Gen7": "Generazione 7",
-    "Gen8": "Generazione 8",
-    "Gen9": "Generazione 9"
+    "Gen1": "Gen 1",
+    "Gen2": "Gen 2",
+    "Gen3": "Gen 3",
+    "Gen4": "Gen 4",
+    "Gen5": "Gen 5",
+    "Gen6": "Gen 6",
+    "Gen7": "Gen 7",
+    "Gen8": "Gen 8",
+    "Gen9": "Gen 9"
   },
   "evolution": {
     "stage1": "Nessuna evoluzione/Primo stadio",
@@ -142,38 +155,38 @@
     "level-move": "Aumento livello conoscendo una mossa",
     "level-location": "Aumento livello in luogo specifico",
     "level-time": "Aumento livello in momento specifico",
-    "level-holding-item": "Aumento livello tenendo un oggetto",
-    "level-gender": "Aumento livello con genere specifico",
+    "level-holding-item": "Aumento di livello tenendo uno strumento",
+    "level-gender": "Aumento di livello con un sesso specifico",
     "level-version": "Aumento livello in versione specifica del gioco",
     "level-unique": "Aumento livello con condizioni speciali",
     "item-stone-fire": "Usa Pietrafocaia",
     "item-stone-water": "Usa Pietraidrica",
     "item-stone-thunder": "Usa Pietratuono",
     "item-stone-leaf": "Usa Pietrafoglia",
-    "item-stone-sun": "Usa Pietrasole",
+    "item-stone-sun": "Usa Pietrasolare",
     "item-stone-moon": "Usa Pietralunare",
-    "item-stone-shiny": "Usa Pietraluce",
-    "item-stone-dusk": "Usa Pietranotte",
+    "item-stone-shiny": "Usa Pietrabrillo",
+    "item-stone-dusk": "Usa Neropietra",
     "item-stone-dawn-male": "Maschio usa Pietralbore",
     "item-stone-dawn-female": "Femmina usa Pietralbore",
-    "item-stone-ice": "Usa Pietragelida",
-    "item-unique": "Usa oggetto speciale",
+    "item-stone-ice": "Usa Pietragelo",
+    "item-unique": "Usa uno strumento speciale",
     "trade-normal": "Scambio",
-    "trade-item": "Scambio tenendo oggetto",
+    "trade-item": "Scambio tenendo uno strumento",
     "trade-certain": "Scambio per Pokémon specifico",
     "unique": "Metodo di evoluzione speciale"
   },
   "tags": {
     "starter": "Pokémon iniziale",
     "legendary": "Leggendario",
-    "mythical": "Mitico",
+    "mythical": "Misterioso",
     "fossil": "Fossili",
-    "regional": "Forma Regionale",
-    "has-mega": "Ha Mega Evoluzione",
-    "has-gmax": "Ha Gigantamax",
+    "regional": "Ha forme regionali",
+    "has-mega": "Può megaevolversi",
+    "has-gmax": "Ha una forma Gigamax",
     "ultra": "Ultracreatura",
     "paradox": "Pokémon Paradosso",
-    "late": "Late Bloomer"
+    "late": "Pokémon pseudo-leggendario"
   },
   "privacyAndTerms": {
     "title": "Informativa sulla Privacy e Termini di Servizio",
@@ -258,5 +271,14 @@
     "decline": "Rifiuta",
     "close": "Chiudi",
     "privacyAndTerms": "Informativa sulla Privacy e Termini di Servizio"
+  },
+  "knowledge": {
+    "title": "Guide Pokémon",
+    "description": "Scopri forme, evoluzioni e generazioni dei Pokémon e impara a interpretare gli indizi di Poke Wordle.",
+    "comingSoon": "In arrivo! Stiamo preparando articoli per aiutarti a riconoscere meglio i Pokémon.",
+    "readMore": "Leggi di più",
+    "randomPrefix": "Domande sui Pokémon: ",
+    "seoTitle": "Guide Pokémon e consigli di gioco - Poke Wordle",
+    "relatedArticles": "Articoli correlati"
   }
 }

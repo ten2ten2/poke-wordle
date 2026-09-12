@@ -28,15 +28,40 @@ run = "npm run typecheck"
 run = "npm test -- --runInBand"
 
 [tasks.e2e]
-run = "npm run test:e2e"
+run = "npm run test:e2e --"
 
 [tasks.check]
+depends = ["data:check", "knowledge:check"]
 run = "npm run check"
 
 [tasks."data:check"]
-dir = "poke-json"
-run = ["go vet ./...", "go test ./..."]
+dir = "tools"
+run = ["go vet ./...", "go test -race ./...", "node --test pipeline.test.mjs review-state.test.mjs console.test.mjs", "node pipeline.mjs verify"]
 
-[tasks."data:run"]
-dir = "poke-json"
-run = "go run ."
+[tasks."data:generate"]
+run = "node tools/pipeline.mjs generate"
+
+[tasks."data:review"]
+run = "node tools/pipeline.mjs review"
+
+[tasks."data:apply"]
+run = "node tools/pipeline.mjs apply"
+
+[tasks."data:verify"]
+run = "node tools/pipeline.mjs verify"
+
+[tasks."data:console"]
+run = "node tools/console.mjs"
+
+[tasks."data:console:test"]
+run = "node --test tools/console.browser.test.mjs tools/knowledge.browser.test.mjs"
+
+[tasks."knowledge:check"]
+run = ["node tools/knowledge-model.mjs check", "node --test tools/knowledge.test.mjs"]
+
+[tasks."knowledge:sync"]
+run = "node tools/knowledge-model.mjs sync"
+
+[tasks."seo:check"]
+description = "Check production HTML, indexing metadata and redirects after building"
+run = "npm run test:seo"

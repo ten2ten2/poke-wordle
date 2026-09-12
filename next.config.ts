@@ -3,12 +3,17 @@ import createNextIntlPlugin from 'next-intl/plugin';
 import createMDX from '@next/mdx';
 
 const withNextIntl = createNextIntlPlugin();
-const withMDX = createMDX({ options: { remarkPlugins: ['remark-gfm'] } });
+const withMDX = createMDX({ options: {
+  remarkPlugins: ['remark-gfm'],
+  rehypePlugins: [require.resolve('./tools/rehype-knowledge.mjs')],
+} });
 
 const nextConfig: NextConfig = {
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   poweredByHeader: false,
   images: {
+    // Let the browser handle local proxy DNS in development.
+    unoptimized: process.env.NODE_ENV === 'development',
     remotePatterns: [
       new URL(
         'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/**',

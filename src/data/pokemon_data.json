@@ -644,7 +644,7 @@
     },
     "evolution_stage": 2,
     "evolution_method": "level",
-    "evolution_method_detail": "level-normal",
+    "evolution_method_detail": "level-time",
     "tags": [
       "regional"
     ]
@@ -788,7 +788,6 @@
     "evolution_method_detail": "level-friendship",
     "tags": [
       "starter",
-      "regional",
       "has-gmax"
     ]
   },
@@ -818,7 +817,8 @@
     "evolution_method": "item",
     "evolution_method_detail": "item-stone-thunder",
     "tags": [
-      "regional"
+      "regional",
+      "has-mega"
     ]
   },
   {
@@ -1192,7 +1192,9 @@
     "evolution_stage": 3,
     "evolution_method": "item",
     "evolution_method_detail": "item-stone-moon",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 42,
@@ -2471,7 +2473,9 @@
     "evolution_stage": 3,
     "evolution_method": "item",
     "evolution_method_detail": "item-stone-leaf",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 86,
@@ -3895,7 +3899,7 @@
     },
     "evolution_stage": 2,
     "evolution_method": "level",
-    "evolution_method_detail": "level-normal",
+    "evolution_method_detail": "level-time",
     "tags": [
       "regional"
     ]
@@ -4384,7 +4388,9 @@
     "evolution_stage": 2,
     "evolution_method": "item",
     "evolution_method_detail": "item-stone-water",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 151,
@@ -5421,7 +5427,8 @@
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
     "tags": [
-      "late"
+      "late",
+      "has-mega"
     ]
   },
   {
@@ -5566,7 +5573,8 @@
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
     "tags": [
-      "starter"
+      "starter",
+      "has-mega"
     ]
   },
   {
@@ -5772,7 +5780,8 @@
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
     "tags": [
-      "starter"
+      "starter",
+      "has-mega"
     ]
   },
   {
@@ -6426,7 +6435,7 @@
     },
     "evolution_stage": 2,
     "evolution_method": "level",
-    "evolution_method_detail": "level-unique",
+    "evolution_method_detail": "level-friendship",
     "tags": null
   },
   {
@@ -7844,7 +7853,9 @@
     "evolution_stage": 1,
     "evolution_method": "",
     "evolution_method_detail": "",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 270,
@@ -8265,7 +8276,7 @@
     },
     "evolution_stage": 3,
     "evolution_method": "level",
-    "evolution_method_detail": "level-unique",
+    "evolution_method_detail": "level-friendship",
     "tags": null
   },
   {
@@ -11707,7 +11718,9 @@
     "evolution_stage": 2,
     "evolution_method": "level",
     "evolution_method_detail": "level-friendship",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 406,
@@ -12865,7 +12878,9 @@
     "evolution_stage": 3,
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 446,
@@ -15100,7 +15115,7 @@
     },
     "evolution_stage": 3,
     "evolution_method": "item",
-    "evolution_method_detail": "item-stone-dawn-female",
+    "evolution_method_detail": "item-stone-dawn-male",
     "tags": [
       "has-mega"
     ]
@@ -15130,8 +15145,8 @@
       "speed": 40
     },
     "evolution_stage": 2,
-    "evolution_method": "level",
-    "evolution_method_detail": "level-unique",
+    "evolution_method": "item",
+    "evolution_method_detail": "item-stone-thunder",
     "tags": null
   },
   {
@@ -15186,8 +15201,10 @@
     },
     "evolution_stage": 2,
     "evolution_method": "item",
-    "evolution_method_detail": "item-stone-dawn-male",
-    "tags": null
+    "evolution_method_detail": "item-stone-dawn-female",
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 528,
@@ -15522,7 +15539,8 @@
     "evolution_method": "",
     "evolution_method_detail": "",
     "tags": [
-      "legendary"
+      "legendary",
+      "has-mega"
     ]
   },
   {
@@ -15721,7 +15739,8 @@
     "evolution_method": "",
     "evolution_method_detail": "",
     "tags": [
-      "mythical"
+      "mythical",
+      "has-mega"
     ]
   },
   {
@@ -16011,7 +16030,8 @@
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
     "tags": [
-      "starter"
+      "starter",
+      "has-mega"
     ]
   },
   {
@@ -16887,7 +16907,9 @@
     "evolution_stage": 2,
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 588,
@@ -17317,7 +17339,9 @@
     "evolution_stage": 3,
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 603,
@@ -17955,7 +17979,9 @@
     "evolution_stage": 2,
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 625,
@@ -19285,7 +19311,9 @@
     "evolution_stage": 3,
     "evolution_method": "item",
     "evolution_method_detail": "item-stone-thunder",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 672,
@@ -19428,7 +19456,9 @@
     "evolution_stage": 3,
     "evolution_method": "item",
     "evolution_method_detail": "item-stone-dusk",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 677,
@@ -19852,7 +19882,9 @@
     "evolution_stage": 2,
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 692,
@@ -20897,7 +20929,8 @@
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
     "tags": [
-      "starter"
+      "starter",
+      "has-mega"
     ]
   },
   {
@@ -20985,7 +21018,8 @@
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
     "tags": [
-      "starter"
+      "starter",
+      "has-mega"
     ]
   },
   {
@@ -21073,7 +21107,8 @@
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
     "tags": [
-      "starter"
+      "starter",
+      "has-mega"
     ]
   },
   {
@@ -21357,7 +21392,9 @@
     "evolution_stage": 2,
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 744,
@@ -21438,7 +21475,9 @@
     "evolution_stage": 1,
     "evolution_method": "",
     "evolution_method_detail": "",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 747,
@@ -21658,7 +21697,9 @@
     "evolution_stage": 2,
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 755,
@@ -21686,7 +21727,9 @@
     "evolution_stage": 2,
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 756,
@@ -21933,7 +21976,9 @@
     "evolution_stage": 2,
     "evolution_method": "level",
     "evolution_method_detail": "level-unique",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 765,
@@ -21991,7 +22036,9 @@
     "evolution_stage": 2,
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 767,
@@ -22049,7 +22096,9 @@
     "evolution_stage": 2,
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 769,
@@ -22305,7 +22354,7 @@
     },
     "evolution_stage": 2,
     "evolution_method": "level",
-    "evolution_method_detail": "level-unique",
+    "evolution_method_detail": "level-friendship",
     "tags": null
   },
   {
@@ -22335,7 +22384,9 @@
     "evolution_stage": 1,
     "evolution_method": "",
     "evolution_method_detail": "",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 779,
@@ -22984,7 +23035,8 @@
     "evolution_method": "",
     "evolution_method_detail": "",
     "tags": [
-      "legendary"
+      "legendary",
+      "has-mega"
     ]
   },
   {
@@ -23680,7 +23732,9 @@
     "evolution_stage": 2,
     "evolution_method": "item",
     "evolution_method_detail": "item-stone-ice",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 825,
@@ -24627,7 +24681,9 @@
     "evolution_stage": 2,
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 859,
@@ -24987,7 +25043,9 @@
     "evolution_stage": 1,
     "evolution_method": "",
     "evolution_method_detail": "",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 872,
@@ -25685,7 +25743,8 @@
     "evolution_method": "",
     "evolution_method_detail": "",
     "tags": [
-      "mythical"
+      "mythical",
+      "has-mega"
     ]
   },
   {
@@ -25857,7 +25916,8 @@
     "evolution_method": "",
     "evolution_method_detail": "",
     "tags": [
-      "mythical"
+      "mythical",
+      "has-mega"
     ]
   },
   {
@@ -27692,7 +27752,9 @@
     "evolution_stage": 1,
     "evolution_method": "",
     "evolution_method_detail": "",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 966,
@@ -30292,7 +30354,9 @@
     "evolution_stage": 2,
     "evolution_method": "item",
     "evolution_method_detail": "item-stone-fire",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 1057,
@@ -30820,7 +30884,9 @@
     "evolution_stage": 2,
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 1076,
@@ -31043,7 +31109,9 @@
     "evolution_stage": 1,
     "evolution_method": "",
     "evolution_method_detail": "",
-    "tags": null
+    "tags": [
+      "has-mega"
+    ]
   },
   {
     "id": 1084,
@@ -31624,7 +31692,8 @@
     "evolution_method": "level",
     "evolution_method_detail": "level-normal",
     "tags": [
-      "late"
+      "late",
+      "has-mega"
     ]
   },
   {
@@ -32051,8 +32120,8 @@
       "speed": 70
     },
     "evolution_stage": 2,
-    "evolution_method": "",
-    "evolution_method_detail": "",
+    "evolution_method": "item",
+    "evolution_method_detail": "item-unique",
     "tags": null
   },
   {

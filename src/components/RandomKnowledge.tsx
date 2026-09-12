@@ -1,63 +1,49 @@
 'use client';
 
-import { useLocale } from 'next-intl';
+import { useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { ArrowRightIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { KnowledgeData, isKnowledgeSupported } from '@/config/knowledge';
-import knowledgeDataRaw from '@/data/knowledge_data.json';
+import type { KnowledgeArticle } from '@/config/knowledge';
+import { localePath } from '@/i18n/routing';
+import { useHydrated } from '@/hooks/useHydrated';
 
-const knowledgeData = knowledgeDataRaw as KnowledgeData;
+type ArticlePreview = Pick<KnowledgeArticle, 'id' | 'title' | 'slug'>;
 
-export default function RandomKnowledge() {
+export default function RandomKnowledge({ articles }: { articles: ArticlePreview[] }) {
   const locale = useLocale();
-
-  // Check if current locale supports knowledge
-  if (!isKnowledgeSupported(locale)) {
-    return null;
-  }
-
-  // Get articles for current locale
-  const articles = knowledgeData[locale as keyof KnowledgeData] || [];
+  const hydrated = useHydrated();
 
   if (articles.length === 0) {
     return null;
   }
 
-  // Keep the featured article consistent between server rendering and hydration.
-  const article = articles[0];
+  // Hydrate the server's first article, then select once for this page visit.
+  return <KnowledgeBanner key={`${locale}-${hydrated}`} articles={articles} randomize={hydrated} />;
+}
 
-  // Generate the correct href
+function KnowledgeBanner({ articles, randomize }: { articles: ArticlePreview[]; randomize: boolean }) {
+  const locale = useLocale();
+  const t = useTranslations();
+  const [article] = useState(() => articles[randomize ? Math.floor(Math.random() * articles.length) : 0]);
+
   const encodedSlug = encodeURIComponent(article.slug);
-  const href =
-    locale === 'en'
-      ? `/knowledge/${encodedSlug}`
-      : `/${locale}/knowledge/${encodedSlug}`;
-
-  // Get localized prefix based on locale
-  const getPrefix = () => {
-    switch (locale) {
-      case 'zh-hans':
-        return '宝可梦问答：';
-      case 'zh-hant':
-        return '寶可夢問答：';
-      case 'ja':
-        return 'ポケモンQ&A：';
-      case 'en':
-      default:
-        return 'Pokémon Q&A: ';
-    }
-  };
+  const href = localePath(locale, `/knowledge/${encodedSlug}`);
 
   return (
-    <div className="bg-yellow-50 border-b border-yellow-100">
-      <div className="container-responsive px-4 py-2">
-        <Link
-          href={href}
-          className="block text-center text-sm text-yellow-700 hover:text-yellow-800 transition-colors duration-200"
-        >
-          <span className="font-medium">{getPrefix()}</span>
-          <span className="hover:underline">{article.title}</span>
-        </Link>
-      </div>
+    <div className="container-responsive w-full py-2">
+      <Link
+        href={href}
+        title={`${t('knowledge.randomPrefix')}${article.title}`}
+        className="knowledge-banner"
+      >
+        <QuestionMarkCircleIcon className="size-5 shrink-0 text-accent-text" aria-hidden="true" />
+        <span className="min-w-0 flex-1">
+          <span className="font-semibold text-accent-text">{t('knowledge.randomPrefix')}</span>
+          <span>{article.title}</span>
+        </span>
+        <ArrowRightIcon className="size-4 shrink-0 text-accent-text" aria-hidden="true" />
+      </Link>
     </div>
   );
 }

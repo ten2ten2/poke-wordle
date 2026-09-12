@@ -14,8 +14,8 @@ const config = async () => ({
       '!src/data/**',
     ],
   })()),
-  // next-intl distributes ESM; transform its routing helpers for Jest.
-  transformIgnorePatterns: ['node_modules/(?!(next-intl|use-intl)/)'],
+  // next-intl and its message formatter distribute ESM.
+  transformIgnorePatterns: ['node_modules/(?!(next-intl|use-intl|intl-messageformat|@formatjs)/)'],
 });
 
 export default config;

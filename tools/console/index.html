@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f9fafb"><script src="/theme.js"></script>
+  <title>数据校对 · Poké Wordle</title><link rel="stylesheet" href="/style.css"><script src="/app.js" type="module"></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/" title="Poké Wordle 数据工作台"><span class="pokeball" aria-hidden="true"></span><span>Poké Wordle <small>数据工作台</small></span></a><nav class="console-nav" aria-label="后台主菜单"><button id="update-data" class="btn-option" aria-current="page" title="生成候选数据、校对更新并查看批次">更新数据</button><button id="browse-data" class="btn-option" aria-current="false" title="浏览全部已发布数据">当前数据</button><button id="manage-knowledge" class="btn-option" aria-current="false" title="知识文章：MDX 编辑与语言版本管理">知识文章</button></nav><div class="topbar-actions"><button id="theme-toggle" class="btn-icon" type="button" aria-label="切换到夜间模式" title="切换到夜间模式"><svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 13A9 9 0 0 1 11 3a9 9 0 1 0 10 10Z"/></svg></button><span class="local-label"><i></i>本地控制台</span></div></header>
+  <div id="console-layout" class="layout" data-view="review">
+    <aside id="review-sidebar" class="sidebar" aria-label="更新批次"><div class="sidebar-title"><h2>更新批次</h2><button id="refresh" class="btn-ghost" title="刷新">刷新</button></div><p class="muted small">每批独立生成，确认后再应用。</p><nav id="runs" aria-label="数据批次"></nav><div class="sidebar-footer"><span>更新流程</span><ol><li>生成候选与缓存来源</li><li>自动校验，逐项查看差异</li><li>确认或提出修正意见</li><li>应用数据，运行检查</li></ol></div></aside>
+    <main>
+      <section id="review-intro" class="intro"><div><p class="eyebrow">DATA REVIEW</p><h1>每一处变化，都有依据</h1><p class="muted">对照当前数据、上游来源和本地修正，确认本次更新。</p></div><button id="generate" class="btn-primary" title="检查上游更新">检查上游更新 <span aria-hidden="true">↗</span></button></section>
+      <div id="notice" role="status" aria-live="polite" hidden></div>
+      <section id="job" class="job-card" hidden><div class="job-title"><strong id="job-title"></strong><span id="job-status" class="badge"></span></div><p id="job-error" class="small"></p><details><summary>查看运行日志</summary><pre id="job-log"></pre></details></section>
+      <section id="current-data" hidden>
+        <div class="intro"><div><p class="eyebrow">PUBLISHED DATA</p><h1>当前数据</h1><p class="muted">浏览游戏当前使用的数据，查看完整属性与多语言名称。</p></div><div class="data-actions"><button id="data-refresh" title="刷新数据">刷新数据</button><a href="/api/current/export" class="button-link btn-secondary" title="导出当前数据">导出当前数据</a></div></div>
+        <p id="data-status" class="run-note" role="status">正在读取当前数据…</p>
+        <div id="data-content" hidden>
+          <div id="data-stats" class="stats"></div>
+          <details class="data-version"><summary>数据版本与文件</summary><pre id="data-metadata"></pre></details>
+          <section class="review-card">
+            <nav class="tabs" aria-label="数据类别"><button class="btn-option" data-collection="pokemon" aria-pressed="true" title="宝可梦">宝可梦</button><button class="btn-option" data-collection="translations" aria-pressed="false" title="多语言名称">多语言名称</button><button class="btn-option" data-collection="images" aria-pressed="false" title="恶作剧图片">恶作剧图片</button><button class="btn-option" data-collection="knowledge" aria-pressed="false" title="知识文章索引">知识文章索引</button></nav>
+            <div class="filters data-filters">
+              <label class="search"><span class="sr-only">搜索当前数据</span><input id="data-search" type="search" placeholder="名称、图鉴编号、特性或关键词…" title="搜索当前数据"></label>
+              <label><span class="sr-only">显示语言</span><select id="data-locale" aria-label="显示语言" title="显示语言"></select></label>
+              <label data-pokemon-filter><span class="sr-only">世代</span><select id="data-generation" aria-label="世代" title="世代"><option value="all">所有世代</option></select></label>
+              <label data-pokemon-filter><span class="sr-only">属性</span><select id="data-type" aria-label="属性" title="属性"><option value="all">所有属性</option></select></label>
+              <label data-pokemon-filter><span class="sr-only">标签</span><select id="data-tag" aria-label="标签" title="标签"><option value="all">所有标签</option></select></label>
+              <label id="data-kind-filter" hidden><span class="sr-only">名称类别</span><select id="data-kind" aria-label="名称类别" title="名称类别"><option value="all">所有名称</option><option value="pokemon">宝可梦</option><option value="ability">特性</option><option value="type">属性</option><option value="other">其他</option></select></label>
+              <button id="data-reset" class="btn-ghost" title="清除筛选">清除筛选</button><span id="data-result-count" class="small muted" role="status"></span>
+            </div>
+            <div id="data-rows"></div>
+            <div class="pagination"><span id="data-page-label" class="muted small"></span><div><button id="data-previous" title="上一页">上一页</button><button id="data-next" title="下一页">下一页</button></div></div>
+          </section>
+        </div>
+      </section>
+      <section id="knowledge-manager" hidden>
+        <div class="intro"><div><p class="eyebrow">KNOWLEDGE</p><h1>知识文章</h1><p class="muted">编写 MDX，管理同一篇文章的语言版本。</p></div><div class="data-actions"><button id="knowledge-reload" title="重新载入">重新载入</button><button id="knowledge-check" title="检查已保存文章">检查已保存文章</button><button id="knowledge-new" class="btn-primary" title="新建文章">新建文章</button></div></div>
+        <p id="knowledge-status" class="run-note" role="status">正在读取文章…</p>
+        <div class="knowledge-layout">
+          <section class="review-card knowledge-list-panel" aria-label="文章列表">
+            <div class="knowledge-filters"><label for="knowledge-search" class="sr-only">搜索文章</label><input id="knowledge-search" type="search" placeholder="搜索标题或路径…" title="搜索文章"><label for="knowledge-filter" class="sr-only">筛选语言版本</label><select id="knowledge-filter" title="筛选语言版本"><option value="all">所有文章</option><option value="incomplete">尚未齐全的语言版本</option></select></div>
+            <div id="knowledge-list"></div>
+          </section>
+          <section class="review-card knowledge-editor-panel">
+            <div id="knowledge-empty" class="empty">选择一篇文章，或新建文章开始编写。</div>
+            <div id="knowledge-editor" hidden>
+              <nav id="knowledge-languages" class="tabs" aria-label="文章语言版本"></nav>
+              <form id="knowledge-form">
+                <div class="knowledge-fields">
+                  <label>文章标题<input id="knowledge-title" type="text" required maxlength="200" autocomplete="off" title="文章标题"></label>
+                  <label>路径名称<input id="knowledge-slug" type="text" required maxlength="150" autocomplete="off" placeholder="例如 mega-evolution" title="路径名称" aria-describedby="knowledge-slug-help"></label>
+                  <label>创建时间<input id="knowledge-created" type="datetime-local" required title="创建时间"></label>
+                </div>
+                <p id="knowledge-slug-help" class="small muted knowledge-help">各语言版本使用相同的英文路径，以小写字母、数字和短横线命名。修改标题时无需修改路径。</p>
+                <p id="knowledge-path" class="small muted knowledge-help"></p>
+                <div class="knowledge-fields knowledge-seo-fields">
+                  <label>文章摘要<textarea id="knowledge-description" required maxlength="600" rows="3" placeholder="使用当前语言概括文章内容；用于文章列表和搜索摘要。" title="文章摘要"></textarea></label>
+                  <label>SEO 标题（可选）<input id="knowledge-seo-title" type="text" maxlength="200" placeholder="留空使用文章标题 + Poke Wordle" title="SEO 标题（可选）"></label>
+                  <label>分享图片（可选）<input id="knowledge-image" type="text" placeholder="HTTPS 图片地址或 /images/ 下的项目图片" title="分享图片（可选）"></label>
+                </div>
+                <div class="knowledge-search-preview" aria-label="搜索摘要预览"><strong id="knowledge-search-title"></strong><span id="knowledge-search-url" class="small muted"></span><p id="knowledge-search-description"></p><small class="muted">搜索引擎可能根据查询调整标题和摘要；留空分享图片时使用站点默认图。</small></div>
+                <details id="knowledge-redirects" class="knowledge-help" hidden><summary>历史地址（自动永久跳转到当前文章）</summary><ul id="knowledge-redirect-list"></ul></details>
+                <div class="knowledge-toolbar"><div class="data-actions"><button id="knowledge-source-tab" type="button" class="btn-option" aria-pressed="true" title="编辑 MDX">编辑 MDX</button><button id="knowledge-preview" type="button" class="btn-option" aria-pressed="false" title="预览并校验">预览并校验</button></div><div class="data-actions"><button id="knowledge-import" type="button" class="btn-ghost" title="导入 MDX">导入 MDX</button><input id="knowledge-file" type="file" accept=".mdx,.md" hidden title="选择 MDX 文件"><button id="knowledge-export" type="button" class="btn-ghost" title="导出 MDX">导出 MDX</button></div></div>
+                <div id="knowledge-source-panel" class="knowledge-source-panel"><label for="knowledge-source" class="sr-only">MDX 正文</label><textarea id="knowledge-source" rows="22" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" aria-describedby="knowledge-mdx-help" title="MDX 正文"></textarea><div class="knowledge-source-footer"><span id="knowledge-source-count" class="small muted"></span><button id="knowledge-copy-version" type="button" class="btn-ghost" title="复制已有版本正文">复制已有版本正文</button></div></div>
+                <div id="knowledge-preview-panel" hidden><p id="knowledge-preview-status" class="small muted knowledge-help" role="status"></p><iframe id="knowledge-preview-frame" title="文章正文预览" sandbox></iframe></div>
+                <p id="knowledge-mdx-help" class="small muted knowledge-help">支持 Markdown、表格、FAQ / Question / Answer 和静态 JSX；正文从 ## 二级标题开始，结构化数据自动生成。Tab 缩进，Ctrl / ⌘ + S 保存。</p>
+                <div class="knowledge-save-bar"><span id="knowledge-dirty" class="small muted" role="status"></span><button id="knowledge-save" type="submit" class="btn-primary" title="保存到项目">保存到项目</button></div>
+              </form>
+              <div class="knowledge-delete-actions"><button id="knowledge-delete-version" class="btn-danger" title="删除此语言版本">删除此语言版本</button><button id="knowledge-delete-article" class="btn-ghost" title="删除整篇文章">删除整篇文章</button></div>
+            </div>
+          </section>
+        </div>
+      </section>
+      <div id="empty" class="empty" hidden>还没有数据批次。点击“检查上游更新”开始生成候选。</div>
+      <section id="workspace" hidden>
+        <div class="run-heading"><div><h2 id="run-title">批次详情</h2><p id="run-meta" class="muted small"></p></div><span id="run-status" class="badge"></span></div>
+        <p id="run-note" class="run-note"></p>
+        <div class="stats"><div><span>本批变更</span><strong id="count-changes">—</strong></div><div><span>待确认</span><strong id="count-pending">—</strong></div><div><span>已接受</span><strong id="count-accepted">—</strong></div><div><span>要求修正 / 暂缓</span><strong id="count-held">—</strong></div></div>
+        <div class="run-actions"><button id="review" title="重新自动校对">重新自动校对</button><button id="rebuild" title="从缓存重建">从缓存重建</button><button id="resume" title="补齐缺失请求">补齐缺失请求</button><a id="export" class="button-link btn-secondary" title="导出审核记录">导出审核记录</a><details class="metadata"><summary>来源与批次</summary><div id="metadata"></div></details></div>
+        <section class="review-card">
+          <div class="tabs" role="tablist" aria-label="查看内容"><button class="btn-option" role="tab" data-tab="changes" aria-selected="true" title="全部变更">全部变更</button><button class="btn-option" role="tab" data-tab="pending" aria-selected="false" title="待确认">待确认</button><button class="btn-option" role="tab" data-tab="held" aria-selected="false" title="修正与暂缓">修正与暂缓</button><button class="btn-option" role="tab" data-tab="correction" aria-selected="false" title="人工修正依据">人工修正依据</button></div>
+          <div class="filters"><label class="search"><span class="sr-only">搜索名称或字段</span><input id="search" type="search" placeholder="搜索宝可梦、语言或字段…" title="搜索名称或字段"></label><label><span class="sr-only">变更类型</span><select id="category" title="变更类型"><option value="all">所有类型</option><option value="pokemon">游戏字段</option><option value="translation">名称翻译</option><option value="formatting">格式变化</option><option value="image">图片</option><option value="fallback">英文回退</option></select></label><span id="result-count" class="muted small"></span></div>
+          <div id="selection" class="selection"><label><input id="select-page" type="checkbox" title="选择当前页普通变更"> 选择当前页普通变更</label><button id="accept-selected" title="接受已选项目">接受已选 <span id="selected-count">0</span> 项</button><span class="muted small">新增、删除及身份变化须单独确认。</span></div>
+          <div class="column-head"><span>条目 / 字段</span><span>当前值</span><span>候选值</span><span>审核</span></div><div id="items"></div>
+          <div class="pagination"><span id="page-label" class="muted small"></span><div><button id="previous" title="上一页">上一页</button><button id="next" title="下一页">下一页</button></div></div>
+        </section>
+        <div class="review-progress" id="review-progress"><progress id="review-progress-bar" aria-label="已接受的变更"></progress><span id="review-progress-label" role="status"></span></div><div class="apply-bar"><div><strong id="apply-title"></strong><p id="apply-note" class="small muted"></p></div><button id="apply" class="btn-primary" title="应用并运行检查">应用并运行检查</button></div>
+      </section>
+    </main>
+  </div>
+  <dialog id="data-detail" aria-labelledby="data-detail-title"><div class="detail-header"><div><p id="data-detail-category" class="eyebrow"></p><h2 id="data-detail-title"></h2><p id="data-detail-subtitle" class="small muted"></p></div><button class="btn-icon" id="close-data-detail" aria-label="关闭数据详情" title="关闭数据详情"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg></button></div><div id="data-detail-body" class="detail-body"></div></dialog>
+  <dialog id="detail" aria-labelledby="detail-title"><div class="detail-header"><div><p id="detail-category" class="eyebrow"></p><h2 id="detail-title"></h2><p id="detail-field" class="muted small"></p></div><button class="btn-icon" id="close-detail" aria-label="关闭详情" title="关闭详情"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg></button></div><nav class="detail-navigation" aria-label="待确认变更"><button id="previous-pending" title="上一项待确认">上一项待确认</button><button id="next-pending" title="下一项待确认">下一项待确认</button></nav><div class="detail-body"><div id="detail-values" class="detail-values"></div><p id="saved-decision" class="run-note" hidden></p><p id="detail-reason" class="run-note" hidden></p><h3>来源证据</h3><div id="sources"></div><pre id="source-body" hidden></pre><p id="detail-notice" class="run-note" role="status" hidden></p><div id="decision-form"><label for="decision-note">审核备注</label><textarea id="decision-note" rows="3" placeholder="记录判断依据，或说明需要修正的内容" title="审核备注"></textarea><p class="small muted">“保留原值”“要求修正”和“暂缓”会阻止整批应用。按备注修正生成规则、重建后再确认。</p><div class="decision-buttons"><button data-decision="accepted" class="btn-primary" title="接受变更">接受变更</button><button data-decision="accepted" data-next="true" title="接受并下一项">接受并下一项</button><button data-decision="keep" title="保留原值">保留原值</button><button data-decision="fix" title="要求修正">要求修正</button><button data-decision="defer" title="暂缓">暂缓</button><button data-decision="pending" class="btn-ghost" title="撤回决定">撤回决定</button></div></div></div></dialog>
+</body>
+</html>

@@ -34,37 +34,38 @@ export default function CookieConsent({
   return (
     <aside
       aria-label={t('title')}
-      className="fixed bottom-0 inset-x-0 z-50 bg-white border-t border-gray-200 shadow-lg safe-all"
+      className="fixed bottom-0 inset-x-0 z-50 bg-surface border-t border-line shadow-lg safe-all"
     >
       <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex-1">
-          <h2 className="text-sm font-medium text-gray-900 mb-1">
+          <h2 className="text-sm font-medium text-foreground mb-1">
             {t('title')}
           </h2>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-secondary">
             {t('description')}{' '}
             <Link
               href={localePath(locale, '/privacy-and-terms')}
               title={t('privacyAndTerms')}
-              className="text-red-500 underline"
+              className="text-accent-text underline"
             >
               {t('learnMore')}
             </Link>
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          <button onClick={() => choose('declined')} className="btn-secondary">
+        <div className="flex flex-wrap items-center gap-2">
+          <button title={t('decline')} onClick={() => choose('declined')} className="btn-secondary">
             {t('decline')}
           </button>
-          <button onClick={() => choose('accepted')} className="btn-primary">
+          <button title={t('accept')} onClick={() => choose('accepted')} className="btn-primary">
             {t('accept')}
           </button>
           <button
             onClick={() => setDismissed(true)}
             aria-label={t('close')}
-            className="p-1 text-gray-500"
+            title={t('close')}
+            className="btn-icon"
           >
-            <XMarkIcon className="h-5 w-5" />
+            <XMarkIcon aria-hidden="true" />
           </button>
         </div>
       </div>

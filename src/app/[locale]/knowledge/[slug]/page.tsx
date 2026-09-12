@@ -1,18 +1,16 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
+import { hasLocale } from 'next-intl';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import KnowledgeArticle from '@/components/KnowledgeArticle';
 import {
   getArticleAlternates,
   findKnowledgeArticle,
-  isKnowledgeSupported,
-  KNOWLEDGE_SUPPORTED_LOCALES,
-  KnowledgeData,
+  knowledgeData,
+  knowledgeArticlePath,
 } from '@/config/knowledge';
-import knowledgeDataRaw from '@/data/knowledge_data.json';
-import { localePath } from '@/i18n/routing';
-
-const knowledgeData = knowledgeDataRaw as KnowledgeData;
+import { pageMetadata } from '@/config/seo';
+import { routing } from '@/i18n/routing';
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
@@ -21,66 +19,24 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
 
-  // Check if locale supports knowledge page
-  if (!isKnowledgeSupported(locale)) {
-    return {};
-  }
+  if (!hasLocale(routing.locales, locale)) return {};
 
-  // Find the article in the locale's data
   const article = findKnowledgeArticle(locale, slug);
 
   if (!article) {
     return {};
   }
 
-  const t = await getTranslations({ locale, namespace: 'knowledge' });
-
-  const canonicalUrl = localePath(
-    locale,
-    `/knowledge/${encodeURIComponent(article.slug)}`,
-  );
-  const ogUrl = `https://www.pokewordle.app${canonicalUrl}`;
-
-  return {
-    title: `${article.title} - ${t('title')} - Poke Wordle`,
-    description: `Learn about ${article.title} in our comprehensive Pokémon knowledge base.`,
-    keywords: [
-      'pokemon knowledge',
-      'pokemon tips',
-      'legends z-a',
-      'pokemon game',
-      'ptcg',
-      'nintendo',
-      'pokemon go',
-      'pokemon training card game',
-      article.title.toLowerCase(),
-    ],
-    robots: {
-      index: true,
-      follow: true,
-    },
-    alternates: {
-      canonical: canonicalUrl,
-      languages: getArticleAlternates(locale, article),
-    },
-    openGraph: {
-      title: `${article.title} - ${t('title')} - Poke Wordle`,
-      description: `Learn about ${article.title} in our comprehensive Pokémon knowledge base.`,
-      url: ogUrl,
-      type: 'article',
-      siteName: 'Poke Wordle',
-      publishedTime: article.createdAt,
-    },
-    twitter: {
-      card: 'summary',
-      title: `${article.title} - ${t('title')} - Poke Wordle`,
-      description: `Learn about ${article.title} in our comprehensive Pokémon knowledge base.`,
-    },
-  };
+  return pageMetadata({
+    locale, title: article.seoTitle || `${article.title} - Poke Wordle`,
+    description: article.description, image: article.image, article,
+    path: knowledgeArticlePath(locale, article.slug),
+    languages: getArticleAlternates(locale, article),
+  });
 }
 
 export function generateStaticParams() {
-  return KNOWLEDGE_SUPPORTED_LOCALES.flatMap((locale) =>
+  return routing.locales.flatMap((locale) =>
     knowledgeData[locale].map((article) => ({ locale, slug: article.slug })),
   );
 }
@@ -88,12 +44,8 @@ export function generateStaticParams() {
 export default async function KnowledgeArticlePage({ params }: Props) {
   const { locale, slug } = await params;
 
-  // Check if locale supports knowledge page, return 404 if not
-  if (!isKnowledgeSupported(locale)) {
-    notFound();
-  }
+  if (!hasLocale(routing.locales, locale)) notFound();
 
-  // Find the article in the locale's data
   const article = findKnowledgeArticle(locale, slug);
 
   if (!article) {

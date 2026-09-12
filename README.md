@@ -1,10 +1,10 @@
 # Poke Wordle
 
-基于宝可梦属性、特性、种族值和进化信息的猜谜游戏，支持九种语言。输入名称或点击随机猜测开始；游戏进度和设置保存在浏览器中。
+宝可梦属性猜谜游戏，支持九种语言。游戏进度和设置保存在浏览器中。
 
 ## 开发
 
-先安装 [mise](https://mise.jdx.dev/getting-started.html)，然后在仓库根目录运行：
+安装 [mise](https://mise.jdx.dev/getting-started.html)，在仓库根目录运行：
 
 ```sh
 mise trust
@@ -13,46 +13,42 @@ mise run install
 mise run dev
 ```
 
-打开 http://localhost:3000。`mise.toml` 固定 Node.js 和 Go 版本；JavaScript 依赖由 `package-lock.json` 锁定。可选环境变量见 `.env.example`，复制到 `.env.local` 后配置。
+打开 http://localhost:3000。工具和依赖版本分别由 `mise.toml`、`package-lock.json` 固定；可选环境变量见 [.env.example](.env.example)，本地配置写入 `.env.local`。
 
-| 命令                                | 用途                                   |
-| ----------------------------------- | -------------------------------------- |
-| `mise run dev`                      | Turbopack 开发服务器                   |
-| `mise run check`                    | ESLint、TypeScript、单元测试、生产构建 |
-| `mise run test`                     | Jest 单元测试                          |
-| `mise run build` / `mise run start` | 构建 / 启动生产服务器                  |
-| `mise run e2e`                      | Playwright 桌面和移动端回归            |
-| `mise run data:check`               | Go 数据工具检查和测试                  |
-| `mise run data:run`                 | 交互式生成宝可梦数据（需要联网）       |
+开发环境由浏览器直接加载原图，兼容代理的 Fake-IP DNS；生产环境保留 Next.js 图片优化和私有 IP 检查。
 
-首次运行浏览器测试前：
+| 命令 | 用途 |
+| --- | --- |
+| `mise run check` | 数据与知识库校验、ESLint、TypeScript、Jest、生产构建和 SEO 校验 |
+| `mise run test` | Jest 单元测试 |
+| `mise run build` / `mise run start` | 构建 / 启动生产服务器 |
+| `mise run e2e` | 游戏桌面和手机浏览器回归 |
+| `mise run data:console` | 本地数据审核与知识文章管理，http://127.0.0.1:3318 |
+| `mise run data:console:test` | 数据与知识文章控制台浏览器回归 |
+| `mise run knowledge:check` | 校验 MDX、文章索引、语言关联和加载清单 |
+| `mise run knowledge:sync` | 手动编辑索引后重新生成 MDX 加载清单 |
+| `mise run seo:check` | 构建后检查实际 HTML、sitemap、语言互链、分享图片和重定向 |
 
-```sh
-mise exec -- npm exec -- playwright install chromium
-mise run build
-mise run e2e
-```
+首次运行浏览器测试前执行 `mise exec -- npm exec -- playwright install chromium`。E2E 默认检查生产构建；`E2E_DEV=1 mise run e2e` 改用开发服务器，`mise run e2e -- --grep '关键词'` 筛选用例。
 
-E2E 默认自动启动生产服务器；`E2E_DEV=1 mise run e2e` 改用开发模式，便于验证 MDX 和热更新。测试使用本地图像替身并屏蔽托管平台分析脚本，不验证第三方服务可用性。
+## 代码与数据
 
-## 实现
+- Next.js App Router、React、Tailwind CSS。`src/app/[locale]` 和 `src/proxy.ts` 统一语言路由；英文不带路径前缀。
+- `src/hooks/useGameState.ts` 管理游戏与持久化，`src/app/api/checkGuess/route.ts` 比较猜测。
+- `src/data/` 是发布数据，`src/config/dataset.ts` 提供版本号；[tools/](tools/README.md) 负责候选审核、数据校正和 MDX 文章管理。
+- 知识库、隐私正文和面包屑由服务端渲染；首页随机问答只向客户端传入当前语言的标题和路径。
+- `public/styles/theme.css`、`buttons.css` 供网站、控制台和文章预览共用。字体使用自托管 Inter，中日韩回退到系统字体；许可见 `public/fonts/OFL.txt`。
 
-- Next.js 16 App Router、React 19、Tailwind CSS 4。
-- `src/app/[locale]` 统一处理所有语言；`src/proxy.ts` 使用 next-intl 路由。英文不带前缀，例如 `/knowledge`；其他语言使用 `/ja`、`/zh-hans` 等前缀。
-- `src/hooks/useGameState.ts` 管理游戏和持久化；`src/app/api/checkGuess/route.ts` 比较猜测。
-- `src/data` 保存离线游戏数据。Go 工具输出到 `poke-json/output`，审核后再复制到 `src/data`，不会自动覆盖前端数据。
-- 知识文章使用构建时编译的 MDX。新增文章时更新 `src/data/knowledge_data.json`、对应 MDX 文件和 `src/components/MdxContent.tsx` 的导入映射。跨语言链接使用文章的 `translations`。
-- Google Analytics 仅在接受后加载；Vercel Analytics 和 Speed Insights 保留在根布局。
+## 检查与部署
 
-## 依赖维护
+GitHub Actions 在 `dev`、`main` 推送及 Pull Request 时执行 `mise run check`。数据检查使用本地文件与测试夹具，上游更新由人工触发。
 
-本次升级按 npm registry 的稳定版本更新；保留两个经过实测的兼容约束：
+部署执行 `npm ci`、`npm run build`；自托管通过 `npm start` 启动。Node.js 使用 `24.x`，与 [Vercel 运行时](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions)对齐。环境变量修改后需重新构建。
 
-- TypeScript 6.0.3：TypeScript 7.0 尚无编译器 API，当前 typescript-eslint 无法使用。
-- ESLint 9.39.5：当前 Next.js 配套的 React 插件在 ESLint 10 下调用已移除 API。
+TypeScript 6、ESLint 9 受当前插件的 peer 依赖范围约束；升级时重新核验兼容性，不用 `--force` 或 `--legacy-peer-deps` 绕过约束。
 
-升级这些约束前运行完整检查，不使用 `--force` 或 `--legacy-peer-deps` 跳过兼容性检查。参考 [Next.js 16 迁移指南](https://nextjs.org/docs/app/guides/upgrading/version-16)、[Tailwind CSS 4 迁移指南](https://tailwindcss.com/docs/upgrade-guide)、[next-intl 路由](https://next-intl.dev/docs/routing/setup) 和 [TypeScript 7 工具兼容说明](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6.0)。
+Google Analytics 在用户接受后加载；Vercel Analytics 和 Speed Insights 位于根布局。
 
-## 部署
+SEO 校验检查实际构建输出，无需安装浏览器。部署后可运行 `SEO_BASE_URL=https://www.pokewordle.app mise run seo:check`。文章元数据、语言互链和历史地址由索引生成，sitemap 日期只随实际内容更新；编辑约定见[知识文章](tools/README.md#知识文章)。
 
-构建命令为 `npm run build`，启动命令为 `npm start`，安装时运行 `npm ci`。本地通过 mise 固定 Node.js 24.21.0，`package.json` 的 `engines.node` 固定为 `24.x`，与 [Vercel 支持的 Node.js 版本](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions) 对齐。Vercel 自动维护 24.x 的补丁版本；`@types/node` 同步使用 24 系列。修改公开环境变量后需要重新构建。
+上线后在 Google Search Console 提交 `/sitemap.xml`，用 URL 检查确认收录和规范网址；必要时[请求重新抓取](https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl)。

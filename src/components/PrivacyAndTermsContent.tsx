@@ -1,210 +1,63 @@
-'use client';
+import { Fragment } from 'react';
+import { getTranslations } from 'next-intl/server';
+import ContentLayout from '@/components/ContentLayout';
 
-import { useTranslations } from 'next-intl';
-import Footer from '@/components/Footer';
-import Breadcrumb from '@/components/Breadcrumb';
-import Navbar from '@/components/Navbar';
+const sections = [
+  {
+    key: 'privacyPolicy',
+    topics: [
+      { key: 'informationCollection', list: true },
+      { key: 'dataStorage', list: true },
+      { key: 'cookies', list: false },
+      { key: 'thirdParty', list: false },
+      { key: 'dataRights', list: true },
+    ],
+  },
+  {
+    key: 'termsOfService',
+    topics: [
+      { key: 'gameContent', list: false },
+      { key: 'userConduct', list: true },
+      { key: 'disclaimer', list: false },
+      { key: 'modifications', list: false },
+      { key: 'contact', list: false },
+    ],
+  },
+] as const;
 
-export default function PrivacyAndTermsContent() {
-  const t = useTranslations();
+export default async function PrivacyAndTermsContent() {
+  const t = await getTranslations('privacyAndTerms');
 
   return (
-    <div className="min-h-screen-safe bg-gray-50 flex flex-col safe-all">
-      {/* 使用自定义 Navbar - 只显示语言按钮 */}
-      <Navbar showAbout={false} showSettings={false} />
-
-      <main className="w-full flex-1 container-responsive section-padding">
-        <div className="max-w-4xl mx-auto">
-          {/* Breadcrumb */}
-          <div className="mb-6">
-            <Breadcrumb
-              items={[
-                {
-                  label: t('privacyAndTerms.title'),
-                  current: true,
-                },
-              ]}
-            />
-          </div>
-
-          {/* Page Header */}
-          <div className="card card-padding mb-8">
-            <h2 className="text-responsive-2xl font-bold text-gray-900 mb-4">
-              {t('privacyAndTerms.title')}
-            </h2>
-          </div>
-
-          {/* Privacy Policy Section */}
-          <section className="card card-padding mb-8">
-            <h2 className="text-responsive-xl font-bold text-gray-900 mb-6">
-              {t('privacyAndTerms.privacyPolicy.title')}
-            </h2>
-
-            <div className="space-y-6">
-              {/* Introduction */}
-              <div>
-                <p className="text-responsive-base text-gray-700 leading-relaxed">
-                  {t('privacyAndTerms.privacyPolicy.introduction')}
-                </p>
-              </div>
-
-              {/* Information Collection */}
-              <div>
-                <h3 className="text-responsive-lg font-semibold text-gray-900 mb-3">
-                  {t(
-                    'privacyAndTerms.privacyPolicy.informationCollection.title',
+    <ContentLayout breadcrumbs={[{ label: t('title'), current: true }]}>
+      <article className="card card-padding" aria-labelledby="privacy-and-terms-title">
+        <header className="border-b border-line-subtle pb-4 mb-4 sm:pb-6 sm:mb-6">
+          <h1 id="privacy-and-terms-title" className="text-2xl sm:text-3xl font-semibold text-foreground mb-2">
+            {t('title')}
+          </h1>
+        </header>
+        <div className="divide-y divide-line-subtle">
+          {sections.map(({ key, topics }) => (
+            <section key={key} aria-labelledby={`${key}-title`} className="prose content-prose max-w-none py-6 first:pt-0 last:pb-0 sm:py-8">
+              <h2 id={`${key}-title`}>{t(`${key}.title`)}</h2>
+              <p>{t(`${key}.introduction`)}</p>
+              {topics.map((topic) => (
+                <Fragment key={topic.key}>
+                  <h3>{t(`${key}.${topic.key}.title`)}</h3>
+                  <p>{t(`${key}.${topic.key}.description`)}</p>
+                  {topic.list && (
+                    <ul>
+                      {t.raw(`${key}.${topic.key}.items`).map((item: string) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
                   )}
-                </h3>
-                <p className="text-responsive-base text-gray-700 mb-3">
-                  {t(
-                    'privacyAndTerms.privacyPolicy.informationCollection.description',
-                  )}
-                </p>
-                <ul className="list-disc list-inside space-y-2 text-responsive-base text-gray-700 ml-4">
-                  {t
-                    .raw(
-                      'privacyAndTerms.privacyPolicy.informationCollection.items',
-                    )
-                    .map((item: string, index: number) => (
-                      <li key={index}>{item}</li>
-                    ))}
-                </ul>
-              </div>
-
-              {/* Data Storage */}
-              <div>
-                <h3 className="text-responsive-lg font-semibold text-gray-900 mb-3">
-                  {t('privacyAndTerms.privacyPolicy.dataStorage.title')}
-                </h3>
-                <p className="text-responsive-base text-gray-700 mb-3">
-                  {t('privacyAndTerms.privacyPolicy.dataStorage.description')}
-                </p>
-                <ul className="list-disc list-inside space-y-2 text-responsive-base text-gray-700 ml-4">
-                  {t
-                    .raw('privacyAndTerms.privacyPolicy.dataStorage.items')
-                    .map((item: string, index: number) => (
-                      <li key={index}>{item}</li>
-                    ))}
-                </ul>
-              </div>
-
-              {/* Cookies */}
-              <div>
-                <h3 className="text-responsive-lg font-semibold text-gray-900 mb-3">
-                  {t('privacyAndTerms.privacyPolicy.cookies.title')}
-                </h3>
-                <p className="text-responsive-base text-gray-700">
-                  {t('privacyAndTerms.privacyPolicy.cookies.description')}
-                </p>
-              </div>
-
-              {/* Third Party */}
-              <div>
-                <h3 className="text-responsive-lg font-semibold text-gray-900 mb-3">
-                  {t('privacyAndTerms.privacyPolicy.thirdParty.title')}
-                </h3>
-                <p className="text-responsive-base text-gray-700">
-                  {t('privacyAndTerms.privacyPolicy.thirdParty.description')}
-                </p>
-              </div>
-
-              {/* Data Rights */}
-              <div>
-                <h3 className="text-responsive-lg font-semibold text-gray-900 mb-3">
-                  {t('privacyAndTerms.privacyPolicy.dataRights.title')}
-                </h3>
-                <p className="text-responsive-base text-gray-700 mb-3">
-                  {t('privacyAndTerms.privacyPolicy.dataRights.description')}
-                </p>
-                <ul className="list-disc list-inside space-y-2 text-responsive-base text-gray-700 ml-4">
-                  {t
-                    .raw('privacyAndTerms.privacyPolicy.dataRights.items')
-                    .map((item: string, index: number) => (
-                      <li key={index}>{item}</li>
-                    ))}
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          {/* Terms of Service Section */}
-          <section className="card card-padding mb-8">
-            <h2 className="text-responsive-xl font-bold text-gray-900 mb-6">
-              {t('privacyAndTerms.termsOfService.title')}
-            </h2>
-
-            <div className="space-y-6">
-              {/* Introduction */}
-              <div>
-                <p className="text-responsive-base text-gray-700 leading-relaxed">
-                  {t('privacyAndTerms.termsOfService.introduction')}
-                </p>
-              </div>
-
-              {/* Game Content */}
-              <div>
-                <h3 className="text-responsive-lg font-semibold text-gray-900 mb-3">
-                  {t('privacyAndTerms.termsOfService.gameContent.title')}
-                </h3>
-                <p className="text-responsive-base text-gray-700">
-                  {t('privacyAndTerms.termsOfService.gameContent.description')}
-                </p>
-              </div>
-
-              {/* User Conduct */}
-              <div>
-                <h3 className="text-responsive-lg font-semibold text-gray-900 mb-3">
-                  {t('privacyAndTerms.termsOfService.userConduct.title')}
-                </h3>
-                <p className="text-responsive-base text-gray-700 mb-3">
-                  {t('privacyAndTerms.termsOfService.userConduct.description')}
-                </p>
-                <ul className="list-disc list-inside space-y-2 text-responsive-base text-gray-700 ml-4">
-                  {t
-                    .raw('privacyAndTerms.termsOfService.userConduct.items')
-                    .map((item: string, index: number) => (
-                      <li key={index}>{item}</li>
-                    ))}
-                </ul>
-              </div>
-
-              {/* Disclaimer */}
-              <div>
-                <h3 className="text-responsive-lg font-semibold text-gray-900 mb-3">
-                  {t('privacyAndTerms.termsOfService.disclaimer.title')}
-                </h3>
-                <p className="text-responsive-base text-gray-700">
-                  {t('privacyAndTerms.termsOfService.disclaimer.description')}
-                </p>
-              </div>
-
-              {/* Modifications */}
-              <div>
-                <h3 className="text-responsive-lg font-semibold text-gray-900 mb-3">
-                  {t('privacyAndTerms.termsOfService.modifications.title')}
-                </h3>
-                <p className="text-responsive-base text-gray-700">
-                  {t(
-                    'privacyAndTerms.termsOfService.modifications.description',
-                  )}
-                </p>
-              </div>
-
-              {/* Contact */}
-              <div>
-                <h3 className="text-responsive-lg font-semibold text-gray-900 mb-3">
-                  {t('privacyAndTerms.termsOfService.contact.title')}
-                </h3>
-                <p className="text-responsive-base text-gray-700">
-                  {t('privacyAndTerms.termsOfService.contact.description')}
-                </p>
-              </div>
-            </div>
-          </section>
+                </Fragment>
+              ))}
+            </section>
+          ))}
         </div>
-      </main>
-
-      <Footer />
-    </div>
+      </article>
+    </ContentLayout>
   );
 }

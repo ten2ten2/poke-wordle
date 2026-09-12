@@ -1,30 +1,32 @@
 'use client';
 
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { datasetVersion } from '@/config/dataset';
+import dynamic from 'next/dynamic';
+import { useState, useCallback, useEffect, useRef, type ReactNode } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useGameState } from '@/hooks/useGameState';
-import { getRandomPranksterImage, translateText } from '@/lib/pokemon';
+import { getRandomPokemon, getRandomPranksterImage, translateText } from '@/lib/pokemon';
 import { GameSettings, GuessResult } from '@/types/pokemon';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import GameInput from '@/components/GameInput';
 import GuessTable from '@/components/GuessTable';
-import { DynamicGameOverModal } from '@/components/DynamicComponents';
-import RandomKnowledge from '@/components/RandomKnowledge';
+import { ColorLegend } from '@/components/StatusTag';
 import { useHydrated } from '@/hooks/useHydrated';
 
-export default function GameClient() {
+const GameOverModal = dynamic(() => import('./GameOverModal'), { ssr: false });
+
+export default function GameClient({ children }: { children: ReactNode }) {
   const hydrated = useHydrated();
-  return <Game key={hydrated ? 'restored' : 'initial'} ready={hydrated} />;
+  return <Game key={hydrated ? 'restored' : 'initial'} ready={hydrated}>{children}</Game>;
 }
 
-function Game({ ready }: { ready: boolean }) {
+function Game({ ready, children }: { ready: boolean; children: ReactNode }) {
   const locale = useLocale();
   const t = useTranslations();
   const {
     gameState,
-    pokemonNames,
     startNewGame,
     resetGame,
     updateSettings,
@@ -65,16 +67,16 @@ function Game({ ready }: { ready: boolean }) {
     async (name: string) => {
       // Prevent new guesses if game is over
       if (gameState.isGameOver || requestRef.current) {
-        return;
+        return false;
       }
 
       if (!isPokemonNameValid(name)) {
         setError(t('game.pokemonNotFound'));
-        return;
+        return false;
       }
 
       const target = gameState.targetPokemon ?? startNewGame();
-      if (!target) return;
+      if (!target) return false;
       const controller = new AbortController();
       requestRef.current = controller;
       setShowSettingsChangeNotice(false);
@@ -91,6 +93,7 @@ function Game({ ready }: { ready: boolean }) {
           body: JSON.stringify({
             name,
             target_id: target.id,
+            dataset_version: datasetVersion,
             is_prankster: gameState.settings.isPrankster,
             is_gen_arrow: gameState.settings.isGenArrow,
             locale,
@@ -101,6 +104,12 @@ function Game({ ready }: { ready: boolean }) {
           }),
         });
 
+        if (response.status === 409 && !controller.signal.aborted) {
+          resetGame();
+          window.location.reload();
+          return false;
+        }
+
         if (!response.ok) {
           throw new Error('Failed to check guess');
         }
@@ -110,7 +119,10 @@ function Game({ ready }: { ready: boolean }) {
         if (result.fieldToHide && !result.isCorrect) {
           result.pranksterPokemonProfile = getRandomPranksterImage();
         }
-        if (!controller.signal.aborted) addGuess(result);
+        if (!controller.signal.aborted) {
+          addGuess(result);
+          return true;
+        }
       } catch (error) {
         if (!controller.signal.aborted) {
           console.error('Error checking guess:', error);
@@ -122,6 +134,7 @@ function Game({ ready }: { ready: boolean }) {
           setIsLoading(false);
         }
       }
+      return false;
     },
     [
       gameState.targetPokemon,
@@ -133,6 +146,7 @@ function Game({ ready }: { ready: boolean }) {
       locale,
       t,
       startNewGame,
+      resetGame,
     ],
   );
 
@@ -145,15 +159,9 @@ function Game({ ready }: { ready: boolean }) {
     setShowSettingsChangeNotice(false);
 
     if (availablePokemon.length > 0) {
-      const randomPokemon =
-        availablePokemon[Math.floor(Math.random() * availablePokemon.length)];
-      handleGuessSubmit(randomPokemon.name);
+      void handleGuessSubmit(getRandomPokemon(availablePokemon).name);
     }
   }, [availablePokemon, gameState.isGameOver, handleGuessSubmit]);
-
-  const handleGiveUp = useCallback(() => {
-    giveUp();
-  }, [giveUp]);
 
   const handleRestart = useCallback(() => {
     setShowSettingsChangeNotice(false);
@@ -163,25 +171,28 @@ function Game({ ready }: { ready: boolean }) {
   }, [resetGame, cancelGuess]);
 
   return (
-    <div className="min-h-screen-safe bg-gray-50 flex flex-col safe-all">
+    <div className="min-h-screen-safe bg-page flex flex-col safe-all">
       <Navbar
         onSettingsChange={handleSettingsChange}
         currentSettings={gameState.settings}
       />
-      <RandomKnowledge />
 
-      <main className="w-full container-responsive section-padding">
+      {children}
+
+      <main className="w-full flex-1 container-responsive section-padding">
+        <h1 className="sr-only">{t('title')}</h1>
         <div className="space-y-4 sm:space-y-6">
+          {!gameState.targetPokemon && <p className="game-intro">{t('game.intro')}</p>}
           {showSettingsChangeNotice && (
             <aside
-              className="card card-padding bg-orange-50 border border-orange-200 animate-slide-up"
+              className="card card-padding bg-warning-bg border border-warning-border animate-slide-up"
               role="alert"
               aria-live="polite"
             >
               <div className="flex flex-col sm:flex-row sm:items-start">
                 <div className="shrink-0 mb-2 sm:mb-0 sm:mr-3">
                   <svg
-                    className="h-5 w-5 text-orange-400"
+                    className="h-5 w-5 text-warning"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                     aria-hidden="true"
@@ -194,10 +205,10 @@ function Game({ ready }: { ready: boolean }) {
                   </svg>
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-responsive-sm font-medium text-orange-800">
+                  <h3 className="text-responsive-sm font-medium text-warning">
                     {t('game.settingsChanged')}
                   </h3>
-                  <div className="mt-2 text-responsive-sm text-orange-700">
+                  <div className="mt-2 text-responsive-sm text-warning">
                     <p>{t('game.settingsChangedDesc')}</p>
                   </div>
                 </div>
@@ -212,19 +223,22 @@ function Game({ ready }: { ready: boolean }) {
               {t('game.inputSection')}
             </h2>
             <GameInput
-              pokemonNames={pokemonNames}
+              key={`${gameState.settings.selectedGenerations.join(',')}-${gameState.settings.maxGuesses}-${gameState.settings.isPrankster}-${gameState.settings.isGenArrow}`}
+              pokemon={availablePokemon}
               onSubmit={handleGuessSubmit}
               onRandomStart={handleRandomStart}
-              onGiveUp={handleGiveUp}
+              onGiveUp={giveUp}
               onRestart={handleRestart}
               disabled={!ready || isLoading}
               gameStarted={!!gameState.targetPokemon}
               gameOver={gameState.isGameOver}
+              guessCount={gameState.guesses.length}
+              maxGuesses={gameState.settings.maxGuesses}
             />
 
             {error && (
               <div
-                className="mt-3 p-3 bg-red-50 border border-red-200 rounded-md text-responsive-sm text-red-600 animate-slide-up"
+                className="mt-3 p-3 bg-danger-bg border border-accent-border rounded-md text-responsive-sm text-danger animate-slide-up"
                 role="alert"
                 aria-live="assertive"
               >
@@ -232,86 +246,60 @@ function Game({ ready }: { ready: boolean }) {
               </div>
             )}
           </section>
-          <section
-            className="text-center"
-            aria-labelledby="game-status-heading"
-          >
-            <h2 id="game-status-heading" className="sr-only">
-              {t('game.statusSection')}
-            </h2>
-            {gameState.targetPokemon ? (
-              <div className="space-y-3">
-                <p
-                  className="text-responsive-lg font-medium text-gray-700"
-                  aria-live="polite"
-                >
-                  {t('game.guessCount', {
-                    current: gameState.guesses.length,
-                    max: gameState.settings.maxGuesses,
-                  })}
+          {gameState.targetPokemon && gameState.isGameOver && (
+            <section
+              className="card p-4 text-center"
+              aria-labelledby="game-status-heading"
+              aria-live="assertive"
+            >
+              <h2 id="game-status-heading" className="sr-only">
+                {t('game.statusSection')}
+              </h2>
+              {gameState.isWon ? (
+                <p className="text-base font-semibold text-success sm:text-lg">
+                  {t('game.gameWon')}
                 </p>
-
-                {gameState.isGameOver && (
-                  <div
-                    className="mt-4 animate-bounce-subtle"
-                    aria-live="assertive"
-                  >
-                    {gameState.isWon ? (
-                      <p className="text-responsive-lg font-bold text-green-600">
-                        {t('game.gameWon')}
-                      </p>
-                    ) : (
-                      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-                        <p className="text-responsive-lg font-bold text-red-600">
-                          {t('game.gameLost', {
-                            pokemon: gameState.targetPokemon
-                              ? translateText(
-                                  gameState.targetPokemon.name,
-                                  locale,
-                                )
-                              : '',
-                          })}
-                        </p>
-                        <div className="relative w-12 h-12 sm:w-16 sm:h-16 overflow-hidden rounded-lg">
-                          <Image
-                            src={gameState.targetPokemon?.profile || ''}
-                            alt={`${gameState.targetPokemon ? translateText(gameState.targetPokemon.name, locale) : ''} - ${t('game.correctAnswer')}`}
-                            fill
-                            className="object-contain"
-                            sizes="(max-width: 640px) 48px, 64px"
-                            loading="eager"
-                          />
-                        </div>
-                      </div>
-                    )}
+              ) : (
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+                  <p className="text-base font-semibold text-danger sm:text-lg">
+                    {t('game.gameLost', {
+                      pokemon: translateText(gameState.targetPokemon.name, locale),
+                    })}
+                  </p>
+                  <div className="relative w-12 h-12 sm:w-16 sm:h-16 overflow-hidden rounded-lg">
+                    <Image
+                      src={gameState.targetPokemon.profile}
+                      alt={`${translateText(gameState.targetPokemon.name, locale)} - ${t('game.correctAnswer')}`}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 640px) 48px, 64px"
+                      loading="eager"
+                    />
                   </div>
-                )}
-              </div>
-            ) : (
-              <p className="text-responsive-lg font-medium text-gray-500">
-                {t('game.startPrompt')}
-              </p>
-            )}
-          </section>
+                </div>
+              )}
+            </section>
+          )}
           <section aria-labelledby="game-results-heading">
             <h2 id="game-results-heading" className="sr-only">
               {t('game.resultsSection')}
             </h2>
-            <GuessTable guesses={gameState.guesses} />
+            <ColorLegend />
+            <GuessTable guesses={gameState.guesses} order={gameState.settings.guessOrder} />
           </section>
         </div>
       </main>
 
       <Footer />
-      <DynamicGameOverModal
-        isOpen={gameState.isGameOver && !dismissedResult}
+      {gameState.isGameOver && <GameOverModal
+        isOpen={!dismissedResult}
         onClose={() => setDismissedResult(true)}
         onRestart={handleRestart}
         isWon={gameState.isWon}
         targetPokemon={gameState.targetPokemon}
         guessCount={gameState.guesses.length}
         maxGuesses={gameState.settings.maxGuesses}
-      />
+      />}
     </div>
   );
 }

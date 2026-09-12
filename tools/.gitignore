@@ -1,0 +1,8 @@
+# Candidate datasets, cached sources and console state
+/output/
+
+# Go binaries and profiling output
+/poke-json
+*.exe
+*.test
+*.out

@@ -1,62 +1,74 @@
 {
   "title": "Poke Wordle",
   "game": {
-    "inputPlaceholder": "Entrez le nom du Pokémon...",
+    "inputPlaceholder": "Nom dans toute langue / Pokédex nº",
     "submit": "Soumettre",
     "submitting": "Envoi en cours...",
-    "randomStart": "Supposition Aléatoire",
+    "randomStart": "Proposition aléatoire",
     "giveUp": "Abandonner",
-    "restart": "Redémarrer",
-    "guessCount": "Tentatives : {current}/{max}",
+    "restart": "Recommencer",
+    "guessCount": "Essais : {current}/{max}",
     "pokemonNotFound": "Pokémon non trouvé",
-    "gameWon": "Félicitations ! Vous avez deviné !",
+    "gameWon": "Félicitations ! Vous avez trouvé !",
     "gameOver": "Jeu terminé",
     "gameLost": "Jeu terminé ! La réponse était {pokemon}",
     "congratulations": "Félicitations !",
     "betterLuckNextTime": "Bonne chance la prochaine fois !",
-    "guessedIn": "Vous avez trouvé en {count} essais",
+    "guessedIn": "Vous avez trouvé en {count, plural, one {# essai} other {# essais}}.",
     "playAgain": "Rejouer",
-    "startPrompt": "Entrez un nom de Pokémon ou cliquez sur \"Supposition Aléatoire\" pour commencer !",
-    "languageChanged": "Langue Modifiée",
-    "languageChangedDesc": "La langue a été modifiée. Les données Pokémon ont été mises à jour vers la nouvelle langue. Veuillez commencer un nouveau jeu pour continuer à jouer.",
     "settingsChanged": "Paramètres Modifiés",
     "settingsChangedDesc": "Les paramètres du jeu ont été modifiés. Le jeu actuel a été réinitialisé pour correspondre aux nouveaux paramètres. Veuillez commencer un nouveau jeu pour continuer à jouer.",
     "inputSection": "Section de saisie du jeu",
     "statusSection": "Section d'état du jeu",
     "resultsSection": "Section des résultats du jeu",
-    "noGuessesYet": "Aucune supposition encore",
+    "noGuessesYet": "Aucun essai pour le moment",
     "correctAnswer": "Bonne réponse",
-    "guessesUsed": "Suppositions utilisées",
+    "guessesUsed": "Essais utilisés",
     "result": "Résultat",
     "defeat": "Défaite",
+    "victory": "Victoire",
+    "baseStatsTotal": "Total des statistiques de base",
     "columns": {
       "type": "Type",
-      "baseStats": "Statistiques de Base",
+      "baseStats": "Statistiques de base",
       "generation": "Génération",
-      "abilities": "Capacités",
+      "abilities": "Talents",
       "evolution": "Évolution",
       "tags": "Étiquettes"
     },
-    "evolutionMethod": "Méthode d'Évolution",
-    "requestFailed": "Impossible de vérifier votre réponse. Réessayez."
+    "evolutionMethod": "Méthode d'évolution",
+    "requestFailed": "Impossible de vérifier votre réponse. Réessayez.",
+    "searchHint": "Nom dans toute langue ou numéro du Pokédex",
+    "noMatches": "Aucun Pokémon correspondant",
+    "suggestionCount": "{shown} résultats sur {total}",
+    "intro": "Proposez un Pokémon et comparez les indices pour trouver la réponse.",
+    "matchExact": "Identique",
+    "matchClose": "Proche",
+    "matchNope": "Différent",
+    "answerHigher": "La réponse est supérieure",
+    "answerLower": "La réponse est inférieure",
+    "confirmGiveUp": "Révéler la réponse et terminer la partie ?",
+    "confirmRestart": "Effacer vos essais et recommencer ?",
+    "confirmAction": "Confirmer",
+    "guessNumber": "Essai {number}",
+    "hiddenField": "Masqué par le mode Farceur"
   },
   "settings": {
     "title": "Paramètres",
-    "maxGuesses": "Tentatives Maximum",
-    "times": "fois",
-    "generationSelection": "Sélection de Génération",
-    "selectAll": "Tout Sélectionner",
-    "deselectAll": "Tout Désélectionner",
+    "maxGuesses": "Nombre maximal d'essais",
+    "generationSelection": "Générations incluses",
+    "selectAll": "Tout sélectionner",
+    "deselectAll": "Tout désélectionner",
     "generationRequired": "Au moins une génération doit être sélectionnée",
     "pranksterMode": "Mode Farceur",
-    "pranksterModeDesc": "Cacher aléatoirement un attribut par supposition",
-    "genArrow": "Flèches de Génération",
+    "pranksterModeDesc": "Masquer un attribut au hasard à chaque essai",
+    "genArrow": "Flèches de génération",
     "genArrowDesc": "Afficher les flèches pour les indices de génération",
-    "guessOrder": "Ordre des Suppositions",
-    "reverseOrder": "Ordre Inverse",
-    "reverseOrderDesc": "Les nouvelles suppositions apparaissent en haut",
-    "normalOrder": "Ordre Normal",
-    "normalOrderDesc": "Les nouvelles suppositions apparaissent en bas"
+    "guessOrder": "Ordre des essais",
+    "reverseOrder": "Plus récents en haut",
+    "reverseOrderDesc": "Les nouveaux essais apparaissent en haut",
+    "normalOrder": "Plus récents en bas",
+    "normalOrderDesc": "Les nouveaux essais apparaissent en bas"
   },
   "common": {
     "close": "Fermer",
@@ -68,15 +80,15 @@
   },
   "about": {
     "title": "À propos",
-    "description": "Poke Wordle est un jeu de devinettes où vous essayez d'identifier un Pokémon basé sur divers indices incluant les types, capacités, statistiques, évolution, et plus encore.",
+    "description": "Poke Wordle est un jeu de devinettes où vous identifiez un Pokémon à partir de ses types, talents, statistiques de base, évolutions et autres indices.",
     "howToPlay": "Comment jouer",
     "rules": [
       "Entrez un nom de Pokémon dans le champ de saisie.",
-      "Chaque supposition vous montrera à quel point votre supposition est proche de la cible.",
-      "Utilisez les indices pour affiner vos suppositions et essayez de deviner le Pokémon dans le nombre d'essais autorisé !"
+      "Après chaque essai, comparez les indices pour savoir ce qui correspond au Pokémon à trouver.",
+      "Utilisez les indices pour trouver le Pokémon avant d'épuiser vos essais !"
     ],
     "pokemonRange": {
-      "title": "Gamme de Pokémon",
+      "title": "Pokémon inclus",
       "description": "Ce jeu inclut des Pokémon des jeux principaux Pokémon suivants :",
       "generations": {
         "gen1": "Génération 1 : Rouge | Vert | Bleu | Jaune",
@@ -93,43 +105,44 @@
     },
     "colorGuide": {
       "title": "Guide des couleurs",
-      "greenTag": "Étiquette verte",
-      "yellowTag": "Étiquette jaune",
-      "grayTag": "Étiquette grise",
-      "green": "Indique que cette étiquette **correspond exactement** à l'étiquette correspondante du Pokémon cible",
-      "yellow": "Indique que cette étiquette est **proche** de l'étiquette correspondante du Pokémon cible",
-      "gray": "Indique que cette étiquette est **différente** de l'étiquette correspondante du Pokémon cible"
+      "green": "<tag>Étiquette verte</tag> Indique que cette étiquette correspond exactement à l'étiquette correspondante du Pokémon cible",
+      "yellow": "<tag>Étiquette jaune</tag> Indique que cette étiquette est proche de l'étiquette correspondante du Pokémon cible",
+      "gray": "<tag>Étiquette grise</tag> Indique que cette étiquette est différente de l'étiquette correspondante du Pokémon cible"
     },
     "yellowConditions": {
       "title": "Conditions des étiquettes jaunes",
       "stats": "Statistiques de base : Le total des statistiques de base du Pokémon diffère de la cible de ≤ 50",
       "generation": "Génération : La première génération d'apparition du Pokémon est adjacente à celle du Pokémon cible",
-      "evolution": "Évolution : Les deux Pokémon ont des méthodes d'évolution similaires mais non identiques (par ex. tous deux évoluent par niveau, mais l'un nécessite d'apprendre une capacité et l'autre une haute amitié)"
+      "evolution": "Évolution : Les deux Pokémon ont des méthodes d'évolution similaires mais non identiques (par exemple, tous deux évoluent en montant de niveau, mais l'un doit connaître une capacité et l'autre avoir un bonheur élevé)"
     },
     "dataSource": {
       "title": "Source des données",
-      "description": "Les données du jeu proviennent principalement de [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\") et [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")."
+      "description": "Les données du jeu proviennent principalement de <pokeapi>pokeapi.co</pokeapi> et <bulbapedia>Bulbapedia</bulbapedia>."
     }
   },
   "navbar": {
     "about": "À propos",
     "settings": "Paramètres",
     "language": "Langue",
+    "switchLanguage": "Passer en {language}",
+    "languageDescription": "Sélectionnez votre langue dans la liste ci-dessous",
+    "lightMode": "Passer au mode clair",
+    "darkMode": "Passer au mode sombre",
     "main_navigation": "Navigation Principale"
   },
   "footer": {
     "privacyAndTerms": "Confidentialité et Conditions"
   },
   "generation": {
-    "Gen1": "Génération 1",
-    "Gen2": "Génération 2",
-    "Gen3": "Génération 3",
-    "Gen4": "Génération 4",
-    "Gen5": "Génération 5",
-    "Gen6": "Génération 6",
-    "Gen7": "Génération 7",
-    "Gen8": "Génération 8",
-    "Gen9": "Génération 9"
+    "Gen1": "Gen 1",
+    "Gen2": "Gen 2",
+    "Gen3": "Gen 3",
+    "Gen4": "Gen 4",
+    "Gen5": "Gen 5",
+    "Gen6": "Gen 6",
+    "Gen7": "Gen 7",
+    "Gen8": "Gen 8",
+    "Gen9": "Gen 9"
   },
   "evolution": {
     "stage1": "Pas d'évolution/Premier stade",
@@ -138,12 +151,12 @@
   },
   "evolutionMethods": {
     "level-normal": "Montée de niveau normale",
-    "level-friendship": "Montée de niveau avec amitié élevée",
-    "level-move": "Montée de niveau en connaissant une attaque",
+    "level-friendship": "Montée de niveau avec un bonheur élevé",
+    "level-move": "Montée de niveau en connaissant une capacité",
     "level-location": "Montée de niveau dans un lieu spécifique",
     "level-time": "Montée de niveau à un moment spécifique",
     "level-holding-item": "Montée de niveau en tenant un objet",
-    "level-gender": "Montée de niveau avec un genre spécifique",
+    "level-gender": "Montée de niveau avec un sexe spécifique",
     "level-version": "Montée de niveau dans une version spécifique",
     "level-unique": "Montée de niveau avec conditions spéciales",
     "item-stone-fire": "Utiliser Pierre Feu",
@@ -166,11 +179,11 @@
   "tags": {
     "starter": "Pokémon de départ",
     "legendary": "Légendaire",
-    "mythical": "Mythique",
+    "mythical": "Fabuleux",
     "fossil": "Fossile",
-    "regional": "Forme Régionale",
+    "regional": "A des formes régionales",
     "has-mega": "A une Méga-Évolution",
-    "has-gmax": "A un Gigantamax",
+    "has-gmax": "A une forme Gigamax",
     "ultra": "Ultra-Chimère",
     "paradox": "Pokémon Paradoxe",
     "late": "Pokémon surpuissant"
@@ -258,5 +271,14 @@
     "decline": "Refuser",
     "close": "Fermer",
     "privacyAndTerms": "Politique de confidentialité et conditions d'utilisation"
+  },
+  "knowledge": {
+    "title": "Base de connaissances",
+    "description": "Explorez les formes, les évolutions et les générations des Pokémon, et apprenez à utiliser les indices de Poke Wordle.",
+    "comingSoon": "Bientôt disponible ! Nous préparons des articles pour vous aider à mieux reconnaître les Pokémon.",
+    "readMore": "Lire la suite",
+    "randomPrefix": "Questions Pokémon : ",
+    "seoTitle": "Guides Pokémon et conseils de jeu - Poke Wordle",
+    "relatedArticles": "Articles associés"
   }
 }

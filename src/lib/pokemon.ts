@@ -1,44 +1,21 @@
-import { Pokemon, ComparisonStatus, GuessResult } from '@/types/pokemon';
+import type { Pokemon, ComparisonStatus, GuessResult } from '@/types/pokemon';
 
-// Import data files
 import pokeData from '@/data/pokemon_data.json';
 import i18nData from '@/data/pokemon_i18n.json';
 import pranksterProfileData from '@/data/prankster_profile.json';
 
 export function loadPokemonData(): Pokemon[] {
-  return pokeData as Pokemon[];
+  return pokeData;
 }
 
-export function loadTranslationData(): Record<string, Record<string, string>> {
-  return i18nData as Record<string, Record<string, string>>;
-}
+const translations: Record<string, Record<string, string>> = i18nData;
 
 export function translateText(key: string, locale: string = 'en'): string {
-  const translations = loadTranslationData();
   return translations[key]?.[locale] || key;
 }
 
-export function translatePokemon(
-  pokemon: Pokemon,
-  locale: string = 'en',
-): Pokemon {
-  const translations = loadTranslationData();
-
-  return {
-    ...pokemon,
-    name: translations[pokemon.name]?.[locale] || pokemon.name,
-    types:
-      pokemon.types?.map((type) => translations[type]?.[locale] || type) || [],
-    abilities:
-      pokemon.abilities?.map(
-        (ability) => translations[ability]?.[locale] || ability,
-      ) || [],
-    tags: pokemon.tags?.map((tag) => translations[tag]?.[locale] || tag) || [],
-  };
-}
-
-export function loadPranksterProfiles(): string[] {
-  return (pranksterProfileData as string[]) || [];
+export function normalizePokemonName(value: string): string {
+  return value.trim().normalize('NFKC').toLowerCase();
 }
 
 export function filterPokemonByGenerations(
@@ -166,7 +143,7 @@ function applyPranksterEffect(
 }
 
 export function getRandomPranksterImage(): string {
-  const pranksterProfiles = loadPranksterProfiles();
+  const pranksterProfiles = pranksterProfileData;
   if (pranksterProfiles.length === 0) {
     return '';
   }
@@ -205,9 +182,12 @@ export function getWikiUrl(name: string, locale: string = 'en'): string {
       name = name.trim();
       return `https://wiki.52poke.com/zh-hans/${name}`;
     case 'ko':
-      // Korean wiki is not available
-      return '';
+      return `https://pokemon.fandom.com/ko/wiki/${encodeURIComponent(`${name.trim().replace(/ /g, '_')}_(포켓몬)`)}`;
     default:
       return '';
   }
+}
+
+export function pokemonSearchNames(name: string): string[] {
+  return [name, ...Object.values(translations[name] ?? {})];
 }

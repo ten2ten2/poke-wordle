@@ -2,32 +2,33 @@
 
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
+import { useHydrated } from '@/hooks/useHydrated';
+import { localePath } from '@/i18n/routing';
 
 export default function Footer() {
   const t = useTranslations();
   const locale = useLocale();
-
-  // Generate the correct href for privacy-and-terms page
-  const privacyHref = locale === 'en' ? '/privacy-and-terms' : `/${locale}/privacy-and-terms`;
+  // Read the year after hydration so prerendered pages stay correct across years.
+  const currentYear = useHydrated() ? new Date().getFullYear() : 2025;
 
   return (
-    <footer className="bg-white border-t border-gray-200 mt-auto safe-bottom">
+    <footer className="bg-surface border-t border-line mt-auto safe-bottom">
       <div className="container-responsive">
-        <div className="py-4 sm:py-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            {/* Copyright */}
+        <div className="py-2 pl-1 pr-2 sm:py-3 sm:pl-2 sm:pr-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4">
             <div className="text-center sm:text-left">
-              <p className="text-responsive-sm text-gray-500">
-                © 2025 pokewordle.app
+              <p className="text-responsive-sm text-muted">
+                © 2025{currentYear > 2025 ? `–${currentYear}` : ''} pokewordle.app
               </p>
             </div>
-            
-            {/* Links */}
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+              <Link href={localePath(locale, '/knowledge')} title={t('knowledge.title')} className="footer-link">
+                {t('knowledge.title')}
+              </Link>
               <Link
-                href={privacyHref}
+                href={localePath(locale, '/privacy-and-terms')}
                 title={t('footer.privacyAndTerms')}
-                className="text-responsive-sm text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                className="footer-link"
               >
                 {t('footer.privacyAndTerms')}
               </Link>
@@ -37,4 +38,4 @@ export default function Footer() {
       </div>
     </footer>
   );
-} 
+}

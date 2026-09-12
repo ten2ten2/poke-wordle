@@ -2,7 +2,6 @@
  * @jest-environment jsdom
  */
 
-import React from 'react';
 import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Settings from '../Settings';
@@ -19,7 +18,6 @@ jest.mock('next-intl', () => ({
       'settings.normalOrder': 'Oldest First',
       'settings.normalOrderDesc': 'Show oldest guesses at the top',
       'settings.maxGuesses': 'Max Guesses',
-      'settings.times': 'times',
       'settings.generationSelection': 'Generation Selection',
       'settings.selectAll': 'Select All',
       'settings.deselectAll': 'Deselect All',
@@ -76,7 +74,7 @@ describe('Settings', () => {
 
       expect(screen.getByText('Settings')).toBeInTheDocument();
       expect(screen.getByText('Guess Order')).toBeInTheDocument();
-      expect(screen.getByText('Max Guesses (10 times)')).toBeInTheDocument();
+      expect(screen.getByText('Max Guesses (10)')).toBeInTheDocument();
       expect(screen.getByText('Generation Selection')).toBeInTheDocument();
     });
 
@@ -175,7 +173,7 @@ describe('Settings', () => {
       });
 
       expect(newGuessButton).toHaveAttribute('aria-pressed', 'true');
-      expect(screen.getByText('Max Guesses (5 times)')).toBeInTheDocument();
+      expect(screen.getByText('Max Guesses (5)')).toBeInTheDocument();
     });
 
     test('renders all guess options', async () => {
@@ -422,7 +420,7 @@ describe('Settings', () => {
         );
       });
 
-      expect(screen.getByText('Max Guesses (5 times)')).toBeInTheDocument();
+      expect(screen.getByText('Max Guesses (5)')).toBeInTheDocument();
     });
   });
 
@@ -445,7 +443,7 @@ describe('Settings', () => {
       });
 
       expect(screen.getByText('Guess Order')).toBeInTheDocument();
-      expect(screen.getByText('Max Guesses (10 times)')).toBeInTheDocument();
+      expect(screen.getByText('Max Guesses (10)')).toBeInTheDocument();
       expect(screen.getByText('Generation Selection')).toBeInTheDocument();
     });
 
@@ -523,7 +521,7 @@ describe('Settings', () => {
 
       // Verify all changes are maintained
       expect(normalOrderButton).toHaveAttribute('aria-pressed', 'true');
-      expect(screen.getByText('Max Guesses (5 times)')).toBeInTheDocument();
+      expect(screen.getByText('Max Guesses (5)')).toBeInTheDocument();
       expect(pranksterToggle).toBeChecked();
     });
   });

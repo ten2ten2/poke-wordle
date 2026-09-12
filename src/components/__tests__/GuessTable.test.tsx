@@ -2,7 +2,6 @@
  * @jest-environment jsdom
  */
 
-import React from 'react';
 import { render, screen, act } from '@testing-library/react';
 import GuessTable from '../GuessTable';
 import { GuessResult } from '@/types/pokemon';
@@ -276,8 +275,8 @@ describe('GuessTable', () => {
       expect(electricType).toBeDefined();
       
       // Check for status classes
-      expect(grassType).toHaveClass('tag-exact');
-      expect(electricType).toHaveClass('tag-nope');
+      expect(grassType.closest('.tag')).toHaveClass('tag-exact');
+      expect(electricType.closest('.tag')).toHaveClass('tag-nope');
     });
   });
 

@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  */
 
+import { datasetVersion } from '@/config/dataset';
 import { renderHook, act } from '@testing-library/react';
 import { useGameState } from '../useGameState';
 import * as pokemonLib from '../../lib/pokemon';
@@ -97,7 +98,10 @@ describe('useGameState', () => {
     mockedPokemonLib.loadPokemonData.mockReturnValue(mockPokemon);
     mockedPokemonLib.filterPokemonByGenerations.mockReturnValue(mockPokemon);
     mockedPokemonLib.getRandomPokemon.mockReturnValue(mockPokemon[0]);
-    mockedPokemonLib.translatePokemon.mockImplementation((pokemon) => pokemon);
+    mockedPokemonLib.translateText.mockImplementation((name) => name);
+    mockedPokemonLib.normalizePokemonName.mockImplementation(
+      jest.requireActual<typeof pokemonLib>('../../lib/pokemon').normalizePokemonName,
+    );
     mockedStorage.loadGameSettings.mockReturnValue(null);
     mockedStorage.loadGameProgress.mockReturnValue(null);
     mockedStorage.saveGameSettings.mockImplementation(() => {});
@@ -140,6 +144,7 @@ describe('useGameState', () => {
 
     test('restores game progress when available', () => {
       const mockProgress: GameProgress = {
+        datasetVersion,
         targetPokemon: mockPokemon[0],
         guesses: [],
         selectedGenerations: [1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -167,6 +172,7 @@ describe('useGameState', () => {
 
     test('does not restore progress if generations do not match', () => {
       const mockProgress: GameProgress = {
+        datasetVersion,
         targetPokemon: mockPokemon[0],
         guesses: [],
         selectedGenerations: [1, 2], // Different from default [1,2,3,4,5,6,7,8,9]
@@ -534,13 +540,8 @@ describe('useGameState', () => {
     });
 
     test('validates translated Pokemon names', () => {
+      mockedPokemonLib.translateText.mockReturnValue('妙蛙种子');
       const { result } = renderHook(() => useGameState('zh-hans'));
-
-      // Mock translation
-      mockedPokemonLib.translatePokemon.mockReturnValue({
-        ...mockPokemon[0],
-        name: '妙蛙种子',
-      });
 
       expect(result.current.isPokemonNameValid('妙蛙种子')).toBe(true);
       expect(result.current.isPokemonNameValid('Bulbasaur')).toBe(true); // original name should still work
@@ -561,16 +562,18 @@ describe('useGameState', () => {
       ]);
 
       // Mock translation for Chinese
-      mockedPokemonLib.translatePokemon.mockImplementation(
-        (pokemon, locale) => {
+      mockedPokemonLib.translateText.mockImplementation(
+        (name, locale) => {
           if (locale === 'zh-hans') {
-            return { ...pokemon, name: `${pokemon.name}_CN` };
+            return `${name}_CN`;
           }
-          return pokemon;
+          return name;
         },
       );
 
       rerender({ locale: 'zh-hans' });
+      expect(result.current.isPokemonNameValid('Bulbasaur_CN')).toBe(true);
+      expect(result.current.isPokemonNameValid('Bulbasaur')).toBe(true);
 
       expect(result.current.pokemonNames).toEqual([
         'Bulbasaur_CN',

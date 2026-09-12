@@ -1,7 +1,7 @@
 {
   "title": "Poke Wordle",
   "game": {
-    "inputPlaceholder": "Enter Pokémon name...",
+    "inputPlaceholder": "Name in any language / Pokédex #",
     "submit": "Submit",
     "submitting": "Submitting...",
     "randomStart": "Random Guess",
@@ -14,11 +14,8 @@
     "gameLost": "Game Over! The answer was {pokemon}",
     "congratulations": "Congratulations!",
     "betterLuckNextTime": "Better luck next time!",
-    "guessedIn": "You guessed it in {count} tries",
+    "guessedIn": "You guessed it in {count, plural, one {# try} other {# tries}}.",
     "playAgain": "Play Again",
-    "startPrompt": "Enter a Pokémon name or click \"Random Guess\" to start!",
-    "languageChanged": "Language Changed",
-    "languageChangedDesc": "The language has been changed. Pokémon data has been updated to the new language. Please start a new game to continue playing.",
     "settingsChanged": "Settings Changed",
     "settingsChangedDesc": "Game settings have been changed. The current game has been reset to match the new settings. Please start a new game to continue playing.",
     "inputSection": "Game input section",
@@ -29,6 +26,8 @@
     "guessesUsed": "Guesses used",
     "result": "Result",
     "defeat": "Defeat",
+    "victory": "Victory",
+    "baseStatsTotal": "Base stat total",
     "columns": {
       "type": "Type",
       "baseStats": "Base Stats",
@@ -38,12 +37,25 @@
       "tags": "Tags"
     },
     "evolutionMethod": "Evolution Method",
-    "requestFailed": "Unable to check your guess. Please try again."
+    "requestFailed": "Unable to check your guess. Please try again.",
+    "searchHint": "Search by name in any language or Pokédex number",
+    "noMatches": "No matching Pokémon",
+    "suggestionCount": "Showing {shown} of {total}",
+    "intro": "Guess a Pokémon, compare the clues, and narrow down the answer.",
+    "matchExact": "Match",
+    "matchClose": "Close",
+    "matchNope": "Different",
+    "answerHigher": "Answer is higher",
+    "answerLower": "Answer is lower",
+    "confirmGiveUp": "Reveal the answer and end this game?",
+    "confirmRestart": "Clear your guesses and start a new game?",
+    "confirmAction": "Confirm",
+    "guessNumber": "Guess {number}",
+    "hiddenField": "Hidden by Prankster"
   },
   "settings": {
     "title": "Settings",
     "maxGuesses": "Max Guesses per Round",
-    "times": "times",
     "generationSelection": "Generation Selection",
     "selectAll": "Select All",
     "deselectAll": "Deselect All",
@@ -93,12 +105,9 @@
     },
     "colorGuide": {
       "title": "Color Guide",
-      "greenTag": "Green Tag",
-      "yellowTag": "Yellow Tag",
-      "grayTag": "Gray Tag",
-      "green": "Indicates that this tag **matches exactly** with the target Pokémon's corresponding tag",
-      "yellow": "Indicates that this tag is **close** to the target Pokémon's corresponding tag",
-      "gray": "Indicates that this tag is **different** from the target Pokémon's corresponding tag"
+      "green": "<tag>Green Tag</tag> Indicates that this tag matches exactly with the target Pokémon's corresponding tag",
+      "yellow": "<tag>Yellow Tag</tag> Indicates that this tag is close to the target Pokémon's corresponding tag",
+      "gray": "<tag>Gray Tag</tag> Indicates that this tag is different from the target Pokémon's corresponding tag"
     },
     "yellowConditions": {
       "title": "Yellow Tag Conditions",
@@ -108,37 +117,42 @@
     },
     "dataSource": {
       "title": "Data Source",
-      "description": "Game data is primarily sourced from [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\") and [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")."
+      "description": "Game data is primarily sourced from <pokeapi>pokeapi.co</pokeapi> and <bulbapedia>Bulbapedia</bulbapedia>."
     }
   },
   "navbar": {
     "about": "About",
     "settings": "Settings",
     "language": "Language",
+    "switchLanguage": "Switch to {language}",
+    "languageDescription": "Select your preferred language from the list below",
     "knowledge": "Knowledge",
+    "lightMode": "Switch to light mode",
+    "darkMode": "Switch to dark mode",
     "main_navigation": "Main Navigation"
   },
   "knowledge": {
     "title": "Knowledge",
-    "description": "Pokémon knowledge that you might have interests in",
+    "description": "Explore Pokémon forms, evolution and generations, and learn how to use the clues in Poke Wordle.",
     "comingSoon": "Coming soon! We're working on building a comprehensive knowledge base to help you become a better Pokémon guesser.",
     "readMore": "Read More",
-    "readNext": "Read Next",
-    "randomPrefix": "Pokémon Q&A: "
+    "randomPrefix": "Pokémon Q&A: ",
+    "seoTitle": "Pokémon Knowledge & Guessing Guides - Poke Wordle",
+    "relatedArticles": "Related articles"
   },
   "footer": {
     "privacyAndTerms": "Privacy & Terms"
   },
   "generation": {
-    "Gen1": "Generation 1",
-    "Gen2": "Generation 2",
-    "Gen3": "Generation 3",
-    "Gen4": "Generation 4",
-    "Gen5": "Generation 5",
-    "Gen6": "Generation 6",
-    "Gen7": "Generation 7",
-    "Gen8": "Generation 8",
-    "Gen9": "Generation 9"
+    "Gen1": "Gen 1",
+    "Gen2": "Gen 2",
+    "Gen3": "Gen 3",
+    "Gen4": "Gen 4",
+    "Gen5": "Gen 5",
+    "Gen6": "Gen 6",
+    "Gen7": "Gen 7",
+    "Gen8": "Gen 8",
+    "Gen9": "Gen 9"
   },
   "evolution": {
     "stage1": "No Evolution/First Stage",
@@ -177,12 +191,12 @@
     "legendary": "Legendary",
     "mythical": "Mythical",
     "fossil": "Fossil",
-    "regional": "Regional Form",
+    "regional": "Has Regional Forms",
     "has-mega": "Has Mega Evolution",
     "has-gmax": "Has Gigantamax",
     "ultra": "Ultra Beast",
     "paradox": "Paradox Pokémon",
-    "late": "Late Bloomer"
+    "late": "Powerhouse Pokémon"
   },
   "privacyAndTerms": {
     "title": "Privacy Policy & Terms of Service",

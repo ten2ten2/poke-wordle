@@ -1,7 +1,7 @@
 {
   "title": "Poke Wordle",
   "game": {
-    "inputPlaceholder": "Pokémon-Name eingeben...",
+    "inputPlaceholder": "Name in jeder Sprache / Pokédex-Nr.",
     "submit": "Bestätigen",
     "submitting": "Wird gesendet...",
     "randomStart": "Zufälliger Tipp",
@@ -14,11 +14,8 @@
     "gameLost": "Spiel beendet! Die Antwort war {pokemon}",
     "congratulations": "Glückwunsch!",
     "betterLuckNextTime": "Viel Glück beim nächsten Mal!",
-    "guessedIn": "Du hast es in {count} Versuchen erraten",
+    "guessedIn": "Du hast es in {count, plural, one {# Versuch} other {# Versuchen}} erraten.",
     "playAgain": "Nochmal spielen",
-    "startPrompt": "Gib einen Pokémon-Namen ein oder klicke auf \"Zufälliger Tipp\" um zu starten!",
-    "languageChanged": "Sprache geändert",
-    "languageChangedDesc": "Die Sprache wurde geändert. Pokémon-Daten wurden auf die neue Sprache aktualisiert. Bitte starte ein neues Spiel, um weiterzuspielen.",
     "settingsChanged": "Einstellungen geändert",
     "settingsChangedDesc": "Spieleinstellungen wurden geändert. Das aktuelle Spiel wurde zurückgesetzt, um den neuen Einstellungen zu entsprechen. Bitte starte ein neues Spiel, um weiterzuspielen.",
     "inputSection": "Spiel-Eingabebereich",
@@ -29,26 +26,41 @@
     "guessesUsed": "Verwendete Versuche",
     "result": "Ergebnis",
     "defeat": "Niederlage",
+    "victory": "Sieg",
+    "baseStatsTotal": "Basiswertsumme",
     "columns": {
       "type": "Typ",
       "baseStats": "Basiswerte",
       "generation": "Generation",
       "abilities": "Fähigkeiten",
-      "evolution": "Evolution",
+      "evolution": "Entwicklung",
       "tags": "Tags"
     },
-    "evolutionMethod": "Evolutionsmethode",
-    "requestFailed": "Die Antwort konnte nicht geprüft werden. Bitte versuche es erneut."
+    "evolutionMethod": "Entwicklungsmethode",
+    "requestFailed": "Die Antwort konnte nicht geprüft werden. Bitte versuche es erneut.",
+    "searchHint": "Name in beliebiger Sprache oder Pokédex-Nummer",
+    "noMatches": "Kein passendes Pokémon",
+    "suggestionCount": "{shown} von {total} Ergebnissen",
+    "intro": "Rate ein Pokémon und grenze die Antwort mithilfe der Hinweise ein.",
+    "matchExact": "Gleich",
+    "matchClose": "Ähnlich",
+    "matchNope": "Anders",
+    "answerHigher": "Die Antwort ist höher",
+    "answerLower": "Die Antwort ist niedriger",
+    "confirmGiveUp": "Antwort anzeigen und das Spiel beenden?",
+    "confirmRestart": "Versuche löschen und neu beginnen?",
+    "confirmAction": "Bestätigen",
+    "guessNumber": "Versuch {number}",
+    "hiddenField": "Im Strolch-Modus verborgen"
   },
   "settings": {
     "title": "Einstellungen",
     "maxGuesses": "Max. Versuche",
-    "times": "mal",
     "generationSelection": "Generationsauswahl",
     "selectAll": "Alle auswählen",
     "deselectAll": "Alle abwählen",
     "generationRequired": "Mindestens eine Generation muss ausgewählt sein",
-    "pranksterMode": "Schabernack-Modus",
+    "pranksterMode": "Strolch-Modus",
     "pranksterModeDesc": "Zufällig ein Attribut pro Versuch verstecken",
     "genArrow": "Generationspfeile",
     "genArrowDesc": "Pfeile für Generationshinweise anzeigen",
@@ -68,7 +80,7 @@
   },
   "about": {
     "title": "Über",
-    "description": "Poke Wordle ist ein Ratespiel, bei dem du versuchst, ein Pokémon basierend auf verschiedenen Hinweisen wie Typen, Fähigkeiten, Werten, Evolution und mehr zu identifizieren.",
+    "description": "Poke Wordle ist ein Ratespiel, bei dem du versuchst, ein Pokémon basierend auf verschiedenen Hinweisen wie Typen, Fähigkeiten, Werten, Entwicklung und mehr zu identifizieren.",
     "howToPlay": "Wie man spielt",
     "rules": [
       "Gib einen Pokémon-Namen in das Eingabefeld ein.",
@@ -82,7 +94,7 @@
         "gen1": "Generation 1: Rot | Grün | Blau | Gelb",
         "gen2": "Generation 2: Gold | Silber | Kristall",
         "gen3": "Generation 3: Rubin | Saphir | Feuerrot | Blattgrün | Smaragd",
-        "gen4": "Generation 4: Diamant | Perle | Platin | Herzgold | Seelensilber",
+        "gen4": "Generation 4: Diamant | Perl | Platin | HeartGold | SoulSilver",
         "gen5": "Generation 5: Schwarz | Weiß | Schwarz 2 | Weiß 2",
         "gen6": "Generation 6: X | Y | Omega Rubin | Alpha Saphir",
         "gen7": "Generation 7: Sonne | Mond | Ultrasonne | Ultramond | Let's Go Pikachu | Let's Go Evoli",
@@ -93,46 +105,47 @@
     },
     "colorGuide": {
       "title": "Farbführer",
-      "greenTag": "Grünes Tag",
-      "yellowTag": "Gelbes Tag",
-      "grayTag": "Graues Tag",
-      "green": "Zeigt an, dass dieses Tag **exakt übereinstimmt** mit dem entsprechenden Tag des Ziel-Pokémon",
-      "yellow": "Zeigt an, dass dieses Tag **nah** am entsprechenden Tag des Ziel-Pokémon ist",
-      "gray": "Zeigt an, dass dieses Tag **unterschiedlich** vom entsprechenden Tag des Ziel-Pokémon ist"
+      "green": "<tag>Grünes Tag</tag> Zeigt an, dass dieses Tag exakt übereinstimmt mit dem entsprechenden Tag des Ziel-Pokémon",
+      "yellow": "<tag>Gelbes Tag</tag> Zeigt an, dass dieses Tag nah am entsprechenden Tag des Ziel-Pokémon ist",
+      "gray": "<tag>Graues Tag</tag> Zeigt an, dass dieses Tag unterschiedlich vom entsprechenden Tag des Ziel-Pokémon ist"
     },
     "yellowConditions": {
       "title": "Bedingungen für gelbe Tags",
       "stats": "Basiswerte: Die Basiswertsumme des Pokémon unterscheidet sich vom Ziel um ≤ 50",
       "generation": "Generation: Die erste Erscheinungsgeneration des Pokémon ist benachbart zur Generation des Ziels",
-      "evolution": "Evolution: Beide Pokémon haben ähnliche, aber nicht identische Evolutionsmethoden (z.B. beide leveln auf, aber eines erfordert das Erlernen einer Attacke und das andere hohe Freundschaft)"
+      "evolution": "Entwicklung: Beide Pokémon haben ähnliche, aber nicht identische Entwicklungsmethoden (z.B. beide leveln auf, aber eines erfordert das Erlernen einer Attacke und das andere hohe Freundschaft)"
     },
     "dataSource": {
       "title": "Datenquelle",
-      "description": "Spieldaten stammen hauptsächlich von [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\") und [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")"
+      "description": "Spieldaten stammen hauptsächlich von <pokeapi>pokeapi.co</pokeapi> und <bulbapedia>Bulbapedia</bulbapedia>"
     }
   },
   "navbar": {
     "about": "Über",
     "settings": "Einstellungen",
     "language": "Sprache",
+    "switchLanguage": "Zu {language} wechseln",
+    "languageDescription": "Wähle deine Sprache aus der folgenden Liste",
+    "lightMode": "Zum hellen Modus wechseln",
+    "darkMode": "Zum dunklen Modus wechseln",
     "main_navigation": "Hauptnavigation"
   },
   "footer": {
     "privacyAndTerms": "Datenschutz & Bedingungen"
   },
   "generation": {
-    "Gen1": "Generation 1",
-    "Gen2": "Generation 2",
-    "Gen3": "Generation 3",
-    "Gen4": "Generation 4",
-    "Gen5": "Generation 5",
-    "Gen6": "Generation 6",
-    "Gen7": "Generation 7",
-    "Gen8": "Generation 8",
-    "Gen9": "Generation 9"
+    "Gen1": "Gen 1",
+    "Gen2": "Gen 2",
+    "Gen3": "Gen 3",
+    "Gen4": "Gen 4",
+    "Gen5": "Gen 5",
+    "Gen6": "Gen 6",
+    "Gen7": "Gen 7",
+    "Gen8": "Gen 8",
+    "Gen9": "Gen 9"
   },
   "evolution": {
-    "stage1": "Keine Evolution/Erste Stufe",
+    "stage1": "Keine Entwicklung/Erste Stufe",
     "stage2": "Zweite Stufe",
     "stage3": "Dritte Stufe"
   },
@@ -154,26 +167,26 @@
     "item-stone-moon": "Mondstein verwenden",
     "item-stone-shiny": "Leuchtstein verwenden",
     "item-stone-dusk": "Finsterstein verwenden",
-    "item-stone-dawn-male": "Männchen verwendet Weckstein",
-    "item-stone-dawn-female": "Weibchen verwendet Weckstein",
+    "item-stone-dawn-male": "Männchen verwendet Funkelstein",
+    "item-stone-dawn-female": "Weibchen verwendet Funkelstein",
     "item-stone-ice": "Eisstein verwenden",
     "item-unique": "Besonderes Item verwenden",
     "trade-normal": "Tausch",
     "trade-item": "Tausch mit Item",
     "trade-certain": "Tausch gegen bestimmtes Pokémon",
-    "unique": "Besondere Evolutionsmethode"
+    "unique": "Besondere Entwicklungsmethode"
   },
   "tags": {
-    "starter": "ersten Partner-Pokémon",
+    "starter": "Erstes Partner-Pokémon",
     "legendary": "Legendär",
-    "mythical": "Mystisch",
+    "mythical": "Mysteriös",
     "fossil": "Fossil",
-    "regional": "Regionalform",
-    "has-mega": "Hat Mega-Evolution",
+    "regional": "Hat Regionalformen",
+    "has-mega": "Hat Mega-Entwicklung",
     "has-gmax": "Hat Gigadynamax",
     "ultra": "Ultrabestie",
     "paradox": "Paradox-Pokémon",
-    "late": "Late Bloomer"
+    "late": "Pseudo-Legendäres Pokémon"
   },
   "privacyAndTerms": {
     "title": "Datenschutzerklärung & Nutzungsbedingungen",
@@ -258,5 +271,14 @@
     "decline": "Ablehnen",
     "close": "Schließen",
     "privacyAndTerms": "Datenschutzerklärung & Nutzungsbedingungen"
+  },
+  "knowledge": {
+    "title": "Wissensdatenbank",
+    "description": "Erfahre mehr über Pokémon-Formen, Entwicklungen und Generationen und lerne, die Hinweise in Poke Wordle zu nutzen.",
+    "comingSoon": "Bald verfügbar! Wir arbeiten an Artikeln, die dir beim Erraten von Pokémon helfen.",
+    "readMore": "Weiterlesen",
+    "randomPrefix": "Pokémon-Fragen: ",
+    "seoTitle": "Pokémon-Wissen und Spieltipps - Poke Wordle",
+    "relatedArticles": "Weitere Artikel"
   }
 }

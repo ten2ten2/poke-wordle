@@ -1,0 +1,830 @@
+[
+  {
+    "entity": "tauros-paldea-aqua-breed",
+    "locale": "en",
+    "expected_upstream": "Tauros (Paldean Form (Aqua Breed))",
+    "value": "Tauros (Paldea Form/Aqua Breed)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-aqua-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-aqua-breed",
+    "locale": "ja",
+    "expected_upstream": "ケンタロス (パルデアのすがた)",
+    "value": "ケンタロス (パルデアのすがた/ウォーター種)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-aqua-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-aqua-breed",
+    "locale": "es",
+    "expected_upstream": "Tauros (Paldean Form (Aqua Breed))",
+    "value": "Tauros (Forma de Paldea/Variedad Acuática)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-aqua-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-aqua-breed",
+    "locale": "de",
+    "expected_upstream": "Tauros (Paldean Form (Aqua Breed))",
+    "value": "Tauros (Paldea-Form/Flutenvariante)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-aqua-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-aqua-breed",
+    "locale": "it",
+    "expected_upstream": "Tauros (Paldean Form (Aqua Breed))",
+    "value": "Tauros (Forma di Paldea/Varietà Acquatica)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-aqua-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-aqua-breed",
+    "locale": "fr",
+    "expected_upstream": "Tauros (Forme de Paldéa)",
+    "value": "Tauros (Forme de Paldea/Race Aquatique)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-aqua-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-aqua-breed",
+    "locale": "zh-hant",
+    "expected_upstream": "肯泰羅 (Paldean Form (Aqua Breed))",
+    "value": "肯泰羅 (帕底亞的樣子/水瀾種)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-aqua-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-aqua-breed",
+    "locale": "zh-hans",
+    "expected_upstream": "肯泰罗 (Paldean Form (Aqua Breed))",
+    "value": "肯泰罗 (帕底亚的样子/水澜种)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-aqua-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-aqua-breed",
+    "locale": "ko",
+    "expected_upstream": "켄타로스 (Paldean Form (Aqua Breed))",
+    "value": "켄타로스 (팔데아 모습/워터종)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-aqua-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-blaze-breed",
+    "locale": "en",
+    "expected_upstream": "Tauros (Paldean Form (Blaze Breed))",
+    "value": "Tauros (Paldean Form/Blaze Breed)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-blaze-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-blaze-breed",
+    "locale": "ja",
+    "expected_upstream": "ケンタロス (パルデアのすがた)",
+    "value": "ケンタロス (パルデアのすがた/ブレイズ種)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-blaze-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-blaze-breed",
+    "locale": "es",
+    "expected_upstream": "Tauros (Paldean Form (Blaze Breed))",
+    "value": "Tauros (Forma de Paldea/Variedad Ardiente)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-blaze-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-blaze-breed",
+    "locale": "de",
+    "expected_upstream": "Tauros (Paldean Form (Blaze Breed))",
+    "value": "Tauros (Paldea-Form/Flammenvariante)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-blaze-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-blaze-breed",
+    "locale": "it",
+    "expected_upstream": "Tauros (Paldean Form (Blaze Breed))",
+    "value": "Tauros (Forma di Paldea/Varietà Infuocata)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-blaze-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-blaze-breed",
+    "locale": "fr",
+    "expected_upstream": "Tauros (Forme de Paldéa)",
+    "value": "Tauros (Forme de Paldea/Race Flamboyante)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-blaze-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-blaze-breed",
+    "locale": "zh-hant",
+    "expected_upstream": "肯泰羅 (Paldean Form (Blaze Breed))",
+    "value": "肯泰羅 (帕底亞的樣子/火熾種)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-blaze-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-blaze-breed",
+    "locale": "zh-hans",
+    "expected_upstream": "肯泰罗 (Paldean Form (Blaze Breed))",
+    "value": "肯泰罗 (帕底亚的样子/火炽种)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-blaze-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-blaze-breed",
+    "locale": "ko",
+    "expected_upstream": "켄타로스 (Paldean Form (Blaze Breed))",
+    "value": "켄타로스 (팔데아 모습/블레이즈종)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-blaze-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-combat-breed",
+    "locale": "en",
+    "expected_upstream": "Tauros (Paldean Form (Combat Breed))",
+    "value": "Tauros (Paldean Form/Combat Breed)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-combat-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-combat-breed",
+    "locale": "ja",
+    "expected_upstream": "ケンタロス (パルデアのすがた)",
+    "value": "ケンタロス (パルデアのすがた/コンバット種)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-combat-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-combat-breed",
+    "locale": "es",
+    "expected_upstream": "Tauros (Paldean Form (Combat Breed))",
+    "value": "Tauros (Forma de Paldea/Variedad Combatiente)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-combat-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-combat-breed",
+    "locale": "de",
+    "expected_upstream": "Tauros (Paldean Form (Combat Breed))",
+    "value": "Tauros (Paldea-Form/Gefechtvariante)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-combat-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-combat-breed",
+    "locale": "it",
+    "expected_upstream": "Tauros (Paldean Form (Combat Breed))",
+    "value": "Tauros (Forma di Paldea/Varietà Combattiva)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-combat-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-combat-breed",
+    "locale": "fr",
+    "expected_upstream": "Tauros (Forme de Paldéa)",
+    "value": "Tauros (Forme de Paldea/Race Combative)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-combat-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-combat-breed",
+    "locale": "zh-hant",
+    "expected_upstream": "肯泰羅 (Paldean Form (Combat Breed))",
+    "value": "肯泰羅 (帕底亞的樣子/鬥戰種)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-combat-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-combat-breed",
+    "locale": "zh-hans",
+    "expected_upstream": "肯泰罗 (Paldean Form (Combat Breed))",
+    "value": "肯泰罗 (帕底亚的样子/斗战种)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-combat-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "tauros-paldea-combat-breed",
+    "locale": "ko",
+    "expected_upstream": "켄타로스 (Paldean Form (Combat Breed))",
+    "value": "켄타로스 (팔데아 모습/컴뱃종)",
+    "reason": "地区标签与同种水澜种、火炽种的韩语用词保持一致",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/tauros-paldea-combat-breed/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "minun",
+    "locale": "zh-hans",
+    "expected_upstream": "負电拍拍",
+    "value": "负电拍拍",
+    "reason": "纠正上游简体名称中的繁体字",
+    "source": "https://pokeapi.co/api/v2/pokemon-species/312/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "basculin-white-striped",
+    "locale": "es",
+    "expected_upstream": "Basculin (White-Striped Form)",
+    "value": "Basculin (Forma Raya Blanca)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/basculin-white-striped/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "basculin-white-striped",
+    "locale": "it",
+    "expected_upstream": "Basculin (White-Striped Form)",
+    "value": "Basculin (Forma Linea Bianca)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/basculin-white-striped/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "basculin-white-striped",
+    "locale": "zh-hant",
+    "expected_upstream": "野蠻鱸魚 (White-Striped Form)",
+    "value": "野蠻鱸魚 (白條紋的樣子)",
+    "reason": "纠正繁体形态标签夹杂的简体字",
+    "source": "https://sv-news.pokemon.co.jp/tc/page/109.html",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "basculin-white-striped",
+    "locale": "zh-hans",
+    "expected_upstream": "野蛮鲈鱼 (White-Striped Form)",
+    "value": "野蛮鲈鱼 (白条纹的样子)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/basculin-white-striped/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "basculin-white-striped",
+    "locale": "ko",
+    "expected_upstream": "배쓰나이 (White-Striped Form)",
+    "value": "배쓰나이 (흰색근의 모습)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/basculin-white-striped/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "darmanitan-galar-zen",
+    "locale": "en",
+    "expected_upstream": "Darmanitan (Zen Mode)",
+    "value": "Darmanitan (Galarian Form/Zen Mode)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/darmanitan-galar-zen/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "darmanitan-galar-zen",
+    "locale": "ja",
+    "expected_upstream": "ヒヒダルマ (ダルマモード)",
+    "value": "ヒヒダルマ (ガラルのすがた/ダルマモード)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/darmanitan-galar-zen/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "darmanitan-galar-zen",
+    "locale": "es",
+    "expected_upstream": "Darmanitan (Modo Daruma)",
+    "value": "Darmanitan (Forma de Galar/Modo Daruma)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/darmanitan-galar-zen/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "darmanitan-galar-zen",
+    "locale": "de",
+    "expected_upstream": "Flampivian (Trance-Modus)",
+    "value": "Flampivian (Galar-Form/Trance-Modus)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/darmanitan-galar-zen/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "darmanitan-galar-zen",
+    "locale": "it",
+    "expected_upstream": "Darmanitan (Stato Zen)",
+    "value": "Darmanitan (Forma di Galar/Stato Zen)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/darmanitan-galar-zen/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "darmanitan-galar-zen",
+    "locale": "fr",
+    "expected_upstream": "Darumacho (Mode Transe)",
+    "value": "Darumacho (Forme de Galar/Mode Transe)",
+    "reason": "同时保留伽勒尔地区和达摩模式，修正 Galar 拼写",
+    "source": "https://swordshield.pokemon.com/fr-fr/pokemon-galar-region/darmanitan/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "darmanitan-galar-zen",
+    "locale": "zh-hant",
+    "expected_upstream": "達摩狒狒 (達摩模式)",
+    "value": "達摩狒狒 (伽勒爾的樣子/達摩模式)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/darmanitan-galar-zen/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "darmanitan-galar-zen",
+    "locale": "zh-hans",
+    "expected_upstream": "达摩狒狒 (达摩模式)",
+    "value": "达摩狒狒 (伽勒尔的样子/达摩模式)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/darmanitan-galar-zen/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "darmanitan-galar-zen",
+    "locale": "ko",
+    "expected_upstream": "불비달마 (달마모드)",
+    "value": "불비달마 (가라르의 모습/달마모드)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/darmanitan-galar-zen/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "floette-eternal",
+    "locale": "zh-hant",
+    "expected_upstream": "花葉蒂 (Eternal Flower)",
+    "value": "花葉蒂 (永恆之花)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/floette-eternal/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "floette-eternal",
+    "locale": "zh-hans",
+    "expected_upstream": "花叶蒂 (Eternal Flower)",
+    "value": "花叶蒂 (永恒之花)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/floette-eternal/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "enamorus-incarnate",
+    "locale": "es",
+    "expected_upstream": "Enamorus (Incarnate Forme)",
+    "value": "Enamorus (Forma Avatar)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/enamorus-incarnate/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "enamorus-incarnate",
+    "locale": "de",
+    "expected_upstream": "Cupidos (Incarnate Forme)",
+    "value": "Cupidos (Inkarnationsform)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/enamorus-incarnate/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "enamorus-incarnate",
+    "locale": "it",
+    "expected_upstream": "Enamorus (Incarnate Forme)",
+    "value": "Enamorus (Forma Incarnazione)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/enamorus-incarnate/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "enamorus-incarnate",
+    "locale": "zh-hant",
+    "expected_upstream": "眷戀雲 (Incarnate Forme)",
+    "value": "眷戀雲 (化身形態)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/enamorus-incarnate/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "enamorus-incarnate",
+    "locale": "zh-hans",
+    "expected_upstream": "眷恋云 (Incarnate Forme)",
+    "value": "眷恋云 (化身形态)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/enamorus-incarnate/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "enamorus-incarnate",
+    "locale": "ko",
+    "expected_upstream": "러브로스 (Incarnate Forme)",
+    "value": "러브로스 (화신폼)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/enamorus-incarnate/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "enamorus-therian",
+    "locale": "es",
+    "expected_upstream": "Enamorus (Therian Forme)",
+    "value": "Enamorus (Forma Tótem)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/enamorus-therian/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "enamorus-therian",
+    "locale": "it",
+    "expected_upstream": "Enamorus (Therian Forme)",
+    "value": "Enamorus (Forma Totem)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/enamorus-therian/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "enamorus-therian",
+    "locale": "zh-hant",
+    "expected_upstream": "眷戀雲 (Therian Forme)",
+    "value": "眷戀雲 (靈獸形態)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/enamorus-therian/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "enamorus-therian",
+    "locale": "zh-hans",
+    "expected_upstream": "眷恋云 (Therian Forme)",
+    "value": "眷恋云 (灵兽形态)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/enamorus-therian/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "enamorus-therian",
+    "locale": "ko",
+    "expected_upstream": "러브로스 (Therian Forme)",
+    "value": "러브로스 (영물폼)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/enamorus-therian/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "oinkologne-female",
+    "locale": "es",
+    "expected_upstream": "Oinkologne (Female)",
+    "value": "Oinkologne (Hembra)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/oinkologne-female/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "oinkologne-female",
+    "locale": "de",
+    "expected_upstream": "Fragrunz (Female)",
+    "value": "Fragrunz (Weiblich)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/oinkologne-female/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "oinkologne-female",
+    "locale": "it",
+    "expected_upstream": "Oinkologne (Female)",
+    "value": "Oinkologne (Femmina)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/oinkologne-female/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "oinkologne-female",
+    "locale": "zh-hant",
+    "expected_upstream": "飄香豚 (Female)",
+    "value": "飄香豚 (雌性的樣子)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/oinkologne-female/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "oinkologne-female",
+    "locale": "zh-hans",
+    "expected_upstream": "飘香豚 (Female)",
+    "value": "飘香豚 (雌性的样子)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/oinkologne-female/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "oinkologne-female",
+    "locale": "ko",
+    "expected_upstream": "퍼퓨돈 (Female)",
+    "value": "퍼퓨돈 (암컷의 모습)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/oinkologne-female/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "oinkologne-male",
+    "locale": "es",
+    "expected_upstream": "Oinkologne (Male)",
+    "value": "Oinkologne (Macho)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/oinkologne-male/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "oinkologne-male",
+    "locale": "de",
+    "expected_upstream": "Fragrunz (Male)",
+    "value": "Fragrunz (Männlich)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/oinkologne-male/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "oinkologne-male",
+    "locale": "it",
+    "expected_upstream": "Oinkologne (Male)",
+    "value": "Oinkologne (Maschio)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/oinkologne-male/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "oinkologne-male",
+    "locale": "zh-hant",
+    "expected_upstream": "飄香豚 (Male)",
+    "value": "飄香豚 (雄性的樣子)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/oinkologne-male/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "oinkologne-male",
+    "locale": "zh-hans",
+    "expected_upstream": "飘香豚 (Male)",
+    "value": "飘香豚 (雄性的样子)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/oinkologne-male/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "oinkologne-male",
+    "locale": "ko",
+    "expected_upstream": "퍼퓨돈 (Male)",
+    "value": "퍼퓨돈 (수컷의 모습)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/oinkologne-male/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "palafin-hero",
+    "locale": "es",
+    "expected_upstream": "Palafin (Hero Form)",
+    "value": "Palafin (Forma Heroica)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/palafin-hero/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "palafin-hero",
+    "locale": "de",
+    "expected_upstream": "Delfinator (Hero Form)",
+    "value": "Delfinator (Heldenform)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/palafin-hero/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "palafin-hero",
+    "locale": "it",
+    "expected_upstream": "Palafin (Hero Form)",
+    "value": "Palafin (Forma Possente)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/palafin-hero/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "palafin-hero",
+    "locale": "zh-hant",
+    "expected_upstream": "海豚俠 (Hero Form)",
+    "value": "海豚俠 (全能形態)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/palafin-hero/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "palafin-hero",
+    "locale": "zh-hans",
+    "expected_upstream": "海豚侠 (Hero Form)",
+    "value": "海豚侠 (全能形态)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/palafin-hero/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "palafin-hero",
+    "locale": "ko",
+    "expected_upstream": "돌핀맨 (Hero Form)",
+    "value": "돌핀맨 (마이티폼)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/palafin-hero/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "palafin-zero",
+    "locale": "es",
+    "expected_upstream": "Palafin (Zero Form)",
+    "value": "Palafin (Forma Ingenua)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/palafin-zero/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "palafin-zero",
+    "locale": "de",
+    "expected_upstream": "Delfinator (Zero Form)",
+    "value": "Delfinator (Alltagsform)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/palafin-zero/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "palafin-zero",
+    "locale": "it",
+    "expected_upstream": "Palafin (Zero Form)",
+    "value": "Palafin (Forma Ingenua)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/palafin-zero/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "palafin-zero",
+    "locale": "zh-hant",
+    "expected_upstream": "海豚俠 (Zero Form)",
+    "value": "海豚俠 (平凡形態)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/palafin-zero/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "palafin-zero",
+    "locale": "zh-hans",
+    "expected_upstream": "海豚侠 (Zero Form)",
+    "value": "海豚侠 (平凡形态)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/palafin-zero/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "palafin-zero",
+    "locale": "ko",
+    "expected_upstream": "돌핀맨 (Zero Form)",
+    "value": "돌핀맨 (나이브폼)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/palafin-zero/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "terapagos",
+    "locale": "de",
+    "expected_upstream": "Terapagos (Normal Form)",
+    "value": "Terapagos (Normalform)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/terapagos/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "terapagos",
+    "locale": "zh-hant",
+    "expected_upstream": "太樂巴戈斯 (Normal Form)",
+    "value": "太樂巴戈斯 (普通形態)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/terapagos/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "terapagos",
+    "locale": "zh-hans",
+    "expected_upstream": "太乐巴戈斯 (Normal Form)",
+    "value": "太乐巴戈斯 (普通形态)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/terapagos/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "terapagos",
+    "locale": "ko",
+    "expected_upstream": "테라파고스 (Normal Form)",
+    "value": "테라파고스 (노말폼)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/terapagos/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "terapagos-terastal",
+    "locale": "es",
+    "expected_upstream": "Terapagos (Forma teracristal)",
+    "value": "Terapagos (Forma Teracristal)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/terapagos-terastal/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "terapagos-terastal",
+    "locale": "zh-hant",
+    "expected_upstream": "太樂巴戈斯 (Terastal Form)",
+    "value": "太樂巴戈斯 (太晶形態)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/terapagos-terastal/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "terapagos-terastal",
+    "locale": "zh-hans",
+    "expected_upstream": "太乐巴戈斯 (Terastal Form)",
+    "value": "太乐巴戈斯 (太晶形态)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/terapagos-terastal/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "terapagos-terastal",
+    "locale": "ko",
+    "expected_upstream": "테라파고스 (Terastal Form)",
+    "value": "테라파고스 (테라스탈폼)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/terapagos-terastal/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "terapagos-stellar",
+    "locale": "es",
+    "expected_upstream": "Terapagos (Forma astral)",
+    "value": "Terapagos (Forma Astral)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/terapagos-stellar/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "terapagos-stellar",
+    "locale": "it",
+    "expected_upstream": "Terapagos (Stellar Form)",
+    "value": "Terapagos (Forma Astrale)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/terapagos-stellar/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "terapagos-stellar",
+    "locale": "zh-hant",
+    "expected_upstream": "太樂巴戈斯 (Stellar Form)",
+    "value": "太樂巴戈斯 (星晶形態)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/terapagos-stellar/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "terapagos-stellar",
+    "locale": "zh-hans",
+    "expected_upstream": "太乐巴戈斯 (Stellar Form)",
+    "value": "太乐巴戈斯 (星晶形态)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/terapagos-stellar/",
+    "checked_at": "2026-09-11"
+  },
+  {
+    "entity": "terapagos-stellar",
+    "locale": "ko",
+    "expected_upstream": "테라파고스 (Stellar Form)",
+    "value": "테라파고스 (스텔라폼)",
+    "reason": "补齐上游缺失的本地化形态标签；地区与子形态组合遵循游戏显示格式",
+    "source": "https://pokeapi.co/api/v2/pokemon-form/terapagos-stellar/",
+    "checked_at": "2026-09-11"
+  }
+]

@@ -1,7 +1,7 @@
 {
   "title": "Poke Wordle",
   "game": {
-    "inputPlaceholder": "Ingresa el nombre del Pokémon...",
+    "inputPlaceholder": "Nombre en cualquier idioma / Pokédex nº",
     "submit": "Enviar",
     "submitting": "Enviando...",
     "randomStart": "Intento Aleatorio",
@@ -14,11 +14,8 @@
     "gameLost": "¡Juego terminado! La respuesta era {pokemon}",
     "congratulations": "¡Felicidades!",
     "betterLuckNextTime": "¡Mejor suerte la próxima vez!",
-    "guessedIn": "Lo adivinaste en {count} intentos",
+    "guessedIn": "Lo adivinaste en {count, plural, one {# intento} other {# intentos}}.",
     "playAgain": "Jugar de nuevo",
-    "startPrompt": "¡Ingresa un nombre de Pokémon o haz clic en \"Intento Aleatorio\" para comenzar!",
-    "languageChanged": "Idioma Cambiado",
-    "languageChangedDesc": "El idioma ha sido cambiado. Los datos de Pokémon han sido actualizados al nuevo idioma. Por favor inicia un nuevo juego para continuar jugando.",
     "settingsChanged": "Configuración Cambiada",
     "settingsChangedDesc": "La configuración del juego ha sido cambiada. El juego actual ha sido reiniciado para coincidir con la nueva configuración. Por favor inicia un nuevo juego para continuar jugando.",
     "inputSection": "Sección de entrada del juego",
@@ -29,6 +26,8 @@
     "guessesUsed": "Intentos utilizados",
     "result": "Resultado",
     "defeat": "Derrota",
+    "victory": "Victoria",
+    "baseStatsTotal": "Total de estadísticas base",
     "columns": {
       "type": "Tipo",
       "baseStats": "Estadísticas Base",
@@ -38,12 +37,25 @@
       "tags": "Etiquetas"
     },
     "evolutionMethod": "Método de Evolución",
-    "requestFailed": "No se pudo comprobar la respuesta. Inténtalo de nuevo."
+    "requestFailed": "No se pudo comprobar la respuesta. Inténtalo de nuevo.",
+    "searchHint": "Nombre en cualquier idioma o número de Pokédex",
+    "noMatches": "No hay Pokémon coincidentes",
+    "suggestionCount": "{shown} de {total} resultados",
+    "intro": "Propón un Pokémon y compara las pistas para encontrar la respuesta.",
+    "matchExact": "Igual",
+    "matchClose": "Cercano",
+    "matchNope": "Diferente",
+    "answerHigher": "La respuesta es mayor",
+    "answerLower": "La respuesta es menor",
+    "confirmGiveUp": "¿Revelar la respuesta y terminar la partida?",
+    "confirmRestart": "¿Borrar los intentos y empezar de nuevo?",
+    "confirmAction": "Confirmar",
+    "guessNumber": "Intento {number}",
+    "hiddenField": "Oculto por el modo Bromista"
   },
   "settings": {
     "title": "Configuración",
     "maxGuesses": "Intentos Máximos",
-    "times": "veces",
     "generationSelection": "Selección de Generación",
     "selectAll": "Seleccionar Todo",
     "deselectAll": "Deseleccionar Todo",
@@ -93,12 +105,9 @@
     },
     "colorGuide": {
       "title": "Guía de colores",
-      "greenTag": "Etiqueta verde",
-      "yellowTag": "Etiqueta amarilla",
-      "grayTag": "Etiqueta gris",
-      "green": "Indica que esta etiqueta **coincide exactamente** con la etiqueta correspondiente del Pokémon objetivo",
-      "yellow": "Indica que esta etiqueta está **cerca** de la etiqueta correspondiente del Pokémon objetivo",
-      "gray": "Indica que esta etiqueta es **diferente** de la etiqueta correspondiente del Pokémon objetivo"
+      "green": "<tag>Etiqueta verde</tag> Indica que esta etiqueta coincide exactamente con la etiqueta correspondiente del Pokémon objetivo",
+      "yellow": "<tag>Etiqueta amarilla</tag> Indica que esta etiqueta está cerca de la etiqueta correspondiente del Pokémon objetivo",
+      "gray": "<tag>Etiqueta gris</tag> Indica que esta etiqueta es diferente de la etiqueta correspondiente del Pokémon objetivo"
     },
     "yellowConditions": {
       "title": "Condiciones de etiquetas amarillas",
@@ -108,28 +117,32 @@
     },
     "dataSource": {
       "title": "Fuente de datos",
-      "description": "Los datos del juego provienen principalmente de [pokeapi.co](https://pokeapi.co \"The RESTful Pokémon API\") y [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Main_Page \"Bulbapedia, the community-driven Pokémon encyclopedia\")."
+      "description": "Los datos del juego provienen principalmente de <pokeapi>pokeapi.co</pokeapi> y <bulbapedia>Bulbapedia</bulbapedia>."
     }
   },
   "navbar": {
     "about": "Acerca de",
     "settings": "Configuración",
     "language": "Idioma",
+    "switchLanguage": "Cambiar a {language}",
+    "languageDescription": "Selecciona tu idioma en la siguiente lista",
+    "lightMode": "Cambiar al modo claro",
+    "darkMode": "Cambiar al modo oscuro",
     "main_navigation": "Navegación Principal"
   },
   "footer": {
     "privacyAndTerms": "Privacidad y Términos"
   },
   "generation": {
-    "Gen1": "Generación 1",
-    "Gen2": "Generación 2",
-    "Gen3": "Generación 3",
-    "Gen4": "Generación 4",
-    "Gen5": "Generación 5",
-    "Gen6": "Generación 6",
-    "Gen7": "Generación 7",
-    "Gen8": "Generación 8",
-    "Gen9": "Generación 9"
+    "Gen1": "Gen 1",
+    "Gen2": "Gen 2",
+    "Gen3": "Gen 3",
+    "Gen4": "Gen 4",
+    "Gen5": "Gen 5",
+    "Gen6": "Gen 6",
+    "Gen7": "Gen 7",
+    "Gen8": "Gen 8",
+    "Gen9": "Gen 9"
   },
   "evolution": {
     "stage1": "Sin evolución/Primera etapa",
@@ -143,15 +156,15 @@
     "level-location": "Subir nivel en ubicación específica",
     "level-time": "Subir nivel en momento específico",
     "level-holding-item": "Subir nivel sosteniendo un objeto",
-    "level-gender": "Subir nivel con género específico",
+    "level-gender": "Subir de nivel con un sexo específico",
     "level-version": "Subir nivel en versión específica del juego",
     "level-unique": "Subir nivel con condiciones especiales",
     "item-stone-fire": "Usar Piedra Fuego",
     "item-stone-water": "Usar Piedra Agua",
     "item-stone-thunder": "Usar Piedra Trueno",
     "item-stone-leaf": "Usar Piedra Hoja",
-    "item-stone-sun": "Usar Piedra Sol",
-    "item-stone-moon": "Usar Piedra Luna",
+    "item-stone-sun": "Usar Piedra Solar",
+    "item-stone-moon": "Usar Piedra Lunar",
     "item-stone-shiny": "Usar Piedra Día",
     "item-stone-dusk": "Usar Piedra Noche",
     "item-stone-dawn-male": "Macho usa Piedra Alba",
@@ -166,14 +179,14 @@
   "tags": {
     "starter": "Pokémon inicial",
     "legendary": "Legendario",
-    "mythical": "Mítico",
+    "mythical": "Singular",
     "fossil": "Fósil",
-    "regional": "Forma Regional",
-    "has-mega": "Tiene Mega Evolución",
-    "has-gmax": "Tiene Gigantamax",
+    "regional": "Tiene formas regionales",
+    "has-mega": "Puede megaevolucionar",
+    "has-gmax": "Tiene una forma Gigamax",
     "ultra": "Ultraente",
     "paradox": "Pokémon Paradoja",
-    "late": "Late Bloomer"
+    "late": "Pokémon pseudolegendario"
   },
   "privacyAndTerms": {
     "title": "Política de Privacidad y Términos de Servicio",
@@ -258,5 +271,14 @@
     "decline": "Rechazar",
     "close": "Cerrar",
     "privacyAndTerms": "Política de Privacidad y Términos de Servicio"
+  },
+  "knowledge": {
+    "title": "Base de conocimientos",
+    "description": "Explora las formas, evoluciones y generaciones de los Pokémon y aprende a interpretar las pistas de Poke Wordle.",
+    "comingSoon": "¡Próximamente! Estamos preparando artículos para ayudarte a reconocer mejor a los Pokémon.",
+    "readMore": "Leer más",
+    "randomPrefix": "Preguntas Pokémon: ",
+    "seoTitle": "Guías Pokémon y consejos para adivinar - Poke Wordle",
+    "relatedArticles": "Artículos relacionados"
   }
 }
