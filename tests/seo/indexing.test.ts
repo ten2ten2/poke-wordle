@@ -7,7 +7,7 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { once } from 'node:events';
 import { routing, localePath } from '@/i18n/routing';
 import { absoluteUrl, SITE_URL, SITE_NAME } from '@/config/seo';
-import { knowledgeData, knowledgeArticlePath, KNOWLEDGE_SUPPORTED_LOCALES } from '@/config/knowledge';
+import { knowledgeData, knowledgeArticlePath } from '@/config/knowledge';
 import redirects from '@/data/knowledge-redirects.json';
 
 interface Response { status: number; headers: IncomingHttpHeaders; body: string }
@@ -19,9 +19,9 @@ const pages = new Map<string, Promise<Document>>();
 const requests = new Map<string, Promise<Response>>();
 const paths = [
   ...routing.locales.flatMap((locale) => [localePath(locale), localePath(locale, '/privacy-and-terms')]),
-  ...KNOWLEDGE_SUPPORTED_LOCALES.flatMap((locale) => [localePath(locale, '/knowledge'), ...knowledgeData[locale].map((article) => knowledgeArticlePath(locale, article.slug))]),
+  ...routing.locales.flatMap((locale) => [localePath(locale, '/knowledge'), ...knowledgeData[locale].map((article) => knowledgeArticlePath(locale, article.slug))]),
 ];
-const articleEntries = KNOWLEDGE_SUPPORTED_LOCALES.flatMap((locale) => knowledgeData[locale].map((article) => ({ locale, article, path: knowledgeArticlePath(locale, article.slug) })));
+const articleEntries = routing.locales.flatMap((locale) => knowledgeData[locale].map((article) => ({ locale, article, path: knowledgeArticlePath(locale, article.slug) })));
 const localURL = (url: string) => {
   const parsed = new URL(url, SITE_URL);
   return parsed.origin === SITE_URL ? new URL(parsed.pathname + parsed.search, baseURL).href : parsed.href;

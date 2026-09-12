@@ -58,8 +58,8 @@ test('article links use translated slugs and fall back to the archive when a tra
     translations: { 'zh-hans': { slug: '形态差异' } },
   };
   jest.mocked(usePathname).mockReturnValue('/knowledge/example');
-  await act(async () => { render(<LanguageSwitcher isOpen onClose={onClose} currentArticle={article} availableLocales={['en', 'ja', 'zh-hans']} />); });
-  expect(screen.getAllByRole('link')).toHaveLength(3);
+  await act(async () => { render(<LanguageSwitcher isOpen onClose={onClose} currentArticle={article} />); });
+  expect(screen.getAllByRole('link')).toHaveLength(9);
   expect(screen.getByRole('link', { name: 'Switch to 简体中文' })).toHaveAttribute('href', `/zh-hans/knowledge/${encodeURIComponent('形态差异')}`);
   expect(screen.getByRole('link', { name: 'Switch to 日本語' })).toHaveAttribute('href', '/ja/knowledge');
   expect(screen.getByRole('link', { name: 'Switch to English' })).toHaveAttribute('href', '/knowledge/example');

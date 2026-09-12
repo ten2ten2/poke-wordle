@@ -42,17 +42,7 @@
 @source "../data/knowledge";
 
 @theme {
-  --breakpoint-xs: 29.6875rem;
-  --animate-fade-in: fade-in 0.3s ease-in-out;
   --animate-slide-up: slide-up 0.3s ease-out;
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
   @keyframes slide-up {
     from {
       transform: translateY(10px);
@@ -66,8 +56,6 @@
 }
 
 @custom-variant mobile (@media (width < 48rem));
-@custom-variant tablet (@media (48rem <= width < 64rem));
-@custom-variant desktop (@media (width >= 64rem));
 
 @layer base {
   html {
@@ -106,9 +94,6 @@
 }
 @utility min-h-screen-safe {
   min-height: 100svh;
-}
-@utility text-responsive-2xl {
-  @apply text-2xl sm:text-3xl lg:text-4xl;
 }
 
 @utility tag {
@@ -161,28 +146,8 @@
   @apply text-sm sm:text-base;
 }
 
-@utility text-responsive-base {
-  @apply text-base sm:text-lg;
-}
-
-@utility text-responsive-lg {
-  @apply text-lg sm:text-xl lg:text-2xl;
-}
-
-@utility text-responsive-xl {
-  @apply text-xl sm:text-2xl lg:text-3xl;
-}
-
 @utility loading-spinner {
   @apply animate-spin rounded-full border-2 border-control border-t-accent;
-}
-
-@utility scrollbar-hide {
-  scrollbar-width: none;
-}
-
-@utility mobile-hidden {
-  @apply mobile:hidden;
 }
 
 @utility safe-bottom {

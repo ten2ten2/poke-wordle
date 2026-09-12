@@ -4,18 +4,15 @@ import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { ArrowRightIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { type KnowledgeArticle, isKnowledgeSupported, knowledgeData } from '@/config/knowledge';
+import type { KnowledgeArticle } from '@/config/knowledge';
+import { localePath } from '@/i18n/routing';
 import { useHydrated } from '@/hooks/useHydrated';
 
-export default function RandomKnowledge() {
+type ArticlePreview = Pick<KnowledgeArticle, 'id' | 'title' | 'slug'>;
+
+export default function RandomKnowledge({ articles }: { articles: ArticlePreview[] }) {
   const locale = useLocale();
   const hydrated = useHydrated();
-
-  if (!isKnowledgeSupported(locale)) {
-    return null;
-  }
-
-  const articles = knowledgeData[locale];
 
   if (articles.length === 0) {
     return null;
@@ -25,16 +22,13 @@ export default function RandomKnowledge() {
   return <KnowledgeBanner key={`${locale}-${hydrated}`} articles={articles} randomize={hydrated} />;
 }
 
-function KnowledgeBanner({ articles, randomize }: { articles: KnowledgeArticle[]; randomize: boolean }) {
+function KnowledgeBanner({ articles, randomize }: { articles: ArticlePreview[]; randomize: boolean }) {
   const locale = useLocale();
   const t = useTranslations();
   const [article] = useState(() => articles[randomize ? Math.floor(Math.random() * articles.length) : 0]);
 
   const encodedSlug = encodeURIComponent(article.slug);
-  const href =
-    locale === 'en'
-      ? `/knowledge/${encodedSlug}`
-      : `/${locale}/knowledge/${encodedSlug}`;
+  const href = localePath(locale, `/knowledge/${encodedSlug}`);
 
   return (
     <div className="container-responsive w-full py-2">

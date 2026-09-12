@@ -2,7 +2,7 @@
 
 import { datasetVersion } from '@/config/dataset';
 import dynamic from 'next/dynamic';
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef, type ReactNode } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useGameState } from '@/hooks/useGameState';
@@ -12,18 +12,17 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import GameInput from '@/components/GameInput';
 import GuessTable from '@/components/GuessTable';
-import RandomKnowledge from '@/components/RandomKnowledge';
 import { ColorLegend } from '@/components/StatusTag';
 import { useHydrated } from '@/hooks/useHydrated';
 
 const GameOverModal = dynamic(() => import('./GameOverModal'), { ssr: false });
 
-export default function GameClient() {
+export default function GameClient({ children }: { children: ReactNode }) {
   const hydrated = useHydrated();
-  return <Game key={hydrated ? 'restored' : 'initial'} ready={hydrated} />;
+  return <Game key={hydrated ? 'restored' : 'initial'} ready={hydrated}>{children}</Game>;
 }
 
-function Game({ ready }: { ready: boolean }) {
+function Game({ ready, children }: { ready: boolean; children: ReactNode }) {
   const locale = useLocale();
   const t = useTranslations();
   const {
@@ -178,7 +177,7 @@ function Game({ ready }: { ready: boolean }) {
         currentSettings={gameState.settings}
       />
 
-      <RandomKnowledge />
+      {children}
 
       <main className="w-full flex-1 container-responsive section-padding">
         <h1 className="sr-only">{t('title')}</h1>
@@ -249,7 +248,7 @@ function Game({ ready }: { ready: boolean }) {
           </section>
           {gameState.targetPokemon && gameState.isGameOver && (
             <section
-              className="text-center animate-bounce-subtle"
+              className="card p-4 text-center"
               aria-labelledby="game-status-heading"
               aria-live="assertive"
             >
@@ -257,12 +256,12 @@ function Game({ ready }: { ready: boolean }) {
                 {t('game.statusSection')}
               </h2>
               {gameState.isWon ? (
-                <p className="text-responsive-lg font-bold text-success">
+                <p className="text-base font-semibold text-success sm:text-lg">
                   {t('game.gameWon')}
                 </p>
               ) : (
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-                  <p className="text-responsive-lg font-bold text-danger">
+                  <p className="text-base font-semibold text-danger sm:text-lg">
                     {t('game.gameLost', {
                       pokemon: translateText(gameState.targetPokemon.name, locale),
                     })}

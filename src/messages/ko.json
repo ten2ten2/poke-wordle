@@ -16,9 +16,6 @@
     "betterLuckNextTime": "다음에 더 잘하세요!",
     "guessedIn": "{count}번 만에 맞추셨습니다",
     "playAgain": "다시 하기",
-    "startPrompt": "포켓몬 이름을 입력하거나 \"랜덤 추측\"을 클릭하여 시작하세요!",
-    "languageChanged": "언어 변경됨",
-    "languageChangedDesc": "언어가 변경되었습니다. 포켓몬 데이터가 새 언어로 업데이트되었습니다. 게임을 계속하려면 새 게임을 시작해주세요.",
     "settingsChanged": "설정 변경됨",
     "settingsChangedDesc": "게임 설정이 변경되었습니다. 현재 게임이 새 설정에 맞게 재설정되었습니다. 게임을 계속하려면 새 게임을 시작해주세요.",
     "inputSection": "게임 입력 영역",
@@ -29,6 +26,8 @@
     "guessesUsed": "사용한 추측 횟수",
     "result": "결과",
     "defeat": "패배",
+    "victory": "승리",
+    "baseStatsTotal": "종족값 합계",
     "columns": {
       "type": "타입",
       "baseStats": "종족값",
@@ -57,7 +56,6 @@
   "settings": {
     "title": "설정",
     "maxGuesses": "최대 추측 횟수",
-    "times": "번",
     "generationSelection": "세대 선택",
     "selectAll": "모두 선택",
     "deselectAll": "모두 해제",

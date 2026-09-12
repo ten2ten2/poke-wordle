@@ -3,6 +3,7 @@
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import { useHydrated } from '@/hooks/useHydrated';
+import { localePath } from '@/i18n/routing';
 
 export default function Footer() {
   const t = useTranslations();
@@ -10,27 +11,22 @@ export default function Footer() {
   // Read the year after hydration so prerendered pages stay correct across years.
   const currentYear = useHydrated() ? new Date().getFullYear() : 2025;
 
-  const prefix = locale === 'en' ? '' : `/${locale}`;
-
   return (
     <footer className="bg-surface border-t border-line mt-auto safe-bottom">
       <div className="container-responsive">
         <div className="py-2 pl-1 pr-2 sm:py-3 sm:pl-2 sm:pr-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4">
-            {/* Copyright */}
             <div className="text-center sm:text-left">
               <p className="text-responsive-sm text-muted">
                 © 2025{currentYear > 2025 ? `–${currentYear}` : ''} pokewordle.app
               </p>
             </div>
-            
-            {/* Links */}
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-              <Link href={`${prefix}/knowledge`} title={t('knowledge.title')} className="footer-link">
+              <Link href={localePath(locale, '/knowledge')} title={t('knowledge.title')} className="footer-link">
                 {t('knowledge.title')}
               </Link>
               <Link
-                href={`${prefix}/privacy-and-terms`}
+                href={localePath(locale, '/privacy-and-terms')}
                 title={t('footer.privacyAndTerms')}
                 className="footer-link"
               >

@@ -28,7 +28,7 @@ run = "npm run typecheck"
 run = "npm test -- --runInBand"
 
 [tasks.e2e]
-run = "npm run test:e2e"
+run = "npm run test:e2e --"
 
 [tasks.check]
 depends = ["data:check", "knowledge:check"]

@@ -1,13 +1,11 @@
 'use client';
 
-import { DialogTitle } from '@headlessui/react';
-import Modal from './Modal';
-import { useTranslations } from 'next-intl';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import { Pokemon } from '@/types/pokemon';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
-import { translateText, getWikiUrl } from '@/lib/pokemon';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { getWikiUrl, translateText } from '@/lib/pokemon';
+import type { Pokemon } from '@/types/pokemon';
+import Modal, { ModalHeader } from './Modal';
 
 interface GameOverModalProps {
   isOpen: boolean;
@@ -33,223 +31,97 @@ export default function GameOverModal({
 
   if (!targetPokemon) return null;
 
+  const name = translateText(targetPokemon.name, locale);
+  const details = [
+    { label: t('game.columns.generation'), value: t(`generation.Gen${targetPokemon.generation}`) },
+    { label: t('game.baseStatsTotal'), value: targetPokemon.base_stats_total },
+    { label: t('game.columns.evolution'), value: t(`evolution.stage${targetPokemon.evolution_stage}`) },
+    ...(targetPokemon.evolution_method_detail ? [{
+      label: t('game.evolutionMethod'),
+      value: t(`evolutionMethods.${targetPokemon.evolution_method_detail}`),
+    }] : []),
+  ];
+  const tagGroups = [
+    { label: t('game.columns.abilities'), values: targetPokemon.abilities.map((ability) => translateText(ability, locale)), className: 'bg-info-bg text-info' },
+    { label: t('game.columns.tags'), values: targetPokemon.tags?.map((tag) => t(`tags.${tag}`)) ?? [], className: 'bg-special-bg text-special' },
+  ];
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} className="max-w-md">
-      <div className="card-padding">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <DialogTitle
-            as="h3"
-            className="text-responsive-xl font-bold text-foreground"
-          >
-            {isWon ? t('game.congratulations') : t('game.gameOver')}
-          </DialogTitle>
-          <button
-            type="button"
-            className="btn-icon"
-            onClick={onClose}
-            aria-label={t('common.close')}
-            title={t('common.close')}
-          >
-            <XMarkIcon aria-hidden="true" />
-          </button>
-        </div>
+      <div className="card-padding space-y-5 text-foreground">
+        <ModalHeader title={isWon ? t('game.congratulations') : t('game.gameOver')} onClose={onClose} />
 
-        {/* Pokemon Display */}
-        <div className="text-center mb-6">
-          <div className="flex justify-center mb-4">
-            <div className="relative w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40">
-              <Image
-                src={targetPokemon.profile}
-                alt={translateText(targetPokemon.name, locale)}
-                fill
-                className="object-contain"
-                sizes="(max-width: 640px) 96px, (max-width: 1024px) 128px, 160px"
-                loading="eager"
-              />
-            </div>
-          </div>
-
-          <h4 className="text-responsive-lg font-bold text-foreground mb-2">
+        <div className="space-y-3 text-center">
+          <Image
+            src={targetPokemon.profile}
+            alt={name}
+            width={160}
+            height={160}
+            className="mx-auto size-32 object-contain sm:size-40"
+            sizes="(max-width: 640px) 128px, 160px"
+            loading="eager"
+          />
+          <h3 className="text-xl font-semibold [overflow-wrap:anywhere] sm:text-2xl">
             <a
-              href={getWikiUrl(
-                translateText(targetPokemon.name, locale),
-                locale,
-              )}
+              href={getWikiUrl(name, locale)}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:underline"
-              title={translateText(targetPokemon.name, locale)}
+              title={name}
             >
-              {translateText(targetPokemon.name, locale)}{' '}
-              <svg
-                className="w-4 h-4 inline-block"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                ></path>
-              </svg>
+              {name}{' '}
+              <ArrowTopRightOnSquareIcon aria-hidden="true" className="inline-block size-4" />
             </a>
-          </h4>
-
-          {/* Types with colors */}
-          <div className="flex flex-wrap justify-center gap-2 mb-4">
-            {targetPokemon.types.map((type, index) => (
-              <span
-                key={index}
-                className="pokemon-type px-3 py-1 rounded-full text-sm font-medium"
-                data-type={type.toLowerCase()}
-              >
-                {translateText(type, locale)}
+          </h3>
+          <div className="flex flex-wrap justify-center gap-2">
+            {targetPokemon.types.map((type) => (
+              <span key={type} className="tag pokemon-type max-w-full" data-type={type.toLowerCase()}>
+                <span className="tag-label">{translateText(type, locale)}</span>
               </span>
             ))}
           </div>
+        </div>
 
-          {/* Pokemon Details */}
-          <div className="bg-subtle rounded-lg p-4 mb-4 text-left">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Generation */}
-              <div>
-                <div className="text-sm font-medium text-muted mb-1">
-                  {t('game.columns.generation')}
-                </div>
-                <div className="text-base font-semibold text-foreground">
-                  {t(`generation.Gen${targetPokemon.generation}`)}
-                </div>
-              </div>
-
-              {/* Base Stats Total */}
-              <div>
-                <div className="text-sm font-medium text-muted mb-1">
-                  {t('game.columns.baseStats')}
-                </div>
-                <div className="text-base font-semibold text-foreground">
-                  {targetPokemon.base_stats_total}
-                </div>
-              </div>
-
-              {/* Evolution Stage */}
-              <div>
-                <div className="text-sm font-medium text-muted mb-1">
-                  {t('game.columns.evolution')}
-                </div>
-                <div className="text-base font-semibold text-foreground">
-                  {t(`evolution.stage${targetPokemon.evolution_stage}`)}
-                </div>
-              </div>
-
-              {/* Evolution Method */}
-              {targetPokemon.evolution_method_detail && (
-                <div>
-                  <div className="text-sm font-medium text-muted mb-1">
-                    {t('game.evolutionMethod')}
-                  </div>
-                  <div className="text-base font-semibold text-foreground">
-                    {t(
-                      `evolutionMethods.${targetPokemon.evolution_method_detail}`,
-                    )}
-                  </div>
-                </div>
-              )}
+        <dl className="grid grid-cols-2 gap-4 rounded-xl bg-subtle p-4 text-sm">
+          {details.map(({ label, value }) => (
+            <div key={label} className="min-w-0 [overflow-wrap:anywhere] hyphens-auto">
+              <dt className="mb-1 text-muted">{label}</dt>
+              <dd className="font-medium">{value}</dd>
             </div>
-
-            {/* Abilities */}
-            <div className="mt-4">
-              <div className="text-sm font-medium text-muted mb-2">
-                {t('game.columns.abilities')}
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {targetPokemon.abilities.map((ability, index) => (
-                  <span
-                    key={index}
-                    className="px-2 py-1 bg-info-bg text-info rounded text-sm"
-                  >
-                    {translateText(ability, locale)}
+          ))}
+          {tagGroups.filter(({ values }) => values.length > 0).map(({ label, values, className }) => (
+            <div key={label} className="col-span-2 min-w-0">
+              <dt className="mb-2 text-muted">{label}</dt>
+              <dd className="flex flex-wrap gap-2">
+                {values.map((value) => (
+                  <span key={value} className={`tag max-w-full text-left ${className}`}>
+                    <span className="tag-label">{value}</span>
                   </span>
                 ))}
-              </div>
+              </dd>
             </div>
+          ))}
+        </dl>
 
-            {/* Tags */}
-            {targetPokemon.tags && targetPokemon.tags.length > 0 && (
-              <div className="mt-4">
-                <div className="text-sm font-medium text-muted mb-2">
-                  {t('game.columns.tags')}
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {targetPokemon.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="px-2 py-1 bg-special-bg text-special rounded text-sm"
-                    >
-                      {t(`tags.${tag}`)}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
+        <dl className="grid grid-cols-2 gap-4 rounded-xl bg-subtle p-4 text-center [overflow-wrap:anywhere]">
+          <div className="min-w-0">
+            <dt className="text-sm text-muted">{t('game.guessesUsed')}</dt>
+            <dd className="mt-1 text-lg font-semibold tabular-nums">{guessCount} / {maxGuesses}</dd>
           </div>
-        </div>
-
-        {/* Game Stats */}
-        <div className="bg-subtle rounded-lg p-4 mb-6">
-          <div className="grid grid-cols-2 gap-4 text-center">
-            <div>
-              <div className="text-responsive-sm text-muted">
-                {t('game.guessesUsed')}
-              </div>
-              <div className="text-responsive-lg font-bold text-foreground">
-                {guessCount} / {maxGuesses}
-              </div>
-            </div>
-            <div>
-              <div className="text-responsive-sm text-muted">
-                {t('game.result')}
-              </div>
-              <div
-                className={`text-responsive-lg font-bold ${
-                  isWon ? 'text-success' : 'text-danger'
-                }`}
-              >
-                {isWon ? t('game.gameWon') : t('game.defeat')}
-              </div>
-            </div>
+          <div className="min-w-0">
+            <dt className="text-sm text-muted">{t('game.result')}</dt>
+            <dd className={`mt-1 text-lg font-semibold ${isWon ? 'text-success' : 'text-danger'}`}>
+              {isWon ? t('game.victory') : t('game.defeat')}
+            </dd>
           </div>
-        </div>
+        </dl>
 
-        {/* Result Message */}
-        <div className="text-center mb-6">
-          {isWon ? (
-            <p className="text-responsive-base text-secondary">
-              {guessCount === 1
-                ? t('game.guessedIn', { count: 1 })
-                : t('game.guessedIn', { count: guessCount })}
-            </p>
-          ) : (
-            <p className="text-responsive-base text-secondary">
-              {t('game.betterLuckNextTime')}
-            </p>
-          )}
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-          <button
-            type="button"
-            onClick={onRestart}
-            title={t('game.playAgain')}
-            className="btn-primary flex-1"
-          >
-            {t('game.playAgain')}
-          </button>
-        </div>
+        <p className="text-center text-sm text-secondary">
+          {isWon ? t('game.guessedIn', { count: guessCount }) : t('game.betterLuckNextTime')}
+        </p>
+        <button type="button" onClick={onRestart} title={t('game.playAgain')} className="btn-primary w-full">
+          {t('game.playAgain')}
+        </button>
       </div>
     </Modal>
   );

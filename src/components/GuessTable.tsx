@@ -42,7 +42,7 @@ const GuessTable = memo(function GuessTable({ guesses, order = 'reverse' }: {
           guess.fieldToHide === 'tags' ? hidden(guess) : guess.tags.map((tag) => <StatusTag key={tag.value} status={tag.status}>{t(`tags.${tag.value}`)}</StatusTag>),
         ];
         return (
-          <article key={`${guess.name}-${index}`} className="guess-table-card" data-latest={latest || undefined} aria-label={`${t('game.guessNumber', { number })}: ${name}`}>
+          <article key={`${guess.name}-${number}`} className="guess-table-card" data-latest={latest || undefined} aria-label={`${t('game.guessNumber', { number })}: ${name}`}>
             <header className="guess-identity">
               <span className="guess-number" aria-hidden="true">{number}</span>
               {guess.profile ? <Image src={guess.profile} alt={name} width={96} height={96} className="size-20 sm:size-24 shrink-0 object-contain" loading={latest ? 'eager' : 'lazy'} /> : <Pokeball className="size-20 sm:size-24 shrink-0" />}

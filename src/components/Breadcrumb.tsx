@@ -1,10 +1,9 @@
-'use client';
-
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/20/solid';
 import JsonLd from '@/components/mdx/JsonLd';
 import { absoluteUrl } from '@/config/seo';
+import { localePath } from '@/i18n/routing';
 
 export interface BreadcrumbItem {
   label: string;
@@ -21,8 +20,7 @@ export default function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
   const t = useTranslations();
   const locale = useLocale();
 
-  // Generate the correct href for home page
-  const homeHref = locale === 'en' ? '/' : `/${locale}`;
+  const homeHref = localePath(locale);
 
   return (
     <>
@@ -35,26 +33,24 @@ export default function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
       }} />
       <nav
         className={`flex ${className}`}
-        aria-label={t('common.breadcrumb', { defaultValue: 'Breadcrumb' })}
+        aria-label={t('common.breadcrumb')}
       >
         <ol role="list" className="flex flex-wrap items-center gap-y-2 space-x-2">
-          {/* Home link */}
           <li>
             <div>
               <Link
                 href={homeHref}
                 className="text-muted hover:text-muted transition-colors duration-200"
-                title={t('common.home', { defaultValue: 'Home' })}
+                title={t('common.home')}
               >
                 <HomeIcon className="h-5 w-5 shrink-0" aria-hidden="true" />
                 <span className="sr-only">
-                  {t('common.home', { defaultValue: 'Home' })}
+                  {t('common.home')}
                 </span>
               </Link>
             </div>
           </li>
 
-          {/* Breadcrumb items */}
           {items.map((item, index) => (
             <li key={index}>
               <div className="flex items-center">
@@ -67,7 +63,6 @@ export default function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
                     href={item.href}
                     title={item.label}
                     className="ml-2 text-sm font-medium text-muted hover:text-secondary transition-colors duration-200"
-                    aria-current={item.current ? 'page' : undefined}
                   >
                     {item.label}
                   </Link>

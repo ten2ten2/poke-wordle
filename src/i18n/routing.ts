@@ -8,6 +8,8 @@ export const routing = defineRouting({
   alternateLinks: false,
 });
 
+export type Locale = (typeof routing.locales)[number];
+
 export function localePath(locale: string, path = '/') {
   return locale === 'en' ? path : `/${locale}${path === '/' ? '' : path}`;
 }

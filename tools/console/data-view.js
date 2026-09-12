@@ -59,15 +59,20 @@ export function createDataBrowser({ api, notify }) {
   function filtered() {
     const query = searchText($('data-search').value.trim());
     const terms = query.split(/\s+/).filter(Boolean);
+    const generation = $('data-generation').value;
+    const type = $('data-type').value;
+    const tag = $('data-tag').value;
+    const kind = $('data-kind').value;
+    const dex = /^#?\d+$/.test(query) ? Number(query.replace('#', '')) : null;
     return state.rows[state.tab].filter((item) => {
       if (state.tab === 'pokemon') {
         const row = item.row;
-        if ($('data-generation').value !== 'all' && String(row.generation) !== $('data-generation').value) return false;
-        if ($('data-type').value !== 'all' && !row.types.includes($('data-type').value)) return false;
-        if ($('data-tag').value !== 'all' && !row.tags?.includes($('data-tag').value)) return false;
-        if (/^#?\d+$/.test(query)) return row.pokedex_id_national === Number(query.replace('#', ''));
+        if (generation !== 'all' && String(row.generation) !== generation) return false;
+        if (type !== 'all' && !row.types.includes(type)) return false;
+        if (tag !== 'all' && !row.tags?.includes(tag)) return false;
+        if (dex !== null) return row.pokedex_id_national === dex;
       }
-      if (state.tab === 'translations' && $('data-kind').value !== 'all' && item.kind !== $('data-kind').value) return false;
+      if (state.tab === 'translations' && kind !== 'all' && item.kind !== kind) return false;
       return terms.every((term) => item.search.includes(term));
     });
   }
@@ -161,7 +166,11 @@ export function createDataBrowser({ api, notify }) {
   $('data-next').addEventListener('click', () => { state.page++; render(); });
   for (const button of document.querySelectorAll('[data-collection]')) button.addEventListener('click', () => { state.tab = button.dataset.collection; state.page = 0; $('data-search').value = ''; render(); });
   for (const id of ['data-search', 'data-generation', 'data-type', 'data-tag', 'data-kind']) $(id).addEventListener('input', () => { state.page = 0; render(); });
-  $('data-locale').addEventListener('change', () => { if (state.snapshot) { prepare(); render(); } });
+  $('data-locale').addEventListener('change', () => {
+    if (!state.snapshot) return;
+    for (const option of $('data-type').options) if (option.value !== 'all') option.textContent = label(option.value);
+    render();
+  });
   $('data-reset').addEventListener('click', () => {
     $('data-search').value = '';
     for (const id of ['data-generation', 'data-type', 'data-tag', 'data-kind']) $(id).value = 'all';

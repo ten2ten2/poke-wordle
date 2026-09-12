@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
-import { localePath, routing } from '@/i18n/routing';
+import { localePath, routing, type Locale } from '@/i18n/routing';
 
 export const SITE_URL = 'https://www.pokewordle.app';
 export const SITE_NAME = 'Poke Wordle';
-export type SiteLocale = (typeof routing.locales)[number];
 
-const ogLocales: Record<SiteLocale, string> = {
+const ogLocales: Record<Locale, string> = {
   en: 'en_US', ja: 'ja_JP', fr: 'fr_FR', de: 'de_DE', it: 'it_IT',
   es: 'es_ES', ko: 'ko_KR', 'zh-hans': 'zh_CN', 'zh-hant': 'zh_TW',
 };
@@ -22,7 +21,7 @@ export const websiteSchema = {
   inLanguage: [...routing.locales],
 };
 
-const shareImageAlt: Record<SiteLocale, string> = {
+const shareImageAlt: Record<Locale, string> = {
   en: 'Poke Wordle gameplay showing a Pokémon guess and attribute clues.',
   ja: 'ポケワードルのプレイ画面。回答したポケモンと属性のヒント。',
   fr: 'Partie de Poke Wordle avec un Pokémon proposé et les indices de ses attributs.',
@@ -41,15 +40,15 @@ function twitterHandle(value: string | undefined) {
   return handle;
 }
 
-export function pageAlternates(path: string, locales: readonly string[] = routing.locales) {
+export function pageAlternates(path: string) {
   return Object.fromEntries([
-    ...locales.map((locale) => [locale, localePath(locale, path)]),
+    ...routing.locales.map((locale) => [locale, localePath(locale, path)]),
     ['x-default', localePath('en', path)],
   ]);
 }
 
 interface PageMetadata {
-  locale: SiteLocale;
+  locale: Locale;
   title: string;
   description: string;
   path: string;
@@ -67,7 +66,7 @@ export function pageMetadata({ locale, title, description, path, languages, imag
     images, locale: ogLocales[locale],
     alternateLocale: Object.keys(languages)
       .filter((language) => language !== locale && language in ogLocales)
-      .map((language) => ogLocales[language as SiteLocale]),
+      .map((language) => ogLocales[language as Locale]),
   };
   return {
     title, description,
@@ -135,7 +134,7 @@ export const homeMetadata = {
     description:
       '用寶可夢猜猜樂測試你的寶可夢知識！根據屬性、數值、特性、進化等資訊猜出寶可夢。',
   },
-} satisfies Record<SiteLocale, { title: string; description: string }>;
+} satisfies Record<Locale, { title: string; description: string }>;
 
 export const privacyMetadata = {
   en: {
@@ -174,4 +173,4 @@ export const privacyMetadata = {
     title: '隱私政策與服務條款 - 寶可夢猜猜樂',
     description: '閱讀寶可夢猜猜樂的隱私政策和服務條款。了解我們如何保護您的資料、收集的資訊以及遊戲使用政策。我們重視您的隱私。',
   },
-} satisfies Record<SiteLocale, { title: string; description: string }>;
+} satisfies Record<Locale, { title: string; description: string }>;

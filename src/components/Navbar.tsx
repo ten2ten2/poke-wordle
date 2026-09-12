@@ -8,9 +8,9 @@ import {
   InformationCircleIcon,
   LanguageIcon,
 } from '@heroicons/react/24/outline';
-import { GameSettings } from '@/types/pokemon';
+import type { GameSettings } from '@/types/pokemon';
 import Link from 'next/link';
-import { KnowledgeArticle } from '@/config/knowledge';
+import type { KnowledgeArticle } from '@/config/knowledge';
 import Pokeball from './Pokeball';
 import ThemeToggle from './ThemeToggle';
 import { localePath } from '@/i18n/routing';
@@ -22,10 +22,9 @@ const LanguageSwitcher = dynamic(() => import('./LanguageSwitcher'), { ssr: fals
 interface NavbarProps {
   onSettingsChange?: (settings: GameSettings) => void;
   currentSettings?: GameSettings;
-  showAbout?: boolean; // 是否显示 About 按钮
-  showSettings?: boolean; // 是否显示设置按钮
-  availableLocales?: string[]; // 可用的语言列表
-  currentArticle?: KnowledgeArticle; // 当前知识文章（如果在文章页面）
+  showAbout?: boolean;
+  showSettings?: boolean;
+  currentArticle?: KnowledgeArticle;
 }
 
 export default function Navbar({
@@ -33,7 +32,6 @@ export default function Navbar({
   currentSettings,
   showAbout = true,
   showSettings = true,
-  availableLocales,
   currentArticle,
 }: NavbarProps) {
   const t = useTranslations();
@@ -48,7 +46,6 @@ export default function Navbar({
       <header className="bg-surface shadow-xs border-b border-line sticky top-0 z-40 safe-top">
         <nav
           className="container-responsive"
-          role="navigation"
           aria-label={t('navbar.main_navigation')}
         >
           <div className="flex justify-between items-center gap-1 sm:gap-2 h-16 pl-1 pr-2 sm:pl-2 sm:pr-6">
@@ -133,7 +130,6 @@ export default function Navbar({
       {isLanguageOpen !== null && <LanguageSwitcher
         isOpen={isLanguageOpen}
         onClose={() => setIsLanguageOpen(false)}
-        availableLocales={availableLocales}
         currentArticle={currentArticle}
       />}
     </>

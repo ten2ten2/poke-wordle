@@ -2,7 +2,7 @@ import '@/styles/globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
-import { setRequestLocale } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -42,6 +42,8 @@ export default async function LocaleLayout({
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
+  const messages = await getMessages();
+  const clientMessages = Object.fromEntries(Object.entries(messages).filter(([namespace]) => namespace !== 'privacyAndTerms'));
 
   return (
     <html lang={locale} className={inter.variable} suppressHydrationWarning>
@@ -50,7 +52,7 @@ export default async function LocaleLayout({
         <script src="/theme.js" async blocking="render" fetchPriority="high" />
       </head>
       <body>
-        <NextIntlClientProvider>
+        <NextIntlClientProvider messages={clientMessages}>
           {children}
           <CookieConsent />
           {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (

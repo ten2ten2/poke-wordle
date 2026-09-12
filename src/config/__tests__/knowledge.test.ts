@@ -1,5 +1,7 @@
 import { getArticleAlternates, findKnowledgeArticle, knowledgeData as knowledge } from '../knowledge';
 
+jest.unmock('next-intl');
+
 jest.mock('@/data/knowledge_data.json', () => {
   const slugs = { en: 'test-article', ja: 'テスト記事', 'zh-hans': '测试文章', 'zh-hant': '測試文章' };
   return Object.fromEntries(Object.entries(slugs).map(([locale, slug]) => [locale, [{

@@ -16,9 +16,6 @@
     "betterLuckNextTime": "次回頑張って！",
     "guessedIn": "{count}回で正解しました",
     "playAgain": "もう一度",
-    "startPrompt": "ポケモン名を入力するか「ランダム推測」をクリックしてゲームを始めよう！",
-    "languageChanged": "言語が変更されました",
-    "languageChangedDesc": "言語が変更されました。ポケモンデータが新しい言語に更新されました。ゲームを続けるには新しいゲームを開始してください。",
     "settingsChanged": "設定が変更されました",
     "settingsChangedDesc": "ゲーム設定が変更されました。現在のゲームは新しい設定に合わせてリセットされました。ゲームを続けるには新しいゲームを開始してください。",
     "inputSection": "ゲーム入力エリア",
@@ -29,6 +26,8 @@
     "guessesUsed": "使用した推測回数",
     "result": "結果",
     "defeat": "敗北",
+    "victory": "勝利",
+    "baseStatsTotal": "種族値合計",
     "columns": {
       "type": "タイプ",
       "baseStats": "種族値",
@@ -57,7 +56,6 @@
   "settings": {
     "title": "設定",
     "maxGuesses": "最大推測回数",
-    "times": "回",
     "generationSelection": "世代選択",
     "selectAll": "すべて選択",
     "deselectAll": "すべて解除",

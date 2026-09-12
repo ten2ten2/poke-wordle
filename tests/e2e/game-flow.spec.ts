@@ -116,16 +116,19 @@ test('autocomplete supports keyboard selection', async ({ page }) => {
   await expect(page.locator('.guess-table-card')).toHaveCount(1);
 });
 
-test('guess ordering is persisted when settings change', async ({ page }) => {
+test('guess ordering persists without recreating existing cards', async ({ page }) => {
   await page.goto('/');
   await guess(page, 'Pikachu');
+  const firstGuess = await page.locator('.guess-table-card').first().elementHandle();
   await guess(page, 'Bulbasaur');
+  expect(await firstGuess!.evaluate((node) => node.isConnected)).toBe(true);
   await expect(page.locator('.guess-table-card').first()).toContainText(
     'Bulbasaur',
   );
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
   await page.getByRole('button', { name: /Normal Order/ }).click();
   await page.getByRole('button', { name: 'Save', exact: true }).click();
+  expect(await firstGuess!.evaluate((node) => node.isConnected)).toBe(true);
   await expect(page.locator('.guess-table-card').first()).toContainText(
     'Pikachu',
   );
@@ -171,6 +174,8 @@ test('winning reveals the answer and restart enables input', async ({
       .getByRole('heading', { name: 'Congratulations!', exact: true }),
   ).toBeVisible();
   await expect(page.getByRole('dialog')).toContainText('Charmander');
+  await expect(page.getByRole('dialog')).toContainText('You guessed it in 1 try.');
+  await expect(page.getByRole('dialog').getByText('Victory', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Play Again', exact: true }).click();
   await expect(page.getByRole('combobox')).toBeEnabled();
   await expect(page.locator('.guess-table-card')).toHaveCount(0);
@@ -189,7 +194,75 @@ test('giving up reveals the answer', async ({ page }) => {
   await page.getByRole('button', { name: 'Give Up', exact: true }).click();
   await page.getByRole('button', { name: 'Confirm', exact: true }).click();
   await expect(page.getByRole('dialog')).toContainText('Charmander');
+  await expect(page.getByRole('dialog').getByText('Defeat', { exact: true })).toBeVisible();
+  await page.getByRole('dialog').getByRole('button', { name: 'Close', exact: true }).click();
+  await expect(page.getByRole('region', { name: 'Game status section' })).toContainText('Game Over! The answer was Charmander');
 });
+
+test('revealing an answer without extra tags keeps the result usable', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate((targetPokemon) => {
+    const progress = JSON.parse(localStorage.getItem('poke-wordle-progress')!);
+    localStorage.setItem('poke-wordle-progress', JSON.stringify({ ...progress, targetPokemon }));
+  }, pokemon.find((p) => p.name === 'caterpie')!);
+  await page.reload();
+  await page.getByRole('button', { name: 'Give Up', exact: true }).click();
+  await page.getByRole('button', { name: 'Confirm', exact: true }).click();
+  const dialog = page.getByRole('dialog');
+  await expect(dialog.getByRole('link', { name: 'Caterpie', exact: true })).toBeVisible();
+  await expect(dialog.getByText('Tags', { exact: true })).toHaveCount(0);
+  await expect(dialog).toContainText('Defeat');
+  await dialog.getByRole('button', { name: 'Play Again', exact: true }).click();
+  await expect(page.getByRole('combobox')).toBeEnabled();
+});
+
+for (const theme of ['light', 'dark'] as const) {
+  test(`localized result cards fit in ${theme} mode`, async ({ page, isMobile }, testInfo) => {
+    test.setTimeout(90_000);
+    const errors: string[] = [];
+    page.on('pageerror', (error) => errors.push(error.message));
+    page.on('console', (message) => {
+      if (message.type() === 'error' && /MISSING_MESSAGE|INVALID_MESSAGE|hydrat/i.test(message.text())) errors.push(message.text());
+    });
+    await page.setViewportSize({ width: isMobile ? 320 : 1280, height: 1000 });
+    await page.goto('/');
+    for (const locale of ['en', 'ja', 'zh-hans', 'zh-hant', 'ko', 'fr', 'de', 'it', 'es']) {
+      const messages = JSON.parse(await readFile(`src/messages/${locale}.json`, 'utf8'));
+      await page.evaluate(({ target, settings, datasetVersion, theme }) => {
+        localStorage.setItem('poke-wordle-theme', theme);
+        localStorage.setItem('poke-wordle-progress', JSON.stringify({
+          datasetVersion, targetPokemon: target, guesses: [],
+          selectedGenerations: settings.selectedGenerations, isGameOver: false, isWon: false,
+        }));
+      }, { target: pokemon.find((p) => p.name === 'tyranitar')!, settings, datasetVersion, theme });
+      await page.goto(locale === 'en' ? '/' : `/${locale}`);
+      if (theme === 'dark') {
+        await page.getByRole('combobox').fill('Pikachu');
+        await page.getByRole('button', { name: messages.game.submit, exact: true }).click();
+        await expect(page.locator('.guess-table-card')).toHaveCount(1);
+      }
+      await page.getByRole('combobox').fill('Tyranitar');
+      await page.getByRole('button', { name: messages.game.submit, exact: true }).click();
+      const dialog = page.getByRole('dialog');
+      await expect(dialog.getByRole('heading', { name: messages.game.congratulations, exact: true })).toBeVisible();
+      await expect(dialog.getByText(messages.game.victory, { exact: true })).toBeVisible();
+      await expect(dialog).toContainText(theme === 'light' ? '1 / 10' : '2 / 10');
+      await expect(dialog.getByText(messages.game.baseStatsTotal, { exact: true })).toBeVisible();
+      await expect(dialog.getByText(messages.tags.late, { exact: true })).toBeVisible();
+      if (locale === 'en') await expect(dialog).toContainText(theme === 'light' ? 'You guessed it in 1 try.' : 'You guessed it in 2 tries.');
+      if (locale === 'fr') await expect(dialog).toContainText(theme === 'light' ? 'Vous avez trouvé en 1 essai.' : 'Vous avez trouvé en 2 essais.');
+      await expect(dialog.getByRole('heading', { level: 2 })).toHaveCSS('color', theme === 'light' ? 'rgb(17, 24, 39)' : 'rgb(229, 231, 235)');
+      const overflowing = await dialog.locator('dl, dt, dd, .tag, .tag-label').evaluateAll((nodes) => nodes
+        .filter((node) => node.scrollWidth > node.clientWidth + 1)
+        .map((node) => node.textContent));
+      expect(overflowing, `${locale} ${theme}`).toEqual([]);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      if (locale === 'fr' || locale === 'zh-hans') await page.screenshot({ path: testInfo.outputPath(`result-${locale}-${theme}.png`), fullPage: true });
+      await dialog.getByRole('button', { name: messages.common.close, exact: true }).click();
+    }
+    expect(errors).toEqual([]);
+  });
+}
 
 test('Korean results link to the Korean Pokemon Wiki', async ({ page }) => {
   await page.goto('/ko');

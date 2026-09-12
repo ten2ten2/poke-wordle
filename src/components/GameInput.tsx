@@ -31,26 +31,30 @@ export default function GameInput({ pokemon, onSubmit, onRandomStart, onGiveUp, 
   const submission = useRef(0);
   const choices = useMemo(() => pokemon.map((row) => ({
     id: row.id, name: row.name, profile: row.profile, pokedex_id_national: row.pokedex_id_national,
+    dex: String(row.pokedex_id_national),
     label: translateText(row.name, locale), aliases: pokemonSearchNames(row.name).map(normalize),
   })), [pokemon, locale]);
+  const dexChoices = useMemo(() => choices.toSorted((a, b) => a.pokedex_id_national - b.pokedex_id_national), [choices]);
   const query = normalize(input);
   const dexPrefix = /^#?\d+$/.test(query) ? String(Number(query.replace('#', ''))) : null;
   const matches = useMemo(() => {
     if (!query) return [];
-    return choices.filter((row) => dexPrefix !== null
-      ? String(row.pokedex_id_national).startsWith(dexPrefix)
-      : row.aliases.some((name) => name.includes(query)))
-      .sort((a, b) => dexPrefix !== null
-        ? Number(String(b.pokedex_id_national) === dexPrefix) - Number(String(a.pokedex_id_national) === dexPrefix) || a.pokedex_id_national - b.pokedex_id_national
-        : Number(b.aliases.includes(query)) - Number(a.aliases.includes(query)));
-  }, [choices, query, dexPrefix]);
+    const exact: typeof choices = [];
+    const partial: typeof choices = [];
+    for (const row of dexPrefix === null ? choices : dexChoices) {
+      if (!(dexPrefix === null ? row.aliases.some((name) => name.includes(query)) : row.dex.startsWith(dexPrefix))) continue;
+      const isExact = dexPrefix === null ? row.aliases.includes(query) : row.dex === dexPrefix;
+      (isExact ? exact : partial).push(row);
+    }
+    return exact.concat(partial);
+  }, [choices, dexChoices, query, dexPrefix]);
   const suggestions = matches.slice(0, 12);
   const blocked = disabled || pending;
 
   async function submit() {
     if (blocked || gameOver || !query || composing.current) return;
     const request = ++submission.current;
-    const exact = choices.filter((row) => dexPrefix !== null ? String(row.pokedex_id_national) === dexPrefix : row.aliases.includes(query));
+    const exact = choices.filter((row) => dexPrefix !== null ? row.dex === dexPrefix : row.aliases.includes(query));
     const name = exact.length === 1 ? exact[0].name : matches.length === 1 && dexPrefix !== null ? matches[0].name : input.trim();
     setPending(true); setFailed(false);
     try {

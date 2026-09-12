@@ -1,11 +1,11 @@
-import { Pokemon, ComparisonStatus, GuessResult } from '@/types/pokemon';
+import type { Pokemon, ComparisonStatus, GuessResult } from '@/types/pokemon';
 
 import pokeData from '@/data/pokemon_data.json';
 import i18nData from '@/data/pokemon_i18n.json';
 import pranksterProfileData from '@/data/prankster_profile.json';
 
 export function loadPokemonData(): Pokemon[] {
-  return pokeData as Pokemon[];
+  return pokeData;
 }
 
 const translations: Record<string, Record<string, string>> = i18nData;

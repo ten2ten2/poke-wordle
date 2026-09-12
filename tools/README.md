@@ -6,7 +6,7 @@
 mise run data:console
 ```
 
-更新工具源码或依赖后，需重新启动此命令；仅刷新网页不会重载后台代码。
+源码或依赖变更后需重启；仅刷新网页不会重载后台。自定义端口：`mise run data:console -- --port 3319`。
 
 打开 http://127.0.0.1:3318，通过顶部主菜单切换：
 
@@ -14,7 +14,7 @@ mise run data:console
 - **当前数据**：浏览五份已发布 JSON，支持搜索、筛选、详情及导出。
 - **知识文章**：管理英、日、法、德、意、西、韩、简中、繁中九种语言版本，编辑、导入、导出 MDX，预览校验后保存到项目。
 
-控制台仅在本机运行，审核记录保存在本地；保存或应用后，通过 Git 和部署流程上线。
+控制台仅在本机运行；保存、审核及应用结果通过 Git 和部署流程上线。
 
 [更新、修正与离线重建流程](UPDATE_WORKFLOW.md) · [人工修正表](corrections.json) · [来源报告](reports/)
 
@@ -24,20 +24,16 @@ mise run data:console
 
 在[知识文章](http://127.0.0.1:3318/#knowledge)选择或新建文章，切换语言编辑对应版本；可复制已有正文作为翻译起点。标题、路径、日期和对应语言的摘要在正文之外编辑；SEO 标题和分享图片可选。图片接受 HTTPS 地址或项目 `public/images/` 中的 PNG、JPEG、WebP、GIF。
 
-同一文章各语言版本统一使用简短的英文路径（小写字母、数字和 `-`），例如 `late-bloomers-pokemon`。新增语言版本自动沿用已有路径；修改标题时保持路径不变。旧的中日文地址保留为历史跳转。
+各语言版本统一使用英文路径，如 `late-bloomers-pokemon`。新增版本沿用已有路径，修改标题保持路径不变；旧地址保留永久跳转。
 
 宝可梦资料链接按语言选站：德语 PokéWiki、西语 WikiDex、法语 Poképédia、意语 Pokémon Central Wiki、韩语 Pokémon Wiki（Fandom）。条目名称使用对应语言；韩语条目带 `_(포켓몬)` 后缀。
 
-翻译优先采用当地官方术语，玩家分类参考对应百科，并明确标注为非官方称呼。标题、摘要、正文、游戏标签和 About 应使用一致的术语；不要直译商品系列名作为分类名称，例如法语使用 [Pokémon surpuissant](https://www.pokepedia.fr/Pok%C3%A9mon_surpuissant)。特性与招式、传说与幻之宝可梦、极巨化与超极巨化需分别核对；进化石名称可对照 [PokeAPI 多语言道具表](https://github.com/PokeAPI/pokeapi/blob/master/data/v2/csv/item_names.csv)。术语修订保持已有路径不变，并更新实际修改文章的日期。
+术语优先采用当地官方译名，玩家称呼参考对应百科，例如法语 [Pokémon surpuissant](https://www.pokepedia.fr/Pok%C3%A9mon_surpuissant)。标题、摘要、正文、标签和 About 保持一致；区分特性与招式、传说与幻之宝可梦、极巨化与超极巨化。进化石可对照 [PokeAPI 多语言道具表](https://github.com/PokeAPI/pokeapi/blob/master/data/v2/csv/item_names.csv)。
 
-MDX 支持 Markdown、GFM 表格、静态 HTML/JSX，以及 `FAQ`、`Question`、`Answer` 组件。正文从二级标题开始，页面自动提供主标题、Article 和面包屑结构化数据。链接缺少 `title` 时从文字补齐。预览在隔离页面渲染，不执行 JavaScript、函数或模块导入；语法错误显示行列位置并保留内容。
+MDX 支持 Markdown、GFM 表格、静态 HTML/JSX 和 `FAQ`、`Question`、`Answer` 组件，正文从二级标题开始。主标题和结构化数据由页面生成，链接 `title` 从文字补齐。隔离预览不执行 JavaScript 或模块导入，语法错误标出行列位置。
 
-PokeAPI 默认正面精灵图会自动补充 `96 × 96` 尺寸、懒加载和异步解码，前台与预览共用这一规则。其他图片请在 MDX 中用 `<img>` 声明实际 `width`、`height`；作者显式设置的尺寸不会被覆盖。分享封面建议为与文章相关的 `1200 × 630` PNG 或 WebP，九种语言可共用无文字插图，在「分享图片」填写 `/images/文件名.webp` 后同步用于 Open Graph、Twitter 和 Article 结构化数据。
+PokeAPI 默认正面精灵图自动补充 `96 × 96` 尺寸、懒加载和异步解码，前台与预览一致。其他图片用 `<img>` 声明实际宽高；显式尺寸不被覆盖。分享封面建议 `1200 × 630` PNG/WebP、与主题相关、九语言共用无文字插图；填写「分享图片」后用于 Open Graph、Twitter 和 Article。
 
-“保存到项目”同步正文、索引、语言关联和加载清单，仅在内容或元数据改变时更新日期。
-
-改名会把旧路径写入 `src/data/knowledge-redirects.json`，直接永久跳转到最新地址；历史路径不能被其他文章占用。删除版本会清理正文、语言关联和历史跳转，对应地址返回 404。
-
-保存检查文件版本以防覆盖。发生冲突时先导出未保存的 MDX、复制元数据，再重新载入合并。
+保存同步正文、索引、语言关联和加载清单，仅在内容或元数据改变时更新日期。改名维护 `src/data/knowledge-redirects.json`，历史路径不能被其他文章占用；删除版本同步清理关联。若发生文件冲突，先导出 MDX、复制元数据，再重新载入合并。
 
 保存后点击“检查已保存文章”，运行知识库校验、生产构建和 SEO 检查。直接编辑仓库文件时，实质修改需更新 `updatedAt`，改名需补充历史路径，再依次运行 `mise run knowledge:sync`、`mise run knowledge:check`、`mise run build` 和 `mise run seo:check`。

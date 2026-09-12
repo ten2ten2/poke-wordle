@@ -1,13 +1,10 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { hasLocale } from 'next-intl';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import KnowledgeArchive from '@/components/KnowledgeArchive';
-import {
-  isKnowledgeSupported,
-  KNOWLEDGE_SUPPORTED_LOCALES,
-} from '@/config/knowledge';
 import { pageAlternates, pageMetadata } from '@/config/seo';
-import { localePath } from '@/i18n/routing';
+import { localePath, routing } from '@/i18n/routing';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -16,10 +13,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
 
-  // Check if locale supports knowledge page
-  if (!isKnowledgeSupported(locale)) {
-    return {};
-  }
+  if (!hasLocale(routing.locales, locale)) return {};
 
   const t = await getTranslations({ locale, namespace: 'knowledge' });
 
@@ -27,18 +21,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = t('description');
   return pageMetadata({
     locale, title, description, path: localePath(locale, '/knowledge'),
-    languages: pageAlternates('/knowledge', KNOWLEDGE_SUPPORTED_LOCALES),
+    languages: pageAlternates('/knowledge'),
   });
 }
 
 export default async function KnowledgePage({ params }: Props) {
   const { locale } = await params;
 
-  // Check if locale supports knowledge page, return 404 if not
-  if (!isKnowledgeSupported(locale)) {
-    notFound();
-  }
+  if (!hasLocale(routing.locales, locale)) notFound();
 
   setRequestLocale(locale);
-  return <KnowledgeArchive />;
+  return <KnowledgeArchive locale={locale} />;
 }
