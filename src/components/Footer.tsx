@@ -26,12 +26,9 @@ export default function Footer() {
             
             {/* Links */}
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-              {/* Keep the requested footer language scope independent of article availability. */}
-              {['en', 'ja', 'zh-hans', 'zh-hant'].includes(locale) && (
-                <Link href={`${prefix}/knowledge`} title={t('knowledge.title')} className="footer-link">
-                  {t('knowledge.title')}
-                </Link>
-              )}
+              <Link href={`${prefix}/knowledge`} title={t('knowledge.title')} className="footer-link">
+                {t('knowledge.title')}
+              </Link>
               <Link
                 href={`${prefix}/privacy-and-terms`}
                 title={t('footer.privacyAndTerms')}

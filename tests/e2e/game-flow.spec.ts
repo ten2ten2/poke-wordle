@@ -357,13 +357,9 @@ test('localized navigation, footer and typography work in all nine languages', a
     await page.goto(prefix || '/');
     await expect(page.locator('header a svg')).toHaveAttribute('aria-hidden', 'true');
     await expect(page.locator('footer')).toContainText(`2025–${nextYear.getFullYear()}`);
-    if (['en', 'zh-hans', 'zh-hant', 'ja'].includes(locale)) {
-      const knowledgeHref = `${prefix}/knowledge`;
-      await expect(page.locator('footer').getByRole('link', { name: messages.knowledge.title, exact: true })).toHaveAttribute('href', knowledgeHref);
-      expect((await request.get(knowledgeHref)).status()).toBe(200);
-    } else {
-      await expect(page.locator('footer a[href$="/knowledge"]')).toHaveCount(0);
-    }
+    const knowledgeHref = `${prefix}/knowledge`;
+    await expect(page.locator('footer').getByRole('link', { name: messages.knowledge.title, exact: true })).toHaveAttribute('href', knowledgeHref);
+    expect((await request.get(knowledgeHref)).status()).toBe(200);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.evaluate(() => document.fonts.ready);
     expect(await page.locator('body').evaluate((node) => getComputedStyle(node).fontFamily.toLowerCase())).toContain('inter');
