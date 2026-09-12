@@ -52,7 +52,7 @@
     "confirmRestart": "清除当前猜测，开始新一局？",
     "confirmAction": "确认",
     "guessNumber": "第 {number} 次",
-    "hiddenField": "已被恶作剧模式隐藏"
+    "hiddenField": "已被恶作剧之心模式隐藏"
   },
   "settings": {
     "title": "设置",
@@ -62,7 +62,7 @@
     "selectAll": "全选",
     "deselectAll": "全不选",
     "generationRequired": "至少需要选择一个世代",
-    "pranksterMode": "恶作剧之心开关",
+    "pranksterMode": "恶作剧之心模式",
     "pranksterModeDesc": "开启后，每次猜测会有恶作剧之心的宝可梦随机遮盖一项数据",
     "genArrow": "世代箭头开关",
     "genArrowDesc": "开启后，每次猜测会提示世代高低",
@@ -175,12 +175,12 @@
     "item-stone-water": "使用水之石",
     "item-stone-thunder": "使用雷之石",
     "item-stone-leaf": "使用叶之石",
-    "item-stone-sun": "使用太阳石",
+    "item-stone-sun": "使用日之石",
     "item-stone-moon": "使用月之石",
     "item-stone-shiny": "使用光之石",
     "item-stone-dusk": "使用暗之石",
-    "item-stone-dawn-male": "雄性使用觉醒石",
-    "item-stone-dawn-female": "雌性使用觉醒石",
+    "item-stone-dawn-male": "雄性使用觉醒之石",
+    "item-stone-dawn-female": "雌性使用觉醒之石",
     "item-stone-ice": "使用冰之石",
     "item-unique": "使用特殊道具",
     "trade-normal": "通信交换",
@@ -190,7 +190,7 @@
   },
   "tags": {
     "starter": "最初的伙伴",
-    "legendary": "传说中的宝可梦",
+    "legendary": "传说的宝可梦",
     "mythical": "幻之宝可梦",
     "fossil": "化石宝可梦",
     "regional": "有地区形态",

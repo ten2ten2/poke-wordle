@@ -34,10 +34,10 @@
       "baseStats": "Basiswerte",
       "generation": "Generation",
       "abilities": "Fähigkeiten",
-      "evolution": "Evolution",
+      "evolution": "Entwicklung",
       "tags": "Tags"
     },
-    "evolutionMethod": "Evolutionsmethode",
+    "evolutionMethod": "Entwicklungsmethode",
     "requestFailed": "Die Antwort konnte nicht geprüft werden. Bitte versuche es erneut.",
     "searchHint": "Name in beliebiger Sprache oder Pokédex-Nummer",
     "noMatches": "Kein passendes Pokémon",
@@ -62,7 +62,7 @@
     "selectAll": "Alle auswählen",
     "deselectAll": "Alle abwählen",
     "generationRequired": "Mindestens eine Generation muss ausgewählt sein",
-    "pranksterMode": "Schabernack-Modus",
+    "pranksterMode": "Strolch-Modus",
     "pranksterModeDesc": "Zufällig ein Attribut pro Versuch verstecken",
     "genArrow": "Generationspfeile",
     "genArrowDesc": "Pfeile für Generationshinweise anzeigen",
@@ -82,7 +82,7 @@
   },
   "about": {
     "title": "Über",
-    "description": "Poke Wordle ist ein Ratespiel, bei dem du versuchst, ein Pokémon basierend auf verschiedenen Hinweisen wie Typen, Fähigkeiten, Werten, Evolution und mehr zu identifizieren.",
+    "description": "Poke Wordle ist ein Ratespiel, bei dem du versuchst, ein Pokémon basierend auf verschiedenen Hinweisen wie Typen, Fähigkeiten, Werten, Entwicklung und mehr zu identifizieren.",
     "howToPlay": "Wie man spielt",
     "rules": [
       "Gib einen Pokémon-Namen in das Eingabefeld ein.",
@@ -96,7 +96,7 @@
         "gen1": "Generation 1: Rot | Grün | Blau | Gelb",
         "gen2": "Generation 2: Gold | Silber | Kristall",
         "gen3": "Generation 3: Rubin | Saphir | Feuerrot | Blattgrün | Smaragd",
-        "gen4": "Generation 4: Diamant | Perle | Platin | Herzgold | Seelensilber",
+        "gen4": "Generation 4: Diamant | Perl | Platin | HeartGold | SoulSilver",
         "gen5": "Generation 5: Schwarz | Weiß | Schwarz 2 | Weiß 2",
         "gen6": "Generation 6: X | Y | Omega Rubin | Alpha Saphir",
         "gen7": "Generation 7: Sonne | Mond | Ultrasonne | Ultramond | Let's Go Pikachu | Let's Go Evoli",
@@ -115,7 +115,7 @@
       "title": "Bedingungen für gelbe Tags",
       "stats": "Basiswerte: Die Basiswertsumme des Pokémon unterscheidet sich vom Ziel um ≤ 50",
       "generation": "Generation: Die erste Erscheinungsgeneration des Pokémon ist benachbart zur Generation des Ziels",
-      "evolution": "Evolution: Beide Pokémon haben ähnliche, aber nicht identische Evolutionsmethoden (z.B. beide leveln auf, aber eines erfordert das Erlernen einer Attacke und das andere hohe Freundschaft)"
+      "evolution": "Entwicklung: Beide Pokémon haben ähnliche, aber nicht identische Entwicklungsmethoden (z.B. beide leveln auf, aber eines erfordert das Erlernen einer Attacke und das andere hohe Freundschaft)"
     },
     "dataSource": {
       "title": "Datenquelle",
@@ -147,7 +147,7 @@
     "Gen9": "Gen 9"
   },
   "evolution": {
-    "stage1": "Keine Evolution/Erste Stufe",
+    "stage1": "Keine Entwicklung/Erste Stufe",
     "stage2": "Zweite Stufe",
     "stage3": "Dritte Stufe"
   },
@@ -169,26 +169,26 @@
     "item-stone-moon": "Mondstein verwenden",
     "item-stone-shiny": "Leuchtstein verwenden",
     "item-stone-dusk": "Finsterstein verwenden",
-    "item-stone-dawn-male": "Männchen verwendet Weckstein",
-    "item-stone-dawn-female": "Weibchen verwendet Weckstein",
+    "item-stone-dawn-male": "Männchen verwendet Funkelstein",
+    "item-stone-dawn-female": "Weibchen verwendet Funkelstein",
     "item-stone-ice": "Eisstein verwenden",
     "item-unique": "Besonderes Item verwenden",
     "trade-normal": "Tausch",
     "trade-item": "Tausch mit Item",
     "trade-certain": "Tausch gegen bestimmtes Pokémon",
-    "unique": "Besondere Evolutionsmethode"
+    "unique": "Besondere Entwicklungsmethode"
   },
   "tags": {
-    "starter": "ersten Partner-Pokémon",
+    "starter": "Erstes Partner-Pokémon",
     "legendary": "Legendär",
-    "mythical": "Mystisch",
+    "mythical": "Mysteriös",
     "fossil": "Fossil",
-    "regional": "Regionalform",
-    "has-mega": "Hat Mega-Evolution",
+    "regional": "Hat Regionalformen",
+    "has-mega": "Hat Mega-Entwicklung",
     "has-gmax": "Hat Gigadynamax",
     "ultra": "Ultrabestie",
     "paradox": "Paradox-Pokémon",
-    "late": "Late Bloomer"
+    "late": "Pseudo-Legendäres Pokémon"
   },
   "privacyAndTerms": {
     "title": "Datenschutzerklärung & Nutzungsbedingungen",

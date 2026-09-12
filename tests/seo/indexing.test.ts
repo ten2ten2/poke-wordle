@@ -176,6 +176,11 @@ test.each(paths)('%s renders indexable HTML with canonical, reciprocal languages
     if (url.origin === SITE_URL && url.pathname.includes('/knowledge')) await page(url.href);
   }
   for (const button of doc.querySelectorAll('button')) expect(button.getAttribute('title')?.trim().length).toBeGreaterThan(0);
+  for (const image of doc.querySelectorAll('img[src^="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"]')) {
+    expect(image.getAttribute('alt')?.trim().length).toBeGreaterThan(0);
+    expect(Number(image.getAttribute('width'))).toBeGreaterThan(0);
+    expect(Number(image.getAttribute('height'))).toBeGreaterThan(0);
+  }
 });
 
 test('the canonical root describes the website with its actual name and URL', async () => {

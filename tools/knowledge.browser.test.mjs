@@ -45,6 +45,17 @@ for (const width of [1440, 390]) {
     await page.getByRole('button', { name: '切换到日间模式', exact: true }).click();
     await expect(page.frameLocator('#knowledge-preview-frame').locator('body')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
     await page.getByRole('button', { name: '编辑 MDX', exact: true }).click();
+    await page.getByLabel('MDX 正文').fill('## 图片尺寸\n\n![皮卡丘](https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png)\n\n<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png" alt="自定义尺寸" width="48" height="48" loading="eager" />\n\n<img src="/images/og-image.png" alt="横向封面" width="1200" height="630" />\n');
+    await page.getByRole('button', { name: '预览并校验', exact: true }).click();
+    const preview = page.frameLocator('#knowledge-preview-frame');
+    await expect(preview.getByRole('img', { name: '皮卡丘', exact: true })).toHaveAttribute('width', '96');
+    await expect(preview.getByRole('img', { name: '皮卡丘', exact: true })).toHaveAttribute('height', '96');
+    await expect(preview.getByRole('img', { name: '皮卡丘', exact: true })).toHaveAttribute('loading', 'lazy');
+    await expect(preview.getByRole('img', { name: '自定义尺寸', exact: true })).toHaveAttribute('width', '48');
+    await expect(preview.getByRole('img', { name: '自定义尺寸', exact: true })).toHaveAttribute('loading', 'eager');
+    await expect(preview.getByRole('img', { name: '横向封面', exact: true })).toHaveAttribute('width', '1200');
+    await expect(preview.getByRole('img', { name: '横向封面', exact: true })).toHaveAttribute('height', '630');
+    await page.getByRole('button', { name: '编辑 MDX', exact: true }).click();
     await page.getByLabel('MDX 正文').fill('<Question>broken');
     await page.getByRole('button', { name: '预览并校验', exact: true }).click();
     await expect(page.locator('#notice')).toContainText('第 1 行');

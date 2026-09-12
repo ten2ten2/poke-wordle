@@ -52,7 +52,7 @@
     "confirmRestart": "これまでの予想を消して最初から始めますか？",
     "confirmAction": "確認",
     "guessNumber": "{number} 回目",
-    "hiddenField": "いたずらモードで非表示"
+    "hiddenField": "いたずらごころモードで非表示"
   },
   "settings": {
     "title": "設定",
@@ -62,7 +62,7 @@
     "selectAll": "すべて選択",
     "deselectAll": "すべて解除",
     "generationRequired": "少なくとも一つの世代を選択する必要があります",
-    "pranksterMode": "いたずらモード",
+    "pranksterMode": "いたずらごころモード",
     "pranksterModeDesc": "推測ごとにランダムで一つの属性を隠す",
     "genArrow": "世代矢印",
     "genArrowDesc": "世代の高低を示す矢印を表示",
@@ -100,8 +100,8 @@
         "gen5": "第5世代：ブラック ｜ ホワイト ｜ ブラック2 ｜ ホワイト2",
         "gen6": "第6世代：X ｜ Y ｜ オメガルビー ｜ アルファサファイア",
         "gen7": "第7世代：サン ｜ ムーン ｜ ウルトラサン ｜ ウルトラムーン ｜ Let's Go！ピカチュウ ｜ Let's Go！イーブイ",
-        "gen8": "第8世代：ソード ｜ シールド ｜ ブリリアントダイヤモンド ｜ シャイニングパール ｜ レジェンズ アルセウス",
-        "gen9": "第9世代：スカーレット ｜ バイオレット ｜ レジェンズ Z-A"
+        "gen8": "第8世代：ソード ｜ シールド ｜ ブリリアントダイヤモンド ｜ シャイニングパール ｜ Pokémon LEGENDS アルセウス",
+        "gen9": "第9世代：スカーレット ｜ バイオレット ｜ Pokémon LEGENDS Z-A"
       },
       "note": "設定から推測するポケモンの範囲を変更できます。"
     },
@@ -175,7 +175,7 @@
     "item-stone-water": "みずのいしを使用",
     "item-stone-thunder": "かみなりのいしを使用",
     "item-stone-leaf": "リーフのいしを使用",
-    "item-stone-sun": "ひかりのいしを使用",
+    "item-stone-sun": "たいようのいしを使用",
     "item-stone-moon": "つきのいしを使用",
     "item-stone-shiny": "ひかりのいしを使用",
     "item-stone-dusk": "やみのいしを使用",
@@ -193,8 +193,8 @@
     "legendary": "伝説のポケモン",
     "mythical": "幻のポケモン",
     "fossil": "化石ポケモン",
-    "regional": "リージョンフォーム",
-    "has-mega": "メガ進化あり",
+    "regional": "リージョンフォームあり",
+    "has-mega": "メガシンカあり",
     "has-gmax": "キョダイマックスあり",
     "ultra": "ウルトラビースト",
     "paradox": "パラドックスポケモン",

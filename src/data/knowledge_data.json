@@ -3,7 +3,7 @@
     {
       "id": "k-en-1",
       "slug": "late-bloomers-pokemon",
-      "title": "What are \"Late Bloomers\" Pokémon?",
+      "title": "What are Powerhouse Pokémon?",
       "createdAt": "2025-06-06T00:03:12+08:00",
       "translations": {
         "ja": {
@@ -31,8 +31,8 @@
           "slug": "late-bloomers-pokemon"
         }
       },
-      "description": "Learn what defines a late-blooming Pokémon, why the final forms have a base stat total of 600, and which evolution lines carry this label.",
-      "updatedAt": "2026-09-11T20:39:21Z"
+      "description": "Learn about Powerhouse Pokémon, also known as pseudo-legendary Pokémon: their 600 base stat total, Slow growth rate and evolutionary families.",
+      "updatedAt": "2026-09-12T00:53:03.212Z"
     },
     {
       "id": "k-en-guessing-clues",
@@ -138,7 +138,7 @@
     {
       "id": "k-ja-1",
       "slug": "late-bloomers-pokemon",
-      "title": "「大器晩成」なポケモンとは？",
+      "title": "「大器晩成」なポケモン（600族）とは？",
       "createdAt": "2025-06-06T00:03:12+08:00",
       "translations": {
         "en": {
@@ -166,8 +166,8 @@
           "slug": "late-bloomers-pokemon"
         }
       },
-      "description": "「大器晩成」と呼ばれるポケモンの特徴、最終進化形の種族値合計600との関係、該当する進化系統を紹介します。",
-      "updatedAt": "2026-09-11T23:47:55.774Z"
+      "description": "「大器晩成」なポケモンと600族の呼び方、最終進化形の種族値合計600、経験値125万の条件、対象の進化系統を紹介します。",
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     },
     {
       "id": "k-ja-guessing-clues",
@@ -200,7 +200,8 @@
         "zh-hant": {
           "slug": "guessing-clues"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     },
     {
       "id": "k-ja-generations-and-settings",
@@ -233,7 +234,8 @@
         "zh-hant": {
           "slug": "generations-and-settings"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     },
     {
       "id": "k-ja-forms-and-mega-evolution",
@@ -273,8 +275,8 @@
     {
       "id": "k-fr-late-bloomers-pokemon",
       "slug": "late-bloomers-pokemon",
-      "title": "Quels sont les Pokémon dits « à maturité tardive » ?",
-      "description": "Découvrez les caractéristiques des Pokémon dits « à maturité tardive », le total de 600 points de statistiques de leur forme finale et les familles concernées.",
+      "title": "Qu'est-ce qu'un Pokémon surpuissant ?",
+      "description": "Découvrez les Pokémon surpuissants, aussi appelés pseudo-légendaires : leurs 600 points de statistiques de base, leur croissance lente et leurs familles d'évolution.",
       "createdAt": "2026-09-12T00:04:34.504Z",
       "translations": {
         "en": {
@@ -301,7 +303,8 @@
         "zh-hant": {
           "slug": "late-bloomers-pokemon"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:53:03.214Z"
     },
     {
       "id": "k-fr-guessing-clues",
@@ -400,15 +403,16 @@
         "zh-hant": {
           "slug": "forms-and-mega-evolution"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     }
   ],
   "de": [
     {
       "id": "k-de-late-bloomers-pokemon",
       "slug": "late-bloomers-pokemon",
-      "title": "Welche Pokémon gehören zu den „Spätentwicklern“?",
-      "description": "Lerne die Merkmale der sogenannten Spätentwickler kennen: ihre Entwicklungsreihen, die langsame Erfahrungskurve und die Basiswertsumme von 600 in der letzten Stufe.",
+      "title": "Was sind Pseudo-Legendäre Pokémon?",
+      "description": "Erfahre, was Pseudo-Legendäre Pokémon auszeichnet: eine Basiswertsumme von 600, langsames Wachstum und dreistufige Entwicklungsreihen.",
       "createdAt": "2026-09-12T00:04:34.504Z",
       "translations": {
         "en": {
@@ -435,7 +439,8 @@
         "zh-hant": {
           "slug": "late-bloomers-pokemon"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:53:03.215Z"
     },
     {
       "id": "k-de-guessing-clues",
@@ -468,7 +473,8 @@
         "zh-hant": {
           "slug": "guessing-clues"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     },
     {
       "id": "k-de-generations-and-settings",
@@ -501,7 +507,8 @@
         "zh-hant": {
           "slug": "generations-and-settings"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     },
     {
       "id": "k-de-forms-and-mega-evolution",
@@ -534,15 +541,16 @@
         "zh-hant": {
           "slug": "forms-and-mega-evolution"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     }
   ],
   "it": [
     {
       "id": "k-it-late-bloomers-pokemon",
       "slug": "late-bloomers-pokemon",
-      "title": "Quali sono i Pokémon che raggiungono tardi il loro pieno potenziale?",
-      "description": "Scopri le caratteristiche degli pseudoleggendari, il totale di 600 punti delle statistiche base nella forma finale e le linee evolutive di questo gruppo.",
+      "title": "Che cosa sono i Pokémon pseudo-leggendari?",
+      "description": "Scopri i Pokémon pseudo-leggendari: il totale di 600 punti delle statistiche base, la crescita lenta e le loro famiglie evolutive.",
       "createdAt": "2026-09-12T00:04:34.504Z",
       "translations": {
         "en": {
@@ -569,7 +577,8 @@
         "zh-hant": {
           "slug": "late-bloomers-pokemon"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:53:03.215Z"
     },
     {
       "id": "k-it-guessing-clues",
@@ -602,7 +611,8 @@
         "zh-hant": {
           "slug": "guessing-clues"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     },
     {
       "id": "k-it-generations-and-settings",
@@ -635,7 +645,8 @@
         "zh-hant": {
           "slug": "generations-and-settings"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     },
     {
       "id": "k-it-forms-and-mega-evolution",
@@ -668,15 +679,16 @@
         "zh-hant": {
           "slug": "forms-and-mega-evolution"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     }
   ],
   "es": [
     {
       "id": "k-es-late-bloomers-pokemon",
       "slug": "late-bloomers-pokemon",
-      "title": "¿Qué Pokémon alcanzan su máximo potencial más tarde?",
-      "description": "Descubre qué caracteriza a los Pokémon pseudolegendarios, por qué su evolución final suma 600 puntos de estadísticas base y qué familias pertenecen a este grupo.",
+      "title": "¿Qué son los Pokémon pseudolegendarios?",
+      "description": "Conoce a los Pokémon pseudolegendarios: sus 600 puntos de estadísticas base, su crecimiento lento y sus familias evolutivas.",
       "createdAt": "2026-09-12T00:04:34.504Z",
       "translations": {
         "en": {
@@ -703,7 +715,8 @@
         "zh-hant": {
           "slug": "late-bloomers-pokemon"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:53:03.216Z"
     },
     {
       "id": "k-es-guessing-clues",
@@ -802,15 +815,16 @@
         "zh-hant": {
           "slug": "forms-and-mega-evolution"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     }
   ],
   "ko": [
     {
       "id": "k-ko-late-bloomers-pokemon",
       "slug": "late-bloomers-pokemon",
-      "title": "대기만성형 포켓몬, 이른바 '600족'은 무엇일까요?",
-      "description": "대기만성형 포켓몬의 공통점과 최종 진화형의 종족값 합계가 600이라는 기준, 여기에 해당하는 진화 계열을 알아보세요.",
+      "title": "600족 포켓몬이란 무엇인가요?",
+      "description": "600족 포켓몬의 종족값 합계 600, 느린 성장 속도, 세 단계 진화 계열과 Poke Wordle의 태그 기준을 알아보세요.",
       "createdAt": "2026-09-12T00:04:34.504Z",
       "translations": {
         "en": {
@@ -837,7 +851,8 @@
         "zh-hant": {
           "slug": "late-bloomers-pokemon"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:53:03.217Z"
     },
     {
       "id": "k-ko-guessing-clues",
@@ -870,7 +885,8 @@
         "zh-hant": {
           "slug": "guessing-clues"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     },
     {
       "id": "k-ko-generations-and-settings",
@@ -903,7 +919,8 @@
         "zh-hant": {
           "slug": "generations-and-settings"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     },
     {
       "id": "k-ko-forms-and-mega-evolution",
@@ -971,8 +988,8 @@
           "slug": "late-bloomers-pokemon"
         }
       },
-      "description": "了解「大器晚成」宝可梦的共同特征、最终进化形态种族值合计600的含义，以及具有这一标签的进化家族。",
-      "updatedAt": "2026-09-11T23:47:55.881Z"
+      "description": "了解「大器晚成」宝可梦与「准神」「600族」的称呼、最终进化形态种族值合计600和经验值125万的条件，以及对应进化家族。",
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     },
     {
       "id": "k-zh-hans-guessing-clues",
@@ -1005,7 +1022,8 @@
         "zh-hant": {
           "slug": "guessing-clues"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     },
     {
       "id": "k-zh-hans-generations-and-settings",
@@ -1038,7 +1056,8 @@
         "zh-hant": {
           "slug": "generations-and-settings"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     },
     {
       "id": "k-zh-hans-forms-and-mega-evolution",
@@ -1106,8 +1125,8 @@
           "slug": "late-bloomers-pokemon"
         }
       },
-      "description": "了解「大器晚成」寶可夢的共同特徵、最終進化形態種族值合計600的含義，以及具有這一標籤的進化家族。",
-      "updatedAt": "2026-09-11T23:47:56.112Z"
+      "description": "了解「大器晚成」寶可夢與「準神」「600族」的稱呼、最終進化形態種族值合計600和經驗值125萬的條件，以及對應進化家族。",
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     },
     {
       "id": "k-zh-hant-guessing-clues",
@@ -1140,7 +1159,8 @@
         "zh-hans": {
           "slug": "guessing-clues"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     },
     {
       "id": "k-zh-hant-generations-and-settings",
@@ -1173,7 +1193,8 @@
         "zh-hans": {
           "slug": "generations-and-settings"
         }
-      }
+      },
+      "updatedAt": "2026-09-12T00:43:02.770Z"
     },
     {
       "id": "k-zh-hant-forms-and-mega-evolution",

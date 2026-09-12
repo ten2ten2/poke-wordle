@@ -31,7 +31,7 @@
     "defeat": "패배",
     "columns": {
       "type": "타입",
-      "baseStats": "기본 스탯",
+      "baseStats": "종족값",
       "generation": "세대",
       "abilities": "특성",
       "evolution": "진화",
@@ -52,7 +52,7 @@
     "confirmRestart": "현재 기록을 지우고 새 게임을 시작할까요?",
     "confirmAction": "확인",
     "guessNumber": "{number}번째 추측",
-    "hiddenField": "장난 모드로 숨겨짐"
+    "hiddenField": "짓궂은마음 모드로 숨겨짐"
   },
   "settings": {
     "title": "설정",
@@ -62,7 +62,7 @@
     "selectAll": "모두 선택",
     "deselectAll": "모두 해제",
     "generationRequired": "최소 하나의 세대를 선택해야 합니다",
-    "pranksterMode": "장난꾸러기 모드",
+    "pranksterMode": "짓궂은마음 모드",
     "pranksterModeDesc": "추측마다 무작위로 하나의 속성 숨기기",
     "genArrow": "세대 화살표",
     "genArrowDesc": "세대 힌트용 화살표 표시",
@@ -82,7 +82,7 @@
   },
   "about": {
     "title": "정보",
-    "description": "포케 워들은 타입, 특성, 스탯, 진화 등 다양한 단서를 바탕으로 포켓몬을 식별하는 추측 게임입니다.",
+    "description": "포케 워들은 타입, 특성, 종족값, 진화 등 다양한 단서를 바탕으로 포켓몬을 맞히는 게임입니다.",
     "howToPlay": "게임 방법",
     "rules": [
       "입력 필드에 포켓몬 이름을 입력하세요.",
@@ -93,15 +93,15 @@
       "title": "포켓몬 범위",
       "description": "이 게임에는 다음 포켓몬 본편 시리즈의 포켓몬들이 포함되어 있습니다:",
       "generations": {
-        "gen1": "1세대: 빨강 ｜ 초록 ｜ 파랑 ｜ 피카츄",
+        "gen1": "1세대: 레드 ｜ 그린 ｜ 블루 ｜ 피카츄",
         "gen2": "2세대: 금 ｜ 은 ｜ 크리스탈",
         "gen3": "3세대: 루비 ｜ 사파이어 ｜ 파이어레드 ｜ 리프그린 ｜ 에메랄드",
-        "gen4": "4세대: 다이아몬드 ｜ 펄 ｜ 플래티넘 ｜ 하트골드 ｜ 소울실버",
+        "gen4": "4세대: 디아루가 ｜ 펄기아 ｜ 기라티나 ｜ 하트골드 ｜ 소울실버",
         "gen5": "5세대: 블랙 ｜ 화이트 ｜ 블랙2 ｜ 화이트2",
         "gen6": "6세대: X ｜ Y ｜ 오메가루비 ｜ 알파사파이어",
         "gen7": "7세대: 썬 ｜ 문 ｜ 울트라썬 ｜ 울트라문 ｜ Let's Go! 피카츄 ｜ Let's Go! 이브이",
-        "gen8": "8세대: 소드 ｜ 실드 ｜ 브릴리언트 다이아몬드 ｜ 샤이닝 펄 ｜ 레전드 아르세우스",
-        "gen9": "9세대: 스칼렛 ｜ 바이올렛 ｜ 레전드 Z-A"
+        "gen8": "8세대: 소드 ｜ 실드 ｜ 브릴리언트 다이아몬드 ｜ 샤이닝 펄 ｜ Pokémon LEGENDS 아르세우스",
+        "gen9": "9세대: 스칼렛 ｜ 바이올렛 ｜ Pokémon LEGENDS Z-A"
       },
       "note": "설정을 통해 추측할 포켓몬의 범위를 변경할 수 있습니다."
     },
@@ -157,7 +157,7 @@
     "level-move": "기술을 배우고 레벨업",
     "level-location": "특정 장소에서 레벨업",
     "level-time": "특정 시간에 레벨업",
-    "level-holding-item": "아이템을 지니고 레벨업",
+    "level-holding-item": "도구를 지니고 레벨업",
     "level-gender": "특정 성별로 레벨업",
     "level-version": "특정 게임 버전에서 레벨업",
     "level-unique": "특수 조건으로 레벨업",
@@ -172,9 +172,9 @@
     "item-stone-dawn-male": "수컷이 각성의돌 사용",
     "item-stone-dawn-female": "암컷이 각성의돌 사용",
     "item-stone-ice": "얼음의돌 사용",
-    "item-unique": "특수 아이템 사용",
+    "item-unique": "특수한 도구 사용",
     "trade-normal": "통신교환",
-    "trade-item": "아이템을 지니고 교환",
+    "trade-item": "도구를 지니고 교환",
     "trade-certain": "특정 포켓몬과 교환",
     "unique": "특수 진화 방법"
   },
@@ -183,12 +183,12 @@
     "legendary": "전설의 포켓몬",
     "mythical": "환상의 포켓몬",
     "fossil": "화석 포켓몬",
-    "regional": "지역 폼",
-    "has-mega": "메가진화 있음",
-    "has-gmax": "다이맥스 있음",
+    "regional": "리전폼 있음",
+    "has-mega": "메가진화 가능",
+    "has-gmax": "거다이맥스 가능",
     "ultra": "울트라비스트",
     "paradox": "패러독스 포켓몬",
-    "late": "대기만성 포켓몬"
+    "late": "600족 포켓몬"
   },
   "privacyAndTerms": {
     "title": "개인정보 보호정책 및 서비스 약관",

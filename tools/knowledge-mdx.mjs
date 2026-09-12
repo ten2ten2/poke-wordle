@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { compile } from '@mdx-js/mdx';
 import remarkGfm from 'remark-gfm';
-import rehypeLinkTitles from './rehype-link-titles.mjs';
+import rehypeKnowledge from './rehype-knowledge.mjs';
 import { createElement, Fragment } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
@@ -98,7 +98,7 @@ export async function inspectMdx(source) {
   try {
     await compile(source, {
       format: 'mdx', remarkPlugins: [remarkGfm, validateTree],
-      rehypePlugins: [rehypeLinkTitles, () => (tree) => { html = renderToStaticMarkup(previewNode(tree)); }],
+      rehypePlugins: [rehypeKnowledge, () => (tree) => { html = renderToStaticMarkup(previewNode(tree)); }],
     });
   } catch (error) {
     if (error.line) throw new Error(`第 ${error.line} 行，第 ${error.column ?? 1} 列：${error.reason ?? error.message}`);

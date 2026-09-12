@@ -98,12 +98,12 @@ export const homeMetadata = {
   ja: {
     title: 'ポケワードル - ポケモン当てゲーム',
     description:
-      'ポケワードルでポケモンの知識をテストしよう！属性、ステータス、特性、進化などからポケモンを当てるゲームです。',
+      'ポケワードルでポケモンの知識をテストしよう！タイプ、種族値、特性、進化などからポケモンを当てるゲームです。',
   },
   fr: {
     title: 'Poke Wordle - Devinez le Pokémon',
     description:
-      'Testez vos connaissances Pokémon avec Poke Wordle ! Devinez le Pokémon basé sur ses attributs, statistiques, capacités, évolution et plus.',
+      'Testez vos connaissances Pokémon avec Poke Wordle ! Retrouvez le Pokémon grâce à ses types, statistiques de base, talents, évolutions et autres indices.',
   },
   de: {
     title: 'Poke Wordle - Pokémon Ratespiel',
@@ -123,7 +123,7 @@ export const homeMetadata = {
   ko: {
     title: '포케 워들 - 포켓몬 맞추기 게임',
     description:
-      '포케 워들로 포켓몬 지식을 테스트해보세요! 속성, 스탯, 특성, 진화 등을 바탕으로 포켓몬을 맞춰보세요.',
+      '포케 워들로 포켓몬 지식을 테스트해보세요! 타입, 종족값, 특성, 진화 등을 바탕으로 포켓몬을 맞춰보세요.',
   },
   'zh-hans': {
     title: '宝可梦猜猜乐 - 猜宝可梦游戏',

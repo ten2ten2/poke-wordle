@@ -5,7 +5,7 @@ import createMDX from '@next/mdx';
 const withNextIntl = createNextIntlPlugin();
 const withMDX = createMDX({ options: {
   remarkPlugins: ['remark-gfm'],
-  rehypePlugins: [require.resolve('./tools/rehype-link-titles.mjs')],
+  rehypePlugins: [require.resolve('./tools/rehype-knowledge.mjs')],
 } });
 
 const nextConfig: NextConfig = {

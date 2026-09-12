@@ -28,7 +28,11 @@ mise run data:console
 
 宝可梦资料链接按语言选站：德语 PokéWiki、西语 WikiDex、法语 Poképédia、意语 Pokémon Central Wiki、韩语 Pokémon Wiki（Fandom）。条目名称使用对应语言；韩语条目带 `_(포켓몬)` 后缀。
 
+翻译优先采用当地官方术语，玩家分类参考对应百科，并明确标注为非官方称呼。标题、摘要、正文、游戏标签和 About 应使用一致的术语；不要直译商品系列名作为分类名称，例如法语使用 [Pokémon surpuissant](https://www.pokepedia.fr/Pok%C3%A9mon_surpuissant)。特性与招式、传说与幻之宝可梦、极巨化与超极巨化需分别核对；进化石名称可对照 [PokeAPI 多语言道具表](https://github.com/PokeAPI/pokeapi/blob/master/data/v2/csv/item_names.csv)。术语修订保持已有路径不变，并更新实际修改文章的日期。
+
 MDX 支持 Markdown、GFM 表格、静态 HTML/JSX，以及 `FAQ`、`Question`、`Answer` 组件。正文从二级标题开始，页面自动提供主标题、Article 和面包屑结构化数据。链接缺少 `title` 时从文字补齐。预览在隔离页面渲染，不执行 JavaScript、函数或模块导入；语法错误显示行列位置并保留内容。
+
+PokeAPI 默认正面精灵图会自动补充 `96 × 96` 尺寸、懒加载和异步解码，前台与预览共用这一规则。其他图片请在 MDX 中用 `<img>` 声明实际 `width`、`height`；作者显式设置的尺寸不会被覆盖。分享封面建议为与文章相关的 `1200 × 630` PNG 或 WebP，九种语言可共用无文字插图，在「分享图片」填写 `/images/文件名.webp` 后同步用于 Open Graph、Twitter 和 Article 结构化数据。
 
 “保存到项目”同步正文、索引、语言关联和加载清单，仅在内容或元数据改变时更新日期。
 

@@ -193,12 +193,12 @@
     "legendary": "Legendary",
     "mythical": "Mythical",
     "fossil": "Fossil",
-    "regional": "Regional Form",
+    "regional": "Has Regional Forms",
     "has-mega": "Has Mega Evolution",
     "has-gmax": "Has Gigantamax",
     "ultra": "Ultra Beast",
     "paradox": "Paradox Pokémon",
-    "late": "Late Bloomer"
+    "late": "Powerhouse Pokémon"
   },
   "privacyAndTerms": {
     "title": "Privacy Policy & Terms of Service",
