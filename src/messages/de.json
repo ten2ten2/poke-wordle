@@ -273,5 +273,14 @@
     "decline": "Ablehnen",
     "close": "Schließen",
     "privacyAndTerms": "Datenschutzerklärung & Nutzungsbedingungen"
+  },
+  "knowledge": {
+    "title": "Wissensdatenbank",
+    "description": "Erfahre mehr über Pokémon-Formen, Entwicklungen und Generationen und lerne, die Hinweise in Poke Wordle zu nutzen.",
+    "comingSoon": "Bald verfügbar! Wir arbeiten an Artikeln, die dir beim Erraten von Pokémon helfen.",
+    "readMore": "Weiterlesen",
+    "randomPrefix": "Pokémon-Fragen: ",
+    "seoTitle": "Pokémon-Wissen und Spieltipps - Poke Wordle",
+    "relatedArticles": "Weitere Artikel"
   }
 }

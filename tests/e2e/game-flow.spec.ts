@@ -191,6 +191,14 @@ test('giving up reveals the answer', async ({ page }) => {
   await expect(page.getByRole('dialog')).toContainText('Charmander');
 });
 
+test('Korean results link to the Korean Pokemon Wiki', async ({ page }) => {
+  await page.goto('/ko');
+  await page.getByRole('combobox').fill('파이리');
+  await page.getByRole('button', { name: '제출', exact: true }).click();
+  await expect(page.getByRole('dialog').getByRole('link', { name: '파이리', exact: true }))
+    .toHaveAttribute('href', `https://pokemon.fandom.com/ko/wiki/${encodeURIComponent('파이리_(포켓몬)')}`);
+});
+
 test('language switch updates the route and document language', async ({
   page,
 }) => {

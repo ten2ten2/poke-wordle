@@ -1,18 +1,13 @@
 import knowledgeDataRaw from '@/data/knowledge_data.json';
 import redirects from '@/data/knowledge-redirects.json';
-import { localePath } from '@/i18n/routing';
+import { localePath, routing } from '@/i18n/routing';
 
 /**
  * Configuration for Knowledge page availability
  */
 
 // Locales that have Knowledge page available
-export const KNOWLEDGE_SUPPORTED_LOCALES = [
-  'en',
-  'ja',
-  'zh-hans',
-  'zh-hant',
-] as const;
+export const KNOWLEDGE_SUPPORTED_LOCALES = routing.locales;
 
 // Type for supported knowledge locales
 export type KnowledgeSupportedLocale =
@@ -36,12 +31,7 @@ export interface KnowledgeArticle {
 }
 
 // Knowledge data structure
-export interface KnowledgeData {
-  en: KnowledgeArticle[];
-  ja: KnowledgeArticle[];
-  'zh-hans': KnowledgeArticle[];
-  'zh-hant': KnowledgeArticle[];
-}
+export type KnowledgeData = Record<KnowledgeSupportedLocale, KnowledgeArticle[]>;
 
 // Keep empty language lists typed independently of the current JSON contents.
 export const knowledgeData: KnowledgeData = knowledgeDataRaw;

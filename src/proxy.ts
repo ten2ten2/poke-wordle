@@ -7,7 +7,7 @@ const routeLocale = createMiddleware(routing);
 
 export default function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-  const match = pathname.match(/^\/(?:(en|ja|zh-hans|zh-hant)\/)?knowledge\/([^/]+)\/?$/);
+  const match = pathname.match(/^\/(?:(en|ja|fr|de|it|es|ko|zh-hans|zh-hant)\/)?knowledge\/([^/]+)\/?$/);
   let alias: string | undefined;
   if (match) {
     try {
@@ -41,6 +41,6 @@ export const config = {
   matcher: [
     '/((?!api|_next|_vercel|.*\\..*).*)',
     '/knowledge/:path*',
-    '/:locale(en|ja|zh-hans|zh-hant)/knowledge/:path*',
+    '/:locale(en|ja|fr|de|it|es|ko|zh-hans|zh-hant)/knowledge/:path*',
   ],
 };

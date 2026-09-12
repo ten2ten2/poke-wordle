@@ -19,6 +19,24 @@ for (const width of [1440, 390]) {
     await page.goto(`${app.url}/#knowledge`);
     await expect(page.locator('.knowledge-article-button')).toHaveCount(1);
     await expect(page.locator('#knowledge-title')).toHaveValue('示例文章');
+    await expect(page.locator('#knowledge-languages button')).toHaveCount(9);
+    for (const [locale, language, title] of [
+      ['fr', '法语', 'Article français'], ['de', '德语', 'Deutscher Artikel'],
+      ['it', '意大利语', 'Articolo italiano'], ['es', '西班牙语', 'Artículo en español'],
+      ['ko', '韩语', '한국어 문서'],
+    ]) {
+      await page.locator('#knowledge-languages').getByRole('button', { name: `${language} ＋`, exact: true }).click();
+      await expect(page.getByLabel('路径名称', { exact: true })).toHaveValue('example-article');
+      await page.getByLabel('文章标题', { exact: true }).fill(title);
+      await page.getByLabel('文章摘要', { exact: true }).fill(`${title} — description`);
+      await page.getByLabel('MDX 正文').fill(`## ${title}\n\n${title}\n`);
+      await page.getByRole('button', { name: '保存到项目', exact: true }).click();
+      await expect(page.locator('#knowledge-dirty')).toHaveText('已保存到项目');
+      const saved = JSON.parse(await fs.readFile(path.join(fixture.data, 'knowledge_data.json')));
+      assert.equal(saved[locale][0].title, title);
+      assert.equal(saved.en[0].translations[locale].slug, 'example-article');
+    }
+    await page.locator('#knowledge-languages').getByRole('button', { name: '简体中文', exact: true }).click();
     await page.getByRole('button', { name: '预览并校验', exact: true }).click();
     await expect(page.frameLocator('#knowledge-preview-frame').getByRole('heading', { level: 2 }).first()).toHaveText('示例文章');
     await page.getByRole('button', { name: '切换到夜间模式', exact: true }).click();

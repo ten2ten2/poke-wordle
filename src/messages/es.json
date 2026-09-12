@@ -273,5 +273,14 @@
     "decline": "Rechazar",
     "close": "Cerrar",
     "privacyAndTerms": "Política de Privacidad y Términos de Servicio"
+  },
+  "knowledge": {
+    "title": "Base de conocimientos",
+    "description": "Explora las formas, evoluciones y generaciones de los Pokémon y aprende a interpretar las pistas de Poke Wordle.",
+    "comingSoon": "¡Próximamente! Estamos preparando artículos para ayudarte a reconocer mejor a los Pokémon.",
+    "readMore": "Leer más",
+    "randomPrefix": "Preguntas Pokémon: ",
+    "seoTitle": "Guías Pokémon y consejos para adivinar - Poke Wordle",
+    "relatedArticles": "Artículos relacionados"
   }
 }

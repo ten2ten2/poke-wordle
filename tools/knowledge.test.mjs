@@ -119,7 +119,7 @@ test('stale edits, invalid MDX, duplicate paths and unsafe paths cannot overwrit
   await fs.appendFile(path.join(fixture.data, 'knowledge/en', `${source.slug}.mdx`), '\nManual edit\n');
   await assert.rejects(manager.update({ ...request, revision: saved.revision }), /其他窗口/);
   const fresh = await manager.list();
-  await assert.rejects(manager.update({ ...request, revision: fresh.revision, locale: 'fr' }), /仅支持/);
+  await assert.rejects(manager.update({ ...request, revision: fresh.revision, locale: 'pt' }), /仅支持/);
   const outside = path.join(fixture.dir, 'outside.mdx'); await fs.writeFile(outside, 'Protected');
   await fs.symlink(outside, path.join(fixture.data, 'knowledge/en/linked.mdx'));
   await assert.rejects(manager.update({ ...request, revision: fresh.revision, version: { ...source, slug: 'linked' } }), /符号链接/);

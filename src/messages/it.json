@@ -273,5 +273,14 @@
     "decline": "Rifiuta",
     "close": "Chiudi",
     "privacyAndTerms": "Informativa sulla Privacy e Termini di Servizio"
+  },
+  "knowledge": {
+    "title": "Guide Pokémon",
+    "description": "Scopri forme, evoluzioni e generazioni dei Pokémon e impara a interpretare gli indizi di Poke Wordle.",
+    "comingSoon": "In arrivo! Stiamo preparando articoli per aiutarti a riconoscere meglio i Pokémon.",
+    "readMore": "Leggi di più",
+    "randomPrefix": "Domande sui Pokémon: ",
+    "seoTitle": "Guide Pokémon e consigli di gioco - Poke Wordle",
+    "relatedArticles": "Articoli correlati"
   }
 }

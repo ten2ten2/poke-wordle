@@ -213,7 +213,7 @@ test('historical article URLs redirect directly to their current version and ret
 });
 
 test('missing pages and unsupported knowledge languages are not soft 404s', async () => {
-  for (const path of ['/knowledge/nonexistent-seo-check-article', '/knowledge/nonexistent.article', '/fr/knowledge', '/ko/knowledge/nonexistent', '/invalid-locale']) {
+  for (const path of ['/knowledge/nonexistent-seo-check-article', '/knowledge/nonexistent.article', '/pt/knowledge', '/ko/knowledge/nonexistent', '/invalid-locale']) {
     const result = await response(path);
     expect({ path, status: result.status }).toEqual({ path, status: 404 });
   }

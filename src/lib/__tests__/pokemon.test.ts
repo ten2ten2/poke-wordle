@@ -331,8 +331,8 @@ describe('pokemon.ts', () => {
         'https://wiki.52poke.com/zh-hans/魔墙人偶',
       );
 
-      // Korean (no wiki available)
-      expect(getWikiUrl('마임맨', 'ko')).toBe('');
+      // Korean
+      expect(getWikiUrl('마임맨', 'ko')).toBe(`https://pokemon.fandom.com/ko/wiki/${encodeURIComponent('마임맨_(포켓몬)')}`);
     });
 
     it('should generate correct wiki URLs for Tapu Koko in all languages', () => {
@@ -376,8 +376,8 @@ describe('pokemon.ts', () => {
         'https://wiki.52poke.com/zh-hans/卡璞・鸣鸣',
       );
 
-      // Korean (no wiki available)
-      expect(getWikiUrl('카푸꼬꼬꼭', 'ko')).toBe('');
+      // Korean
+      expect(getWikiUrl('카푸꼬꼬꼭', 'ko')).toBe(`https://pokemon.fandom.com/ko/wiki/${encodeURIComponent('카푸꼬꼬꼭_(포켓몬)')}`);
     });
 
     it('should generate correct wiki URLs for Shaymin (Sky Forme) in all languages', () => {
@@ -421,8 +421,8 @@ describe('pokemon.ts', () => {
         'https://wiki.52poke.com/zh-hans/谢米',
       );
 
-      // Korean (no wiki available)
-      expect(getWikiUrl('쉐이미 (스카이폼)', 'ko')).toBe('');
+      // Korean
+      expect(getWikiUrl('쉐이미 (스카이폼)', 'ko')).toBe(`https://pokemon.fandom.com/ko/wiki/${encodeURIComponent('쉐이미_(포켓몬)')}`);
     });
 
     it('should handle names with spaces and special characters', () => {

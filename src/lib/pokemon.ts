@@ -182,8 +182,7 @@ export function getWikiUrl(name: string, locale: string = 'en'): string {
       name = name.trim();
       return `https://wiki.52poke.com/zh-hans/${name}`;
     case 'ko':
-      // Korean wiki is not available
-      return '';
+      return `https://pokemon.fandom.com/ko/wiki/${encodeURIComponent(`${name.trim().replace(/ /g, '_')}_(포켓몬)`)}`;
     default:
       return '';
   }

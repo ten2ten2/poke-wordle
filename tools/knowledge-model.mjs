@@ -2,10 +2,10 @@ import * as fs from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import { createHash, randomUUID } from 'node:crypto';
-import { paths } from './pipeline.mjs';
+import { locales, paths } from './pipeline.mjs';
 import { inspectMdx } from './knowledge-mdx.mjs';
 
-export const knowledgeLocales = ['en', 'ja', 'zh-hans', 'zh-hant'];
+export const knowledgeLocales = locales;
 const digest = (value) => createHash('sha256').update(value).digest('hex');
 const json = (value) => `${JSON.stringify(value, null, 2)}\n`;
 const key = (locale, slug) => `${locale}/${slug}`;
@@ -36,7 +36,7 @@ export function createKnowledgeManager({ root = paths.root } = {}) {
     }
   }
   const sourceFile = (locale, slug) => {
-    assert(knowledgeLocales.includes(locale), '知识库仅支持英语、日语、简体中文和繁体中文');
+    assert(knowledgeLocales.includes(locale), '知识库仅支持网站配置的九种语言');
     assert(validSlug(slug), '路径名称只能包含文字、数字、空格、点、下划线和短横线，且不含 .mdx 后缀');
     return path.join(folder, locale, `${slug}.mdx`);
   };

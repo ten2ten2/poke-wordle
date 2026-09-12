@@ -6,13 +6,28 @@
       "title": "What are \"Late Bloomers\" Pokémon?",
       "createdAt": "2025-06-06T00:03:12+08:00",
       "translations": {
+        "ja": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "fr": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "de": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "it": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "es": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "ko": {
+          "slug": "late-bloomers-pokemon"
+        },
         "zh-hans": {
           "slug": "late-bloomers-pokemon"
         },
         "zh-hant": {
-          "slug": "late-bloomers-pokemon"
-        },
-        "ja": {
           "slug": "late-bloomers-pokemon"
         }
       },
@@ -27,6 +42,21 @@
       "createdAt": "2026-09-11T20:39:21Z",
       "translations": {
         "ja": {
+          "slug": "guessing-clues"
+        },
+        "fr": {
+          "slug": "guessing-clues"
+        },
+        "de": {
+          "slug": "guessing-clues"
+        },
+        "it": {
+          "slug": "guessing-clues"
+        },
+        "es": {
+          "slug": "guessing-clues"
+        },
+        "ko": {
           "slug": "guessing-clues"
         },
         "zh-hans": {
@@ -47,6 +77,21 @@
         "ja": {
           "slug": "generations-and-settings"
         },
+        "fr": {
+          "slug": "generations-and-settings"
+        },
+        "de": {
+          "slug": "generations-and-settings"
+        },
+        "it": {
+          "slug": "generations-and-settings"
+        },
+        "es": {
+          "slug": "generations-and-settings"
+        },
+        "ko": {
+          "slug": "generations-and-settings"
+        },
         "zh-hans": {
           "slug": "generations-and-settings"
         },
@@ -65,6 +110,21 @@
         "ja": {
           "slug": "forms-and-mega-evolution"
         },
+        "fr": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "de": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "it": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "es": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "ko": {
+          "slug": "forms-and-mega-evolution"
+        },
         "zh-hans": {
           "slug": "forms-and-mega-evolution"
         },
@@ -81,13 +141,28 @@
       "title": "「大器晩成」なポケモンとは？",
       "createdAt": "2025-06-06T00:03:12+08:00",
       "translations": {
+        "en": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "fr": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "de": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "it": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "es": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "ko": {
+          "slug": "late-bloomers-pokemon"
+        },
         "zh-hans": {
           "slug": "late-bloomers-pokemon"
         },
         "zh-hant": {
-          "slug": "late-bloomers-pokemon"
-        },
-        "en": {
           "slug": "late-bloomers-pokemon"
         }
       },
@@ -102,6 +177,21 @@
       "createdAt": "2026-09-11T20:39:21Z",
       "translations": {
         "en": {
+          "slug": "guessing-clues"
+        },
+        "fr": {
+          "slug": "guessing-clues"
+        },
+        "de": {
+          "slug": "guessing-clues"
+        },
+        "it": {
+          "slug": "guessing-clues"
+        },
+        "es": {
+          "slug": "guessing-clues"
+        },
+        "ko": {
           "slug": "guessing-clues"
         },
         "zh-hans": {
@@ -122,6 +212,21 @@
         "en": {
           "slug": "generations-and-settings"
         },
+        "fr": {
+          "slug": "generations-and-settings"
+        },
+        "de": {
+          "slug": "generations-and-settings"
+        },
+        "it": {
+          "slug": "generations-and-settings"
+        },
+        "es": {
+          "slug": "generations-and-settings"
+        },
+        "ko": {
+          "slug": "generations-and-settings"
+        },
         "zh-hans": {
           "slug": "generations-and-settings"
         },
@@ -140,6 +245,691 @@
         "en": {
           "slug": "forms-and-mega-evolution"
         },
+        "fr": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "de": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "it": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "es": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "ko": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "zh-hans": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "zh-hant": {
+          "slug": "forms-and-mega-evolution"
+        }
+      }
+    }
+  ],
+  "fr": [
+    {
+      "id": "k-fr-late-bloomers-pokemon",
+      "slug": "late-bloomers-pokemon",
+      "title": "Quels sont les Pokémon dits « à maturité tardive » ?",
+      "description": "Découvrez les caractéristiques des Pokémon dits « à maturité tardive », le total de 600 points de statistiques de leur forme finale et les familles concernées.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "ja": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "de": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "it": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "es": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "ko": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "zh-hans": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "zh-hant": {
+          "slug": "late-bloomers-pokemon"
+        }
+      }
+    },
+    {
+      "id": "k-fr-guessing-clues",
+      "slug": "guessing-clues",
+      "title": "Comment lire les couleurs et les flèches de Poke Wordle ?",
+      "description": "Distinguez les correspondances exactes et proches, interprétez les flèches de statistiques et de génération, et comprenez pourquoi des indices verts ne suffisent pas toujours.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "guessing-clues"
+        },
+        "ja": {
+          "slug": "guessing-clues"
+        },
+        "de": {
+          "slug": "guessing-clues"
+        },
+        "it": {
+          "slug": "guessing-clues"
+        },
+        "es": {
+          "slug": "guessing-clues"
+        },
+        "ko": {
+          "slug": "guessing-clues"
+        },
+        "zh-hans": {
+          "slug": "guessing-clues"
+        },
+        "zh-hant": {
+          "slug": "guessing-clues"
+        }
+      }
+    },
+    {
+      "id": "k-fr-generations-and-settings",
+      "slug": "generations-and-settings",
+      "title": "Comment les générations et les paramètres modifient-ils la partie ?",
+      "description": "Comprenez le filtre par génération, le cas des formes régionales, les paramètres qui relancent une partie et l'ordre d'affichage des propositions.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "generations-and-settings"
+        },
+        "ja": {
+          "slug": "generations-and-settings"
+        },
+        "de": {
+          "slug": "generations-and-settings"
+        },
+        "it": {
+          "slug": "generations-and-settings"
+        },
+        "es": {
+          "slug": "generations-and-settings"
+        },
+        "ko": {
+          "slug": "generations-and-settings"
+        },
+        "zh-hans": {
+          "slug": "generations-and-settings"
+        },
+        "zh-hant": {
+          "slug": "generations-and-settings"
+        }
+      }
+    },
+    {
+      "id": "k-fr-forms-and-mega-evolution",
+      "slug": "forms-and-mega-evolution",
+      "title": "Pourquoi les formes ont-elles des étiquettes de Méga-Évolution différentes ?",
+      "description": "Distinguez une espèce de ses formes et découvrez comment Poke Wordle attribue l'indice de Méga-Évolution aux formes de Zygarde et de Floette.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "ja": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "de": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "it": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "es": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "ko": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "zh-hans": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "zh-hant": {
+          "slug": "forms-and-mega-evolution"
+        }
+      }
+    }
+  ],
+  "de": [
+    {
+      "id": "k-de-late-bloomers-pokemon",
+      "slug": "late-bloomers-pokemon",
+      "title": "Welche Pokémon gehören zu den „Spätentwicklern“?",
+      "description": "Lerne die Merkmale der sogenannten Spätentwickler kennen: ihre Entwicklungsreihen, die langsame Erfahrungskurve und die Basiswertsumme von 600 in der letzten Stufe.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "ja": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "fr": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "it": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "es": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "ko": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "zh-hans": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "zh-hant": {
+          "slug": "late-bloomers-pokemon"
+        }
+      }
+    },
+    {
+      "id": "k-de-guessing-clues",
+      "slug": "guessing-clues",
+      "title": "Was bedeuten die Farben und Pfeile in Poke Wordle?",
+      "description": "Erkenne genaue und ähnliche Treffer, lies die Pfeile für Basiswertsumme und Generation und erfahre, warum grüne Hinweise nicht immer die richtige Antwort bedeuten.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "guessing-clues"
+        },
+        "ja": {
+          "slug": "guessing-clues"
+        },
+        "fr": {
+          "slug": "guessing-clues"
+        },
+        "it": {
+          "slug": "guessing-clues"
+        },
+        "es": {
+          "slug": "guessing-clues"
+        },
+        "ko": {
+          "slug": "guessing-clues"
+        },
+        "zh-hans": {
+          "slug": "guessing-clues"
+        },
+        "zh-hant": {
+          "slug": "guessing-clues"
+        }
+      }
+    },
+    {
+      "id": "k-de-generations-and-settings",
+      "slug": "generations-and-settings",
+      "title": "Wie verändern Generationen und Einstellungen das Spiel?",
+      "description": "Verstehe den Generationsfilter und Regionalformen, erfahre, welche Einstellungen eine Runde zurücksetzen, und passe die Reihenfolge deiner Tipps an.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "generations-and-settings"
+        },
+        "ja": {
+          "slug": "generations-and-settings"
+        },
+        "fr": {
+          "slug": "generations-and-settings"
+        },
+        "it": {
+          "slug": "generations-and-settings"
+        },
+        "es": {
+          "slug": "generations-and-settings"
+        },
+        "ko": {
+          "slug": "generations-and-settings"
+        },
+        "zh-hans": {
+          "slug": "generations-and-settings"
+        },
+        "zh-hant": {
+          "slug": "generations-and-settings"
+        }
+      }
+    },
+    {
+      "id": "k-de-forms-and-mega-evolution",
+      "slug": "forms-and-mega-evolution",
+      "title": "Warum unterscheiden sich die Mega-Entwicklungsmarkierungen einzelner Formen?",
+      "description": "Unterscheide Pokémon-Arten von ihren Formen und erfahre, wie Poke Wordle die Mega-Entwicklung für Zygarde und Floette als Hinweis verwendet.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "ja": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "fr": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "it": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "es": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "ko": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "zh-hans": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "zh-hant": {
+          "slug": "forms-and-mega-evolution"
+        }
+      }
+    }
+  ],
+  "it": [
+    {
+      "id": "k-it-late-bloomers-pokemon",
+      "slug": "late-bloomers-pokemon",
+      "title": "Quali sono i Pokémon che raggiungono tardi il loro pieno potenziale?",
+      "description": "Scopri le caratteristiche degli pseudoleggendari, il totale di 600 punti delle statistiche base nella forma finale e le linee evolutive di questo gruppo.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "ja": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "fr": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "de": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "es": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "ko": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "zh-hans": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "zh-hant": {
+          "slug": "late-bloomers-pokemon"
+        }
+      }
+    },
+    {
+      "id": "k-it-guessing-clues",
+      "slug": "guessing-clues",
+      "title": "Come funzionano i colori e le frecce in Poke Wordle?",
+      "description": "Distingui le corrispondenze esatte da quelle vicine, interpreta le frecce di statistiche e generazione e scopri perché gli indizi verdi non bastano sempre.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "guessing-clues"
+        },
+        "ja": {
+          "slug": "guessing-clues"
+        },
+        "fr": {
+          "slug": "guessing-clues"
+        },
+        "de": {
+          "slug": "guessing-clues"
+        },
+        "es": {
+          "slug": "guessing-clues"
+        },
+        "ko": {
+          "slug": "guessing-clues"
+        },
+        "zh-hans": {
+          "slug": "guessing-clues"
+        },
+        "zh-hant": {
+          "slug": "guessing-clues"
+        }
+      }
+    },
+    {
+      "id": "k-it-generations-and-settings",
+      "slug": "generations-and-settings",
+      "title": "Come cambiano il gioco le generazioni e le impostazioni?",
+      "description": "Scopri come funzionano il filtro per generazione e le forme regionali, quali impostazioni azzerano il round e come ordinare i tentativi.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "generations-and-settings"
+        },
+        "ja": {
+          "slug": "generations-and-settings"
+        },
+        "fr": {
+          "slug": "generations-and-settings"
+        },
+        "de": {
+          "slug": "generations-and-settings"
+        },
+        "es": {
+          "slug": "generations-and-settings"
+        },
+        "ko": {
+          "slug": "generations-and-settings"
+        },
+        "zh-hans": {
+          "slug": "generations-and-settings"
+        },
+        "zh-hant": {
+          "slug": "generations-and-settings"
+        }
+      }
+    },
+    {
+      "id": "k-it-forms-and-mega-evolution",
+      "slug": "forms-and-mega-evolution",
+      "title": "Perché le forme hanno tag della megaevoluzione diversi?",
+      "description": "Distingui le specie dalle loro forme e scopri come Poke Wordle assegna l'indizio della megaevoluzione a Zygarde e Floette.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "ja": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "fr": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "de": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "es": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "ko": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "zh-hans": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "zh-hant": {
+          "slug": "forms-and-mega-evolution"
+        }
+      }
+    }
+  ],
+  "es": [
+    {
+      "id": "k-es-late-bloomers-pokemon",
+      "slug": "late-bloomers-pokemon",
+      "title": "¿Qué Pokémon alcanzan su máximo potencial más tarde?",
+      "description": "Descubre qué caracteriza a los Pokémon pseudolegendarios, por qué su evolución final suma 600 puntos de estadísticas base y qué familias pertenecen a este grupo.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "ja": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "fr": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "de": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "it": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "ko": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "zh-hans": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "zh-hant": {
+          "slug": "late-bloomers-pokemon"
+        }
+      }
+    },
+    {
+      "id": "k-es-guessing-clues",
+      "slug": "guessing-clues",
+      "title": "¿Cómo funcionan los colores y las flechas de Poke Wordle?",
+      "description": "Distingue las coincidencias exactas de las cercanas, interpreta las flechas de estadísticas y generación y descubre por qué las pistas verdes no siempre bastan.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "guessing-clues"
+        },
+        "ja": {
+          "slug": "guessing-clues"
+        },
+        "fr": {
+          "slug": "guessing-clues"
+        },
+        "de": {
+          "slug": "guessing-clues"
+        },
+        "it": {
+          "slug": "guessing-clues"
+        },
+        "ko": {
+          "slug": "guessing-clues"
+        },
+        "zh-hans": {
+          "slug": "guessing-clues"
+        },
+        "zh-hant": {
+          "slug": "guessing-clues"
+        }
+      }
+    },
+    {
+      "id": "k-es-generations-and-settings",
+      "slug": "generations-and-settings",
+      "title": "¿Cómo cambian la partida las generaciones y la configuración?",
+      "description": "Entiende el filtro de generaciones y las formas regionales, descubre qué ajustes reinician la ronda y aprende a ordenar tus intentos.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "generations-and-settings"
+        },
+        "ja": {
+          "slug": "generations-and-settings"
+        },
+        "fr": {
+          "slug": "generations-and-settings"
+        },
+        "de": {
+          "slug": "generations-and-settings"
+        },
+        "it": {
+          "slug": "generations-and-settings"
+        },
+        "ko": {
+          "slug": "generations-and-settings"
+        },
+        "zh-hans": {
+          "slug": "generations-and-settings"
+        },
+        "zh-hant": {
+          "slug": "generations-and-settings"
+        }
+      }
+    },
+    {
+      "id": "k-es-forms-and-mega-evolution",
+      "slug": "forms-and-mega-evolution",
+      "title": "¿Por qué las formas tienen distintas etiquetas de megaevolución?",
+      "description": "Distingue una especie de sus formas y descubre cómo Poke Wordle asigna la pista de megaevolución a Zygarde y Floette.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "ja": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "fr": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "de": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "it": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "ko": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "zh-hans": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "zh-hant": {
+          "slug": "forms-and-mega-evolution"
+        }
+      }
+    }
+  ],
+  "ko": [
+    {
+      "id": "k-ko-late-bloomers-pokemon",
+      "slug": "late-bloomers-pokemon",
+      "title": "대기만성형 포켓몬, 이른바 '600족'은 무엇일까요?",
+      "description": "대기만성형 포켓몬의 공통점과 최종 진화형의 종족값 합계가 600이라는 기준, 여기에 해당하는 진화 계열을 알아보세요.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "ja": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "fr": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "de": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "it": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "es": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "zh-hans": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "zh-hant": {
+          "slug": "late-bloomers-pokemon"
+        }
+      }
+    },
+    {
+      "id": "k-ko-guessing-clues",
+      "slug": "guessing-clues",
+      "title": "Poke Wordle의 색상과 화살표는 어떻게 읽나요?",
+      "description": "일치하거나 비슷한 단서를 구분하고, 종족값 합계와 세대 화살표를 해석하며, 초록색 단서가 있어도 오답일 수 있는 이유를 알아보세요.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "guessing-clues"
+        },
+        "ja": {
+          "slug": "guessing-clues"
+        },
+        "fr": {
+          "slug": "guessing-clues"
+        },
+        "de": {
+          "slug": "guessing-clues"
+        },
+        "it": {
+          "slug": "guessing-clues"
+        },
+        "es": {
+          "slug": "guessing-clues"
+        },
+        "zh-hans": {
+          "slug": "guessing-clues"
+        },
+        "zh-hant": {
+          "slug": "guessing-clues"
+        }
+      }
+    },
+    {
+      "id": "k-ko-generations-and-settings",
+      "slug": "generations-and-settings",
+      "title": "세대 선택과 설정은 게임에 어떤 영향을 주나요?",
+      "description": "세대 필터와 리전폼의 적용 방식을 알아보고, 어떤 설정이 현재 라운드를 초기화하는지와 추측 표시 순서를 확인하세요.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "generations-and-settings"
+        },
+        "ja": {
+          "slug": "generations-and-settings"
+        },
+        "fr": {
+          "slug": "generations-and-settings"
+        },
+        "de": {
+          "slug": "generations-and-settings"
+        },
+        "it": {
+          "slug": "generations-and-settings"
+        },
+        "es": {
+          "slug": "generations-and-settings"
+        },
+        "zh-hans": {
+          "slug": "generations-and-settings"
+        },
+        "zh-hant": {
+          "slug": "generations-and-settings"
+        }
+      }
+    },
+    {
+      "id": "k-ko-forms-and-mega-evolution",
+      "slug": "forms-and-mega-evolution",
+      "title": "폼마다 메가진화 태그가 다른 이유는 무엇인가요?",
+      "description": "포켓몬의 종과 폼을 구분하고, Poke Wordle에서 지가르데와 플라엣테의 메가진화 단서를 어떻게 지정하는지 알아보세요.",
+      "createdAt": "2026-09-12T00:04:34.504Z",
+      "translations": {
+        "en": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "ja": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "fr": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "de": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "it": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "es": {
+          "slug": "forms-and-mega-evolution"
+        },
         "zh-hans": {
           "slug": "forms-and-mega-evolution"
         },
@@ -156,13 +946,28 @@
       "title": "什么是「大器晚成」的宝可梦？",
       "createdAt": "2025-06-06T00:03:12+08:00",
       "translations": {
-        "zh-hant": {
+        "en": {
           "slug": "late-bloomers-pokemon"
         },
         "ja": {
           "slug": "late-bloomers-pokemon"
         },
-        "en": {
+        "fr": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "de": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "it": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "es": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "ko": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "zh-hant": {
           "slug": "late-bloomers-pokemon"
         }
       },
@@ -180,6 +985,21 @@
           "slug": "guessing-clues"
         },
         "ja": {
+          "slug": "guessing-clues"
+        },
+        "fr": {
+          "slug": "guessing-clues"
+        },
+        "de": {
+          "slug": "guessing-clues"
+        },
+        "it": {
+          "slug": "guessing-clues"
+        },
+        "es": {
+          "slug": "guessing-clues"
+        },
+        "ko": {
           "slug": "guessing-clues"
         },
         "zh-hant": {
@@ -200,6 +1020,21 @@
         "ja": {
           "slug": "generations-and-settings"
         },
+        "fr": {
+          "slug": "generations-and-settings"
+        },
+        "de": {
+          "slug": "generations-and-settings"
+        },
+        "it": {
+          "slug": "generations-and-settings"
+        },
+        "es": {
+          "slug": "generations-and-settings"
+        },
+        "ko": {
+          "slug": "generations-and-settings"
+        },
         "zh-hant": {
           "slug": "generations-and-settings"
         }
@@ -218,6 +1053,21 @@
         "ja": {
           "slug": "forms-and-mega-evolution"
         },
+        "fr": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "de": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "it": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "es": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "ko": {
+          "slug": "forms-and-mega-evolution"
+        },
         "zh-hant": {
           "slug": "forms-and-mega-evolution"
         }
@@ -231,13 +1081,28 @@
       "title": "什麼是「大器晚成」的寶可夢？",
       "createdAt": "2025-06-06T00:03:12+08:00",
       "translations": {
-        "zh-hans": {
+        "en": {
           "slug": "late-bloomers-pokemon"
         },
         "ja": {
           "slug": "late-bloomers-pokemon"
         },
-        "en": {
+        "fr": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "de": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "it": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "es": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "ko": {
+          "slug": "late-bloomers-pokemon"
+        },
+        "zh-hans": {
           "slug": "late-bloomers-pokemon"
         }
       },
@@ -255,6 +1120,21 @@
           "slug": "guessing-clues"
         },
         "ja": {
+          "slug": "guessing-clues"
+        },
+        "fr": {
+          "slug": "guessing-clues"
+        },
+        "de": {
+          "slug": "guessing-clues"
+        },
+        "it": {
+          "slug": "guessing-clues"
+        },
+        "es": {
+          "slug": "guessing-clues"
+        },
+        "ko": {
           "slug": "guessing-clues"
         },
         "zh-hans": {
@@ -275,6 +1155,21 @@
         "ja": {
           "slug": "generations-and-settings"
         },
+        "fr": {
+          "slug": "generations-and-settings"
+        },
+        "de": {
+          "slug": "generations-and-settings"
+        },
+        "it": {
+          "slug": "generations-and-settings"
+        },
+        "es": {
+          "slug": "generations-and-settings"
+        },
+        "ko": {
+          "slug": "generations-and-settings"
+        },
         "zh-hans": {
           "slug": "generations-and-settings"
         }
@@ -291,6 +1186,21 @@
           "slug": "forms-and-mega-evolution"
         },
         "ja": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "fr": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "de": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "it": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "es": {
+          "slug": "forms-and-mega-evolution"
+        },
+        "ko": {
           "slug": "forms-and-mega-evolution"
         },
         "zh-hans": {

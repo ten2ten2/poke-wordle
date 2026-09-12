@@ -273,5 +273,14 @@
     "decline": "거부",
     "close": "닫기",
     "privacyAndTerms": "개인정보 처리방침 및 이용약관"
+  },
+  "knowledge": {
+    "title": "포켓몬 지식",
+    "description": "포켓몬의 폼, 진화, 세대를 알아보고 Poke Wordle의 단서를 활용하는 방법을 배워 보세요.",
+    "comingSoon": "곧 공개됩니다! 포켓몬을 더 잘 맞힐 수 있도록 다양한 글을 준비하고 있습니다.",
+    "readMore": "더 읽기",
+    "randomPrefix": "포켓몬 Q&A: ",
+    "seoTitle": "포켓몬 지식과 추리 가이드 - Poke Wordle",
+    "relatedArticles": "관련 글"
   }
 }

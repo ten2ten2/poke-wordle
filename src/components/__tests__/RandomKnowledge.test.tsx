@@ -20,7 +20,7 @@ jest.mock('@/data/knowledge_data.json', () => ({
     { id: '2', title: '第二篇', slug: '第二篇' },
   ],
   'zh-hant': [{ id: '1', title: '唯一一篇', slug: '唯一一篇' }],
-  ja: [],
+  ja: [], fr: [], de: [], it: [], es: [], ko: [],
 }));
 
 beforeEach(() => {

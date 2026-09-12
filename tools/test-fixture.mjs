@@ -3,7 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { registrySource } from './knowledge-model.mjs';
+import { knowledgeLocales, registrySource } from './knowledge-model.mjs';
 
 export async function createFixture() {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'poke-review-'));
@@ -16,7 +16,7 @@ export async function createFixture() {
   await fs.symlink(path.resolve(import.meta.dirname, '../node_modules'), path.join(dir, 'node_modules'), 'dir');
   // Console tests should not depend on which articles the editor has published.
   const articleTitles = { en: 'Example article', ja: 'サンプル記事', 'zh-hans': '示例文章', 'zh-hant': '範例文章' };
-  const knowledge = {};
+  const knowledge = Object.fromEntries(knowledgeLocales.map((locale) => [locale, []]));
   for (const [locale, title] of Object.entries(articleTitles)) {
     const metadata = { id: `fixture-${locale}`, slug: 'example-article', title, description: `${title} — example description`, createdAt: '2025-06-06T00:00:00Z', translations: Object.fromEntries(Object.keys(articleTitles).filter((language) => language !== locale).map((language) => [language, { slug: 'example-article' }])) };
     knowledge[locale] = [metadata];

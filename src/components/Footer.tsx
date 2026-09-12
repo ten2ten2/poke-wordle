@@ -2,7 +2,6 @@
 
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
-import { isKnowledgeSupported } from '@/config/knowledge';
 import { useHydrated } from '@/hooks/useHydrated';
 
 export default function Footer() {
@@ -27,7 +26,8 @@ export default function Footer() {
             
             {/* Links */}
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-              {isKnowledgeSupported(locale) && (
+              {/* Keep the requested footer language scope independent of article availability. */}
+              {['en', 'ja', 'zh-hans', 'zh-hant'].includes(locale) && (
                 <Link href={`${prefix}/knowledge`} title={t('knowledge.title')} className="footer-link">
                   {t('knowledge.title')}
                 </Link>
