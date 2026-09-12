@@ -220,7 +220,7 @@
       },
       "thirdParty": {
         "title": "Services Tiers",
-        "description": "Nous pouvons utiliser des services tiers pour les analyses et l'hébergement. Ces services ont leurs propres politiques de confidentialité."
+        "description": "Nous pouvons utiliser des services tiers (tels que Google Analytics) pour les analyses et l’hébergement. Ces services ont leurs propres politiques de confidentialité."
       },
       "dataRights": {
         "title": "Vos Droits",

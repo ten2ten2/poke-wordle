@@ -230,7 +230,7 @@
       },
       "thirdParty": {
         "title": "第三方服务",
-        "description": "我们可能使用第三方服务进行分析和托管。这些服务有自己的隐私政策。"
+        "description": "我们可能使用第三方服务 (例如 Google Analytics) 进行分析和托管。这些服务有自己的隐私政策。"
       },
       "dataRights": {
         "title": "您的权利",

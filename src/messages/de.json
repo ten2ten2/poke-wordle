@@ -220,7 +220,7 @@
       },
       "thirdParty": {
         "title": "Drittanbieter-Services",
-        "description": "Wir können Drittanbieter-Services für Analysen und Hosting verwenden. Diese Services haben ihre eigenen Datenschutzerklärungen."
+        "description": "Wir können Dienste von Drittanbietern (wie Google Analytics) für Analysen und Hosting nutzen. Diese Dienste haben ihre eigenen Datenschutzerklärungen."
       },
       "dataRights": {
         "title": "Ihre Rechte",
