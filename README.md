@@ -38,13 +38,13 @@ mise run dev
 - 已打开的页面继续使用加载时的数据版本；刷新后加载新版数据，并通过存档版本校验丢弃不兼容的进度，保留游戏设置。
 - `src/data/` 是发布数据，`src/config/dataset.ts` 提供版本号；[tools/](tools/README.md) 负责候选审核、数据校正和 MDX 文章管理。
 - 知识库、隐私正文和面包屑由服务端渲染；首页随机问答只向客户端传入当前语言的标题和路径。
-- `public/styles/theme.css`、`buttons.css` 供网站、控制台和文章预览共用。字体使用自托管 Inter，中日韩回退到系统字体；许可见 `public/fonts/OFL.txt`。
+- 网站与控制台共用 `public/styles/` 样式，文章预览复用其中的主题变量。字体使用自托管 Inter，中日韩回退到系统字体；许可见 `public/fonts/OFL.txt`。
 
 ## 检查与部署
 
 GitHub Actions 在 `dev`、`main` 推送及 Pull Request 时执行 `mise run check`。数据检查使用本地文件与测试夹具，上游更新由人工触发。
 
-部署执行 `npm ci`、`npm run build`；自托管通过 `npm start` 启动。Node.js 版本范围由 `package.json` 的 `engines` 指定。前端环境变量修改后需重新构建。
+部署执行 `npm ci`、`npm run build`；自托管通过 `npm start` 启动。Node.js 版本范围由 `package.json` 的 `engines` 指定。[.env.example](.env.example) 中的变量修改后需重新构建。
 
 `/favicon.ico` 使用 7 天浏览器缓存；替换 `public/favicon.ico` 时，同步递增 `src/app/[locale]/layout.tsx` 中图标 URL 的 `v` 参数，让浏览器获取新版本。
 
@@ -52,10 +52,8 @@ GitHub Actions 在 `dev`、`main` 推送及 Pull Request 时执行 `mise run che
 
 配置 `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-...` 后，Google Analytics 默认启用；明确拒绝后停止采集并清除 GA Cookie。用户可通过页脚「隐私偏好」更改选择。GA4 数据流的增强型衡量应开启「基于浏览器历史记录事件的网页更改」，由 Google 标签自动统计站内跳转，避免重复上报。
 
-Vercel 的路径级请求分析需要 Observability Plus。启用 [Flat Rate CDN](https://vercel.com/docs/pricing/flat-rate-cdn#how-vercel-handles-usage) 后，CDN 请求产生的观测事件包含在套餐内，其他观测事件仍按量计费。
+验证真实 Google 标签：先设置 `NEXT_PUBLIC_GA_MEASUREMENT_ID` 并运行 `mise run build`，再运行 `GA4_E2E_MEASUREMENT_ID=G-... mise run e2e -- tests/e2e/analytics.spec.ts`（两个 ID 必须一致）。此检查需要联网，上报请求由测试拦截；未设置测试 ID 时跳过真实标签检查。
 
-验证真实 Google 标签：先用上述 ID 构建，再运行 `GA4_E2E_MEASUREMENT_ID=G-... mise run e2e -- tests/e2e/analytics.spec.ts`（两个 ID 必须一致）。此检查需要联网，所有 GA 上报均被拦截，不会污染正式统计；未设置测试 ID 时跳过真实标签检查。
-
-SEO 校验检查实际构建输出，无需安装浏览器。部署后可运行 `SEO_BASE_URL=https://www.pokewordle.app mise run seo:check`。文章元数据、语言互链和历史地址由索引生成，sitemap 日期只随实际内容更新；编辑约定见[知识文章](tools/README.md#知识文章)。
+SEO 校验检查生产服务器返回的 HTML，无需安装浏览器；默认使用本地构建，也可运行 `SEO_BASE_URL=https://www.pokewordle.app mise run seo:check` 检查线上站点。线上部署需与本地文章索引和配置一致。文章元数据与语言互链由索引生成，历史地址由重定向记录维护，sitemap 的文章日期来自索引；编辑约定见[知识文章](tools/README.md#知识文章)。
 
 上线后在 Google Search Console 提交 `/sitemap.xml`，用 URL 检查确认收录和规范网址；必要时[请求重新抓取](https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl)。

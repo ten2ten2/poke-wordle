@@ -6,6 +6,6 @@
 - `screenshot-wide.png`：1280×720 桌面展示截图。
 - `screenshot-narrow.png`：390×844 手机展示截图。
 
-更新截图时，在上述尺寸的浏览器视口中打开当前页面，使用浅色模式，完成一次猜测并关闭隐私提示。等待字体和宝可梦图片加载完成后截取视口；手机图使用实际手机布局。分享图使用同一份截图，PWA 截图尺寸与 `public/manifest.json` 保持一致。
+更新分享图时同步替换 `og-image.png` 和 `twitter-image.png`，保持两图内容、尺寸一致。PWA 截图应反映当前桌面和手机布局，尺寸与 `public/manifest.json` 一致。
 
-宝可梦图片来自 PokeAPI sprites，地址保存在 `src/data/pokemon_data.json` 中。
+游戏图片来自 PokeAPI sprites；普通图片地址保存在 `src/data/pokemon_data.json`，恶作剧图片地址保存在 `src/data/prankster_profile.json`。这些图片不存放在本目录。
