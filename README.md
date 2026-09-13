@@ -15,7 +15,7 @@ mise run dev
 
 打开 http://localhost:3000。工具和依赖版本分别由 `mise.toml`、`package-lock.json` 固定；可选环境变量见 [.env.example](.env.example)，本地配置写入 `.env.local`。
 
-开发环境由浏览器直接加载原图，兼容代理的 Fake-IP DNS；生产环境保留 Next.js 图片优化和私有 IP 检查。
+开发环境由浏览器直接加载原图；生产环境默认启用 Next.js 图片优化。
 
 | 命令 | 用途 |
 | --- | --- |
@@ -29,12 +29,12 @@ mise run dev
 | `mise run knowledge:sync` | 手动编辑索引后重新生成 MDX 加载清单 |
 | `mise run seo:check` | 构建后检查实际 HTML、sitemap、语言互链、分享图片和重定向 |
 
-首次运行浏览器测试前执行 `mise exec -- npm exec -- playwright install chromium`。E2E 默认检查生产构建；`E2E_DEV=1 mise run e2e` 改用开发服务器，`mise run e2e -- --grep '关键词'` 筛选用例。
+首次运行浏览器测试前执行 `mise exec -- npm exec -- playwright install chromium`。E2E 默认使用生产服务器，运行前先执行 `mise run build`；`E2E_DEV=1 mise run e2e` 改用开发服务器，`mise run e2e -- --grep '关键词'` 筛选用例。
 
 ## 代码与数据
 
 - Next.js App Router、React、Tailwind CSS。`src/app/[locale]` 和 `src/proxy.ts` 统一语言路由；英文不带路径前缀。
-- `src/hooks/useGameState.ts` 在浏览器中管理游戏、持久化并调用 `src/lib/pokemon.ts` 比较猜测，复用已加载的数据，不发送猜测请求。`src/app/api/checkGuess/route.ts` 仅兼容发布前已打开的旧页面。
+- `src/hooks/useGameState.ts` 在浏览器中管理游戏、持久化并调用 `src/lib/pokemon.ts` 比较猜测，复用已加载的数据，不发送猜测请求。`src/app/api/checkGuess/route.ts` 为旧客户端提供兼容接口。
 - 已打开的页面继续使用加载时的数据版本；刷新后加载新版数据，并通过存档版本校验丢弃不兼容的进度，保留游戏设置。
 - `src/data/` 是发布数据，`src/config/dataset.ts` 提供版本号；[tools/](tools/README.md) 负责候选审核、数据校正和 MDX 文章管理。
 - 知识库、隐私正文和面包屑由服务端渲染；首页随机问答只向客户端传入当前语言的标题和路径。
@@ -44,13 +44,15 @@ mise run dev
 
 GitHub Actions 在 `dev`、`main` 推送及 Pull Request 时执行 `mise run check`。数据检查使用本地文件与测试夹具，上游更新由人工触发。
 
-部署执行 `npm ci`、`npm run build`；自托管通过 `npm start` 启动。Node.js 使用 `24.x`，与 [Vercel 运行时](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions)对齐。环境变量修改后需重新构建。
+部署执行 `npm ci`、`npm run build`；自托管通过 `npm start` 启动。Node.js 版本范围由 `package.json` 的 `engines` 指定。前端环境变量修改后需重新构建。
 
 `/favicon.ico` 使用 7 天浏览器缓存；替换 `public/favicon.ico` 时，同步递增 `src/app/[locale]/layout.tsx` 中图标 URL 的 `v` 参数，让浏览器获取新版本。
 
-TypeScript 6、ESLint 9 受当前插件的 peer 依赖范围约束；升级时重新核验兼容性，不用 `--force` 或 `--legacy-peer-deps` 绕过约束。
+搜索候选只显示名称和图鉴编号；页脚和 Cookie 提示中的隐私页链接关闭预取。
 
 配置 `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-...` 后，Google Analytics 默认启用；明确拒绝后停止采集并清除 GA Cookie。用户可通过页脚「隐私偏好」更改选择。GA4 数据流的增强型衡量应开启「基于浏览器历史记录事件的网页更改」，由 Google 标签自动统计站内跳转，避免重复上报。
+
+Vercel 的路径级请求分析需要 Observability Plus。启用 [Flat Rate CDN](https://vercel.com/docs/pricing/flat-rate-cdn#how-vercel-handles-usage) 后，CDN 请求产生的观测事件包含在套餐内，其他观测事件仍按量计费。
 
 验证真实 Google 标签：先用上述 ID 构建，再运行 `GA4_E2E_MEASUREMENT_ID=G-... mise run e2e -- tests/e2e/analytics.spec.ts`（两个 ID 必须一致）。此检查需要联网，所有 GA 上报均被拦截，不会污染正式统计；未设置测试 ID 时跳过真实标签检查。
 
