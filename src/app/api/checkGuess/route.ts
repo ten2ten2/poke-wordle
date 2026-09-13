@@ -33,7 +33,8 @@ function pokemonIndex(locale: string) {
 // Compatibility for pages opened before guesses moved to the client.
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    // Parse failures are invalid input, regardless of the error's JS realm.
+    const body = await request.json().catch(() => null);
     if (!body || typeof body !== 'object' || Array.isArray(body)) {
       return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
     }
@@ -58,9 +59,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(comparePokemon(guess, target, is_prankster, is_gen_arrow, previousFieldToHide));
   } catch (error) {
-    if (error instanceof SyntaxError) {
-      return NextResponse.json({ error: 'Invalid JSON request body' }, { status: 400 });
-    }
     console.error('Error in checkGuess API:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }

@@ -455,8 +455,8 @@ describe('Settings', () => {
       const closeButton = screen.getByRole('button', { name: 'Close' });
       expect(closeButton).toHaveAttribute('type', 'button');
 
-      const saveButton = screen.getByText('Save');
-      expect(saveButton).toHaveAttribute('type', 'button');
+      const saveButton = screen.getByRole('button', { name: 'Save' });
+      expect(saveButton).toHaveAttribute('type', 'submit');
     });
   });
 

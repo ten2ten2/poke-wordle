@@ -29,6 +29,7 @@ if (typeof window !== 'undefined') {
 }
 
 jest.mock('next-intl', () => ({
+  ...jest.requireActual('next-intl'),
   useTranslations: () => (key) => key,
   useLocale: () => 'en',
 }));

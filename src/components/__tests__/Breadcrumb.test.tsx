@@ -11,13 +11,13 @@ import Breadcrumb, { BreadcrumbItem } from '../Breadcrumb';
 
 // Create mock translation function
 const createMockT = (translations: Record<string, string> = {}) => {
-  return (key: string, options?: { defaultValue?: string }) => {
+  return (key: string) => {
     const defaultTranslations: Record<string, string> = {
       'common.breadcrumb': 'Breadcrumb',
       'common.home': 'Home',
     };
     const allTranslations = { ...defaultTranslations, ...translations };
-    return allTranslations[key] || options?.defaultValue || key;
+    return allTranslations[key] || key;
   };
 };
 
@@ -305,23 +305,23 @@ describe('Breadcrumb', () => {
       expect(nav).toHaveAttribute('aria-label', 'Navigation en miettes');
     });
 
-    test('falls back to default values when translations are missing', () => {
-      useTranslations.mockReturnValue(
-        (key: string, options?: { defaultValue?: string }) => {
-          return options?.defaultValue || key;
-        },
-      );
+    test.each(['en', 'ja', 'fr', 'de', 'it', 'es', 'ko', 'zh-hans', 'zh-hant'])(
+      'provides accessible labels from the bundled %s translations', (locale) => {
+        const messages = require(`../../messages/${locale}.json`);
+        const { createTranslator } = jest.requireActual<typeof import('next-intl')>('next-intl');
+        expect(messages.common.breadcrumb.trim()).not.toBe('');
+        expect(messages.common.home.trim()).not.toBe('');
+        useTranslations.mockReturnValue(createTranslator({ locale, messages }));
+        useLocale.mockReturnValue(locale);
 
-      const items: BreadcrumbItem[] = [];
+        render(<Breadcrumb items={[]} />);
 
-      render(<Breadcrumb items={items} />);
-
-      const nav = screen.getByRole('navigation');
-      expect(nav).toHaveAttribute('aria-label', 'Breadcrumb');
-
-      const homeLink = screen.getByRole('link');
-      expect(homeLink).toHaveAttribute('title', 'Home');
-    });
+        expect(screen.getByRole('navigation')).toHaveAttribute('aria-label', messages.common.breadcrumb);
+        const homeLink = screen.getByRole('link', { name: messages.common.home });
+        expect(homeLink).toHaveAttribute('title', messages.common.home);
+        expect(homeLink).toHaveAttribute('href', locale === 'en' ? '/' : `/${locale}`);
+      },
+    );
   });
 
   describe('Accessibility', () => {

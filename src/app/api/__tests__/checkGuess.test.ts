@@ -167,9 +167,10 @@ describe('/api/checkGuess', () => {
     expect(data.error).toBe('Target Pokemon not found');
   });
 
-  test('should return 400 for missing request body', async () => {
+  test.each([undefined, '', '{'])('returns 400 before comparing for a missing or malformed body (%s)', async (body) => {
     const request = new NextRequest('http://localhost:3000/api/checkGuess', {
       method: 'POST',
+      body,
       headers: {
         'Content-Type': 'application/json'
       }
@@ -180,6 +181,8 @@ describe('/api/checkGuess', () => {
 
     expect(response.status).toBe(400);
     expect(data.error).toBeDefined();
+    expect(mockLoadPokemonData).not.toHaveBeenCalled();
+    expect(mockComparePokemon).not.toHaveBeenCalled();
   });
 
   test('should handle prankster mode', async () => {
