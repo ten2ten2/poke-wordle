@@ -16,12 +16,12 @@ const settings = {
   guessOrder: 'reverse',
 };
 
-async function guess(page: Page, name: string) {
+async function guess(page: Page, name: string, submitLabel = 'Submit') {
+  const count = await page.locator('.guess-table-card').count();
   await page.getByRole('combobox').fill(name);
-  const response = page.waitForResponse('/api/checkGuess');
-  await page.getByRole('button', { name: 'Submit', exact: true }).click();
-  expect((await response).ok()).toBeTruthy();
-  await expect(page.getByRole('combobox')).toBeEnabled();
+  await page.getByRole('button', { name: submitLabel, exact: true }).click();
+  await expect(page.locator('.guess-table-card')).toHaveCount(count + 1);
+  await expect(page.getByRole('combobox')).toHaveValue('');
 }
 
 test.beforeEach(async ({ page }) => {
@@ -88,19 +88,18 @@ test('old dataset progress is cleared without losing settings', async ({ page })
   await guess(page, 'Pikachu');
 });
 
-test('an open page reloads when the server data changes', async ({ page }) => {
-  await page.goto('/');
-  await page.route('**/api/checkGuess', async (route) => {
-    expect(route.request().postDataJSON().dataset_version).toBe(datasetVersion);
-    await route.fulfill({ status: 409, contentType: 'application/json', body: JSON.stringify({ code: 'DATASET_CHANGED' }) });
-  }, { times: 1 });
-  const reloaded = page.waitForEvent('framenavigated', (frame) => frame === page.mainFrame());
-  await page.getByRole('combobox').fill('Pikachu');
-  await page.getByRole('button', { name: 'Submit', exact: true }).click();
-  await reloaded;
+test('an open page compares guesses offline without API requests', async ({ page, context }) => {
+  const guessRequests: string[] = [];
+  page.on('request', (request) => {
+    if (new URL(request.url()).pathname === '/api/checkGuess') guessRequests.push(request.url());
+  });
+  await page.goto('/ko');
   await expect(page.getByRole('combobox')).toBeEnabled();
-  await expect(page.locator('.guess-table-card')).toHaveCount(0);
-  await guess(page, 'Pikachu');
+  await context.setOffline(true);
+  await guess(page, '피카츄', '제출');
+  await guess(page, 'Bulbasaur', '제출');
+  expect(guessRequests).toEqual([]);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('poke-wordle-progress')!).datasetVersion)).toBe(datasetVersion);
 });
 
 test('autocomplete supports keyboard selection', async ({ page }) => {
@@ -138,28 +137,16 @@ test('guess ordering persists without recreating existing cards', async ({ page 
   );
 });
 
-test('changing settings cancels an outstanding guess', async ({ page }) => {
-  let release!: () => void;
-  const blocked = new Promise<void>((resolve) => {
-    release = resolve;
-  });
-  await page.route('**/api/checkGuess', async (route) => {
-    const response = await route.fetch();
-    await blocked;
-    await route.fulfill({ response }).catch(() => {});
-  });
+test('changing settings resets locally compared guesses', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('combobox').fill('Charmander');
-  const request = page.waitForRequest('**/api/checkGuess');
-  await page.getByRole('button', { name: 'Submit', exact: true }).click();
-  await request;
+  await guess(page, 'Pikachu');
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
   await page.getByRole('button', { name: '5', exact: true }).click();
   await page.getByRole('button', { name: 'Save', exact: true }).click();
-  release();
   await expect(page.getByRole('combobox')).toBeEnabled();
   await expect(page.locator('.guess-table-card')).toHaveCount(0);
   await expect(page.getByRole('dialog')).toHaveCount(0);
+  await guess(page, 'Bulbasaur');
 });
 
 test('winning reveals the answer and restart enables input', async ({
@@ -179,10 +166,8 @@ test('winning reveals the answer and restart enables input', async ({
   await page.getByRole('button', { name: 'Play Again', exact: true }).click();
   await expect(page.getByRole('combobox')).toBeEnabled();
   await expect(page.locator('.guess-table-card')).toHaveCount(0);
-  await page.getByRole('combobox').fill('Pikachu');
-  const nextGuess = page.waitForResponse('/api/checkGuess');
-  await page.getByRole('button', { name: 'Submit', exact: true }).click();
-  if (!(await (await nextGuess).json()).isCorrect) {
+  await guess(page, 'Pikachu');
+  if (!(await page.evaluate(() => JSON.parse(localStorage.getItem('poke-wordle-progress')!).isWon))) {
     await page.getByRole('button', { name: 'Give Up', exact: true }).click();
     await page.getByRole('button', { name: 'Confirm', exact: true }).click();
   }
@@ -403,21 +388,15 @@ test('localized guess headers, long tags and generation buttons fit', async ({ p
 });
 
 
-test('failed guesses preserve input and retry without spending a turn', async ({ page }) => {
-  let attempts = 0;
-  await page.route('**/api/checkGuess', (route) => ++attempts === 1
-    ? route.fulfill({ status: 503, contentType: 'application/json', body: '{}' })
-    : route.continue());
+test('invalid guesses preserve input without spending a turn', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('combobox').fill('Pikachu');
+  await page.getByRole('combobox').fill('unknown-pokemon');
   await page.getByRole('button', { name: 'Submit', exact: true }).click();
-  await expect(page.locator('main').getByRole('alert')).toContainText('Please try again');
-  await expect(page.getByRole('combobox')).toHaveValue('Pikachu');
+  await expect(page.locator('main').getByRole('alert')).toBeVisible();
+  await expect(page.getByRole('combobox')).toHaveValue('unknown-pokemon');
   await expect(page.locator('.guess-table-card')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Submit', exact: true }).click();
-  await expect(page.locator('.guess-table-card')).toHaveCount(1);
-  await expect(page.getByRole('combobox')).toHaveValue('');
-  expect(attempts).toBe(2);
+  await guess(page, 'Pikachu');
+  await expect(page.locator('main').getByRole('alert')).toHaveCount(0);
 });
 
 test('localized navigation, footer and typography work in all nine languages', async ({ page, request }) => {

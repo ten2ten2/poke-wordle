@@ -111,6 +111,15 @@ test('prevents repeated submissions while a request is outstanding', async () =>
   expect(screen.getByRole('combobox')).toHaveValue('');
 });
 
+test('a synchronous comparison clears the input before a double click can spend another turn', async () => {
+  const submit = jest.fn(() => true);
+  render(<GameInput {...props} onSubmit={submit} />);
+  await userEvent.type(screen.getByRole('combobox'), 'Pikachu');
+  await userEvent.dblClick(screen.getByRole('button', { name: 'Submit' }));
+  expect(submit).toHaveBeenCalledTimes(1);
+  expect(screen.getByRole('combobox')).toHaveValue('');
+});
+
 test('a rejected request also preserves the input', async () => {
   props.onSubmit.mockRejectedValue(new Error('Connection lost'));
   render(<GameInput {...props} />);

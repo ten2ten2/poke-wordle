@@ -1,10 +1,12 @@
 import { datasetVersion } from '@/config/dataset';
 import { useCallback, useMemo, useRef, useState } from 'react';
-import type { GameState, GameSettings, GuessResult } from '@/types/pokemon';
+import type { GameState, GameSettings, GuessResult, Pokemon } from '@/types/pokemon';
 import {
+  comparePokemon,
   loadPokemonData,
   filterPokemonByGenerations,
   getRandomPokemon,
+  getRandomPranksterImage,
   normalizePokemonName,
   translateText,
 } from '@/lib/pokemon';
@@ -160,15 +162,46 @@ export function useGameState(locale: string, restoreProgress = true) {
     }
   }, [commit]);
 
-  const validNames = useMemo(
-    () => new Set(
-      [...availablePokemon.map((p) => p.name), ...pokemonNames].map(normalizePokemonName),
-    ),
-    [availablePokemon, pokemonNames],
-  );
+  const pokemonByName = useMemo(() => {
+    const names = new Map<string, Pokemon>();
+    for (const pokemon of availablePokemon) {
+      for (const name of [pokemon.name, translateText(pokemon.name, locale)]) {
+        const key = normalizePokemonName(name);
+        if (!names.has(key)) names.set(key, pokemon);
+      }
+    }
+    return names;
+  }, [availablePokemon, locale]);
   const isPokemonNameValid = useCallback(
-    (name: string) => validNames.has(normalizePokemonName(name)),
-    [validNames],
+    (name: string) => pokemonByName.has(normalizePokemonName(name)),
+    [pokemonByName],
+  );
+
+  const submitGuess = useCallback(
+    (name: string) => {
+      const previous = current.current;
+      if (previous.isGameOver) return false;
+      const guess = pokemonByName.get(normalizePokemonName(name));
+      if (!guess) return false;
+      const target = previous.targetPokemon ?? startNewGame();
+      if (!target) return false;
+      const latestGuess = previous.settings.guessOrder === 'reverse'
+        ? previous.guesses[0]
+        : previous.guesses.at(-1);
+      const result = comparePokemon(
+        guess,
+        target,
+        previous.settings.isPrankster,
+        previous.settings.isGenArrow,
+        latestGuess?.fieldToHide ?? null,
+      );
+      if (result.fieldToHide && !result.isCorrect) {
+        result.pranksterPokemonProfile = getRandomPranksterImage();
+      }
+      addGuess(result);
+      return true;
+    },
+    [pokemonByName, startNewGame, addGuess],
   );
 
   return {
@@ -179,6 +212,7 @@ export function useGameState(locale: string, restoreProgress = true) {
     resetGame,
     updateSettings,
     addGuess,
+    submitGuess,
     giveUp,
     isPokemonNameValid,
   };

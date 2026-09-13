@@ -30,6 +30,7 @@ function pokemonIndex(locale: string) {
   return { ids: index.ids, names };
 }
 
+// Compatibility for pages opened before guesses moved to the client.
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

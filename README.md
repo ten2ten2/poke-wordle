@@ -34,7 +34,8 @@ mise run dev
 ## 代码与数据
 
 - Next.js App Router、React、Tailwind CSS。`src/app/[locale]` 和 `src/proxy.ts` 统一语言路由；英文不带路径前缀。
-- `src/hooks/useGameState.ts` 管理游戏与持久化，`src/app/api/checkGuess/route.ts` 比较猜测。
+- `src/hooks/useGameState.ts` 在浏览器中管理游戏、持久化并调用 `src/lib/pokemon.ts` 比较猜测，复用已加载的数据，不发送猜测请求。`src/app/api/checkGuess/route.ts` 仅兼容发布前已打开的旧页面。
+- 已打开的页面继续使用加载时的数据版本；刷新后加载新版数据，并通过存档版本校验丢弃不兼容的进度，保留游戏设置。
 - `src/data/` 是发布数据，`src/config/dataset.ts` 提供版本号；[tools/](tools/README.md) 负责候选审核、数据校正和 MDX 文章管理。
 - 知识库、隐私正文和面包屑由服务端渲染；首页随机问答只向客户端传入当前语言的标题和路径。
 - `public/styles/theme.css`、`buttons.css` 供网站、控制台和文章预览共用。字体使用自托管 Inter，中日韩回退到系统字体；许可见 `public/fonts/OFL.txt`。

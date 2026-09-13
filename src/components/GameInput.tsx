@@ -8,7 +8,7 @@ import { normalizePokemonName as normalize, pokemonSearchNames, translateText } 
 
 interface GameInputProps {
   pokemon: Pokemon[];
-  onSubmit: (name: string) => Promise<boolean>;
+  onSubmit: (name: string) => boolean | Promise<boolean>;
   onRandomStart: () => void;
   onGiveUp: () => void;
   onRestart: () => void;

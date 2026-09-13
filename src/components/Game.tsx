@@ -1,13 +1,12 @@
 'use client';
 
-import { datasetVersion } from '@/config/dataset';
 import dynamic from 'next/dynamic';
-import { useState, useCallback, useEffect, useRef, type ReactNode } from 'react';
+import { useState, useCallback, type ReactNode } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useGameState } from '@/hooks/useGameState';
-import { getRandomPokemon, getRandomPranksterImage, translateText } from '@/lib/pokemon';
-import { GameSettings, GuessResult } from '@/types/pokemon';
+import { getRandomPokemon, translateText } from '@/lib/pokemon';
+import type { GameSettings } from '@/types/pokemon';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import GameInput from '@/components/GameInput';
@@ -27,46 +26,33 @@ function Game({ ready, children }: { ready: boolean; children: ReactNode }) {
   const t = useTranslations();
   const {
     gameState,
-    startNewGame,
     resetGame,
     updateSettings,
-    addGuess,
+    submitGuess,
     giveUp,
     isPokemonNameValid,
     availablePokemon,
   } = useGameState(locale, ready);
 
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showSettingsChangeNotice, setShowSettingsChangeNotice] =
     useState(false);
   const [dismissedResult, setDismissedResult] = useState(false);
-  const requestRef = useRef<AbortController | null>(null);
-  useEffect(() => () => requestRef.current?.abort(), []);
-
-  const cancelGuess = useCallback(() => {
-    requestRef.current?.abort();
-    requestRef.current = null;
-    setIsLoading(false);
-    setError(null);
-  }, []);
-
   const handleSettingsChange = useCallback(
     (settings: GameSettings) => {
-      cancelGuess();
+      setError(null);
       const reset = updateSettings(settings);
       if (reset) {
         setDismissedResult(false);
         setShowSettingsChangeNotice(true);
       }
     },
-    [cancelGuess, updateSettings],
+    [updateSettings],
   );
 
   const handleGuessSubmit = useCallback(
-    async (name: string) => {
-      // Prevent new guesses if game is over
-      if (gameState.isGameOver || requestRef.current) {
+    (name: string) => {
+      if (!ready || gameState.isGameOver) {
         return false;
       }
 
@@ -75,78 +61,23 @@ function Game({ ready, children }: { ready: boolean; children: ReactNode }) {
         return false;
       }
 
-      const target = gameState.targetPokemon ?? startNewGame();
-      if (!target) return false;
-      const controller = new AbortController();
-      requestRef.current = controller;
       setShowSettingsChangeNotice(false);
-      setIsLoading(true);
       setError(null);
 
       try {
-        const response = await fetch('/api/checkGuess', {
-          method: 'POST',
-          signal: controller.signal,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name,
-            target_id: target.id,
-            dataset_version: datasetVersion,
-            is_prankster: gameState.settings.isPrankster,
-            is_gen_arrow: gameState.settings.isGenArrow,
-            locale,
-            previousFieldToHide:
-              gameState.settings.guessOrder === 'reverse'
-                ? gameState.guesses[0]?.fieldToHide
-                : gameState.guesses[gameState.guesses.length - 1]?.fieldToHide,
-          }),
-        });
-
-        if (response.status === 409 && !controller.signal.aborted) {
-          resetGame();
-          window.location.reload();
-          return false;
-        }
-
-        if (!response.ok) {
-          throw new Error('Failed to check guess');
-        }
-
-        const result: GuessResult = await response.json();
-        // if the field to hide is true and the guess is incorrect, then we need to get a random prankster image
-        if (result.fieldToHide && !result.isCorrect) {
-          result.pranksterPokemonProfile = getRandomPranksterImage();
-        }
-        if (!controller.signal.aborted) {
-          addGuess(result);
-          return true;
-        }
+        return submitGuess(name);
       } catch (error) {
-        if (!controller.signal.aborted) {
-          console.error('Error checking guess:', error);
-          setError(t('game.requestFailed'));
-        }
-      } finally {
-        if (requestRef.current === controller) {
-          requestRef.current = null;
-          setIsLoading(false);
-        }
+        console.error('Error checking guess:', error);
+        setError(t('game.requestFailed'));
       }
       return false;
     },
     [
-      gameState.targetPokemon,
-      gameState.settings,
+      ready,
       gameState.isGameOver,
-      gameState.guesses,
       isPokemonNameValid,
-      addGuess,
-      locale,
+      submitGuess,
       t,
-      startNewGame,
-      resetGame,
     ],
   );
 
@@ -165,10 +96,10 @@ function Game({ ready, children }: { ready: boolean; children: ReactNode }) {
 
   const handleRestart = useCallback(() => {
     setShowSettingsChangeNotice(false);
-    cancelGuess();
+    setError(null);
     setDismissedResult(false);
     resetGame();
-  }, [resetGame, cancelGuess]);
+  }, [resetGame]);
 
   return (
     <div className="min-h-screen-safe bg-page flex flex-col safe-all">
@@ -229,7 +160,7 @@ function Game({ ready, children }: { ready: boolean; children: ReactNode }) {
               onRandomStart={handleRandomStart}
               onGiveUp={giveUp}
               onRestart={handleRestart}
-              disabled={!ready || isLoading}
+              disabled={!ready}
               gameStarted={!!gameState.targetPokemon}
               gameOver={gameState.isGameOver}
               guessCount={gameState.guesses.length}
