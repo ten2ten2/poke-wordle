@@ -4,8 +4,6 @@ import localFont from 'next/font/local';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import CookieConsent from '@/components/CookieConsent';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { localePath, routing } from '@/i18n/routing';
@@ -29,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!hasLocale(routing.locales, locale)) return {};
   return {
     metadataBase: new URL(SITE_URL),
-    icons: { icon: '/favicon.ico', apple: '/images/apple-touch-icon.png' },
+    icons: { icon: '/favicon.ico?v=1', apple: '/images/apple-touch-icon.png' },
     manifest: '/manifest.json',
     ...pageMetadata({ locale, ...homeMetadata[locale], path: localePath(locale), languages: pageAlternates('/') }),
   };
@@ -61,8 +59,6 @@ export default async function LocaleLayout({
             />
           )}
         </NextIntlClientProvider>
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

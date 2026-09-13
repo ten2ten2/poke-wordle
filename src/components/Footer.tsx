@@ -28,6 +28,7 @@ export default function Footer() {
               </Link>
               <Link
                 href={localePath(locale, '/privacy-and-terms')}
+                prefetch={false}
                 title={t('footer.privacyAndTerms')}
                 className="footer-link"
               >

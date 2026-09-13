@@ -58,6 +58,7 @@ export default function CookieConsent({
             {t('description')}{' '}
             <Link
               href={localePath(locale, '/privacy-and-terms')}
+              prefetch={false}
               title={t('privacyAndTerms')}
               className="text-accent-text underline"
             >

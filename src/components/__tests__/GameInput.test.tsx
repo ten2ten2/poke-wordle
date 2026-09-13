@@ -23,14 +23,14 @@ const props = {
 
 beforeEach(() => { jest.clearAllMocks(); props.onSubmit.mockResolvedValue(true); });
 
-test('uses an accessible combobox with image, translated name and national number', async () => {
+test('uses an accessible combobox with translated name and national number, without images', async () => {
   render(<GameInput {...props} />);
   expect(screen.getByRole('combobox')).toHaveAttribute('placeholder', 'Name / Pokédex #');
   expect(screen.getByRole('combobox')).toHaveAccessibleName('Search by name in any language or Pokédex number');
   await userEvent.type(screen.getByRole('combobox'), 'フシギダネ');
   const option = await screen.findByRole('option', { name: /Bulbasaur/ });
   expect(option).toHaveTextContent('#0001');
-  expect(option.querySelector('img')).toBeInTheDocument();
+  expect(option.querySelector('img')).not.toBeInTheDocument();
   await userEvent.click(option);
   expect(screen.getByRole('combobox')).toHaveValue('Bulbasaur');
   expect(props.onSubmit).not.toHaveBeenCalled();

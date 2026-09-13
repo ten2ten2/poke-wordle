@@ -3,7 +3,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react';
 import { useLocale, useTranslations } from 'next-intl';
-import Image from 'next/image';
 import type { Pokemon } from '@/types/pokemon';
 import { normalizePokemonName as normalize, pokemonSearchNames, translateText } from '@/lib/pokemon';
 
@@ -30,7 +29,7 @@ export default function GameInput({ pokemon, onSubmit, onRandomStart, onGiveUp, 
   const composing = useRef(false);
   const submission = useRef(0);
   const choices = useMemo(() => pokemon.map((row) => ({
-    id: row.id, name: row.name, profile: row.profile, pokedex_id_national: row.pokedex_id_national,
+    id: row.id, name: row.name, pokedex_id_national: row.pokedex_id_national,
     dex: String(row.pokedex_id_national),
     label: translateText(row.name, locale), aliases: pokemonSearchNames(row.name).map(normalize),
   })), [pokemon, locale]);
@@ -106,7 +105,6 @@ export default function GameInput({ pokemon, onSubmit, onRandomStart, onGiveUp, 
                 <ComboboxOptions anchor={{ to: 'bottom start', gap: 6 }} className="pokemon-suggestions" modal={false}>
                   {suggestions.map((row) => (
                     <ComboboxOption key={row.id} value={row.label} className="pokemon-option">
-                      <Image src={row.profile} alt="" width={36} height={36} className="size-9 shrink-0 object-contain" />
                       <span className="min-w-0 flex-1">{row.label}</span>
                       <span className="text-[13px] tabular-nums text-muted">#{String(row.pokedex_id_national).padStart(4, '0')}</span>
                     </ComboboxOption>
